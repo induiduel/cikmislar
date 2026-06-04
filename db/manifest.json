@@ -1,0 +1,7 @@
+{
+  "schemaVersion": "1.0",
+  "files": [
+    "soru1.db"
+  ],
+  "note": "GitHub API çalışmazsa index.html bu manifest üzerinden db dosyalarını okur. GitHub API aktifken yeni .db/.sdb dosyaları manifest güncellemeden de algılanır."
+}
