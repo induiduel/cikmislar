@@ -1721,6 +1721,117 @@
       display:none!important;
     }
 
+  
+    /* Sayfa içi ChatGPT webview penceresi */
+    .chatgpt-webview-modal{
+      position:fixed;
+      inset:0;
+      z-index:400;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:10px;
+      background:rgba(15,23,42,.46);
+      backdrop-filter:blur(6px);
+    }
+    .chatgpt-webview-modal.hidden{
+      display:none!important;
+    }
+    .chatgpt-webview-panel{
+      width:min(1120px, 100%);
+      height:min(92vh, 900px);
+      display:flex;
+      flex-direction:column;
+      overflow:hidden;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.32);
+      background:#fff;
+      box-shadow:0 24px 70px rgba(15,23,42,.34);
+    }
+    .chatgpt-webview-header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding:10px 12px;
+      border-bottom:1px solid var(--line);
+      background:#fbfdff;
+    }
+    .chatgpt-webview-header b{
+      display:block;
+      color:var(--primary);
+      font-size:14px;
+      font-weight:950;
+    }
+    .chatgpt-webview-header small{
+      display:block;
+      color:var(--muted);
+      font-size:11px;
+      margin-top:2px;
+      line-height:1.3;
+    }
+    .chatgpt-webview-header button{
+      flex:0 0 auto;
+      padding:7px 10px;
+      border-radius:10px;
+      font-size:12px;
+    }
+    .chatgpt-webview-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:7px;
+      padding:8px 12px;
+      border-bottom:1px solid var(--line);
+      background:#fff;
+    }
+    .chatgpt-webview-actions button{
+      padding:8px 10px;
+      border-radius:10px;
+      font-size:12px;
+    }
+    .chatgpt-webview-note{
+      padding:7px 12px;
+      background:#fff7df;
+      color:#573a09;
+      border-bottom:1px solid rgba(122,79,8,.18);
+      font-size:11.5px;
+      line-height:1.35;
+    }
+    .chatgpt-webview-panel iframe{
+      flex:1 1 auto;
+      width:100%;
+      border:0;
+      background:#fff;
+    }
+    @media (max-width:560px){
+      .chatgpt-webview-modal{
+        padding:0;
+      }
+      .chatgpt-webview-panel{
+        height:100vh;
+        width:100vw;
+        border-radius:0;
+        border:0;
+      }
+      .chatgpt-webview-header{
+        padding:8px 9px;
+      }
+      .chatgpt-webview-header b{
+        font-size:13px;
+      }
+      .chatgpt-webview-header small{
+        font-size:10.5px;
+      }
+      .chatgpt-webview-actions{
+        padding:7px 9px;
+      }
+      .chatgpt-webview-actions button{
+        flex:1 1 auto;
+        padding:7px 8px;
+        font-size:11px;
+      }
+    }
+
   </style>
 </head>
 <body class="font-normal">
@@ -1984,6 +2095,27 @@
         <section class="all-list" id="allList"></section>
       </section>
     </section>
+  
+    <section class="chatgpt-webview-modal hidden" id="chatgptWebviewModal" aria-hidden="true">
+      <div class="chatgpt-webview-panel" role="dialog" aria-modal="true" aria-label="ChatGPT soru çözüm penceresi">
+        <div class="chatgpt-webview-header">
+          <div>
+            <b>ChatGPT ile çöz</b>
+            <small>Webview açılmazsa yeni sekme veya kopyalama seçeneklerini kullan.</small>
+          </div>
+          <button class="secondary" id="chatgptWebviewCloseBtn" type="button">Kapat</button>
+        </div>
+        <div class="chatgpt-webview-actions">
+          <button class="primary" id="chatgptOpenNewTabBtn" type="button">Yeni sekmede aç</button>
+          <button class="secondary" id="chatgptCopyPromptBtn" type="button">Promptu kopyala</button>
+        </div>
+        <div class="chatgpt-webview-note" id="chatgptWebviewNote">
+          ChatGPT bazı tarayıcılarda güvenlik nedeniyle sayfa içinde açılmayabilir. Bu durumda “Yeni sekmede aç” butonunu kullan.
+        </div>
+        <iframe id="chatgptWebviewFrame" title="ChatGPT webview" loading="lazy" referrerpolicy="no-referrer"></iframe>
+      </div>
+    </section>
+
   </main>
 
   <script>
@@ -2034,6 +2166,8 @@
     let renderStructureDirty = true;
     let answerVersion = 0;
     let lastPositions = {};
+    let currentChatGPTPrompt = "";
+    let currentChatGPTUrl = "";
     const LIST_BATCH_SIZE = 60;
 
     const $ = id => document.getElementById(id);
@@ -2051,6 +2185,7 @@
       selectAllDbBtn:$("selectAllDbBtn"), clearDbBtn:$("clearDbBtn"), fontSizeSelect:$("fontSizeSelect"), designModeSelect:$("designModeSelect"), duplicateFilterSelect:$("duplicateFilterSelect"), questionOrderSelect:$("questionOrderSelect"), reshuffleBtn:$("reshuffleBtn"),
       examTopbar:$("examTopbar"), examModeTitle:$("examModeTitle"), examTimerText:$("examTimerText"), cancelExamBtn:$("cancelExamBtn"),
       questionFullscreenBtn:$("questionFullscreenBtn"), questionChatGPTBtn:$("questionChatGPTBtn"),
+      chatgptWebviewModal:$("chatgptWebviewModal"), chatgptWebviewFrame:$("chatgptWebviewFrame"), chatgptWebviewCloseBtn:$("chatgptWebviewCloseBtn"), chatgptOpenNewTabBtn:$("chatgptOpenNewTabBtn"), chatgptCopyPromptBtn:$("chatgptCopyPromptBtn"), chatgptWebviewNote:$("chatgptWebviewNote"),
       progress:$("progress"), counter:$("counter"), section:$("section"), meta:$("meta"), question:$("question"), options:$("options"),
       feedback:$("feedback"), aiWarningBox:$("aiWarningBox"), infoBox:$("infoBox"), showInfoBtn:$("showInfoBtn"), cardShowAllBtn:$("cardShowAllBtn"), hideQuestionBtn:$("hideQuestionBtn"), wideExitBtn:$("wideExitBtn"), prevBtn:$("prevBtn"), nextBtn:$("nextBtn"),
       clearCacheBtn:$("clearCacheBtn"), resetVisibleBtn:$("resetVisibleBtn"), answeredCount:$("answeredCount"),
@@ -3482,7 +3617,62 @@
       }
     }
 
-    async function openCurrentQuestionInChatGPT(){
+    
+    function closeChatGPTWebview(){
+      if(els.chatgptWebviewFrame) els.chatgptWebviewFrame.removeAttribute("src");
+      if(els.chatgptWebviewModal){
+        els.chatgptWebviewModal.classList.add("hidden");
+        els.chatgptWebviewModal.setAttribute("aria-hidden","true");
+      }
+    }
+
+    function openChatGPTNewTab(){
+      if(currentChatGPTUrl){
+        window.open(currentChatGPTUrl, "_blank", "noopener,noreferrer");
+      }else{
+        window.open("https://chatgpt.com/", "_blank", "noopener,noreferrer");
+      }
+    }
+
+    async function copyCurrentChatGPTPrompt(){
+      if(!currentChatGPTPrompt){
+        alert("Kopyalanacak prompt bulunamadı.");
+        return;
+      }
+      const ok = await copyTextSafely(currentChatGPTPrompt);
+      alert(ok ? "Prompt panoya kopyalandı." : "Prompt otomatik kopyalanamadı.");
+    }
+
+    function openChatGPTWebview(url, promptWasCopied=false){
+      currentChatGPTUrl = url;
+      if(!els.chatgptWebviewModal || !els.chatgptWebviewFrame){
+        openChatGPTNewTab();
+        return;
+      }
+
+      els.chatgptWebviewModal.classList.remove("hidden");
+      els.chatgptWebviewModal.setAttribute("aria-hidden","false");
+
+      if(els.chatgptWebviewNote){
+        els.chatgptWebviewNote.textContent = promptWasCopied
+          ? "Soru metni çok uzun olduğu için prompt panoya kopyalandı. Webview içinde ChatGPT açılırsa promptu yapıştırabilirsin. Açılmazsa yeni sekmede aç."
+          : "ChatGPT bazı tarayıcılarda güvenlik nedeniyle sayfa içinde açılmayabilir. Açılmazsa “Yeni sekmede aç” butonunu kullan.";
+      }
+
+      try{
+        els.chatgptWebviewFrame.src = url;
+      }catch(e){
+        openChatGPTNewTab();
+      }
+
+      setTimeout(()=>{
+        if(!els.chatgptWebviewModal.classList.contains("hidden") && els.chatgptWebviewNote){
+          els.chatgptWebviewNote.textContent = "Webview boş/engellenmiş görünüyorsa ChatGPT sayfa içinde açılmıyor olabilir. “Yeni sekmede aç” ya da “Promptu kopyala” seçeneklerini kullan.";
+        }
+      }, 2800);
+    }
+
+async function openCurrentQuestionInChatGPT(){
       const q = questions[current];
       if(!q){
         alert("Gönderilecek soru bulunamadı.");
@@ -3490,19 +3680,18 @@
       }
 
       const prompt = buildQuestionForChatGPT(q);
-      const url = "https://chatgpt.com/?q=" + encodeURIComponent(prompt);
+      currentChatGPTPrompt = prompt;
+      let url = "https://chatgpt.com/?q=" + encodeURIComponent(prompt);
+      let copied = false;
 
-      // Çok uzun URL'lerde bazı mobil tarayıcılar kesebilir. Bu durumda prompt panoya alınır.
+      // Çok uzun URL'lerde webview/yeni sekme parametresi kesilebilir.
+      // Böyle durumda ChatGPT webview ana sayfada açılır, prompt panoya kopyalanır.
       if(url.length > 7500){
-        const copied = await copyTextSafely(prompt);
-        window.open("https://chatgpt.com/", "_blank", "noopener,noreferrer");
-        alert(copied
-          ? "Soru metni çok uzun olduğu için panoya kopyalandı. Açılan ChatGPT sekmesine yapıştırabilirsin."
-          : "Soru metni çok uzun olduğu için doğrudan aktarılamadı. ChatGPT açıldı; soruyu manuel kopyalaman gerekebilir.");
-        return;
+        copied = await copyTextSafely(prompt);
+        url = "https://chatgpt.com/";
       }
 
-      window.open(url, "_blank", "noopener,noreferrer");
+      openChatGPTWebview(url, copied);
     }
 
     function questionCardElement(){
@@ -3544,6 +3733,7 @@
     }
 
     function showLanding(){
+      closeChatGPTWebview();
       document.body.classList.remove("question-card-fullscreen");
       exitExamModeWithoutConfirm();
       stopQuizMode();
@@ -4027,6 +4217,11 @@ ${body}
     function bindEvents(){
       if(els.questionFullscreenBtn) els.questionFullscreenBtn.addEventListener("click", toggleQuestionFullscreen);
       if(els.questionChatGPTBtn) els.questionChatGPTBtn.addEventListener("click", openCurrentQuestionInChatGPT);
+      if(els.chatgptWebviewCloseBtn) els.chatgptWebviewCloseBtn.addEventListener("click", closeChatGPTWebview);
+      if(els.chatgptOpenNewTabBtn) els.chatgptOpenNewTabBtn.addEventListener("click", openChatGPTNewTab);
+      if(els.chatgptCopyPromptBtn) els.chatgptCopyPromptBtn.addEventListener("click", copyCurrentChatGPTPrompt);
+      if(els.chatgptWebviewModal) els.chatgptWebviewModal.addEventListener("click",(ev)=>{ if(ev.target === els.chatgptWebviewModal) closeChatGPTWebview(); });
+      document.addEventListener("keydown",(ev)=>{ if(ev.key === "Escape" && els.chatgptWebviewModal && !els.chatgptWebviewModal.classList.contains("hidden")) closeChatGPTWebview(); });
       document.addEventListener("fullscreenchange",()=>{
         const active = !!(document.fullscreenElement && document.fullscreenElement.classList && document.fullscreenElement.classList.contains("question-card"));
         document.body.classList.toggle("question-card-fullscreen", active);
