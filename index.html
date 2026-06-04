@@ -611,10 +611,97 @@
       margin-top:0!important;
     }
 
+  
+    .top-menu{
+      margin:0 0 8px;
+      padding:0;
+      overflow:hidden;
+      border-radius:14px;
+      box-shadow:0 6px 18px rgba(15,23,42,.06);
+    }
+    .top-menu-summary{
+      cursor:pointer;
+      list-style:none;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding:9px 12px;
+      color:var(--primary);
+      font-weight:950;
+      user-select:none;
+      min-height:38px;
+    }
+    .top-menu-summary::-webkit-details-marker{
+      display:none;
+    }
+    .top-menu-summary::after{
+      content:"＋";
+      font-weight:950;
+      color:var(--primary);
+      background:var(--soft);
+      border:1px solid rgba(23,58,138,.13);
+      border-radius:999px;
+      width:24px;
+      height:24px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      flex:0 0 auto;
+    }
+    .top-menu[open] .top-menu-summary::after{
+      content:"−";
+    }
+    .top-menu-summary span{
+      font-size:13.5px;
+      letter-spacing:-.02em;
+    }
+    .top-menu-summary small{
+      color:var(--muted);
+      font-size:11px;
+      font-weight:800;
+      margin-left:auto;
+    }
+    .top-menu-content{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      padding:0 10px 10px;
+    }
+    .top-menu-content button{
+      padding:8px 10px;
+      border-radius:10px;
+      font-size:12px;
+    }
+    body.app-screen-active .top-menu{
+      position:sticky;
+      top:6px;
+      z-index:80;
+      margin-bottom:8px;
+    }
+    body.question-wide-mode:not(.compact-mode) .top-menu{
+      display:block!important;
+      width:min(940px,calc(100% - 14px));
+      margin:6px auto 8px;
+    }
+
   </style>
 </head>
 <body class="font-normal">
   <main class="wrap">
+
+    <details class="top-menu panel" id="topMenu">
+      <summary class="top-menu-summary">
+        <span>☰ Menü</span>
+        <small>Sayfa ve kaynak seçenekleri</small>
+      </summary>
+      <div class="top-menu-content">
+        <button class="secondary" id="menuHomeBtn" type="button">Ana sayfaya dön</button>
+        <button class="secondary" id="menuSourceBtn" type="button">Ders kaynağını değiştir</button>
+        <button class="secondary" id="menuViewBtn" type="button">Görünüm ayarları</button>
+      </div>
+    </details>
+
     <div class="hidden" aria-hidden="true"><span id="totalQuestionsHero">0</span><span id="totalSubjectsHero">0</span></div>
 <section class="panel status warn hidden" id="statusBox">Soru dosyaları yükleniyor...</section>
     <section class="panel status warn hidden" id="manualDbBox">
@@ -837,6 +924,7 @@
     const $ = id => document.getElementById(id);
     const els = {
       landing:$("landing"), appView:$("appView"), quizView:$("quizView"), listView:$("listView"),
+      topMenu:$("topMenu"), menuHomeBtn:$("menuHomeBtn"), menuSourceBtn:$("menuSourceBtn"), menuViewBtn:$("menuViewBtn"),
       courseGrid:$("courseGrid"), courseEmpty:$("courseEmpty"), courseSearch:$("courseSearch"),
       clearCourseSearch:$("clearCourseSearch"), continueBtn:$("continueBtn"), wrongHomeBtn:$("wrongHomeBtn"), hiddenHomeBtn:$("hiddenHomeBtn"), quizAllBtn:$("quizAllBtn"), startAllBtn:$("startAllBtn"),
       backHomeBtn:$("backHomeBtn"), changeCourseBtn:$("changeCourseBtn"), activeTitle:$("activeTitle"),
@@ -1465,12 +1553,29 @@
       els.quizAllBtn.textContent = aq.length ? `Tüm dersler quiz modu (${Math.min(150, aq.length)})` : "Tüm dersler quiz modu";
     }
 
+    function openHomeSettingsPanel(panelId){
+      document.body.classList.remove("app-screen-active");
+      els.landing.classList.remove("hidden");
+      els.appView.classList.remove("active");
+      els.quizView.classList.remove("hidden");
+      els.listView.classList.remove("active");
+      els.results.style.display="none";
+      renderLanding();
+
+      const panel = document.getElementById(panelId);
+      if(panel){
+        panel.open = true;
+        setTimeout(()=>panel.scrollIntoView({behavior:"smooth", block:"start"}), 60);
+      }
+      if(els.topMenu) els.topMenu.open = false;
+    }
+
     function showLanding(){
       stopQuizMode();
       document.body.classList.remove("app-screen-active");
       els.landing.classList.remove("hidden"); els.appView.classList.remove("active");
       els.quizView.classList.remove("hidden"); els.listView.classList.remove("active");
-      els.results.style.display="none"; window.scrollTo(0,0); renderLanding();
+      els.results.style.display="none"; if(els.topMenu) els.topMenu.open=false; window.scrollTo(0,0); renderLanding();
     }
     function startCourseWithTeacher(subject, teacher){
       stopQuizMode();
@@ -1868,6 +1973,9 @@ ${body}
     }
 
     function bindEvents(){
+      els.menuHomeBtn.addEventListener("click",()=>{ showLanding(); if(els.topMenu) els.topMenu.open=false; });
+      els.menuSourceBtn.addEventListener("click",()=>openHomeSettingsPanel("dbSettingsDetails"));
+      els.menuViewBtn.addEventListener("click",()=>openHomeSettingsPanel("viewSettingsDetails"));
       els.courseSearch.addEventListener("input", debounce(renderLanding, 180));
       els.clearCourseSearch.addEventListener("click",()=>{els.courseSearch.value=""; renderLanding(); els.courseSearch.focus();});
       els.manualDbInput.addEventListener("change",async()=>{try{await loadManualDbFiles(els.manualDbInput.files);}catch(e){els.status.className="panel status warn"; els.status.innerHTML=`<b>Manuel database yüklenemedi:</b> ${escapeHTML(e.message)}`;}});
