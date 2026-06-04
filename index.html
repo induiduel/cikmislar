@@ -937,7 +937,14 @@
                 <option value="compact">Sade çözüm modu</option>
               </select>
             </div>
-            <p class="subtitle">Sade çözüm modu, soru çözerken yalnızca gerekli alanları gösterir; çok küçük yazı boyutuyla en kompakt hale gelir.</p>
+            <div class="select-row">
+              <label for="duplicateFilterSelect">Tekrar eden soruları ayıkla</label>
+              <select id="duplicateFilterSelect">
+                <option value="on">Açık - Benzer/tekrar soruları gizle</option>
+                <option value="off">Kapalı - Tüm kayıtları göster</option>
+              </select>
+            </div>
+            <p class="subtitle">Sade çözüm modu, soru çözerken yalnızca gerekli alanları gösterir. Tekrar filtresini kapatırsan soru6.db ve soru7.db içindeki tekrarlı kayıtlar da görünür.</p>
           </div>
         </details>
       </section>
@@ -1089,6 +1096,8 @@
     let selectedDbFiles = [];
     let fontSize = "normal";
     let designMode = "standard";
+    let duplicateFilterEnabled = true;
+    let allLoadedQuestions = [];
     let questionWideMode = false;
     let listWideMode = false;
     let currentListIndexes = [];
@@ -1107,7 +1116,7 @@
       listTitle:$("listTitle"), listSubtitle:$("listSubtitle"), allList:$("allList"),
       totalQuestionsHero:$("totalQuestionsHero"), totalSubjectsHero:$("totalSubjectsHero"), status:$("statusBox"),
       manualDbBox:$("manualDbBox"), manualDbInput:$("manualDbInput"), dbList:$("dbList"),
-      selectAllDbBtn:$("selectAllDbBtn"), clearDbBtn:$("clearDbBtn"), fontSizeSelect:$("fontSizeSelect"), designModeSelect:$("designModeSelect"),
+      selectAllDbBtn:$("selectAllDbBtn"), clearDbBtn:$("clearDbBtn"), fontSizeSelect:$("fontSizeSelect"), designModeSelect:$("designModeSelect"), duplicateFilterSelect:$("duplicateFilterSelect"),
       progress:$("progress"), counter:$("counter"), section:$("section"), meta:$("meta"), question:$("question"), options:$("options"),
       feedback:$("feedback"), aiWarningBox:$("aiWarningBox"), infoBox:$("infoBox"), showInfoBtn:$("showInfoBtn"), hideQuestionBtn:$("hideQuestionBtn"), wideExitBtn:$("wideExitBtn"), prevBtn:$("prevBtn"), nextBtn:$("nextBtn"),
       clearCacheBtn:$("clearCacheBtn"), resetVisibleBtn:$("resetVisibleBtn"), answeredCount:$("answeredCount"),
@@ -1131,7 +1140,7 @@
     function initials(name){return String(name||"?").split(/\s+/).map(x=>x[0]).join("").slice(0,2).toUpperCase();}
     function optionList(q){return Array.isArray(q.options) ? q.options : [];}
     function meta(q,key){return (q.metadata && q.metadata[key]) || "";}
-    function answerKey(q){return q.id;}
+    function answerKey(q){return duplicateFilterEnabled ? q.id : (q._instanceId || q.id);}
     async function fetchWithTimeout(url, options={}, timeoutMs=8000){
       const controller = new AbortController();
       const timer = setTimeout(() => controller.abort(), timeoutMs);
@@ -1229,7 +1238,7 @@
 
 
     function hiddenSet(){return new Set(hiddenQuestionIds);}
-    function isHiddenQuestion(q){return !!(q && q.id && hiddenSet().has(q.id));}
+    function isHiddenQuestion(q){return !!(q && answerKey(q) && hiddenSet().has(answerKey(q)));}
     function activeVisibleQuestions(){return activeQuestions().filter(q => !isHiddenQuestion(q));}
     function visibleQuestionCount(){return activeVisibleQuestions().length;}
     function hiddenQuestionCount(){return activeQuestions().filter(q => isHiddenQuestion(q)).length;}
@@ -1267,10 +1276,10 @@
       }
       const chosen = shuffleArray(pool).slice(0, Math.min(count, pool.length));
       quizActive = true;
-      quizIds = chosen.map(q => q.id);
+      quizIds = chosen.map(q => answerKey(q));
       quizTitle = subject && subject !== "all" ? `${subject} quiz modu · ${chosen.length} soru` : `Tüm dersler quiz modu · ${chosen.length} soru`;
       filters = {subject: subject || "all", exam:"all", year:"all", teacher:"all", sourceGroup:"all", search:""};
-      const firstIndex = questions.findIndex(q => q.id === quizIds[0]);
+      const firstIndex = questions.findIndex(q => answerKey(q) === quizIds[0]);
       if(firstIndex >= 0) current = firstIndex;
       els.landing.classList.add("hidden");
       els.appView.classList.add("active");
@@ -1469,7 +1478,12 @@
         throw new Error(file.name+" geçerli soru dosyası değil. İçinde questions dizisi olmalı.");
       }
 
-      return db.questions.map(q => ({...q, _dbFile:dbBaseName(file.name), _dbSource:file.source}));
+      return db.questions.map((q,idx) => {
+        const qq = {...q, _dbFile:dbBaseName(file.name), _dbSource:file.source};
+        if(!qq.id) qq.id = fallbackId(qq);
+        qq._instanceId = `${dbBaseName(file.name)}::${idx}::${qq.id}`;
+        return qq;
+      });
     }
 
     async function loadManualDbFiles(fileList){
@@ -1482,10 +1496,16 @@
         try{db = JSON.parse(text);}catch(e){throw new Error(file.name+" JSON olarak okunamadı.");}
         if(!db || !Array.isArray(db.questions)) throw new Error(file.name+" geçerli database değil. questions dizisi bulunamadı.");
         dbFiles.push({name:dbBaseName(file.name), url:file.name, source:"manual", displayName:dbBaseName(file.name)});
-        all.push(...db.questions.map(q => ({...q, _dbFile:dbBaseName(file.name), _dbSource:"manual"})));
+        all.push(...db.questions.map((q,idx) => {
+          const qq = {...q, _dbFile:dbBaseName(file.name), _dbSource:"manual"};
+          if(!qq.id) qq.id = fallbackId(qq);
+          qq._instanceId = `${dbBaseName(file.name)}::${idx}::${qq.id}`;
+          return qq;
+        }));
       }
-      const duplicates=dedupeAndSetQuestions(all);
-      questionIndexById = new Map(questions.map((q,i)=>[q.id,i]));
+      allLoadedQuestions = all;
+      const duplicates=dedupeAndSetQuestions(allLoadedQuestions);
+      questionIndexById = new Map(questions.map((q,i)=>[answerKey(q),i]));
       selectedDbFiles = dbFiles.map(f => dbBaseName(f.name));
       els.status.className = "panel status";
       els.status.innerHTML = `<b>${files.length}</b> manuel database dosyası yüklendi. <b>${activeQuestions().length}</b> benzersiz aktif soru kullanılıyor${duplicates ? `; ${duplicates} tekrar otomatik ayıklandı` : ""}.`;
@@ -1556,6 +1576,16 @@
     }
 
     function dedupeAndSetQuestions(all){
+      if(!duplicateFilterEnabled){
+        all.forEach((q,idx)=>{
+          if(!q.id) q.id = fallbackId(q);
+          if(!q._instanceId) q._instanceId = `${q._dbFile || "db"}::${idx}::${q.id}`;
+        });
+        questions = all.slice();
+        window.__lastDedupeStats = {duplicates:0, nearDuplicates:0, disabled:true};
+        return 0;
+      }
+
       const exactMap = new Map();
       const kept = [];
       const buckets = new Map();
@@ -1610,8 +1640,42 @@
       return duplicates + nearDuplicates;
     }
 
+    
+    function rebuildQuestionsAfterDuplicateToggle(){
+      const currentKey = questions[current] ? answerKey(questions[current]) : null;
+      const duplicates = dedupeAndSetQuestions(allLoadedQuestions);
+      questionIndexById = new Map(questions.map((q,i)=>[answerKey(q),i]));
+
+      if(currentKey && questionIndexById.has(currentKey)){
+        current = questionIndexById.get(currentKey);
+      }else{
+        ensureCurrent();
+      }
+
+      sanitizeFilters();
+      saveState();
+      renderLanding();
+
+      if(els.appView.classList.contains("active")){
+        render();
+      }
+
+      if(els.listView.classList.contains("active")){
+        renderAllList(true);
+      }
+
+      if(els.status){
+        els.status.className = "panel status";
+        els.status.innerHTML = duplicateFilterEnabled
+          ? `Tekrar filtresi açıldı. ${duplicates ? duplicates + " aynı/benzer kayıt ayıklandı." : "Ayıklanacak tekrar bulunmadı."}`
+          : "Tekrar filtresi kapatıldı. Seçili soru dosyalarındaki tüm kayıtlar gösteriliyor.";
+        els.status.classList.remove("hidden");
+        setTimeout(()=>els.status.classList.add("hidden"), 2500);
+      }
+    }
+
     function saveState(){
-      try{localStorage.setItem(STORAGE_KEY, JSON.stringify({answers,current,filters,infoOpen,selectedDbFiles,fontSize,designMode,questionWideMode,listWideMode,hiddenQuestionIds,quizActive,quizIds,quizTitle}));}catch(e){}
+      try{localStorage.setItem(STORAGE_KEY, JSON.stringify({answers,current,filters,infoOpen,selectedDbFiles,fontSize,designMode,duplicateFilterEnabled,questionWideMode,listWideMode,hiddenQuestionIds,quizActive,quizIds,quizTitle}));}catch(e){}
     }
     function loadState(){
       try{
@@ -1625,6 +1689,7 @@
         if(Array.isArray(data.selectedDbFiles)) selectedDbFiles=data.selectedDbFiles;
         if(["xsmall","small","normal","large"].includes(data.fontSize)) fontSize=data.fontSize;
         if(["standard","compact"].includes(data.designMode)) designMode=data.designMode;
+        if(typeof data.duplicateFilterEnabled === "boolean") duplicateFilterEnabled=data.duplicateFilterEnabled;
         if(typeof data.questionWideMode === "boolean") questionWideMode=data.questionWideMode;
         if(typeof data.listWideMode === "boolean") listWideMode=data.listWideMode;
         if(Array.isArray(data.hiddenQuestionIds)) hiddenQuestionIds=data.hiddenQuestionIds;
@@ -1645,6 +1710,7 @@
     function applyDesignMode(){
       document.body.classList.toggle("compact-mode", designMode === "compact");
       if (els.designModeSelect) els.designModeSelect.value = designMode;
+      if (els.duplicateFilterSelect) els.duplicateFilterSelect.value = duplicateFilterEnabled ? "on" : "off";
       applyWideModes();
     }
 
@@ -1758,7 +1824,7 @@
         const checked = activeDbSet().has(dbCanonicalName(shownName));
         label.innerHTML = `
           <input type="checkbox" value="${escapeHTML(shownName)}" ${checked ? "checked" : ""}>
-          <span><b>${escapeHTML(shownName)}</b><br><span class="small">${activeCounts.get(shownName) || activeCounts.get(file.name) || 0} benzersiz soru · ${escapeHTML(file.source || "")}</span></span>
+          <span><b>${escapeHTML(shownName)}</b><br><span class="small">${activeCounts.get(shownName) || activeCounts.get(file.name) || 0} ${duplicateFilterEnabled ? "benzersiz soru" : "soru kaydı"} · ${escapeHTML(file.source || "")}</span></span>
         `;
         const input = label.querySelector("input");
         input.addEventListener("change", () => {
@@ -1819,11 +1885,11 @@
             if(!pool.length){ alert("Bu hoca için quiz sorusu bulunamadı."); return; }
             const chosen = shuffleArray(pool).slice(0, Math.min(30, pool.length));
             quizActive = true;
-            quizIds = chosen.map(q => q.id);
+            quizIds = chosen.map(q => answerKey(q));
             quizTitle = `${item.value} · ${teacher} quiz modu · ${chosen.length} soru`;
             document.body.classList.add("app-screen-active");
             filters = {subject:item.value, exam:"all", year:"all", teacher:teacher, sourceGroup:"all", search:""};
-            const firstIndex = questions.findIndex(q => q.id === quizIds[0]);
+            const firstIndex = questions.findIndex(q => answerKey(q) === quizIds[0]);
             if(firstIndex >= 0) current = firstIndex;
             els.landing.classList.add("hidden");
             els.appView.classList.add("active");
@@ -2070,8 +2136,8 @@
         : "";
 
       const cardActions = listMode === "hidden"
-        ? `<div class="all-q-actions"><button class="secondary unhide-question-btn" type="button" data-qid="${escapeHTML(q.id)}">Bu soruyu tekrar göster</button></div>`
-        : `<div class="all-q-actions"><button class="secondary hide-list-question-btn" type="button" data-qid="${escapeHTML(q.id)}">Bu soruyu bir daha gösterme</button></div>`;
+        ? `<div class="all-q-actions"><button class="secondary unhide-question-btn" type="button" data-qid="${escapeHTML(answerKey(q))}">Bu soruyu tekrar göster</button></div>`
+        : `<div class="all-q-actions"><button class="secondary hide-list-question-btn" type="button" data-qid="${escapeHTML(answerKey(q))}">Bu soruyu bir daha gösterme</button></div>`;
 
       return `
         <article class="all-q-card">
@@ -2320,6 +2386,11 @@ ${body}
       els.clearDbBtn.addEventListener("click",()=>{selectedDbFiles=[]; sanitizeFilters(); saveState(); renderLanding();});
       els.fontSizeSelect.addEventListener("change",()=>{fontSize=els.fontSizeSelect.value; applyFontSize(); saveState(); renderLanding(); if(els.appView.classList.contains("active")) render();});
       els.designModeSelect.addEventListener("change",()=>{designMode=els.designModeSelect.value; applyDesignMode(); saveState(); renderLanding(); if(els.appView.classList.contains("active")) render();});
+      els.duplicateFilterSelect.addEventListener("change",()=>{
+        duplicateFilterEnabled = els.duplicateFilterSelect.value === "on";
+        applyDesignMode();
+        rebuildQuestionsAfterDuplicateToggle();
+      });
       els.subjectSelect.addEventListener("change",()=>{filters.subject=els.subjectSelect.value; ensureCurrent(); render();});
       els.examSelect.addEventListener("change",()=>{filters.exam=els.examSelect.value; ensureCurrent(); render();});
       els.yearSelect.addEventListener("change",()=>{filters.year=els.yearSelect.value; ensureCurrent(); render();});
@@ -2343,7 +2414,7 @@ ${body}
         const q=questions[current];
         if(!q) return;
         if(confirm("Bu soruyu bundan sonra normal akışta ve quizlerde gizlemek istiyor musun?")){
-          hideQuestionById(q.id);
+          hideQuestionById(answerKey(q));
           ensureCurrent();
           render();
           renderLanding();
@@ -2420,13 +2491,14 @@ async function init(){
         const all = loaded.all;
 
         els.status.innerHTML = "Sorular hazırlanıyor; benzer kayıtlar ayıklanıyor...";
-        const duplicates=dedupeAndSetQuestions(all);
-        questionIndexById = new Map(questions.map((q,i)=>[q.id,i]));
+        allLoadedQuestions = all;
+        const duplicates=dedupeAndSetQuestions(allLoadedQuestions);
+        questionIndexById = new Map(questions.map((q,i)=>[answerKey(q),i]));
         ensureSelectedDbFiles();
         sanitizeFilters();
 
         els.status.className="panel status";
-        els.status.innerHTML=`<b>${dbFiles.length}</b> soru dosyası yüklendi: ${[...new Set(dbFiles.map(f=>dbBaseName(f.name)))].map(escapeHTML).join(", ")}. <b>${questions.length}</b> benzersiz soru bulundu${duplicates?`; ${duplicates} aynı/benzer soru otomatik ayıklandı`:""}.`;
+        els.status.innerHTML=`<b>${dbFiles.length}</b> soru dosyası yüklendi: ${[...new Set(dbFiles.map(f=>dbBaseName(f.name)))].map(escapeHTML).join(", ")}. <b>${questions.length}</b> benzersiz soru bulundu${duplicateFilterEnabled && duplicates?`; ${duplicates} aynı/benzer soru otomatik ayıklandı`:(!duplicateFilterEnabled?`; tekrar filtresi kapalı`:"")}.`;
         els.status.classList.add("hidden");
         els.manualDbBox.classList.add("hidden");
         renderLanding();
