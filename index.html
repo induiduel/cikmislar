@@ -685,6 +685,137 @@
       margin:6px auto 8px;
     }
 
+  
+    body.font-xsmall{
+      --q-font:13px; --opt-font:11.5px; --ui-font:11px; --meta-font:9.5px; --card-title:16px; --h1-size:21px; --line-q:1.38;
+    }
+
+    /* Çok küçük + sade çözüm modu: en kompakt çalışma alanı */
+    body.compact-mode.font-xsmall .wrap{
+      width:min(760px,calc(100% - 8px));
+      margin:4px auto 10px;
+    }
+    body.compact-mode.font-xsmall .top-menu{
+      margin-bottom:4px;
+      border-radius:10px;
+    }
+    body.compact-mode.font-xsmall .top-menu-summary{
+      min-height:30px;
+      padding:6px 8px;
+    }
+    body.compact-mode.font-xsmall .top-menu-summary span{
+      font-size:11px;
+    }
+    body.compact-mode.font-xsmall .top-menu-summary small{
+      display:none;
+    }
+    body.compact-mode.font-xsmall .top-menu-summary::after{
+      width:20px;
+      height:20px;
+      font-size:12px;
+    }
+    body.compact-mode.font-xsmall .top-menu-content{
+      padding:0 6px 6px;
+      gap:5px;
+    }
+    body.compact-mode.font-xsmall .top-menu-content button{
+      padding:6px 7px;
+      font-size:10.5px;
+      border-radius:8px;
+    }
+    body.compact-mode.font-xsmall .compact-actionbar{
+      padding:5px;
+      margin-bottom:5px;
+      border-radius:10px;
+      gap:5px;
+    }
+    body.compact-mode.font-xsmall .compact-actionbar button{
+      padding:6px 7px;
+      font-size:10.5px;
+      border-radius:8px;
+    }
+    body.compact-mode.font-xsmall .question-card{
+      padding:7px;
+      border-radius:10px;
+    }
+    body.compact-mode.font-xsmall .question{
+      padding:8px 9px;
+      margin-bottom:6px;
+      border-radius:9px;
+      border-left-width:3px;
+      font-size:13px;
+      line-height:1.38;
+    }
+    body.compact-mode.font-xsmall .options{
+      gap:5px;
+    }
+    body.compact-mode.font-xsmall .option{
+      padding:7px 8px;
+      grid-template-columns:22px 1fr;
+      gap:7px;
+      border-radius:9px;
+    }
+    body.compact-mode.font-xsmall .letter{
+      width:22px;
+      height:22px;
+      border-radius:7px;
+      font-size:10.5px;
+    }
+    body.compact-mode.font-xsmall .option-text{
+      font-size:11.5px;
+      line-height:1.36;
+    }
+    body.compact-mode.font-xsmall .feedback{
+      margin-top:6px;
+      padding:7px 8px;
+      border-radius:9px;
+      font-size:11px;
+      line-height:1.35;
+    }
+    body.compact-mode.font-xsmall .info-box.show{
+      margin-top:6px;
+      padding:7px 8px;
+      border-radius:9px;
+      font-size:10.5px;
+    }
+    body.compact-mode.font-xsmall .nav{
+      margin-top:7px;
+      padding-top:7px;
+      gap:4px;
+    }
+    body.compact-mode.font-xsmall .nav button{
+      padding:6px 7px;
+      font-size:10.5px;
+      border-radius:8px;
+      flex:0 1 auto;
+    }
+
+    /* Sade çözüm modunun normal/küçük halinde de biraz daha az yer kaplaması */
+    body.compact-mode:not(.font-xsmall) .wrap{
+      width:min(820px,calc(100% - 10px));
+      margin:6px auto 14px;
+    }
+    body.compact-mode:not(.font-xsmall) .question-card{
+      padding:9px;
+      border-radius:12px;
+    }
+    body.compact-mode:not(.font-xsmall) .question{
+      padding:10px 11px;
+      margin-bottom:8px;
+    }
+    body.compact-mode:not(.font-xsmall) .option{
+      padding:8px 9px;
+    }
+    body.compact-mode:not(.font-xsmall) .nav{
+      margin-top:8px;
+      padding-top:8px;
+      gap:5px;
+    }
+    body.compact-mode:not(.font-xsmall) .nav button{
+      padding:7px 8px;
+      font-size:11.5px;
+    }
+
   </style>
 </head>
 <body class="font-normal">
@@ -751,6 +882,7 @@
             <div class="select-row">
               <label for="fontSizeSelect">Font boyutu</label>
               <select id="fontSizeSelect">
+                <option value="xsmall">Çok küçük</option>
                 <option value="small">Küçük</option>
                 <option value="normal">Normal</option>
                 <option value="large">Büyük</option>
@@ -763,7 +895,7 @@
                 <option value="compact">Sade çözüm modu</option>
               </select>
             </div>
-            <p class="subtitle">Sade çözüm modu, soru çözerken yalnızca soru, seçenekler, cevap bildirimi ve işlem butonlarını öne çıkarır.</p>
+            <p class="subtitle">Sade çözüm modu, soru çözerken yalnızca gerekli alanları gösterir; çok küçük yazı boyutuyla en kompakt hale gelir.</p>
           </div>
         </details>
       </section>
@@ -1323,7 +1455,7 @@
         if(data.filters) filters={...filters,...data.filters};
         if(typeof data.infoOpen==="boolean") infoOpen=data.infoOpen;
         if(Array.isArray(data.selectedDbFiles)) selectedDbFiles=data.selectedDbFiles;
-        if(["small","normal","large"].includes(data.fontSize)) fontSize=data.fontSize;
+        if(["xsmall","small","normal","large"].includes(data.fontSize)) fontSize=data.fontSize;
         if(["standard","compact"].includes(data.designMode)) designMode=data.designMode;
         if(typeof data.questionWideMode === "boolean") questionWideMode=data.questionWideMode;
         if(typeof data.listWideMode === "boolean") listWideMode=data.listWideMode;
@@ -1336,7 +1468,7 @@
     }
 
     function applyFontSize(){
-      document.body.classList.remove("font-small","font-normal","font-large");
+      document.body.classList.remove("font-xsmall","font-small","font-normal","font-large");
       document.body.classList.add("font-"+fontSize);
       if (els.fontSizeSelect) els.fontSizeSelect.value = fontSize;
       applyDesignMode();
