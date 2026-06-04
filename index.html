@@ -1,0 +1,688 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tıp Dersleri Soru Bankası | Database Loader</title>
+  <style>
+    :root{
+      --bg:#f5f7fb;--text:#101828;--muted:#667085;--line:#dbe4f0;
+      --primary:#173a8a;--primary2:#2f5bbd;--soft:#edf4ff;
+      --ok:#12633a;--okbg:#e8f7ee;--bad:#a61d35;--badbg:#fdecef;
+      --warn:#7a4f08;--warnbg:#fff7df;--shadow:0 14px 36px rgba(15,23,42,.10);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:auto}
+    body{
+      margin:0;min-height:100vh;
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+      color:var(--text);
+      background:radial-gradient(circle at 8% 0%,rgba(23,58,138,.13),transparent 28rem),
+                 linear-gradient(180deg,#fff 0%,var(--bg) 56%,#edf3f9 100%);
+      font-size:14px;
+    }
+    .wrap{width:min(1240px,calc(100% - 22px));margin:14px auto 32px}
+    .panel{background:rgba(255,255,255,.94);border:1px solid rgba(219,228,240,.96);border-radius:var(--radius);box-shadow:var(--shadow);backdrop-filter:blur(8px)}
+    .hero{display:grid;grid-template-columns:minmax(0,1.2fr) 310px;gap:12px;margin-bottom:12px}
+    .hero-main{padding:18px}
+    h1{margin:0 0 6px;font-size:clamp(22px,3.2vw,34px);line-height:1.08;letter-spacing:-.035em}
+    .subtitle{margin:0;color:var(--muted);font-size:13px;line-height:1.45}
+    .chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+    .chip{display:inline-flex;align-items:center;padding:6px 9px;border-radius:999px;font-weight:850;font-size:11.5px;color:var(--primary);background:var(--soft);border:1px solid rgba(23,58,138,.13)}
+    .hero-side{padding:12px;display:grid;grid-template-columns:1fr 1fr;gap:8px;align-content:center}
+    .metric{border:1px solid var(--line);border-radius:14px;padding:10px;background:#fbfdff}
+    .metric strong{display:block;font-size:22px;line-height:1;color:var(--primary);letter-spacing:-.03em}
+    .metric span{display:block;margin-top:4px;color:var(--muted);font-size:11.5px}
+    .status{padding:10px 12px;margin-bottom:12px;line-height:1.45;font-size:12.5px;color:#334155}
+    .status.warn{background:var(--warnbg);color:#573a09;border-color:rgba(122,79,8,.20)}
+    .toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;margin-bottom:12px}
+    .progress-shell{flex:1;height:9px;border-radius:999px;border:1px solid var(--line);background:#e8edf5;overflow:hidden}
+    .progress{height:100%;width:0%;border-radius:999px;background:linear-gradient(90deg,var(--primary),var(--primary2));transition:width .16s ease}
+    .counter{color:var(--primary);font-weight:900;min-width:176px;text-align:right;font-size:12.5px}
+    .layout{display:grid;grid-template-columns:minmax(0,1fr) 350px;gap:12px;align-items:start}
+    .question-card{padding:16px}
+    .section{font-weight:900;color:var(--primary);background:var(--soft);border:1px solid rgba(23,58,138,.13);padding:8px 10px;border-radius:12px;line-height:1.28;margin-bottom:9px;font-size:12.8px}
+    details.meta-box{margin-bottom:10px;border:1px solid var(--line);border-radius:12px;background:#fbfdff;overflow:hidden}
+    details.meta-box summary{cursor:pointer;padding:8px 10px;color:var(--primary);font-weight:900;font-size:12.5px;user-select:none}
+    .meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;padding:0 10px 10px;color:var(--muted);font-size:11.5px;line-height:1.35}
+    .meta div{border:1px solid var(--line);border-radius:10px;padding:7px 8px;background:white;overflow-wrap:anywhere}
+    .meta b{color:#334155}
+    .question{white-space:pre-wrap;font-weight:850;font-size:clamp(17px,2.1vw,22px);line-height:1.34;letter-spacing:-.01em;margin:0 0 12px}
+    .options{display:grid;gap:8px}
+    .option{border:1px solid var(--line);border-radius:13px;background:#fff;padding:10px 11px;display:grid;grid-template-columns:30px 1fr;gap:10px;align-items:start;cursor:pointer;transition:transform .1s ease,box-shadow .1s ease,border-color .1s ease,background .1s ease}
+    .option:hover{transform:translateY(-1px);box-shadow:0 6px 14px rgba(15,23,42,.07);border-color:rgba(23,58,138,.28)}
+    .option.answered:hover{transform:none;box-shadow:none}
+    .option.correct{background:var(--okbg);border-color:rgba(18,99,58,.55)}
+    .option.wrong{background:var(--badbg);border-color:rgba(166,29,53,.50)}
+    .letter{width:28px;height:28px;border-radius:9px;background:var(--soft);border:1px solid rgba(23,58,138,.12);color:var(--primary);display:inline-flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;text-transform:uppercase}
+    .option.correct .letter{background:#d7f1e0;color:var(--ok);border-color:rgba(18,99,58,.35)}
+    .option.wrong .letter{background:#f8d6dc;color:var(--bad);border-color:rgba(166,29,53,.35)}
+    .option-text{white-space:pre-wrap;line-height:1.36;font-size:13.5px}
+    .feedback{display:none;margin-top:10px;padding:10px 11px;border-radius:13px;border:1px solid var(--line);line-height:1.4;white-space:pre-wrap;font-size:13px}
+    .feedback.ok{display:block;background:var(--okbg);color:var(--ok);border-color:rgba(18,99,58,.35)}
+    .feedback.bad{display:block;background:var(--badbg);color:var(--bad);border-color:rgba(166,29,53,.35)}
+    .feedback.neutral{display:block;background:var(--soft);color:var(--primary);border-color:rgba(23,58,138,.25)}
+    .feedback b{font-weight:900}
+    .info-box{display:none;margin-top:10px;padding:10px 11px;border-radius:13px;border:1px solid var(--line);background:#fbfdff;color:#334155;line-height:1.45;font-size:12.5px;white-space:pre-wrap}
+    .info-box.show{display:block}
+    .nav{display:flex;justify-content:space-between;gap:8px;border-top:1px solid var(--line);padding-top:12px;margin-top:14px;flex-wrap:wrap}
+    button{appearance:none;-webkit-appearance:none;border:0;padding:10px 12px;border-radius:12px;font-weight:900;font-size:12.8px;cursor:pointer;transition:transform .1s ease,opacity .1s ease}
+    button:hover{transform:translateY(-1px)}
+    button:disabled{opacity:.45;cursor:not-allowed;transform:none}
+    .primary{color:#fff;background:linear-gradient(90deg,var(--primary),var(--primary2))}
+    .secondary{color:var(--primary);background:var(--soft);border:1px solid rgba(23,58,138,.13)}
+    .danger{color:var(--bad);background:#fff0f2;border:1px solid rgba(166,29,53,.14)}
+    .side-panel{padding:12px;position:sticky;top:10px;max-height:calc(100vh - 20px);overflow:auto}
+    .side-title{margin:0 0 8px;color:var(--primary);font-size:14px;letter-spacing:-.02em}
+    .mini-stats{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:11px}
+    .mini{padding:8px;background:#fbfdff;border:1px solid var(--line);border-radius:12px;display:flex;justify-content:space-between;gap:8px;color:var(--muted);font-size:11.5px}
+    .mini b{color:var(--text)}
+    .combo-panel{border:1px solid var(--line);background:#fbfdff;border-radius:14px;padding:10px;margin-bottom:12px}
+    .combo-grid{display:grid;gap:8px}
+    .select-row label{display:block;font-size:11.5px;color:var(--muted);font-weight:800;margin-bottom:4px}
+    select,.search{width:100%;padding:9px 10px;border-radius:10px;border:1px solid var(--line);background:#fff;color:#334155;font-weight:750;outline:none;font-size:12px}
+    .active-filter-summary{margin-top:8px;padding:8px;border-radius:10px;background:var(--soft);color:var(--primary);font-size:11.5px;line-height:1.35;border:1px solid rgba(23,58,138,.13)}
+    .filter-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}
+    .quick-block{margin-bottom:12px}
+    .button-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+    .filter-btn{padding:7px 7px;border-radius:10px;border:1px solid var(--line);background:#fff;color:#334155;font-weight:800;font-size:11px;text-align:center}
+    .filter-btn.active{background:var(--soft);color:var(--primary);border-color:rgba(23,58,138,.35);box-shadow:0 4px 10px rgba(23,58,138,.08)}
+    .filter-btn.wide{grid-column:1 / -1}
+    .jump-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;max-height:300px;overflow:auto;padding-right:2px}
+    .jump{padding:6px 0;border-radius:8px;border:1px solid var(--line);background:#fff;color:#334155;font-weight:900;text-align:center;cursor:pointer;font-size:11px}
+    .jump.active{background:var(--soft);color:var(--primary);border-color:rgba(23,58,138,.35)}
+    .jump.done-ok{background:var(--okbg);color:var(--ok);border-color:rgba(18,99,58,.35)}
+    .jump.done-bad{background:var(--badbg);color:var(--bad);border-color:rgba(166,29,53,.35)}
+    .jump.done-neutral{background:#edf4ff;color:var(--primary);border-color:rgba(23,58,138,.25)}
+    .results{display:none;padding:16px;margin-top:12px}
+    .result-head{display:grid;grid-template-columns:128px 1fr;gap:14px;align-items:center}
+    .score-circle{width:118px;height:118px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--primary) 0deg,#e8edf5 0deg);position:relative}
+    .score-circle::after{content:"";position:absolute;inset:10px;border-radius:50%;background:#fff;border:1px solid var(--line)}
+    .score-text{position:relative;z-index:1;font-size:25px;font-weight:950;color:var(--primary)}
+    .result-summary h2{margin:0 0 6px;font-size:22px;letter-spacing:-.025em}
+    .review{display:grid;gap:8px;margin-top:12px}
+    .review-item{padding:10px;border:1px solid var(--line);border-radius:13px;background:#fff;line-height:1.4;font-size:12px}
+    .review-item .q{font-weight:800;white-space:pre-wrap;margin-bottom:5px}
+    .small{color:var(--muted);font-size:11px;line-height:1.35}
+    .hidden{display:none!important}
+    @media (max-width:980px){.hero,.layout,.result-head{grid-template-columns:1fr}.side-panel{position:static;max-height:none}.toolbar{align-items:stretch;flex-direction:column}.counter{text-align:left}}
+    @media (max-width:680px){.meta{grid-template-columns:1fr}.hero-side{grid-template-columns:1fr 1fr}.button-grid{grid-template-columns:1fr}.jump-grid{grid-template-columns:repeat(5,1fr)}}
+    @media (max-width:560px){.wrap{width:min(100% - 14px,1240px);margin-top:8px}.hero-main,.question-card,.results{padding:12px}.option{grid-template-columns:28px 1fr;padding:9px}.letter{width:25px;height:25px}button{flex:1}h1{font-size:22px}}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="hero panel">
+      <div class="hero-main">
+        <h1>Tıp Dersleri Soru Bankası</h1>
+        <p class="subtitle">
+          Bu index.html içinde soru gömülü değildir. Sayfa, repository içindeki <b>db/</b> klasöründe bulunan
+          <b>.db</b> ve <b>.sdb</b> dosyalarını otomatik okur; tekrar eden soruları ID’ye göre tekilleştirir.
+        </p>
+        <div class="chips">
+          <span class="chip">Database tabanlı</span>
+          <span class="chip">Yeni .db/.sdb dosyalarını otomatik okur</span>
+          <span class="chip">Tekrar önleme</span>
+          <span class="chip">GitHub Pages uyumlu</span>
+        </div>
+      </div>
+      <aside class="hero-side">
+        <div class="metric"><strong id="heroTotal">0</strong><span>Filtredeki soru</span></div>
+        <div class="metric"><strong id="heroScore">0%</strong><span>Anlık başarı</span></div>
+      </aside>
+    </section>
+
+    <section class="panel status warn" id="statusBox">Database dosyaları yükleniyor...</section>
+
+    <section class="panel toolbar">
+      <div class="progress-shell"><div class="progress" id="progress"></div></div>
+      <div class="counter" id="counter">0 soru</div>
+    </section>
+
+    <section class="layout" id="testArea">
+      <article class="panel question-card">
+        <div class="section" id="section"></div>
+
+        <details class="meta-box" id="metaDetails">
+          <summary>Ders / kurul / yıl / hoca / hedef / kaynak bilgilerini göster</summary>
+          <div class="meta" id="meta"></div>
+        </details>
+
+        <h2 class="question" id="question"></h2>
+        <div class="options" id="options"></div>
+        <div class="feedback" id="feedback"></div>
+        <div class="info-box" id="infoBox"></div>
+
+        <div class="nav">
+          <button class="secondary" id="prevBtn">Önceki</button>
+          <button class="secondary" id="showInfoBtn">Açıklama/spot göster</button>
+          <button class="danger" id="clearCacheBtn">Önbelleği temizle</button>
+          <button class="secondary" id="resetVisibleBtn">Filtre cevaplarını sıfırla</button>
+          <button class="primary" id="nextBtn">Sonraki</button>
+        </div>
+      </article>
+
+      <aside class="panel side-panel">
+        <h3 class="side-title">Durum</h3>
+        <div class="mini-stats">
+          <div class="mini"><span>Cevaplanan</span><b id="answeredCount">0</b></div>
+          <div class="mini"><span>Doğru</span><b id="correctCount">0</b></div>
+          <div class="mini"><span>Yanlış</span><b id="wrongCount">0</b></div>
+          <div class="mini"><span>Boş</span><b id="emptyCount">0</b></div>
+        </div>
+
+        <div class="combo-panel">
+          <h3 class="side-title">Kombine filtre</h3>
+          <div class="combo-grid">
+            <div class="select-row"><label for="subjectSelect">Ders</label><select id="subjectSelect"></select></div>
+            <div class="select-row"><label for="examSelect">Kurul / sınav grubu</label><select id="examSelect"></select></div>
+            <div class="select-row"><label for="yearSelect">Yıl / sene</label><select id="yearSelect"></select></div>
+            <div class="select-row"><label for="teacherSelect">Hoca</label><select id="teacherSelect"></select></div>
+            <div class="select-row"><label for="sourceGroupSelect">Kaynak türü</label><select id="sourceGroupSelect"></select></div>
+            <div class="select-row">
+              <label for="searchInput">Soru / konu / hedef / kaynak araması</label>
+              <input class="search" id="searchInput" placeholder="Örn: HPV, EKG, a. subclavia, keton, Sertoli...">
+            </div>
+          </div>
+          <div class="active-filter-summary" id="activeFilterSummary"></div>
+          <div class="filter-actions">
+            <button class="secondary" id="clearFiltersBtn">Filtreleri temizle</button>
+            <button class="primary" id="goFirstFilteredBtn">İlk soruya git</button>
+          </div>
+        </div>
+
+        <details class="quick-block">
+          <summary class="side-title" style="cursor:pointer;">Hızlı ders tuşları</summary>
+          <div style="height:8px;"></div>
+          <div class="button-grid" id="subjectButtons"></div>
+        </details>
+
+        <h3 class="side-title">Sorular</h3>
+        <div class="jump-grid" id="jumpGrid"></div>
+      </aside>
+    </section>
+
+    <section class="panel results" id="results">
+      <div class="result-head">
+        <div class="score-circle" id="scoreCircle"><div class="score-text" id="scoreText">0%</div></div>
+        <div class="result-summary">
+          <h2>Test Sonucu</h2>
+          <p class="subtitle" id="resultSubtitle"></p>
+          <div class="nav" style="border-top:0;padding-top:8px;margin-top:8px;">
+            <button class="secondary" id="hideResultBtn">Sonucu gizle</button>
+            <button class="primary" id="reviewToggleBtn">Cevap dökümünü göster</button>
+          </div>
+        </div>
+      </div>
+      <div class="review hidden" id="review"></div>
+    </section>
+  </main>
+
+  <script>
+    const DB_DIR = "db";
+    const DB_EXTENSIONS = [".db", ".sdb"];
+    const SEQUENTIAL_SCAN_MAX = 100;
+    const STORAGE_KEY = "database_loader_question_bank_progress_v1";
+
+    let dbFiles = [];
+    let questions = [];
+    let answers = {};
+    let current = 0;
+    let filters = {subject:"all", exam:"all", year:"all", teacher:"all", sourceGroup:"all", search:""};
+    let infoOpen = false;
+
+    const $ = id => document.getElementById(id);
+    const els = {
+      heroTotal:$("heroTotal"), heroScore:$("heroScore"), progress:$("progress"), counter:$("counter"),
+      status:$("statusBox"), section:$("section"), meta:$("meta"), question:$("question"), options:$("options"),
+      feedback:$("feedback"), infoBox:$("infoBox"), showInfoBtn:$("showInfoBtn"), prevBtn:$("prevBtn"), nextBtn:$("nextBtn"),
+      clearCacheBtn:$("clearCacheBtn"), resetVisibleBtn:$("resetVisibleBtn"), answeredCount:$("answeredCount"),
+      correctCount:$("correctCount"), wrongCount:$("wrongCount"), emptyCount:$("emptyCount"), jumpGrid:$("jumpGrid"),
+      subjectSelect:$("subjectSelect"), examSelect:$("examSelect"), yearSelect:$("yearSelect"), teacherSelect:$("teacherSelect"),
+      sourceGroupSelect:$("sourceGroupSelect"), searchInput:$("searchInput"), activeFilterSummary:$("activeFilterSummary"),
+      clearFiltersBtn:$("clearFiltersBtn"), goFirstFilteredBtn:$("goFirstFilteredBtn"), subjectButtons:$("subjectButtons"),
+      results:$("results"), scoreCircle:$("scoreCircle"), scoreText:$("scoreText"), resultSubtitle:$("resultSubtitle"),
+      review:$("review"), reviewToggleBtn:$("reviewToggleBtn"), hideResultBtn:$("hideResultBtn")
+    };
+
+    function escapeHTML(str){
+      return String(str ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");
+    }
+    function normalize(str){
+      let s = String(str ?? "").toLocaleLowerCase("tr-TR");
+      try { s = s.normalize("NFKD").replace(/[\u0300-\u036f]/g,""); } catch(e) {}
+      return s.replace(/ı/g,"i");
+    }
+    function uniqueSorted(arr){
+      return [...new Set(arr.filter(v => String(v ?? "").trim()).map(v => String(v)))].sort((a,b)=>a.localeCompare(b,"tr"));
+    }
+    function countValues(fieldFn){
+      const map = new Map();
+      questions.forEach(q => {
+        const v = fieldFn(q) || "Belirtilmemiş";
+        map.set(v, (map.get(v) || 0) + 1);
+      });
+      return [...map.entries()].map(([value,count])=>({value,count})).sort((a,b)=>a.value.localeCompare(b.value,"tr"));
+    }
+    function optionList(q){ return Array.isArray(q.options) ? q.options : []; }
+    function meta(q, key){ return (q.metadata && q.metadata[key]) || ""; }
+    function answerKey(q){ return q.id; }
+
+    function inferRepoFromGithubPages(){
+      const host = location.hostname;
+      if (!host.endsWith(".github.io")) return null;
+      const owner = host.split(".")[0];
+      const parts = location.pathname.split("/").filter(Boolean);
+      let repo;
+      if (parts.length > 0) repo = parts[0];
+      else repo = owner + ".github.io";
+      return {owner, repo};
+    }
+
+    async function listDbFilesFromGithubApi(){
+      const info = inferRepoFromGithubPages();
+      if (!info) throw new Error("GitHub Pages host algılanmadı.");
+      const api = `https://api.github.com/repos/${info.owner}/${info.repo}/contents/${DB_DIR}`;
+      const res = await fetch(api, {headers: {"Accept":"application/vnd.github+json"}});
+      if (!res.ok) throw new Error("GitHub API listeleme başarısız: " + res.status);
+      const items = await res.json();
+      return items
+        .filter(x => x.type === "file" && DB_EXTENSIONS.some(ext => x.name.toLowerCase().endsWith(ext)))
+        .map(x => ({name:x.name, url:x.download_url, source:"github-api"}));
+    }
+
+    async function listDbFilesFromManifest(){
+      const res = await fetch(`${DB_DIR}/manifest.json`, {cache:"no-store"});
+      if (!res.ok) throw new Error("manifest.json yok.");
+      const manifest = await res.json();
+      const files = Array.isArray(manifest.files) ? manifest.files : [];
+      return files
+        .filter(name => DB_EXTENSIONS.some(ext => String(name).toLowerCase().endsWith(ext)))
+        .map(name => ({name, url:`${DB_DIR}/${encodeURIComponent(name)}`, source:"manifest"}));
+    }
+
+    async function listDbFilesBySequentialProbe(){
+      const found = [];
+      const candidates = [];
+      for (let i=1; i<=SEQUENTIAL_SCAN_MAX; i++){
+        candidates.push(`soru${i}.db`);
+        candidates.push(`soru${i}.sdb`);
+      }
+      for (const name of candidates){
+        try{
+          const res = await fetch(`${DB_DIR}/${encodeURIComponent(name)}`, {cache:"no-store"});
+          if (res.ok) found.push({name, url:`${DB_DIR}/${encodeURIComponent(name)}`, source:"sequential"});
+        }catch(e){}
+      }
+      if (!found.length) throw new Error("Sıralı soru*.db taramasında dosya bulunamadı.");
+      return found;
+    }
+
+    async function discoverDbFiles(){
+      const errors = [];
+      try { return await listDbFilesFromGithubApi(); } catch(e) { errors.push(e.message); }
+      try { return await listDbFilesFromManifest(); } catch(e) { errors.push(e.message); }
+      try { return await listDbFilesBySequentialProbe(); } catch(e) { errors.push(e.message); }
+      throw new Error(errors.join(" | "));
+    }
+
+    async function loadDbFile(file){
+      const res = await fetch(file.url, {cache:"no-store"});
+      if (!res.ok) throw new Error(file.name + " okunamadı: " + res.status);
+      const db = await res.json();
+      if (!db || !Array.isArray(db.questions)) throw new Error(file.name + " geçerli soru database dosyası değil.");
+      return db.questions.map(q => ({...q, _dbFile:file.name, _dbSource:file.source}));
+    }
+
+    function dedupeAndSetQuestions(all){
+      const map = new Map();
+      let duplicates = 0;
+      all.forEach(q => {
+        if (!q.id) q.id = cryptoRandomId(q);
+        if (map.has(q.id)) duplicates++;
+        else map.set(q.id, q);
+      });
+      questions = [...map.values()];
+      return duplicates;
+    }
+
+    function cryptoRandomId(q){
+      return "qid_" + btoa(unescape(encodeURIComponent([q.subject, q.question, JSON.stringify(q.options), JSON.stringify(q.answer)].join("|")))).slice(0,24).replace(/[^a-zA-Z0-9]/g,"");
+    }
+
+    function saveState(){
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify({answers,current,filters,infoOpen})); } catch(e){}
+    }
+    function loadState(){
+      try{
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return false;
+        const data = JSON.parse(raw);
+        if (data.answers && typeof data.answers === "object") answers = data.answers;
+        if (Number.isInteger(data.current)) current = data.current;
+        if (data.filters) filters = {...filters, ...data.filters};
+        if (typeof data.infoOpen === "boolean") infoOpen = data.infoOpen;
+        return true;
+      }catch(e){ return false; }
+    }
+
+    function filteredIndexes(){
+      const term = normalize(filters.search.trim());
+      return questions.map((q,i)=>[q,i])
+        .filter(([q]) => filters.subject === "all" || q.subject === filters.subject)
+        .filter(([q]) => filters.exam === "all" || meta(q,"examGroup") === filters.exam)
+        .filter(([q]) => filters.year === "all" || meta(q,"year") === filters.year)
+        .filter(([q]) => filters.teacher === "all" || meta(q,"teacher") === filters.teacher)
+        .filter(([q]) => filters.sourceGroup === "all" || meta(q,"sourceGroup") === filters.sourceGroup)
+        .filter(([q]) => {
+          if (!term) return true;
+          const haystack = normalize([
+            q.subject, q.question, q.explanation, q.spot, q.sourceNote,
+            meta(q,"examGroup"), meta(q,"year"), meta(q,"teacher"), meta(q,"topic"), meta(q,"target"), meta(q,"sourceGroup"), meta(q,"source"),
+            ...(optionList(q).map(o => o.text))
+          ].join(" "));
+          return haystack.includes(term);
+        })
+        .map(([,i]) => i);
+    }
+
+    function ensureCurrent(){
+      const idxs = filteredIndexes();
+      if (!idxs.length) return;
+      if (!idxs.includes(current)) current = idxs[0];
+    }
+
+    function stats(){
+      const idxs = filteredIndexes();
+      let answered=0, correct=0, wrong=0, neutral=0;
+      idxs.forEach(i => {
+        const q = questions[i];
+        const a = answers[answerKey(q)];
+        if (a !== undefined && a !== null){
+          answered++;
+          const ci = q.answer ? q.answer.index : null;
+          if (ci === null || ci === undefined || ci < 0) neutral++;
+          else if (a === ci) correct++;
+          else wrong++;
+        }
+      });
+      return {total:idxs.length, answered, correct, wrong, neutral, empty:idxs.length-answered, percent:answered ? Math.round((correct/answered)*100) : 0};
+    }
+
+    function setSelect(select, items, allLabel, value){
+      select.innerHTML = "";
+      const opt = document.createElement("option");
+      opt.value = "all";
+      opt.textContent = allLabel;
+      select.appendChild(opt);
+      items.forEach(item => {
+        const o = document.createElement("option");
+        o.value = item.value;
+        o.textContent = `${item.value} (${item.count})`;
+        select.appendChild(o);
+      });
+      select.value = value;
+      if (select.value !== value) select.value = "all";
+    }
+
+    function renderFilters(){
+      setSelect(els.subjectSelect, countValues(q=>q.subject), "Tüm dersler", filters.subject);
+      setSelect(els.examSelect, countValues(q=>meta(q,"examGroup")), "Tüm kurul/sınav grupları", filters.exam);
+      setSelect(els.yearSelect, countValues(q=>meta(q,"year")), "Tüm yıllar", filters.year);
+      setSelect(els.teacherSelect, countValues(q=>meta(q,"teacher")), "Tüm hocalar", filters.teacher);
+      setSelect(els.sourceGroupSelect, countValues(q=>meta(q,"sourceGroup")), "Tüm kaynak türleri", filters.sourceGroup);
+      els.searchInput.value = filters.search;
+
+      els.subjectButtons.innerHTML = "";
+      els.subjectButtons.appendChild(makeFilterButton("Tüm dersler", questions.length, filters.subject === "all", () => {filters.subject="all"; ensureCurrent(); saveState(); render();}, true));
+      countValues(q=>q.subject).forEach(item => {
+        els.subjectButtons.appendChild(makeFilterButton(item.value, item.count, filters.subject === item.value, () => {
+          filters.subject = item.value; ensureCurrent(); saveState(); render();
+        }));
+      });
+    }
+
+    function makeFilterButton(label, count, active, onClick, wide=false){
+      const b = document.createElement("button");
+      b.className = "filter-btn" + (active ? " active" : "") + (wide ? " wide" : "");
+      b.innerHTML = `${escapeHTML(label)} <span class="small">(${count})</span>`;
+      b.addEventListener("click", onClick);
+      return b;
+    }
+
+    function renderQuestion(){
+      const idxs = filteredIndexes();
+      if (!idxs.length){
+        els.section.textContent = "Soru bulunamadı";
+        els.meta.innerHTML = "";
+        els.question.textContent = questions.length ? "Seçili filtrelerle eşleşen soru yok." : "Database dosyası yüklenemedi veya soru bulunamadı.";
+        els.options.innerHTML = "";
+        els.feedback.className = "feedback";
+        els.feedback.innerHTML = "";
+        els.infoBox.className = "info-box";
+        els.infoBox.innerHTML = "";
+        els.prevBtn.disabled = true; els.nextBtn.disabled = true;
+        updateStats();
+        return;
+      }
+
+      ensureCurrent();
+      const q = questions[current];
+      const pos = idxs.indexOf(current);
+      const selected = answers[answerKey(q)];
+      const opts = optionList(q);
+      const answer = q.answer || {};
+
+      els.section.textContent = `${q.subject} · ${meta(q,"examGroup") || "Grup yok"} · ${meta(q,"year") || "Yıl yok"} · ${meta(q,"teacher") || "Hoca yok"} · ${meta(q,"topic") || "Konu yok"}`;
+
+      const rows = [
+        ["Ders", q.subject],
+        ["Database", q._dbFile || ""],
+        ["Kurul / sınav grubu", meta(q,"examGroup")],
+        ["Yıl / sene", meta(q,"year")],
+        ["Hoca", meta(q,"teacher")],
+        ["Konu", meta(q,"topic")],
+        ["Hedef / kazanım", meta(q,"target")],
+        ["Kaynak türü", meta(q,"sourceGroup")],
+        ["Kaynak", meta(q,"source")],
+        ["Kaynak soru no", meta(q,"sourceNo")],
+        ["Durum / güven", meta(q,"status")]
+      ];
+      els.meta.innerHTML = rows.filter(([,v]) => String(v ?? "").trim())
+        .map(([k,v]) => `<div><b>${escapeHTML(k)}:</b> ${escapeHTML(v)}</div>`).join("");
+
+      els.question.textContent = q.question || "";
+      els.options.innerHTML = "";
+      if (!opts.length){
+        els.options.innerHTML = `<div class="feedback neutral" style="display:block"><b>Şık yok:</b> Bu kayıtta seçenekler bulunmuyor. Cevap anahtarı işaretleme sonrası değil, bilgi alanında gösterilir.</div>`;
+      } else {
+        opts.forEach((opt, idx) => {
+          const div = document.createElement("div");
+          div.className = "option";
+          if (selected !== undefined && selected !== null){
+            div.classList.add("answered");
+            if (answer.index !== null && answer.index !== undefined && idx === answer.index) div.classList.add("correct");
+            if (answer.index !== null && answer.index !== undefined && idx === selected && selected !== answer.index) div.classList.add("wrong");
+          }
+          div.innerHTML = `<span class="letter">${escapeHTML(opt.letter || String.fromCharCode(65+idx))}</span><span class="option-text">${escapeHTML(opt.text || "")}</span>`;
+          div.addEventListener("click", () => {
+            answers[answerKey(q)] = idx;
+            saveState();
+            render();
+          });
+          els.options.appendChild(div);
+        });
+      }
+
+      if (selected !== undefined && selected !== null){
+        const letter = answer.letter || (answer.index !== null && answer.index !== undefined && opts[answer.index] ? opts[answer.index].letter : "");
+        const text = answer.text || answer.raw || "";
+        if (answer.index === null || answer.index === undefined || answer.index < 0){
+          els.feedback.className = "feedback neutral";
+          els.feedback.innerHTML = `<b>Cevap anahtarı:</b> ${escapeHTML(answer.raw || text)}`;
+        } else if (selected === answer.index){
+          els.feedback.className = "feedback ok";
+          els.feedback.innerHTML = `<b>Doğru.</b> Doğru cevap: <b>${escapeHTML(letter)} şıkkı</b> — ${escapeHTML(text)}`;
+        } else {
+          els.feedback.className = "feedback bad";
+          els.feedback.innerHTML = `<b>Yanlış.</b> Doğru cevap: <b>${escapeHTML(letter)} şıkkı</b> — ${escapeHTML(text)}`;
+        }
+      } else {
+        els.feedback.className = "feedback";
+        els.feedback.innerHTML = "";
+      }
+
+      const infoParts = [];
+      if (q.explanation) infoParts.push("<b>Açıklama:</b> " + escapeHTML(q.explanation));
+      if (q.spot) infoParts.push("<b>Spot bilgi:</b> " + escapeHTML(q.spot));
+      if (q.sourceNote) infoParts.push("<b>Kaynak notu:</b> " + escapeHTML(q.sourceNote));
+      if (answer.raw) infoParts.push("<b>Cevap anahtarı:</b> " + escapeHTML(answer.raw));
+      els.infoBox.innerHTML = infoParts.join("\n\n") || "<b>Bilgi:</b> Bu kayıtta açıklama/spot alanı boş.";
+      els.infoBox.className = infoOpen ? "info-box show" : "info-box";
+      els.showInfoBtn.textContent = infoOpen ? "Açıklama/spot gizle" : "Açıklama/spot göster";
+
+      els.prevBtn.disabled = pos <= 0;
+      els.nextBtn.disabled = false;
+      els.nextBtn.textContent = pos === idxs.length - 1 ? "Sonucu göster" : "Sonraki";
+      updateStats();
+    }
+
+    function updateStats(){
+      const st = stats();
+      els.heroTotal.textContent = st.total;
+      els.heroScore.textContent = st.percent + "%";
+      els.progress.style.width = st.total ? ((st.answered/st.total)*100) + "%" : "0%";
+      els.counter.textContent = st.total ? `Soru ${filteredIndexes().indexOf(current)+1} / ${st.total} · Genel no: ${current+1}` : "0 soru";
+      els.answeredCount.textContent = st.answered;
+      els.correctCount.textContent = st.correct;
+      els.wrongCount.textContent = st.wrong + (st.neutral ? ` (+${st.neutral} manuel)` : "");
+      els.emptyCount.textContent = st.empty;
+      els.activeFilterSummary.textContent = [
+        filters.subject==="all" ? "Tüm dersler" : filters.subject,
+        filters.exam==="all" ? "Tüm gruplar" : filters.exam,
+        filters.year==="all" ? "Tüm yıllar" : filters.year,
+        filters.teacher==="all" ? "Tüm hocalar" : filters.teacher,
+        filters.sourceGroup==="all" ? "Tüm kaynak türleri" : filters.sourceGroup,
+        filters.search.trim() ? `Arama: “${filters.search.trim()}”` : "Arama yok"
+      ].join(" + ") + ` → ${st.total} soru`;
+    }
+
+    function renderJumpGrid(){
+      els.jumpGrid.innerHTML = "";
+      const idxs = filteredIndexes();
+      if (!idxs.length){
+        els.jumpGrid.innerHTML = `<div class="small" style="grid-column:1 / -1;">Bu filtre/arama ile eşleşen soru yok.</div>`;
+        return;
+      }
+      idxs.forEach(i => {
+        const q = questions[i];
+        const b = document.createElement("button");
+        b.className = "jump";
+        if (i === current) b.classList.add("active");
+        const a = answers[answerKey(q)];
+        if (a !== undefined && a !== null){
+          const ci = q.answer ? q.answer.index : null;
+          if (ci === null || ci === undefined || ci < 0) b.classList.add("done-neutral");
+          else b.classList.add(a === ci ? "done-ok" : "done-bad");
+        }
+        b.textContent = i + 1;
+        b.title = `${q.subject} · ${meta(q,"examGroup")} · ${meta(q,"topic")}`;
+        b.addEventListener("click", () => {current=i; saveState(); render();});
+        els.jumpGrid.appendChild(b);
+      });
+    }
+
+    function renderReview(){
+      els.review.innerHTML = "";
+      filteredIndexes().forEach(i => {
+        const q = questions[i];
+        const a = answers[answerKey(q)];
+        const opts = optionList(q);
+        const selectedText = a === undefined || a === null ? "Boş" : `${opts[a]?.letter || ""}) ${opts[a]?.text || ""}`;
+        const ans = q.answer || {};
+        const correctBody = ans.index !== null && ans.index !== undefined && opts[ans.index] ? `${opts[ans.index].letter}) ${opts[ans.index].text}` : (ans.raw || ans.text || "");
+        const item = document.createElement("div");
+        item.className = "review-item";
+        item.innerHTML = `
+          <div class="small"><b>${i+1}. soru</b> · ${escapeHTML(q.subject)} · ${escapeHTML(meta(q,"examGroup"))} · ${escapeHTML(meta(q,"topic"))}</div>
+          <div class="q">${escapeHTML(q.question)}</div>
+          <div class="small"><b>Senin cevabın:</b> ${escapeHTML(selectedText)}</div>
+          <div class="small"><b>Doğru cevap:</b> ${escapeHTML(correctBody)}</div>
+          <div class="small"><b>Database:</b> ${escapeHTML(q._dbFile || "")}</div>
+        `;
+        els.review.appendChild(item);
+      });
+    }
+
+    function renderResults(){
+      const st = stats();
+      const score = st.total ? Math.round((st.correct/st.total)*100) : 0;
+      const deg = Math.round((score/100)*360);
+      els.scoreText.textContent = score + "%";
+      els.scoreCircle.style.background = `conic-gradient(var(--primary) 0deg, var(--primary) ${deg}deg, #e8edf5 ${deg}deg)`;
+      els.resultSubtitle.textContent = `${st.total} soru üzerinden ${st.correct} doğru, ${st.wrong} yanlış, ${st.neutral} manuel/indekslenemeyen cevaplı, ${st.empty} boş.`;
+      els.results.style.display = "block";
+      renderReview();
+    }
+
+    function render(){
+      renderFilters();
+      renderQuestion();
+      renderJumpGrid();
+      renderReview();
+      saveState();
+    }
+
+    function bindEvents(){
+      els.subjectSelect.addEventListener("change", () => {filters.subject=els.subjectSelect.value; ensureCurrent(); render();});
+      els.examSelect.addEventListener("change", () => {filters.exam=els.examSelect.value; ensureCurrent(); render();});
+      els.yearSelect.addEventListener("change", () => {filters.year=els.yearSelect.value; ensureCurrent(); render();});
+      els.teacherSelect.addEventListener("change", () => {filters.teacher=els.teacherSelect.value; ensureCurrent(); render();});
+      els.sourceGroupSelect.addEventListener("change", () => {filters.sourceGroup=els.sourceGroupSelect.value; ensureCurrent(); render();});
+      els.searchInput.addEventListener("input", () => {filters.search=els.searchInput.value; ensureCurrent(); render();});
+      els.clearFiltersBtn.addEventListener("click", () => {filters={subject:"all",exam:"all",year:"all",teacher:"all",sourceGroup:"all",search:""}; ensureCurrent(); render();});
+      els.goFirstFilteredBtn.addEventListener("click", () => {const idxs=filteredIndexes(); if(idxs.length){current=idxs[0]; render();}});
+      els.prevBtn.addEventListener("click", () => {const idxs=filteredIndexes(); const pos=idxs.indexOf(current); if(pos>0){current=idxs[pos-1]; render();}});
+      els.nextBtn.addEventListener("click", () => {const idxs=filteredIndexes(); const pos=idxs.indexOf(current); if(pos<idxs.length-1){current=idxs[pos+1]; render();} else renderResults();});
+      els.showInfoBtn.addEventListener("click", () => {infoOpen=!infoOpen; render();});
+      els.clearCacheBtn.addEventListener("click", () => {
+        if(!confirm("Tüm cevaplar, filtreler ve kaldığın yer silinsin mi?")) return;
+        answers={}; current=0; filters={subject:"all",exam:"all",year:"all",teacher:"all",sourceGroup:"all",search:""}; infoOpen=false;
+        try{localStorage.removeItem(STORAGE_KEY);}catch(e){}
+        els.results.style.display="none"; render();
+      });
+      els.resetVisibleBtn.addEventListener("click", () => {
+        if(!confirm("Sadece şu anki filtrede görünen soruların cevapları silinsin mi?")) return;
+        filteredIndexes().forEach(i => delete answers[answerKey(questions[i])]);
+        els.results.style.display="none"; render();
+      });
+      els.hideResultBtn.addEventListener("click", () => {els.results.style.display="none";});
+      els.reviewToggleBtn.addEventListener("click", () => {
+        els.review.classList.toggle("hidden");
+        els.reviewToggleBtn.textContent = els.review.classList.contains("hidden") ? "Cevap dökümünü göster" : "Cevap dökümünü gizle";
+      });
+    }
+
+    async function init(){
+      bindEvents();
+      loadState();
+      try{
+        dbFiles = await discoverDbFiles();
+        const all = [];
+        for (const file of dbFiles) all.push(...await loadDbFile(file));
+        const duplicates = dedupeAndSetQuestions(all);
+        ensureCurrent();
+        els.status.className = "panel status";
+        els.status.innerHTML = `<b>${dbFiles.length}</b> database dosyası yüklendi: ${dbFiles.map(f=>escapeHTML(f.name)).join(", ")}. <b>${questions.length}</b> benzersiz soru kullanılıyor${duplicates ? `; ${duplicates} tekrar otomatik ayıklandı` : ""}.`;
+        render();
+      }catch(e){
+        els.status.className = "panel status warn";
+        els.status.innerHTML = `<b>Database yüklenemedi:</b> ${escapeHTML(e.message)}<br><br>GitHub Pages üzerinde <b>db/soru1.db</b> gibi dosyaların bulunduğundan emin ol. Yerelde çift tıklayarak açarsan tarayıcı güvenlik kısıtları nedeniyle fetch çalışmayabilir; küçük bir yerel sunucu veya GitHub Pages kullan.`;
+        render();
+      }
+    }
+    init();
+  </script>
+</body>
+</html>
