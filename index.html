@@ -999,6 +999,240 @@
       }
     }
 
+  
+    .exam-card-btn{
+      appearance:none;
+      -webkit-appearance:none;
+      border:1px solid rgba(166,29,53,.18);
+      border-radius:999px;
+      padding:7px 9px;
+      font-weight:900;
+      font-size:11.5px;
+      cursor:pointer;
+      background:#fff7df;
+      color:#7a4f08;
+      transition:transform .1s ease,box-shadow .1s ease;
+    }
+    .exam-card-btn:hover{
+      transform:translateY(-1px);
+      box-shadow:0 6px 12px rgba(122,79,8,.10);
+    }
+
+    .exam-topbar{
+      display:none;
+    }
+    body.exam-mode{
+      background:#f8fafc;
+      padding-bottom:74px;
+      overflow-x:hidden;
+    }
+    body.exam-mode .top-menu,
+    body.exam-mode .compact-actionbar,
+    body.exam-mode .toolbar,
+    body.exam-mode .top-nav,
+    body.exam-mode .side-panel,
+    body.exam-mode .section,
+    body.exam-mode .meta-box,
+    body.exam-mode .feedback,
+    body.exam-mode .ai-warning-box,
+    body.exam-mode .info-box,
+    body.exam-mode .question-top-actions,
+    body.exam-mode .results{
+      display:none!important;
+    }
+    body.exam-mode .wrap{
+      width:100%;
+      max-width:none;
+      margin:0;
+      padding:0;
+    }
+    body.exam-mode .app-view.active{
+      display:block;
+    }
+    body.exam-mode .quiz-view{
+      display:block!important;
+    }
+    body.exam-mode .layout{
+      display:block!important;
+      width:100%;
+      margin:0;
+      padding:0;
+    }
+    body.exam-mode .question-card{
+      min-height:calc(100vh - 82px);
+      width:min(1000px, calc(100vw - 18px));
+      max-width:1000px;
+      margin:0 auto!important;
+      padding:10px 10px 86px;
+      border-radius:0;
+      box-shadow:none;
+      border:0;
+      background:#fff;
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-start;
+    }
+    body.exam-mode .question{
+      flex:0 0 auto;
+      max-height:38vh;
+      overflow:auto;
+      margin:4px 0 8px;
+      padding:10px 11px;
+      border-radius:12px;
+      border-left:4px solid var(--primary);
+      font-size:clamp(14px, 2.2vw, 19px);
+      line-height:1.42;
+      white-space:pre-wrap;
+      background:#fff;
+      box-shadow:none;
+    }
+    body.exam-mode .options{
+      flex:1 1 auto;
+      display:grid;
+      gap:7px;
+      align-content:start;
+      overflow:auto;
+      padding:0 2px 4px;
+    }
+    body.exam-mode .option{
+      min-height:44px;
+      padding:9px 10px;
+      border-radius:12px;
+      grid-template-columns:28px 1fr;
+      gap:9px;
+    }
+    body.exam-mode .letter{
+      width:28px;
+      height:28px;
+      font-size:12px;
+      border-radius:9px;
+    }
+    body.exam-mode .option-text{
+      font-size:clamp(12px, 1.9vw, 16px);
+      line-height:1.36;
+    }
+    body.exam-mode .option.answered{
+      box-shadow:0 0 0 2px rgba(23,58,138,.10) inset;
+    }
+    body.exam-mode .option.correct,
+    body.exam-mode .option.wrong{
+      background:#fff!important;
+      border-color:var(--line)!important;
+      color:inherit!important;
+    }
+    body.exam-mode .exam-topbar{
+      display:flex!important;
+      align-items:center;
+      justify-content:space-between;
+      gap:8px;
+      position:sticky;
+      top:0;
+      z-index:160;
+      width:min(1000px, calc(100vw - 18px));
+      margin:0 auto;
+      padding:8px 10px;
+      background:rgba(255,255,255,.96);
+      border:1px solid rgba(23,58,138,.12);
+      border-top:0;
+      border-radius:0 0 14px 14px;
+      box-shadow:0 10px 24px rgba(15,23,42,.10);
+      backdrop-filter:blur(10px);
+    }
+    .exam-topbar-title{
+      min-width:0;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+      font-size:12.5px;
+      font-weight:950;
+      color:var(--primary);
+    }
+    .exam-topbar-timer{
+      flex:0 0 auto;
+      min-width:64px;
+      text-align:center;
+      padding:7px 9px;
+      border-radius:999px;
+      background:#fff7df;
+      border:1px solid rgba(122,79,8,.22);
+      color:#7a4f08;
+      font-weight:950;
+      font-size:13px;
+    }
+    .exam-topbar-timer.danger-time{
+      background:#ffe8e8;
+      color:#a61d35;
+      border-color:rgba(166,29,53,.32);
+    }
+    .exam-topbar button{
+      flex:0 0 auto;
+      padding:7px 9px;
+      border-radius:10px;
+      font-size:12px;
+    }
+    body.exam-mode .floating-question-nav{
+      width:min(760px, calc(100vw - 14px));
+      grid-template-columns:1fr 1.25fr 1fr;
+      bottom:8px;
+      padding:7px;
+      border-radius:15px;
+    }
+    body.exam-mode .floating-question-nav button{
+      min-height:40px;
+      padding:8px 7px!important;
+      font-size:12px!important;
+      border-radius:11px!important;
+    }
+    body.exam-mode.no-question-active .exam-topbar{
+      display:none!important;
+    }
+    @media (max-width:520px){
+      body.exam-mode .exam-topbar{
+        width:100%;
+        border-left:0;
+        border-right:0;
+        border-radius:0 0 12px 12px;
+        padding:7px 8px;
+      }
+      .exam-topbar-title{
+        font-size:11.5px;
+      }
+      .exam-topbar-timer{
+        min-width:54px;
+        font-size:12px;
+        padding:6px 7px;
+      }
+      .exam-topbar button{
+        font-size:11px;
+        padding:6px 7px;
+      }
+      body.exam-mode .question-card{
+        width:100%;
+        min-height:calc(100vh - 76px);
+        padding:8px 8px 78px;
+      }
+      body.exam-mode .question{
+        max-height:34vh;
+        font-size:14px;
+        line-height:1.36;
+        padding:9px 10px;
+      }
+      body.exam-mode .option{
+        min-height:40px;
+        padding:7px 8px;
+        grid-template-columns:24px 1fr;
+        gap:8px;
+      }
+      body.exam-mode .letter{
+        width:24px;
+        height:24px;
+        font-size:11px;
+      }
+      body.exam-mode .option-text{
+        font-size:12px;
+      }
+    }
+
   </style>
 </head>
 <body class="font-normal">
@@ -1018,6 +1252,7 @@
         <button class="secondary" id="menuCacheBtn" type="button">Önbelleği yenile</button>
         <button class="secondary" id="menuInfoBtn" type="button">Açıklama/spot</button>
         <button class="secondary" id="menuShowAllBtn" type="button">Tüm soruları görüntüle</button>
+        <button class="secondary" id="menuExamBtn" type="button">Sınav modu</button>
         <details class="top-menu-subtools" id="menuOtherTools">
           <summary>Diğer işlemler</summary>
           <div class="top-menu-subtools-content">
@@ -1118,6 +1353,11 @@
     </section>
 
     <section class="app-view" id="appView">
+      <section class="exam-topbar" id="examTopbar">
+        <div class="exam-topbar-title" id="examModeTitle">Sınav modu</div>
+        <div class="exam-topbar-timer" id="examTimerText">20 sn</div>
+        <button class="danger" id="cancelExamBtn" type="button">Sınavı iptal et</button>
+      </section>
 <section class="panel compact-actionbar" id="compactActionbar">
         <button class="secondary" id="compactHomeBtn" type="button">← Ana ekrana dön</button>
         <button class="primary" id="compactShowAllBtn" type="button">Tüm soruları gör</button>
@@ -1271,6 +1511,13 @@
     let quizActive = false;
     let quizIds = [];
     let quizTitle = "";
+    let examMode = false;
+    let examSubject = "all";
+    let examTeacher = "all";
+    let examIds = [];
+    let examRemaining = 20;
+    let examTimerHandle = null;
+    let lastExamQuestionKey = "";
     let selectedDbFiles = [];
     let fontSize = "normal";
     let designMode = "standard";
@@ -1296,7 +1543,7 @@
     const els = {
       landing:$("landing"), appView:$("appView"), quizView:$("quizView"), listView:$("listView"),
       topMenu:$("topMenu"), menuHomeBtn:$("menuHomeBtn"), menuSourceBtn:$("menuSourceBtn"), menuViewBtn:$("menuViewBtn"), menuDuplicateBtn:$("menuDuplicateBtn"), menuShuffleBtn:$("menuShuffleBtn"), menuCacheBtn:$("menuCacheBtn"),
-      menuInfoBtn:$("menuInfoBtn"), menuShowAllBtn:$("menuShowAllBtn"), menuOtherTools:$("menuOtherTools"), menuWideToggleBtn:$("menuWideToggleBtn"), menuResetVisibleBtn:$("menuResetVisibleBtn"), menuClearCacheBtn:$("menuClearCacheBtn"),
+      menuInfoBtn:$("menuInfoBtn"), menuShowAllBtn:$("menuShowAllBtn"), menuExamBtn:$("menuExamBtn"), menuOtherTools:$("menuOtherTools"), menuWideToggleBtn:$("menuWideToggleBtn"), menuResetVisibleBtn:$("menuResetVisibleBtn"), menuClearCacheBtn:$("menuClearCacheBtn"),
       courseGrid:$("courseGrid"), courseEmpty:$("courseEmpty"), courseSearch:$("courseSearch"),
       clearCourseSearch:$("clearCourseSearch"), continueBtn:$("continueBtn"), wrongHomeBtn:$("wrongHomeBtn"), hiddenHomeBtn:$("hiddenHomeBtn"), quizAllBtn:$("quizAllBtn"), startAllBtn:$("startAllBtn"),
       backHomeBtn:$("backHomeBtn"), changeCourseBtn:$("changeCourseBtn"), activeTitle:$("activeTitle"),
@@ -1305,6 +1552,7 @@
       totalQuestionsHero:$("totalQuestionsHero"), totalSubjectsHero:$("totalSubjectsHero"), status:$("statusBox"),
       manualDbBox:$("manualDbBox"), manualDbInput:$("manualDbInput"), dbList:$("dbList"),
       selectAllDbBtn:$("selectAllDbBtn"), clearDbBtn:$("clearDbBtn"), fontSizeSelect:$("fontSizeSelect"), designModeSelect:$("designModeSelect"), duplicateFilterSelect:$("duplicateFilterSelect"), questionOrderSelect:$("questionOrderSelect"), reshuffleBtn:$("reshuffleBtn"),
+      examTopbar:$("examTopbar"), examModeTitle:$("examModeTitle"), examTimerText:$("examTimerText"), cancelExamBtn:$("cancelExamBtn"),
       progress:$("progress"), counter:$("counter"), section:$("section"), meta:$("meta"), question:$("question"), options:$("options"),
       feedback:$("feedback"), aiWarningBox:$("aiWarningBox"), infoBox:$("infoBox"), showInfoBtn:$("showInfoBtn"), cardShowAllBtn:$("cardShowAllBtn"), hideQuestionBtn:$("hideQuestionBtn"), wideExitBtn:$("wideExitBtn"), prevBtn:$("prevBtn"), nextBtn:$("nextBtn"),
       clearCacheBtn:$("clearCacheBtn"), resetVisibleBtn:$("resetVisibleBtn"), answeredCount:$("answeredCount"),
@@ -2208,7 +2456,11 @@
       }
 
       let idxs;
-      if(quizActive && quizIds.length){
+      if(examMode && examIds.length){
+        idxs = examIds
+          .map(id => questionIndexById.has(id) ? questionIndexById.get(id) : questions.findIndex(q => answerKey(q) === id))
+          .filter(i => i >= 0 && isDbActive(questions[i]) && !isHiddenQuestion(questions[i]));
+      }else if(quizActive && quizIds.length){
         idxs = quizIds
           .map(id => questionIndexById.has(id) ? questionIndexById.get(id) : questions.findIndex(q => answerKey(q) === id))
           .filter(i => i >= 0 && isDbActive(questions[i]) && !isHiddenQuestion(questions[i]));
@@ -2333,12 +2585,18 @@
             <span class="chip">${item.count} soru</span>
             <span class="chip">Dersi aç</span>
             <button class="quiz-card-btn" type="button" data-subject="${escapeHTML(item.value)}">Quiz (${Math.min(30, item.count)})</button>
+            <button class="exam-card-btn" type="button" data-subject="${escapeHTML(item.value)}">Sınav modu</button>
           </div>
         `;
         const quizBtn = card.querySelector(".quiz-card-btn");
+        const examBtn = card.querySelector(".exam-card-btn");
         const teacherSelect = card.querySelector(".teacher-select-mini");
         teacherSelect.addEventListener("click", ev => ev.stopPropagation());
         teacherSelect.addEventListener("change", ev => ev.stopPropagation());
+        if(examBtn) examBtn.addEventListener("click",(ev)=>{
+          ev.stopPropagation();
+          startExamMode(item.value, teacherSelect ? teacherSelect.value : "all");
+        });
         quizBtn.addEventListener("click",(ev)=>{
           ev.stopPropagation();
           const teacher = teacherSelect ? teacherSelect.value : "all";
@@ -2398,7 +2656,105 @@
       if(els.topMenu) els.topMenu.open = false;
     }
 
+    
+    function currentSubjectForExam(){
+      if(filters.subject && filters.subject !== "all") return filters.subject;
+      const q = questions[current];
+      if(q && q.subject) return q.subject;
+      return "all";
+    }
+
+    function buildExamPool(subject, teacher="all"){
+      return activeVisibleQuestions().filter(q=>{
+        if(!subject || subject === "all") return false;
+        if(q.subject !== subject) return false;
+        if(teacher && teacher !== "all" && meta(q,"teacher") !== teacher) return false;
+        return true;
+      });
+    }
+
+    function stopExamTimer(){
+      if(examTimerHandle){
+        clearInterval(examTimerHandle);
+        examTimerHandle = null;
+      }
+    }
+
+    function updateExamTimerUI(){
+      if(!els.examTimerText) return;
+      els.examTimerText.textContent = `${examRemaining} sn`;
+      els.examTimerText.classList.toggle("danger-time", examRemaining <= 5);
+    }
+
+    function startExamTimer(){
+      stopExamTimer();
+      examRemaining = 20;
+      updateExamTimerUI();
+      examTimerHandle = setInterval(()=>{
+        if(!examMode) { stopExamTimer(); return; }
+        examRemaining -= 1;
+        updateExamTimerUI();
+        if(examRemaining <= 0){
+          const idxs = filteredIndexes();
+          const pos = idxs.indexOf(current);
+          if(pos >= 0 && pos < idxs.length - 1){
+            current = idxs[pos+1];
+            render();
+            scrollToQuestion();
+          }else{
+            stopExamTimer();
+            renderResults();
+          }
+        }
+      }, 1000);
+    }
+
+    function startExamMode(subject, teacher="all"){
+      stopQuizMode();
+      const pool = buildExamPool(subject, teacher);
+      if(!pool.length){
+        alert("Bu ders için sınav modunda gösterilecek soru bulunamadı.");
+        return;
+      }
+      examMode = true;
+      examSubject = subject;
+      examTeacher = teacher || "all";
+      examIds = pool.map(q=>answerKey(q));
+      filters = {subject:subject, exam:"all", year:"all", teacher:examTeacher, sourceGroup:"all", search:""};
+      const firstIndex = questions.findIndex(q => answerKey(q) === examIds[0]);
+      current = firstIndex >= 0 ? firstIndex : 0;
+      document.body.classList.add("app-screen-active","exam-mode");
+      els.landing.classList.add("hidden");
+      els.appView.classList.add("active");
+      els.quizView.classList.remove("hidden");
+      els.listView.classList.remove("active");
+      els.results.style.display="none";
+      if(els.examModeTitle) els.examModeTitle.textContent = `${subject}${examTeacher !== "all" ? " · " + examTeacher : ""} · Sınav modu`;
+      if(els.topMenu) els.topMenu.open = false;
+      render();
+      startExamTimer();
+      scrollToQuestion();
+    }
+
+    function cancelExamMode(){
+      if(!examMode) return;
+      if(!confirm("Sınav modu iptal edilsin mi?")) return;
+      examMode = false;
+      examIds = [];
+      stopExamTimer();
+      document.body.classList.remove("exam-mode");
+      showLanding();
+    }
+
+    function exitExamModeWithoutConfirm(){
+      examMode = false;
+      examIds = [];
+      stopExamTimer();
+      document.body.classList.remove("exam-mode");
+    }
+
     function showLanding(){
+      exitExamModeWithoutConfirm();
       stopQuizMode();
       document.body.classList.remove("app-screen-active");
       els.landing.classList.remove("hidden"); els.appView.classList.remove("active");
@@ -2464,6 +2820,14 @@
       document.body.classList.remove("no-question-active");
       ensureCurrent();
       const q=questions[current], pos=idxs.indexOf(current), selected=answers[answerKey(q)], opts=optionList(q), answer=q.answer||{};
+      if(examMode){
+        if(els.examModeTitle) els.examModeTitle.textContent = `${examSubject}${examTeacher !== "all" ? " · " + examTeacher : ""} · ${pos+1}/${idxs.length}`;
+        const qKey = answerKey(q);
+        if(qKey !== lastExamQuestionKey){
+          lastExamQuestionKey = qKey;
+          startExamTimer();
+        }
+      }
       els.activeTitle.textContent=quizActive ? quizTitle : (filters.subject!=="all"?filters.subject+" soru bankası":"Tüm dersler soru bankası");
       els.section.textContent=`${q.subject} · ${meta(q,"examGroup")||"Grup yok"} · ${meta(q,"year")||"Yıl yok"} · ${meta(q,"teacher")||"Hoca yok"} · ${meta(q,"topic")||"Konu yok"}`;
       const rows=[["Ders",q.subject],["Dosya",q._dbFile||""],["Kurul / sınav grubu",meta(q,"examGroup")],["Yıl / sene",meta(q,"year")],["Hoca",meta(q,"teacher")],["Konu",meta(q,"topic")],["Hedef / kazanım",meta(q,"target")],["Kaynak türü",meta(q,"sourceGroup")],["Kaynak",meta(q,"source")],["Kaynak soru no",meta(q,"sourceNo")],["Durum / güven",meta(q,"status")]];
@@ -2478,15 +2842,17 @@
           div.className="option";
           if(selected!==undefined&&selected!==null){
             div.classList.add("answered");
-            if(answer.index!==null&&answer.index!==undefined&&idx===answer.index) div.classList.add("correct");
-            if(answer.index!==null&&answer.index!==undefined&&idx===selected&&selected!==answer.index) div.classList.add("wrong");
+            if(!examMode){
+              if(answer.index!==null&&answer.index!==undefined&&idx===answer.index) div.classList.add("correct");
+              if(answer.index!==null&&answer.index!==undefined&&idx===selected&&selected!==answer.index) div.classList.add("wrong");
+            }
           }
           div.innerHTML=`<span class="letter">${escapeHTML(opt.letter||String.fromCharCode(65+idx))}</span><span class="option-text">${escapeHTML(opt.text||"")}</span>`;
           div.addEventListener("click",()=>{answers[answerKey(q)]=idx; answerVersion++; render();});
           els.options.appendChild(div);
         });
       }
-      if(selected!==undefined&&selected!==null){
+      if(!examMode && selected!==undefined&&selected!==null){
         const letter=answer.letter||(answer.index!==null&&answer.index!==undefined&&opts[answer.index]?opts[answer.index].letter:"");
         const text=answer.text||answer.raw||"";
         if(answer.index===null||answer.index===undefined||answer.index<0){els.feedback.className="feedback neutral"; els.feedback.innerHTML=`<b>Cevap anahtarı:</b> ${escapeHTML(answer.raw||text)}`;}
@@ -2583,6 +2949,12 @@
     }
 
     function renderResults(){
+      if(examMode){
+        examMode = false;
+        examIds = [];
+        stopExamTimer();
+        document.body.classList.remove("exam-mode");
+      }
       const st=stats(), score=st.total?Math.round((st.correct/st.total)*100):0, deg=Math.round((score/100)*360);
       els.scoreText.textContent=score+"%";
       els.scoreCircle.style.background=`conic-gradient(var(--primary) 0deg, var(--primary) ${deg}deg, #e8edf5 ${deg}deg)`;
@@ -2799,6 +3171,7 @@ ${body}
     }
 
     function showListView(mode="all"){
+      if(examMode) return;
       listMode = mode;
       render();
       els.quizView.classList.add("hidden");
@@ -2877,14 +3250,24 @@ ${body}
         if(els.topMenu) els.topMenu.open=false;
       });
       els.menuCacheBtn.addEventListener("click", clearDatabaseCacheAndReload);
+      if(els.cancelExamBtn) els.cancelExamBtn.addEventListener("click", cancelExamMode);
       els.menuInfoBtn.addEventListener("click",()=>{
         infoOpen = !infoOpen;
         render();
         if(els.topMenu) els.topMenu.open = false;
       });
       els.menuShowAllBtn.addEventListener("click",()=>{
+        if(examMode) return;
         showListView("all");
         if(els.topMenu) els.topMenu.open = false;
+      });
+      if(els.menuExamBtn) els.menuExamBtn.addEventListener("click",()=>{
+        const subject = currentSubjectForExam();
+        if(subject === "all"){
+          alert("Sınav modu için önce bir ders seçmelisin.");
+          return;
+        }
+        startExamMode(subject, filters.teacher || "all");
       });
       els.menuWideToggleBtn.addEventListener("click",()=>{
         questionWideMode = !questionWideMode;
@@ -2959,8 +3342,8 @@ ${body}
       els.searchInput.addEventListener("input", debounce(()=>{filters.search=els.searchInput.value; ensureCurrent(); render();}, 180));
       els.clearFiltersBtn.addEventListener("click",()=>{filters={subject:filters.subject,exam:"all",year:"all",teacher:"all",sourceGroup:"all",search:""}; ensureCurrent(); render();});
       els.goFirstFilteredBtn.addEventListener("click",()=>{const idxs=filteredIndexes(); if(idxs.length){current=idxs[0]; render();}});
-      els.prevBtn.addEventListener("click",()=>{const idxs=filteredIndexes(); const pos=idxs.indexOf(current); if(pos>0){current=idxs[pos-1]; render();}});
-      els.nextBtn.addEventListener("click",()=>{const idxs=filteredIndexes(); const pos=idxs.indexOf(current); if(pos<idxs.length-1){current=idxs[pos+1]; render();}else renderResults();});
+      els.prevBtn.addEventListener("click",()=>{const idxs=filteredIndexes(); const pos=idxs.indexOf(current); if(pos>0){current=idxs[pos-1]; render(); scrollToQuestion();}});
+      els.nextBtn.addEventListener("click",()=>{const idxs=filteredIndexes(); const pos=idxs.indexOf(current); if(pos<idxs.length-1){current=idxs[pos+1]; render(); scrollToQuestion();}else{ if(examMode) stopExamTimer(); renderResults(); }});
       els.showInfoBtn.addEventListener("click",()=>{infoOpen=!infoOpen; render();});
       if(els.wideExitBtn) els.wideExitBtn.addEventListener("click",()=>{
         questionWideMode = false;
@@ -2973,11 +3356,12 @@ ${body}
         if(!idxs.length) return;
         const q=questions[current];
         if(!q) return;
-        if(confirm("Bu soruyu bundan sonra normal akışta ve quizlerde gizlemek istiyor musun?")){
+        const doHide = examMode ? true : confirm("Bu soruyu bundan sonra normal akışta ve quizlerde gizlemek istiyor musun?");
+        if(doHide){
           hideQuestionById(answerKey(q));
           ensureCurrent();
           render();
-          renderLanding();
+          if(!examMode) renderLanding();
         }
       });
       els.clearCacheBtn.addEventListener("click",()=>{
