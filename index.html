@@ -873,6 +873,7 @@
         <button class="secondary" id="menuSourceBtn" type="button">Ders kaynağını değiştir</button>
         <button class="secondary" id="menuViewBtn" type="button">Görünüm ayarları</button>
         <button class="secondary" id="menuDuplicateBtn" type="button">Tekrarları kapat</button>
+        <button class="secondary" id="menuShuffleBtn" type="button">Karışık sırayı aç</button>
       </div>
     </details>
 
@@ -945,7 +946,17 @@
                 <option value="smart">Kapalı - Tekilleştir, AI cevaplı sürümü tercih et</option>
               </select>
             </div>
-            <p class="subtitle">Sade çözüm modu, soru çözerken yalnızca gerekli alanları gösterir. Tekrarları açık bırakırsan soru1.db, soru6.db ve soru7.db içindeki aynı/benzer kayıtlar ayrı ayrı görünür. Kapatırsan tekilleştirilir; AI cevabı olan sürüm tercih edilir.</p>
+            <div class="select-row">
+              <label for="questionOrderSelect">Soru sırası</label>
+              <select id="questionOrderSelect">
+                <option value="normal">Normal sıra</option>
+                <option value="shuffle">Karışık sıra</option>
+              </select>
+            </div>
+            <div class="db-actions">
+              <button class="secondary" id="reshuffleBtn" type="button">Yeni karışık sıra oluştur</button>
+            </div>
+            <p class="subtitle">Sade çözüm modu, soru çözerken yalnızca gerekli alanları gösterir. Tekrarları açık bırakırsan soru1.db, soru6.db ve soru7.db içindeki aynı/benzer kayıtlar ayrı ayrı görünür. Kapatırsan tekilleştirilir; AI cevabı olan sürüm tercih edilir. Karışık sıra seçildiğinde filtreye uygun sorular rastgele sırayla gösterilir.</p>
           </div>
         </details>
       </section>
@@ -1102,6 +1113,8 @@
     let allLoadedQuestions = [];
     let questionWideMode = false;
     let listWideMode = false;
+    let shuffleQuestions = false;
+    let shuffleSeed = Date.now();
     let currentListIndexes = [];
     let renderedListCount = 0;
     let questionIndexById = new Map();
@@ -1110,7 +1123,7 @@
     const $ = id => document.getElementById(id);
     const els = {
       landing:$("landing"), appView:$("appView"), quizView:$("quizView"), listView:$("listView"),
-      topMenu:$("topMenu"), menuHomeBtn:$("menuHomeBtn"), menuSourceBtn:$("menuSourceBtn"), menuViewBtn:$("menuViewBtn"), menuDuplicateBtn:$("menuDuplicateBtn"),
+      topMenu:$("topMenu"), menuHomeBtn:$("menuHomeBtn"), menuSourceBtn:$("menuSourceBtn"), menuViewBtn:$("menuViewBtn"), menuDuplicateBtn:$("menuDuplicateBtn"), menuShuffleBtn:$("menuShuffleBtn"),
       courseGrid:$("courseGrid"), courseEmpty:$("courseEmpty"), courseSearch:$("courseSearch"),
       clearCourseSearch:$("clearCourseSearch"), continueBtn:$("continueBtn"), wrongHomeBtn:$("wrongHomeBtn"), hiddenHomeBtn:$("hiddenHomeBtn"), quizAllBtn:$("quizAllBtn"), startAllBtn:$("startAllBtn"),
       backHomeBtn:$("backHomeBtn"), changeCourseBtn:$("changeCourseBtn"), activeTitle:$("activeTitle"),
@@ -1118,7 +1131,7 @@
       listTitle:$("listTitle"), listSubtitle:$("listSubtitle"), allList:$("allList"),
       totalQuestionsHero:$("totalQuestionsHero"), totalSubjectsHero:$("totalSubjectsHero"), status:$("statusBox"),
       manualDbBox:$("manualDbBox"), manualDbInput:$("manualDbInput"), dbList:$("dbList"),
-      selectAllDbBtn:$("selectAllDbBtn"), clearDbBtn:$("clearDbBtn"), fontSizeSelect:$("fontSizeSelect"), designModeSelect:$("designModeSelect"), duplicateFilterSelect:$("duplicateFilterSelect"),
+      selectAllDbBtn:$("selectAllDbBtn"), clearDbBtn:$("clearDbBtn"), fontSizeSelect:$("fontSizeSelect"), designModeSelect:$("designModeSelect"), duplicateFilterSelect:$("duplicateFilterSelect"), questionOrderSelect:$("questionOrderSelect"), reshuffleBtn:$("reshuffleBtn"),
       progress:$("progress"), counter:$("counter"), section:$("section"), meta:$("meta"), question:$("question"), options:$("options"),
       feedback:$("feedback"), aiWarningBox:$("aiWarningBox"), infoBox:$("infoBox"), showInfoBtn:$("showInfoBtn"), hideQuestionBtn:$("hideQuestionBtn"), wideExitBtn:$("wideExitBtn"), prevBtn:$("prevBtn"), nextBtn:$("nextBtn"),
       clearCacheBtn:$("clearCacheBtn"), resetVisibleBtn:$("resetVisibleBtn"), answeredCount:$("answeredCount"),
@@ -1750,7 +1763,7 @@
     }
 
     function saveState(){
-      try{localStorage.setItem(STORAGE_KEY, JSON.stringify({answers,current,filters,infoOpen,selectedDbFiles,fontSize,designMode,duplicateMode,duplicateFilterEnabled,questionWideMode,listWideMode,hiddenQuestionIds,quizActive,quizIds,quizTitle}));}catch(e){}
+      try{localStorage.setItem(STORAGE_KEY, JSON.stringify({answers,current,filters,infoOpen,selectedDbFiles,fontSize,designMode,duplicateMode,duplicateFilterEnabled,questionWideMode,listWideMode,shuffleQuestions,shuffleSeed,hiddenQuestionIds,quizActive,quizIds,quizTitle}));}catch(e){}
     }
     function loadState(){
       try{
@@ -1769,6 +1782,8 @@
         else duplicateMode = "all";
         if(typeof data.questionWideMode === "boolean") questionWideMode=data.questionWideMode;
         if(typeof data.listWideMode === "boolean") listWideMode=data.listWideMode;
+        if(typeof data.shuffleQuestions === "boolean") shuffleQuestions=data.shuffleQuestions;
+        if(Number.isFinite(data.shuffleSeed)) shuffleSeed=data.shuffleSeed;
         if(Array.isArray(data.hiddenQuestionIds)) hiddenQuestionIds=data.hiddenQuestionIds;
         if(typeof data.quizActive === "boolean") quizActive=data.quizActive;
         if(Array.isArray(data.quizIds)) quizIds=data.quizIds;
@@ -1788,7 +1803,9 @@
       document.body.classList.toggle("compact-mode", designMode === "compact");
       if (els.designModeSelect) els.designModeSelect.value = designMode;
       if (els.duplicateFilterSelect) els.duplicateFilterSelect.value = duplicateMode;
+      if (els.questionOrderSelect) els.questionOrderSelect.value = shuffleQuestions ? "shuffle" : "normal";
       if (els.menuDuplicateBtn) els.menuDuplicateBtn.textContent = duplicateMode === "all" ? "Tekrarları kapat" : "Tekrarları aç";
+      if (els.menuShuffleBtn) els.menuShuffleBtn.textContent = shuffleQuestions ? "Karışık sırayı kapat" : "Karışık sırayı aç";
       applyWideModes();
     }
 
@@ -1828,13 +1845,49 @@
       }
       return true;
     }
+    
+    function hashStringToNumber(value){
+      let h = 2166136261;
+      const s = String(value ?? "");
+      for(let i=0;i<s.length;i++){
+        h ^= s.charCodeAt(i);
+        h = Math.imul(h, 16777619);
+      }
+      return h >>> 0;
+    }
+
+    function shuffleRankForQuestion(q){
+      return hashStringToNumber(`${shuffleSeed}::${answerKey(q)}::${q.subject || ""}::${q.question || ""}`);
+    }
+
+    function orderIndexes(idxs){
+      if(!shuffleQuestions) return idxs;
+      return idxs.slice().sort((a,b)=>{
+        const ra = shuffleRankForQuestion(questions[a]);
+        const rb = shuffleRankForQuestion(questions[b]);
+        if(ra !== rb) return ra - rb;
+        return a - b;
+      });
+    }
+
+    function setShuffleMode(enabled, regenerate=false){
+      shuffleQuestions = !!enabled;
+      if(regenerate || !Number.isFinite(shuffleSeed)) shuffleSeed = Date.now();
+      if(els.questionOrderSelect) els.questionOrderSelect.value = shuffleQuestions ? "shuffle" : "normal";
+      saveState();
+      ensureCurrent();
+      renderLanding();
+      if(els.appView.classList.contains("active")) render();
+      if(els.listView.classList.contains("active")) renderAllList(true);
+    }
+
     function filteredIndexes(){
       if(quizActive && quizIds.length){
         return quizIds
-          .map(id => questionIndexById.has(id) ? questionIndexById.get(id) : questions.findIndex(q => q.id === id))
+          .map(id => questionIndexById.has(id) ? questionIndexById.get(id) : questions.findIndex(q => answerKey(q) === id))
           .filter(i => i >= 0 && isDbActive(questions[i]) && !isHiddenQuestion(questions[i]));
       }
-      return questions.map((q,i)=>[q,i]).filter(([q])=>matchesFilters(q,null)).map(([,i])=>i);
+      return orderIndexes(questions.map((q,i)=>[q,i]).filter(([q])=>matchesFilters(q,null)).map(([,i])=>i));
     }
     function filteredQuestionsForOptions(excludeField){return questions.filter(q=>matchesFilters(q, excludeField));}
     function countValuesForOptions(fieldFn, excludeField){
@@ -2141,12 +2194,12 @@
       els.jumpGrid.innerHTML="";
       const idxs=filteredIndexes();
       if(!idxs.length){els.jumpGrid.innerHTML=`<div class="small" style="grid-column:1 / -1;">Bu filtre/arama ile eşleşen soru yok.</div>`; return;}
-      idxs.forEach(i=>{
+      idxs.forEach((i,pos)=>{
         const q=questions[i], b=document.createElement("button");
         b.className="jump"; if(i===current) b.classList.add("active");
         const a=answers[answerKey(q)];
         if(a!==undefined&&a!==null){const ci=q.answer?q.answer.index:null; if(ci===null||ci===undefined||ci<0)b.classList.add("done-neutral"); else b.classList.add(a===ci?"done-ok":"done-bad");}
-        b.textContent=i+1; b.title=`${q.subject} · ${meta(q,"examGroup")} · ${meta(q,"topic")}`;
+        b.textContent=pos+1; b.title=`${shuffleQuestions ? "Karışık sıra: " + (pos+1) + " · " : ""}${q.subject} · ${meta(q,"examGroup")} · ${meta(q,"topic")}`;
         b.addEventListener("click",()=>{current=i; render(); scrollToQuestion();});
         els.jumpGrid.appendChild(b);
       });
@@ -2191,11 +2244,12 @@
     }
 
     function listModeSubtitle(total){
-      return listMode === "hidden"
+      const base = listMode === "hidden"
         ? `${total} gizlenen soru · buradan yeniden görünür yapabilirsin`
         : (listMode === "wrong"
           ? `${total} yanlış soru · kaydedilmiş cevaplarına göre`
           : (quizActive ? `${total} quiz sorusu` : (els.activeFilterSummary.textContent || `${total} soru`)));
+      return shuffleQuestions && listMode !== "hidden" ? base + " · karışık sıra" : base;
     }
 
     function buildListCardHTML(i, pos){
@@ -2439,6 +2493,11 @@ ${body}
         rebuildQuestionsAfterDuplicateToggle();
         if(els.topMenu) els.topMenu.open=false;
       });
+      els.menuShuffleBtn.addEventListener("click",()=>{
+        setShuffleMode(!shuffleQuestions, true);
+        applyDesignMode();
+        if(els.topMenu) els.topMenu.open=false;
+      });
       els.courseSearch.addEventListener("input", debounce(renderLanding, 180));
       els.clearCourseSearch.addEventListener("click",()=>{els.courseSearch.value=""; renderLanding(); els.courseSearch.focus();});
       els.manualDbInput.addEventListener("change",async()=>{try{await loadManualDbFiles(els.manualDbInput.files);}catch(e){els.status.className="panel status warn"; els.status.innerHTML=`<b>Manuel database yüklenemedi:</b> ${escapeHTML(e.message)}`;}});
@@ -2476,6 +2535,14 @@ ${body}
         duplicateFilterEnabled = duplicateMode === "smart";
         applyDesignMode();
         rebuildQuestionsAfterDuplicateToggle();
+      });
+      els.questionOrderSelect.addEventListener("change",()=>{
+        setShuffleMode(els.questionOrderSelect.value === "shuffle", true);
+      });
+      els.reshuffleBtn.addEventListener("click",()=>{
+        shuffleSeed = Date.now();
+        shuffleQuestions = true;
+        setShuffleMode(true, true);
       });
       els.subjectSelect.addEventListener("change",()=>{filters.subject=els.subjectSelect.value; ensureCurrent(); render();});
       els.examSelect.addEventListener("change",()=>{filters.exam=els.examSelect.value; ensureCurrent(); render();});
