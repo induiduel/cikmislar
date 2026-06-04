@@ -858,6 +858,8 @@
       white-space:pre-wrap;
     }
 
+  
+    body.no-question-active .floating-question-nav{display:none!important;}
   </style>
 </head>
 <body class="font-normal">
@@ -993,13 +995,22 @@
             <div class="ai-warning-box" id="aiWarningBox"></div>
             <div class="info-box" id="infoBox"></div>
 
-            <div class="nav">
-              <button class="secondary" id="prevBtn">Önceki</button>
+            <div class="question-top-actions">
               <button class="secondary" id="showInfoBtn">Açıklama/spot göster</button>
-              <button class="secondary" id="hideQuestionBtn">Bu soruyu bir daha gösterme</button>
-              <button class="secondary wide-exit-btn" id="wideExitBtn">Tekli ekranı daralt</button>
-              <button class="danger" id="clearCacheBtn">Önbelleği temizle</button>
-              <button class="secondary" id="resetVisibleBtn">Filtre cevaplarını sıfırla</button>
+              <button class="secondary" id="cardShowAllBtn" type="button">Tüm soruları görüntüle</button>
+              <details class="question-tools">
+                <summary>Diğer işlemler</summary>
+                <div class="question-tools-content">
+                  <button class="secondary wide-exit-btn" id="wideExitBtn">Tekli ekranı daralt</button>
+                  <button class="secondary" id="resetVisibleBtn">Filtre cevaplarını sıfırla</button>
+                  <button class="danger" id="clearCacheBtn">Önbelleği temizle</button>
+                </div>
+              </details>
+            </div>
+
+            <div class="nav floating-question-nav" aria-label="Soru geçişleri">
+              <button class="secondary" id="prevBtn">Önceki</button>
+              <button class="secondary unwanted-btn" id="hideQuestionBtn">İstenmeyen işaretle</button>
               <button class="primary" id="nextBtn">Sonraki</button>
             </div>
           </article>
@@ -1143,7 +1154,7 @@
       manualDbBox:$("manualDbBox"), manualDbInput:$("manualDbInput"), dbList:$("dbList"),
       selectAllDbBtn:$("selectAllDbBtn"), clearDbBtn:$("clearDbBtn"), fontSizeSelect:$("fontSizeSelect"), designModeSelect:$("designModeSelect"), duplicateFilterSelect:$("duplicateFilterSelect"), questionOrderSelect:$("questionOrderSelect"), reshuffleBtn:$("reshuffleBtn"),
       progress:$("progress"), counter:$("counter"), section:$("section"), meta:$("meta"), question:$("question"), options:$("options"),
-      feedback:$("feedback"), aiWarningBox:$("aiWarningBox"), infoBox:$("infoBox"), showInfoBtn:$("showInfoBtn"), hideQuestionBtn:$("hideQuestionBtn"), wideExitBtn:$("wideExitBtn"), prevBtn:$("prevBtn"), nextBtn:$("nextBtn"),
+      feedback:$("feedback"), aiWarningBox:$("aiWarningBox"), infoBox:$("infoBox"), showInfoBtn:$("showInfoBtn"), cardShowAllBtn:$("cardShowAllBtn"), hideQuestionBtn:$("hideQuestionBtn"), wideExitBtn:$("wideExitBtn"), prevBtn:$("prevBtn"), nextBtn:$("nextBtn"),
       clearCacheBtn:$("clearCacheBtn"), resetVisibleBtn:$("resetVisibleBtn"), answeredCount:$("answeredCount"),
       correctCount:$("correctCount"), wrongCount:$("wrongCount"), emptyCount:$("emptyCount"), jumpGrid:$("jumpGrid"),
       subjectSelect:$("subjectSelect"), examSelect:$("examSelect"), yearSelect:$("yearSelect"), teacherSelect:$("teacherSelect"),
@@ -2291,9 +2302,11 @@
     function renderQuestion(){
       const idxs=filteredIndexes();
       if(!idxs.length){
+        document.body.classList.add("no-question-active");
         els.section.textContent="Soru bulunamadı"; els.meta.innerHTML=""; els.question.textContent=questions.length?"Seçili filtrelerle veya aktif database seçimiyle eşleşen soru yok.":"Soru dosyası yüklenemedi veya soru bulunamadı.";
         els.options.innerHTML=""; els.feedback.className="feedback"; els.feedback.innerHTML=""; if(els.aiWarningBox){els.aiWarningBox.className="ai-warning-box"; els.aiWarningBox.innerHTML="";} els.infoBox.className="info-box"; els.infoBox.innerHTML=""; els.prevBtn.disabled=true; els.nextBtn.disabled=true; updateStats(); return;
       }
+      document.body.classList.remove("no-question-active");
       ensureCurrent();
       const q=questions[current], pos=idxs.indexOf(current), selected=answers[answerKey(q)], opts=optionList(q), answer=q.answer||{};
       els.activeTitle.textContent=quizActive ? quizTitle : (filters.subject!=="all"?filters.subject+" soru bankası":"Tüm dersler soru bankası");
@@ -2339,7 +2352,7 @@
       if(aiExplanation) infoParts.push("<b>Yapay zeka cevabı:</b> "+escapeHTML(aiExplanation));
       els.infoBox.innerHTML=infoParts.join("\n\n")||"<b>Bilgi:</b> Bu kayıtta açıklama/spot alanı boş.";
       els.infoBox.className=infoOpen?"info-box show":"info-box";
-      els.showInfoBtn.textContent=infoOpen?"Açıklama/spot gizle":"Açıklama/spot göster";
+      els.showInfoBtn.textContent=infoOpen?"Açıklamayı gizle":"Açıklama/spot";
       els.prevBtn.disabled=pos<=0;
       els.nextBtn.disabled=false;
       els.nextBtn.textContent=pos===idxs.length-1?"Sonucu göster":"Sonraki";
@@ -2724,6 +2737,7 @@ ${body}
         saveState();
       });
       els.showAllBtn.addEventListener("click",()=>showListView("all"));
+      if(els.cardShowAllBtn) els.cardShowAllBtn.addEventListener("click",()=>showListView("all"));
       if(els.compactHomeBtn) els.compactHomeBtn.addEventListener("click", showLanding);
       if(els.compactShowAllBtn) els.compactShowAllBtn.addEventListener("click",()=>showListView("all"));
       els.backToQuizBtn.addEventListener("click", showQuizView);
