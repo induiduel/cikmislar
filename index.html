@@ -334,6 +334,127 @@
 
   
     #restoreHiddenBtn{display:none}
+  
+    /* Tekli ekranı genişlet: yalnız soru, seçenekler, geri bildirim ve soru işlem butonları görünür. */
+    body.question-wide-mode:not(.compact-mode) .hero,
+    body.question-wide-mode:not(.compact-mode) #statusBox,
+    body.question-wide-mode:not(.compact-mode) #manualDbBox,
+    body.question-wide-mode:not(.compact-mode) .top-nav,
+    body.question-wide-mode:not(.compact-mode) .compact-actionbar,
+    body.question-wide-mode:not(.compact-mode) .toolbar,
+    body.question-wide-mode:not(.compact-mode) .side-panel,
+    body.question-wide-mode:not(.compact-mode) .section,
+    body.question-wide-mode:not(.compact-mode) .meta-box,
+    body.question-wide-mode:not(.compact-mode) .results,
+    body.question-wide-mode:not(.compact-mode) .list-view{
+      display:none!important;
+    }
+    body.question-wide-mode:not(.compact-mode) .wrap{
+      width:min(980px,calc(100% - 14px));
+      margin:8px auto 18px;
+    }
+    body.question-wide-mode:not(.compact-mode) .layout{
+      display:block!important;
+    }
+    body.question-wide-mode:not(.compact-mode) .question-card{
+      max-width:940px;
+      margin:0 auto;
+      padding:12px;
+      border-radius:14px;
+      box-shadow:0 8px 20px rgba(15,23,42,.08);
+    }
+    body.question-wide-mode:not(.compact-mode) .question{
+      margin-bottom:10px;
+      padding:12px 13px;
+      border-radius:12px;
+      box-shadow:none;
+      font-size:var(--q-font);
+      line-height:var(--line-q);
+    }
+    body.question-wide-mode:not(.compact-mode) .options{
+      gap:7px;
+    }
+    body.question-wide-mode:not(.compact-mode) .option{
+      padding:10px 11px;
+      border-radius:11px;
+    }
+    body.question-wide-mode:not(.compact-mode) .feedback{
+      margin-top:8px;
+      padding:9px 10px;
+      border-radius:11px;
+    }
+    body.question-wide-mode:not(.compact-mode) .nav{
+      margin-top:10px;
+      padding-top:10px;
+      gap:6px;
+      justify-content:center;
+    }
+    body.question-wide-mode:not(.compact-mode) .nav button{
+      padding:9px 10px;
+      border-radius:10px;
+      font-size:12px;
+    }
+    .wide-exit-btn{
+      display:none;
+    }
+    body.question-wide-mode:not(.compact-mode) .wide-exit-btn{
+      display:inline-flex!important;
+    }
+
+    /* Ana sayfada ayar panelleri kapalı durarak yer kaplamaz. */
+    .compact-settings-grid{
+      align-items:start;
+    }
+    .collapsible-settings{
+      padding:0;
+      overflow:hidden;
+    }
+    .settings-summary{
+      cursor:pointer;
+      list-style:none;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding:12px 14px;
+      color:var(--primary);
+      font-weight:950;
+      user-select:none;
+    }
+    .settings-summary::-webkit-details-marker{
+      display:none;
+    }
+    .settings-summary::after{
+      content:"＋";
+      font-weight:950;
+      color:var(--primary);
+      background:var(--soft);
+      border:1px solid rgba(23,58,138,.13);
+      border-radius:999px;
+      width:26px;
+      height:26px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      flex:0 0 auto;
+    }
+    .collapsible-settings[open] .settings-summary::after{
+      content:"−";
+    }
+    .settings-summary span{
+      font-size:14px;
+      letter-spacing:-.02em;
+    }
+    .settings-summary small{
+      color:var(--muted);
+      font-size:11.5px;
+      font-weight:800;
+      margin-left:auto;
+    }
+    .settings-content{
+      padding:0 12px 12px;
+    }
+
   </style>
 </head>
 <body class="font-normal">
@@ -341,22 +462,8 @@
 <section class="hero panel">
       <div class="hero-main">
         <h1>Tıp Dersleri Soru Bankası</h1>
-        <p class="subtitle">
-          Önce kullanmak istediğin soru dosyalarını ve çalışmak istediğin dersi seç. Benzer veya tekrarlayan sorular otomatik ayıklanır.
-        </p>
-        <div class="chips">
-          <span class="chip">Soru dosyası seçimi</span>
-          <span class="chip">Yazı boyutu ayarı</span>
-          <span class="chip">Sade çözüm modu</span>
-          <span class="chip">Sade mod hızlı çıkış</span>
-          <span class="chip">Genişlet/daralt</span>
-          <span class="chip">Quiz modu</span>
-          <span class="chip">Soruyu gizle</span>
-          <span class="chip">Tek soru / liste görünümü</span>
-          <span class="chip">Yanlışlarım</span>
-          <span class="chip">Benzer soru ayıklama</span>
-        </div>
-      </div>
+        <p class="subtitle">Çalışmak istediğin dersi seçerek soruları çözmeye başlayabilirsin.</p>
+</div>
       <aside class="hero-side">
         <div class="metric"><strong id="totalQuestionsHero">0</strong><span>Benzersiz soru</span></div>
         <div class="metric"><strong id="totalSubjectsHero">0</strong><span>Ders</span></div>
@@ -370,19 +477,27 @@
     </section>
 
     <section class="landing" id="landing">
-      <section class="settings-grid">
-        <div class="panel settings-box">
-          <h3 class="settings-title">Aktif soru dosyaları</h3>
-          <p class="subtitle" style="margin-bottom:8px;">Sadece seçili soru dosyalarındaki sorular kullanılır. Birden fazla dosyada benzer soru varsa tek kez gösterilir.</p>
-          <div class="db-list" id="dbList"></div>
-          <div class="db-actions">
-            <button class="secondary" id="selectAllDbBtn" type="button">Tümünü seç</button>
-            <button class="secondary" id="clearDbBtn" type="button">Seçimi temizle</button>
+      <section class="settings-grid compact-settings-grid">
+        <details class="panel settings-box collapsible-settings" id="dbSettingsDetails">
+          <summary class="settings-summary">
+            <span>Aktif soru dosyaları</span>
+            <small>Seçmek için aç</small>
+          </summary>
+          <div class="settings-content">
+            <p class="subtitle" style="margin-bottom:8px;">Sadece seçili soru dosyalarındaki sorular kullanılır. Birden fazla dosyada benzer soru varsa tek kez gösterilir.</p>
+            <div class="db-list" id="dbList"></div>
+            <div class="db-actions">
+              <button class="secondary" id="selectAllDbBtn" type="button">Tümünü seç</button>
+              <button class="secondary" id="clearDbBtn" type="button">Seçimi temizle</button>
+            </div>
           </div>
-        </div>
-        <div class="panel settings-box">
-          <h3 class="settings-title">Görünüm</h3>
-          <div class="font-controls">
+        </details>
+        <details class="panel settings-box collapsible-settings" id="viewSettingsDetails">
+          <summary class="settings-summary">
+            <span>Görünüm</span>
+            <small>Yazı ve tasarım ayarları</small>
+          </summary>
+          <div class="settings-content font-controls">
             <div class="select-row">
               <label for="fontSizeSelect">Font boyutu</label>
               <select id="fontSizeSelect">
@@ -400,7 +515,7 @@
             </div>
             <p class="subtitle">Sade çözüm modu, soru çözerken yalnızca soru, seçenekler, cevap bildirimi ve işlem butonlarını öne çıkarır.</p>
           </div>
-        </div>
+        </details>
       </section>
 
       <section class="course-toolbar panel">
@@ -420,7 +535,7 @@
       <section class="panel top-nav">
         <button class="secondary" id="backHomeBtn" type="button">← Ders seçimine dön</button>
         <div class="top-nav-title" id="activeTitle">Ders</div>
-        <button class="secondary" id="wideQuestionBtn" type="button" title="Tekli soru ekranını genişlet/daralt">⛶ Tekli ekranı genişlet</button>
+        <button class="secondary" id="wideQuestionBtn" type="button" title="Tekli soru ekranını genişlet/daralt">⛶ Tekli çözüm ekranı</button>
         <button class="secondary" id="showAllBtn" type="button">Tüm soruları listele</button>
         <button class="primary" id="changeCourseBtn" type="button">Dersi değiştir</button>
       </section>
@@ -455,6 +570,7 @@
               <button class="secondary" id="prevBtn">Önceki</button>
               <button class="secondary" id="showInfoBtn">Açıklama/spot göster</button>
               <button class="secondary" id="hideQuestionBtn">Bu soruyu bir daha gösterme</button>
+              <button class="secondary wide-exit-btn" id="wideExitBtn">Tekli ekranı daralt</button>
               <button class="danger" id="clearCacheBtn">Önbelleği temizle</button>
               <button class="secondary" id="resetVisibleBtn">Filtre cevaplarını sıfırla</button>
               <button class="primary" id="nextBtn">Sonraki</button>
@@ -570,7 +686,7 @@
       manualDbBox:$("manualDbBox"), manualDbInput:$("manualDbInput"), dbList:$("dbList"),
       selectAllDbBtn:$("selectAllDbBtn"), clearDbBtn:$("clearDbBtn"), fontSizeSelect:$("fontSizeSelect"), designModeSelect:$("designModeSelect"),
       progress:$("progress"), counter:$("counter"), section:$("section"), meta:$("meta"), question:$("question"), options:$("options"),
-      feedback:$("feedback"), infoBox:$("infoBox"), showInfoBtn:$("showInfoBtn"), hideQuestionBtn:$("hideQuestionBtn"), prevBtn:$("prevBtn"), nextBtn:$("nextBtn"),
+      feedback:$("feedback"), infoBox:$("infoBox"), showInfoBtn:$("showInfoBtn"), hideQuestionBtn:$("hideQuestionBtn"), wideExitBtn:$("wideExitBtn"), prevBtn:$("prevBtn"), nextBtn:$("nextBtn"),
       clearCacheBtn:$("clearCacheBtn"), resetVisibleBtn:$("resetVisibleBtn"), answeredCount:$("answeredCount"),
       correctCount:$("correctCount"), wrongCount:$("wrongCount"), emptyCount:$("emptyCount"), jumpGrid:$("jumpGrid"),
       subjectSelect:$("subjectSelect"), examSelect:$("examSelect"), yearSelect:$("yearSelect"), teacherSelect:$("teacherSelect"),
@@ -970,7 +1086,7 @@
       document.body.classList.toggle("quiz-active-mode", !!quizActive);
 
       if (els.wideQuestionBtn) {
-        els.wideQuestionBtn.textContent = questionWideMode ? "↔ Tekli ekranı daralt" : "⛶ Tekli ekranı genişlet";
+        els.wideQuestionBtn.textContent = questionWideMode ? "↔ Tekli çözüm ekranından çık" : "⛶ Tekli çözüm ekranı";
         els.wideQuestionBtn.title = questionWideMode ? "Tekli soru ekranını normal genişliğe döndür" : "Tekli soru ekranını genişlet";
       }
       if (els.wideListBtn) {
@@ -1437,6 +1553,12 @@
       els.prevBtn.addEventListener("click",()=>{const idxs=filteredIndexes(); const pos=idxs.indexOf(current); if(pos>0){current=idxs[pos-1]; render();}});
       els.nextBtn.addEventListener("click",()=>{const idxs=filteredIndexes(); const pos=idxs.indexOf(current); if(pos<idxs.length-1){current=idxs[pos+1]; render();}else renderResults();});
       els.showInfoBtn.addEventListener("click",()=>{infoOpen=!infoOpen; render();});
+      if(els.wideExitBtn) els.wideExitBtn.addEventListener("click",()=>{
+        questionWideMode = false;
+        applyWideModes();
+        saveState();
+        render();
+      });
       if(els.hideQuestionBtn) els.hideQuestionBtn.addEventListener("click",()=>{
         const idxs=filteredIndexes();
         if(!idxs.length) return;
