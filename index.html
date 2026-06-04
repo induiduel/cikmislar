@@ -872,6 +872,7 @@
         <button class="secondary" id="menuHomeBtn" type="button">Ana sayfaya dön</button>
         <button class="secondary" id="menuSourceBtn" type="button">Ders kaynağını değiştir</button>
         <button class="secondary" id="menuViewBtn" type="button">Görünüm ayarları</button>
+        <button class="secondary" id="menuDuplicateBtn" type="button">Tekrarları kapat</button>
       </div>
     </details>
 
@@ -938,13 +939,13 @@
               </select>
             </div>
             <div class="select-row">
-              <label for="duplicateFilterSelect">Tekrarlı sorularda gösterilecek kayıt</label>
+              <label for="duplicateFilterSelect">Tekrarlayan sorular</label>
               <select id="duplicateFilterSelect">
-                <option value="smart">Akıllı seçim - Yapay zeka cevaplı sürümü göster</option>
-                <option value="all">Tüm tekrarları ayrı ayrı göster</option>
+                <option value="all">Açık - Tüm tekrarları göster</option>
+                <option value="smart">Kapalı - Tekilleştir, AI cevaplı sürümü tercih et</option>
               </select>
             </div>
-            <p class="subtitle">Sade çözüm modu, soru çözerken yalnızca gerekli alanları gösterir. Akıllı seçimde, aynı/benzer sorular arasında yapay zeka cevabı bulunan kayıt gösterilir; yapay zeka cevabı yoksa tek kayıt gösterilir.</p>
+            <p class="subtitle">Sade çözüm modu, soru çözerken yalnızca gerekli alanları gösterir. Tekrarları açık bırakırsan soru1.db, soru6.db ve soru7.db içindeki aynı/benzer kayıtlar ayrı ayrı görünür. Kapatırsan tekilleştirilir; AI cevabı olan sürüm tercih edilir.</p>
           </div>
         </details>
       </section>
@@ -1096,7 +1097,7 @@
     let selectedDbFiles = [];
     let fontSize = "normal";
     let designMode = "standard";
-    let duplicateMode = "smart";
+    let duplicateMode = "all";
     let duplicateFilterEnabled = true; // eski kayıtlarla uyumluluk için tutulur
     let allLoadedQuestions = [];
     let questionWideMode = false;
@@ -1109,7 +1110,7 @@
     const $ = id => document.getElementById(id);
     const els = {
       landing:$("landing"), appView:$("appView"), quizView:$("quizView"), listView:$("listView"),
-      topMenu:$("topMenu"), menuHomeBtn:$("menuHomeBtn"), menuSourceBtn:$("menuSourceBtn"), menuViewBtn:$("menuViewBtn"),
+      topMenu:$("topMenu"), menuHomeBtn:$("menuHomeBtn"), menuSourceBtn:$("menuSourceBtn"), menuViewBtn:$("menuViewBtn"), menuDuplicateBtn:$("menuDuplicateBtn"),
       courseGrid:$("courseGrid"), courseEmpty:$("courseEmpty"), courseSearch:$("courseSearch"),
       clearCourseSearch:$("clearCourseSearch"), continueBtn:$("continueBtn"), wrongHomeBtn:$("wrongHomeBtn"), hiddenHomeBtn:$("hiddenHomeBtn"), quizAllBtn:$("quizAllBtn"), startAllBtn:$("startAllBtn"),
       backHomeBtn:$("backHomeBtn"), changeCourseBtn:$("changeCourseBtn"), activeTitle:$("activeTitle"),
@@ -1532,9 +1533,8 @@
         }));
       }
       allLoadedQuestions = all;
-      const duplicates=dedupeAndSetQuestions(allLoadedQuestions);
-      questionIndexById = new Map(questions.map((q,i)=>[answerKey(q),i]));
       selectedDbFiles = dbFiles.map(f => dbBaseName(f.name));
+      const duplicates = rebuildQuestionsFromActiveFiles(false);
       els.status.className = "panel status";
       els.status.innerHTML = `<b>${files.length}</b> manuel database dosyası yüklendi. <b>${activeQuestions().length}</b> benzersiz aktif soru kullanılıyor${duplicates ? `; ${duplicates} tekrar otomatik ayıklandı` : ""}.`;
       els.manualDbBox.classList.add("hidden");
@@ -1700,18 +1700,34 @@
     }
 
     
-    function rebuildQuestionsAfterDuplicateToggle(){
-      const currentKey = questions[current] ? answerKey(questions[current]) : null;
-      const duplicates = dedupeAndSetQuestions(allLoadedQuestions);
+    
+    function selectedRawQuestions(){
+      if(!allLoadedQuestions.length) return questions.slice();
+      const selected = activeDbSet();
+      if(!selected.size) return allLoadedQuestions.slice();
+      return allLoadedQuestions.filter(q => selected.has(dbCanonicalName(q._dbFile)));
+    }
+
+    function rebuildQuestionsFromActiveFiles(preserveCurrent=true){
+      const currentKey = preserveCurrent && questions[current] ? answerKey(questions[current]) : null;
+      const raw = selectedRawQuestions();
+      const duplicates = dedupeAndSetQuestions(raw);
       questionIndexById = new Map(questions.map((q,i)=>[answerKey(q),i]));
+
+      sanitizeFilters();
 
       if(currentKey && questionIndexById.has(currentKey)){
         current = questionIndexById.get(currentKey);
       }else{
-        ensureCurrent();
+        const idxs = filteredIndexes();
+        current = idxs.length ? idxs[0] : 0;
       }
 
-      sanitizeFilters();
+      return duplicates;
+    }
+
+    function rebuildQuestionsAfterDuplicateToggle(){
+      const duplicates = rebuildQuestionsFromActiveFiles(true);
       saveState();
       renderLanding();
 
@@ -1726,8 +1742,8 @@
       if(els.status){
         els.status.className = "panel status";
         els.status.innerHTML = duplicateMode === "smart"
-          ? `Akıllı tekrar seçimi açıldı. ${duplicates ? duplicates + " aynı/benzer kayıt tekilleştirildi; yapay zeka cevaplı sürüm varsa o gösterildi." : "Tekrarlı kayıt bulunmadı."}`
-          : "Tüm tekrarlar gösteriliyor. Aynı soru farklı dosyalarda varsa ayrı kayıt olarak listelenir.";
+          ? `Tekrarlar kapatıldı. ${duplicates ? duplicates + " aynı/benzer kayıt tekilleştirildi; AI cevaplı sürüm varsa o gösterildi." : "Tekrarlı kayıt bulunmadı."}`
+          : "Tekrarlar açıldı. Seçili soru dosyalarındaki tüm kayıtlar ayrı ayrı gösteriliyor.";
         els.status.classList.remove("hidden");
         setTimeout(()=>els.status.classList.add("hidden"), 2500);
       }
@@ -1750,7 +1766,7 @@
         if(["standard","compact"].includes(data.designMode)) designMode=data.designMode;
         if(typeof data.duplicateFilterEnabled === "boolean") duplicateFilterEnabled=data.duplicateFilterEnabled;
         if(["smart","all"].includes(data.duplicateMode)) duplicateMode=data.duplicateMode;
-        else duplicateMode = duplicateFilterEnabled ? "smart" : "all";
+        else duplicateMode = "all";
         if(typeof data.questionWideMode === "boolean") questionWideMode=data.questionWideMode;
         if(typeof data.listWideMode === "boolean") listWideMode=data.listWideMode;
         if(Array.isArray(data.hiddenQuestionIds)) hiddenQuestionIds=data.hiddenQuestionIds;
@@ -1772,6 +1788,7 @@
       document.body.classList.toggle("compact-mode", designMode === "compact");
       if (els.designModeSelect) els.designModeSelect.value = designMode;
       if (els.duplicateFilterSelect) els.duplicateFilterSelect.value = duplicateMode;
+      if (els.menuDuplicateBtn) els.menuDuplicateBtn.textContent = duplicateMode === "all" ? "Tekrarları kapat" : "Tekrarları aç";
       applyWideModes();
     }
 
@@ -1877,7 +1894,7 @@
     function renderDbSelector(){
       els.dbList.innerHTML = "";
       const activeCounts = new Map();
-      questions.forEach(q => { const n=dbBaseName(q._dbFile); activeCounts.set(n, (activeCounts.get(n) || 0) + 1); });
+      (allLoadedQuestions.length ? allLoadedQuestions : questions).forEach(q => { const n=dbBaseName(q._dbFile); activeCounts.set(n, (activeCounts.get(n) || 0) + 1); });
       [...new Map(dbFiles.map(f=>[dbCanonicalName(f.name), f])).values()].forEach(file => {
         const label = document.createElement("label");
         label.className = "db-item";
@@ -1894,7 +1911,7 @@
           } else {
             selectedDbFiles = selectedDbFiles.filter(x => dbCanonicalName(x) !== dbCanonicalName(shownName));
           }
-          sanitizeFilters(); ensureCurrent(); saveState(); renderLanding();
+          rebuildQuestionsFromActiveFiles(true); saveState(); renderLanding(); if(els.appView.classList.contains("active")) render();
         });
         els.dbList.appendChild(label);
       });
@@ -2415,6 +2432,13 @@ ${body}
       els.menuHomeBtn.addEventListener("click",()=>{ showLanding(); if(els.topMenu) els.topMenu.open=false; });
       els.menuSourceBtn.addEventListener("click",()=>openHomeSettingsPanel("dbSettingsDetails"));
       els.menuViewBtn.addEventListener("click",()=>openHomeSettingsPanel("viewSettingsDetails"));
+      els.menuDuplicateBtn.addEventListener("click",()=>{
+        duplicateMode = duplicateMode === "all" ? "smart" : "all";
+        duplicateFilterEnabled = duplicateMode === "smart";
+        applyDesignMode();
+        rebuildQuestionsAfterDuplicateToggle();
+        if(els.topMenu) els.topMenu.open=false;
+      });
       els.courseSearch.addEventListener("input", debounce(renderLanding, 180));
       els.clearCourseSearch.addEventListener("click",()=>{els.courseSearch.value=""; renderLanding(); els.courseSearch.focus();});
       els.manualDbInput.addEventListener("change",async()=>{try{await loadManualDbFiles(els.manualDbInput.files);}catch(e){els.status.className="panel status warn"; els.status.innerHTML=`<b>Manuel database yüklenemedi:</b> ${escapeHTML(e.message)}`;}});
@@ -2443,8 +2467,8 @@ ${body}
       if(els.restoreHiddenBtn) els.restoreHiddenBtn.addEventListener("click", restoreAllHiddenQuestions);
       if(els.pdfListBtn) els.pdfListBtn.addEventListener("click", createPdfFromCurrentList);
       els.refreshListBtn.addEventListener("click",()=>renderAllList(true));
-      els.selectAllDbBtn.addEventListener("click",()=>{selectedDbFiles=dbFiles.map(f=>dbBaseName(f.name)); sanitizeFilters(); ensureCurrent(); saveState(); renderLanding();});
-      els.clearDbBtn.addEventListener("click",()=>{selectedDbFiles=[]; sanitizeFilters(); saveState(); renderLanding();});
+      els.selectAllDbBtn.addEventListener("click",()=>{selectedDbFiles=dbFiles.map(f=>dbBaseName(f.name)); rebuildQuestionsFromActiveFiles(true); saveState(); renderLanding(); if(els.appView.classList.contains("active")) render();});
+      els.clearDbBtn.addEventListener("click",()=>{selectedDbFiles=[]; rebuildQuestionsFromActiveFiles(true); saveState(); renderLanding(); if(els.appView.classList.contains("active")) render();});
       els.fontSizeSelect.addEventListener("change",()=>{fontSize=els.fontSizeSelect.value; applyFontSize(); saveState(); renderLanding(); if(els.appView.classList.contains("active")) render();});
       els.designModeSelect.addEventListener("change",()=>{designMode=els.designModeSelect.value; applyDesignMode(); saveState(); renderLanding(); if(els.appView.classList.contains("active")) render();});
       els.duplicateFilterSelect.addEventListener("change",()=>{
@@ -2554,13 +2578,11 @@ async function init(){
 
         els.status.innerHTML = "Sorular hazırlanıyor; benzer kayıtlar ayıklanıyor...";
         allLoadedQuestions = all;
-        const duplicates=dedupeAndSetQuestions(allLoadedQuestions);
-        questionIndexById = new Map(questions.map((q,i)=>[answerKey(q),i]));
         ensureSelectedDbFiles();
-        sanitizeFilters();
+        const duplicates = rebuildQuestionsFromActiveFiles(false);
 
         els.status.className="panel status";
-        els.status.innerHTML=`<b>${dbFiles.length}</b> soru dosyası yüklendi: ${[...new Set(dbFiles.map(f=>dbBaseName(f.name)))].map(escapeHTML).join(", ")}. <b>${questions.length}</b> benzersiz soru bulundu${duplicateMode === "smart" && duplicates?`; ${duplicates} aynı/benzer soru akıllı seçildi`: (duplicateMode === "all" ? `; tüm tekrarlar gösteriliyor` : "")}.`;
+        els.status.innerHTML=`<b>${dbFiles.length}</b> soru dosyası yüklendi: ${[...new Set(dbFiles.map(f=>dbBaseName(f.name)))].map(escapeHTML).join(", ")}. <b>${questions.length}</b> benzersiz soru bulundu${duplicateMode === "smart" && duplicates?`; ${duplicates} aynı/benzer soru tekilleştirildi`: (duplicateMode === "all" ? `; tekrarlar açık` : "")}.`;
         els.status.classList.add("hidden");
         els.manualDbBox.classList.add("hidden");
         renderLanding();
