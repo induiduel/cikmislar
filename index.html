@@ -129,6 +129,7 @@
     .jump.done-ok{background:var(--okbg);color:var(--ok);border-color:rgba(18,99,58,.35)}
     .jump.done-bad{background:var(--badbg);color:var(--bad);border-color:rgba(166,29,53,.35)}
     .jump.done-neutral{background:#edf4ff;color:var(--primary);border-color:rgba(23,58,138,.25)}
+    .jump.done-blank{background:#fff7df;color:#7a4f08;border-color:rgba(122,79,8,.35)}
     .results{display:none;padding:16px;margin-top:12px}
     .result-head{display:grid;grid-template-columns:128px 1fr;gap:14px;align-items:center}
     .score-circle{width:118px;height:118px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--primary) 0deg,#e8edf5 0deg);position:relative}
@@ -235,6 +236,7 @@
         <input class="search" id="courseSearch" placeholder="Ders ara: anatomi, fizyoloji, histoloji, biyokimya, mikrobiyoloji, biyofizik...">
         <button class="secondary" id="clearCourseSearch" type="button">Aramayı temizle</button>
         <button class="secondary" id="continueBtn" type="button">Kaldığım yerden devam et</button>
+        <button class="secondary" id="wrongHomeBtn" type="button">Yanlışlarımı aç</button>
         <button class="primary" id="startAllBtn" type="button">Tüm derslerle başla</button>
       </section>
       <section class="course-grid" id="courseGrid"></section>
@@ -272,6 +274,7 @@
             <div class="nav">
               <button class="secondary" id="prevBtn">Önceki</button>
               <button class="secondary" id="showInfoBtn">Açıklama/spot göster</button>
+              <button class="secondary" id="blankBtn">Boş bırak</button>
               <button class="danger" id="clearCacheBtn">Önbelleği temizle</button>
               <button class="secondary" id="resetVisibleBtn">Filtre cevaplarını sıfırla</button>
               <button class="primary" id="nextBtn">Sonraki</button>
@@ -362,6 +365,7 @@
     let current = 0;
     let filters = {subject:"all", exam:"all", year:"all", teacher:"all", sourceGroup:"all", search:""};
     let infoOpen = false;
+    let wrongListOnly = false;
     let selectedDbFiles = [];
     let fontSize = "normal";
 
@@ -377,7 +381,7 @@
       manualDbBox:$("manualDbBox"), manualDbInput:$("manualDbInput"), dbList:$("dbList"),
       selectAllDbBtn:$("selectAllDbBtn"), clearDbBtn:$("clearDbBtn"), fontSizeSelect:$("fontSizeSelect"),
       progress:$("progress"), counter:$("counter"), section:$("section"), meta:$("meta"), question:$("question"), options:$("options"),
-      feedback:$("feedback"), infoBox:$("infoBox"), showInfoBtn:$("showInfoBtn"), prevBtn:$("prevBtn"), nextBtn:$("nextBtn"),
+      feedback:$("feedback"), infoBox:$("infoBox"), showInfoBtn:$("showInfoBtn"), blankBtn:$("blankBtn"), prevBtn:$("prevBtn"), nextBtn:$("nextBtn"),
       clearCacheBtn:$("clearCacheBtn"), resetVisibleBtn:$("resetVisibleBtn"), answeredCount:$("answeredCount"),
       correctCount:$("correctCount"), wrongCount:$("wrongCount"), emptyCount:$("emptyCount"), jumpGrid:$("jumpGrid"),
       subjectSelect:$("subjectSelect"), examSelect:$("examSelect"), yearSelect:$("yearSelect"), teacherSelect:$("teacherSelect"),
@@ -393,6 +397,19 @@
     function optionList(q){return Array.isArray(q.options) ? q.options : [];}
     function meta(q,key){return (q.metadata && q.metadata[key]) || "";}
     function answerKey(q){return q.id;}
+
+    const BLANK_VALUE = "__blank__";
+    function isBlankAnswerValue(v){ return v === BLANK_VALUE; }
+    function isWrongAnswer(q){
+      const a = answers[answerKey(q)];
+      if (a === undefined || a === null || isBlankAnswerValue(a)) return false;
+      const ci = q.answer ? q.answer.index : null;
+      return ci !== null && ci !== undefined && ci >= 0 && a !== ci;
+    }
+    function isBlankMarked(q){
+      return isBlankAnswerValue(answers[answerKey(q)]);
+    }
+
     function activeDbSet(){return new Set(selectedDbFiles.map(dbCanonicalName));}
 
     function dbBaseName(name){
@@ -613,10 +630,14 @@
 
     function stats(){
       const idxs=filteredIndexes();
-      let answered=0, correct=0, wrong=0, neutral=0;
+      let answered=0, correct=0, wrong=0, neutral=0, blank=0;
       idxs.forEach(i=>{
         const q=questions[i], a=answers[answerKey(q)];
         if(a!==undefined && a!==null){
+          if(isBlankAnswerValue(a)){
+            blank++;
+            return;
+          }
           answered++;
           const ci=q.answer ? q.answer.index : null;
           if(ci===null || ci===undefined || ci<0) neutral++;
@@ -624,7 +645,8 @@
           else wrong++;
         }
       });
-      return {total:idxs.length, answered, correct, wrong, neutral, empty:idxs.length-answered, percent:answered?Math.round((correct/answered)*100):0};
+      const empty = idxs.length - answered - blank;
+      return {total:idxs.length, answered, correct, wrong, neutral, blank, empty, percent:answered?Math.round((correct/answered)*100):0};
     }
 
     function setSelect(select, items, allLabel, value){
@@ -702,6 +724,9 @@
       });
       els.courseEmpty.style.display=filtered.length?"none":"block";
       els.continueBtn.disabled=!aq.length;
+      const wrongCount = aq.filter(isWrongAnswer).length;
+      els.wrongHomeBtn.disabled = wrongCount === 0;
+      els.wrongHomeBtn.textContent = wrongCount ? `Yanlışlarımı aç (${wrongCount})` : "Yanlışlarımı aç";
     }
 
     function showLanding(){
@@ -759,7 +784,7 @@
           if(selected!==undefined&&selected!==null){
             div.classList.add("answered");
             if(answer.index!==null&&answer.index!==undefined&&idx===answer.index) div.classList.add("correct");
-            if(answer.index!==null&&answer.index!==undefined&&idx===selected&&selected!==answer.index) div.classList.add("wrong");
+            if(!isBlankAnswerValue(selected) && answer.index!==null&&answer.index!==undefined&&idx===selected&&selected!==answer.index) div.classList.add("wrong");
           }
           div.innerHTML=`<span class="letter">${escapeHTML(opt.letter||String.fromCharCode(65+idx))}</span><span class="option-text">${escapeHTML(opt.text||"")}</span>`;
           div.addEventListener("click",()=>{answers[answerKey(q)]=idx; render();});
@@ -769,7 +794,11 @@
       if(selected!==undefined&&selected!==null){
         const letter=answer.letter||(answer.index!==null&&answer.index!==undefined&&opts[answer.index]?opts[answer.index].letter:"");
         const text=answer.text||answer.raw||"";
-        if(answer.index===null||answer.index===undefined||answer.index<0){els.feedback.className="feedback neutral"; els.feedback.innerHTML=`<b>Cevap anahtarı:</b> ${escapeHTML(answer.raw||text)}`;}
+        if(isBlankAnswerValue(selected)){
+          els.feedback.className="feedback neutral";
+          els.feedback.innerHTML=`<b>Boş bırakıldı.</b> Doğru cevap: ${letter ? `<b>${escapeHTML(letter)} şıkkı</b> — ` : ""}${escapeHTML(text || answer.raw || "")}`;
+        }
+        else if(answer.index===null||answer.index===undefined||answer.index<0){els.feedback.className="feedback neutral"; els.feedback.innerHTML=`<b>Cevap anahtarı:</b> ${escapeHTML(answer.raw||text)}`;}
         else if(selected===answer.index){els.feedback.className="feedback ok"; els.feedback.innerHTML=`<b>Doğru.</b> Doğru cevap: <b>${escapeHTML(letter)} şıkkı</b> — ${escapeHTML(text)}`;}
         else{els.feedback.className="feedback bad"; els.feedback.innerHTML=`<b>Yanlış.</b> Doğru cevap: <b>${escapeHTML(letter)} şıkkı</b> — ${escapeHTML(text)}`;}
       }else{els.feedback.className="feedback"; els.feedback.innerHTML="";}
@@ -791,7 +820,7 @@
       const st=stats();
       els.progress.style.width=st.total?((st.answered/st.total)*100)+"%":"0%";
       els.counter.textContent=st.total?`Soru ${filteredIndexes().indexOf(current)+1} / ${st.total} · Genel no: ${current+1}`:"0 soru";
-      els.answeredCount.textContent=st.answered; els.correctCount.textContent=st.correct; els.wrongCount.textContent=st.wrong+(st.neutral?` (+${st.neutral} manuel)`:""); els.emptyCount.textContent=st.empty;
+      els.answeredCount.textContent=st.answered; els.correctCount.textContent=st.correct; els.wrongCount.textContent=st.wrong+(st.neutral?` (+${st.neutral} manuel)`:""); els.emptyCount.textContent=st.empty+(st.blank?` (+${st.blank} boş)`:"");
       els.activeFilterSummary.textContent=[filters.subject==="all"?"Tüm dersler":filters.subject,filters.exam==="all"?"Tüm gruplar":filters.exam,filters.year==="all"?"Tüm yıllar":filters.year,filters.teacher==="all"?"Tüm hocalar":filters.teacher,filters.sourceGroup==="all"?"Tüm kaynak türleri":filters.sourceGroup,filters.search.trim()?`Arama: “${filters.search.trim()}”`:"Arama yok"].join(" + ")+` → ${st.total} soru`;
     }
 
@@ -803,7 +832,7 @@
         const q=questions[i], b=document.createElement("button");
         b.className="jump"; if(i===current) b.classList.add("active");
         const a=answers[answerKey(q)];
-        if(a!==undefined&&a!==null){const ci=q.answer?q.answer.index:null; if(ci===null||ci===undefined||ci<0)b.classList.add("done-neutral"); else b.classList.add(a===ci?"done-ok":"done-bad");}
+        if(a!==undefined&&a!==null){const ci=q.answer?q.answer.index:null; if(isBlankAnswerValue(a)) b.classList.add("done-blank"); else if(ci===null||ci===undefined||ci<0)b.classList.add("done-neutral"); else b.classList.add(a===ci?"done-ok":"done-bad");}
         b.textContent=i+1; b.title=`${q.subject} · ${meta(q,"examGroup")} · ${meta(q,"topic")}`;
         b.addEventListener("click",()=>{current=i; render();});
         els.jumpGrid.appendChild(b);
@@ -814,7 +843,7 @@
       els.review.innerHTML="";
       filteredIndexes().forEach(i=>{
         const q=questions[i], a=answers[answerKey(q)], opts=optionList(q), ans=q.answer||{};
-        const selectedText=a===undefined||a===null?"Boş":`${opts[a]?.letter||""}) ${opts[a]?.text||""}`;
+        const selectedText=a===undefined||a===null?"Boş":(isBlankAnswerValue(a)?"Boş bırakıldı":`${opts[a]?.letter||""}) ${opts[a]?.text||""}`);
         const correctBody=ans.index!==null&&ans.index!==undefined&&opts[ans.index]?`${opts[ans.index].letter}) ${opts[ans.index].text}`:(ans.raw||ans.text||"");
         const item=document.createElement("div");
         item.className="review-item";
@@ -827,17 +856,18 @@
       const st=stats(), score=st.total?Math.round((st.correct/st.total)*100):0, deg=Math.round((score/100)*360);
       els.scoreText.textContent=score+"%";
       els.scoreCircle.style.background=`conic-gradient(var(--primary) 0deg, var(--primary) ${deg}deg, #e8edf5 ${deg}deg)`;
-      els.resultSubtitle.textContent=`${st.total} soru üzerinden ${st.correct} doğru, ${st.wrong} yanlış, ${st.neutral} manuel/indekslenemeyen cevaplı, ${st.empty} boş.`;
+      els.resultSubtitle.textContent=`${st.total} soru üzerinden ${st.correct} doğru, ${st.wrong} yanlış, ${st.blank} boş bırakılmış, ${st.neutral} manuel/indekslenemeyen cevaplı, ${st.empty} cevapsız.`;
       els.results.style.display="block"; renderReview();
     }
 
     function renderAllList(){
-      const idxs = filteredIndexes();
-      els.listTitle.textContent = filters.subject !== "all" ? filters.subject + " · tüm sorular" : "Tüm dersler · tüm sorular";
-      els.listSubtitle.textContent = els.activeFilterSummary.textContent || `${idxs.length} soru`;
+      let idxs = filteredIndexes();
+      if (wrongListOnly) idxs = idxs.filter(i => isWrongAnswer(questions[i]));
+      els.listTitle.textContent = wrongListOnly ? "Yanlış yapılan sorular" : (filters.subject !== "all" ? filters.subject + " · tüm sorular" : "Tüm dersler · tüm sorular");
+      els.listSubtitle.textContent = wrongListOnly ? `${idxs.length} yanlış soru · aktif database seçimine göre` : (els.activeFilterSummary.textContent || `${idxs.length} soru`);
       els.allList.innerHTML = "";
       if(!idxs.length){
-        els.allList.innerHTML = `<section class="panel status warn">Bu filtreye uygun soru bulunamadı.</section>`;
+        els.allList.innerHTML = `<section class="panel status warn">${wrongListOnly ? "Aktif database seçiminde yanlış yapılan soru bulunamadı." : "Bu filtreye uygun soru bulunamadı."}</section>`;
         return;
       }
       const frag = document.createDocumentFragment();
@@ -867,7 +897,8 @@
       els.allList.appendChild(frag);
     }
 
-    function showListView(){
+    function showListView(onlyWrong=false){
+      wrongListOnly = !!onlyWrong;
       render();
       els.quizView.classList.add("hidden");
       els.listView.classList.add("active");
@@ -876,7 +907,17 @@
       window.scrollTo(0,0);
     }
 
+    function showWrongFromHome(){
+      filters={subject:"all", exam:"all", year:"all", teacher:"all", sourceGroup:"all", search:""};
+      sanitizeFilters(); ensureCurrent();
+      els.landing.classList.add("hidden");
+      els.appView.classList.add("active");
+      els.activeTitle.textContent="Yanlış yapılan sorular";
+      showListView(true);
+    }
+
     function showQuizView(){
+      wrongListOnly = false;
       els.listView.classList.remove("active");
       els.quizView.classList.remove("hidden");
       render();
@@ -893,10 +934,11 @@
       els.clearCourseSearch.addEventListener("click",()=>{els.courseSearch.value=""; renderLanding(); els.courseSearch.focus();});
       els.manualDbInput.addEventListener("change",async()=>{try{await loadManualDbFiles(els.manualDbInput.files);}catch(e){els.status.className="panel status warn"; els.status.innerHTML=`<b>Manuel database yüklenemedi:</b> ${escapeHTML(e.message)}`;}});
       els.continueBtn.addEventListener("click", continueLast);
+      els.wrongHomeBtn.addEventListener("click", showWrongFromHome);
       els.startAllBtn.addEventListener("click",()=>startCourse("all"));
       els.backHomeBtn.addEventListener("click", showLanding);
       els.changeCourseBtn.addEventListener("click", showLanding);
-      els.showAllBtn.addEventListener("click", showListView);
+      els.showAllBtn.addEventListener("click",()=>showListView(false));
       els.backToQuizBtn.addEventListener("click", showQuizView);
       els.refreshListBtn.addEventListener("click", renderAllList);
       els.selectAllDbBtn.addEventListener("click",()=>{selectedDbFiles=dbFiles.map(f=>dbBaseName(f.name)); sanitizeFilters(); ensureCurrent(); saveState(); renderLanding();});
@@ -910,12 +952,19 @@
       els.searchInput.addEventListener("input",()=>{filters.search=els.searchInput.value; ensureCurrent(); render();});
       els.clearFiltersBtn.addEventListener("click",()=>{filters={subject:filters.subject,exam:"all",year:"all",teacher:"all",sourceGroup:"all",search:""}; ensureCurrent(); render();});
       els.goFirstFilteredBtn.addEventListener("click",()=>{const idxs=filteredIndexes(); if(idxs.length){current=idxs[0]; render();}});
+      els.blankBtn.addEventListener("click",()=>{
+        const idxs=filteredIndexes();
+        if(!idxs.length) return;
+        const q=questions[current];
+        answers[answerKey(q)] = BLANK_VALUE;
+        render();
+      });
       els.prevBtn.addEventListener("click",()=>{const idxs=filteredIndexes(); const pos=idxs.indexOf(current); if(pos>0){current=idxs[pos-1]; render();}});
       els.nextBtn.addEventListener("click",()=>{const idxs=filteredIndexes(); const pos=idxs.indexOf(current); if(pos<idxs.length-1){current=idxs[pos+1]; render();}else renderResults();});
       els.showInfoBtn.addEventListener("click",()=>{infoOpen=!infoOpen; render();});
       els.clearCacheBtn.addEventListener("click",()=>{
         if(!confirm("Tüm cevaplar, filtreler ve kaldığın yer silinsin mi?")) return;
-        answers={}; current=0; filters={subject:"all",exam:"all",year:"all",teacher:"all",sourceGroup:"all",search:""}; infoOpen=false;
+        answers={}; current=0; filters={subject:"all",exam:"all",year:"all",teacher:"all",sourceGroup:"all",search:""}; infoOpen=false; wrongListOnly=false;
         try{localStorage.removeItem(STORAGE_KEY);}catch(e){}
         els.results.style.display="none"; showLanding();
       });
