@@ -363,7 +363,7 @@
       </aside>
     </section>
 
-    <section class="panel status warn" id="statusBox">Dosya dosyaları yükleniyor...</section>
+    <section class="panel status warn" id="statusBox">Soru dosyaları yükleniyor...</section>
     <section class="panel status warn hidden" id="manualDbBox">
       <b>Manuel database yükleme:</b> GitHub Pages dışında veya tarayıcı dosya erişimini engellediğinde .db/.sdb dosyalarını buradan seçebilirsin.
       <div style="margin-top:8px;"><input id="manualDbInput" type="file" accept=".db,.sdb,application/json" multiple></div>
@@ -420,6 +420,7 @@
       <section class="panel top-nav">
         <button class="secondary" id="backHomeBtn" type="button">← Ders seçimine dön</button>
         <div class="top-nav-title" id="activeTitle">Ders</div>
+        <button class="secondary" id="wideQuestionBtn" type="button" title="Tekli soru ekranını genişlet/daralt">⛶ Tekli ekranı genişlet</button>
         <button class="secondary" id="showAllBtn" type="button">Tüm soruları listele</button>
         <button class="primary" id="changeCourseBtn" type="button">Dersi değiştir</button>
       </section>
@@ -1174,7 +1175,7 @@
     function renderQuestion(){
       const idxs=filteredIndexes();
       if(!idxs.length){
-        els.section.textContent="Soru bulunamadı"; els.meta.innerHTML=""; els.question.textContent=questions.length?"Seçili filtrelerle veya aktif database seçimiyle eşleşen soru yok.":"Dosya dosyası yüklenemedi veya soru bulunamadı.";
+        els.section.textContent="Soru bulunamadı"; els.meta.innerHTML=""; els.question.textContent=questions.length?"Seçili filtrelerle veya aktif database seçimiyle eşleşen soru yok.":"Soru dosyası yüklenemedi veya soru bulunamadı.";
         els.options.innerHTML=""; els.feedback.className="feedback"; els.feedback.innerHTML=""; els.infoBox.className="info-box"; els.infoBox.innerHTML=""; els.prevBtn.disabled=true; els.nextBtn.disabled=true; updateStats(); return;
       }
       ensureCurrent();
@@ -1404,14 +1405,14 @@
       els.startAllBtn.addEventListener("click",()=>startCourse("all"));
       els.backHomeBtn.addEventListener("click", showLanding);
       els.changeCourseBtn.addEventListener("click", showLanding);
-      els.wideQuestionBtn.addEventListener("click",()=>{
+      if(els.wideQuestionBtn) els.wideQuestionBtn.addEventListener("click",()=>{
         questionWideMode = !questionWideMode;
         applyWideModes();
         saveState();
       });
       els.showAllBtn.addEventListener("click",()=>showListView("all"));
-      els.compactHomeBtn.addEventListener("click", showLanding);
-      els.compactShowAllBtn.addEventListener("click",()=>showListView("all"));
+      if(els.compactHomeBtn) els.compactHomeBtn.addEventListener("click", showLanding);
+      if(els.compactShowAllBtn) els.compactShowAllBtn.addEventListener("click",()=>showListView("all"));
       els.backToQuizBtn.addEventListener("click", showQuizView);
       els.wideListBtn.addEventListener("click",()=>{
         listWideMode = !listWideMode;
@@ -1419,7 +1420,7 @@
         saveState();
         renderAllList();
       });
-      els.restoreHiddenBtn.addEventListener("click", restoreAllHiddenQuestions);
+      if(els.restoreHiddenBtn) els.restoreHiddenBtn.addEventListener("click", restoreAllHiddenQuestions);
       els.refreshListBtn.addEventListener("click", renderAllList);
       els.selectAllDbBtn.addEventListener("click",()=>{selectedDbFiles=dbFiles.map(f=>dbBaseName(f.name)); sanitizeFilters(); ensureCurrent(); saveState(); renderLanding();});
       els.clearDbBtn.addEventListener("click",()=>{selectedDbFiles=[]; sanitizeFilters(); saveState(); renderLanding();});
@@ -1436,7 +1437,7 @@
       els.prevBtn.addEventListener("click",()=>{const idxs=filteredIndexes(); const pos=idxs.indexOf(current); if(pos>0){current=idxs[pos-1]; render();}});
       els.nextBtn.addEventListener("click",()=>{const idxs=filteredIndexes(); const pos=idxs.indexOf(current); if(pos<idxs.length-1){current=idxs[pos+1]; render();}else renderResults();});
       els.showInfoBtn.addEventListener("click",()=>{infoOpen=!infoOpen; render();});
-      els.hideQuestionBtn.addEventListener("click",()=>{
+      if(els.hideQuestionBtn) els.hideQuestionBtn.addEventListener("click",()=>{
         const idxs=filteredIndexes();
         if(!idxs.length) return;
         const q=questions[current];
