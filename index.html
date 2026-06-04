@@ -19,6 +19,7 @@
       font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
       color:var(--text);
       background:radial-gradient(circle at 8% 0%,rgba(23,58,138,.13),transparent 28rem),
+                 radial-gradient(circle at 92% 4%,rgba(47,91,189,.10),transparent 30rem),
                  linear-gradient(180deg,#fff 0%,var(--bg) 56%,#edf3f9 100%);
       font-size:14px;
     }
@@ -26,7 +27,7 @@
     .panel{background:rgba(255,255,255,.94);border:1px solid rgba(219,228,240,.96);border-radius:var(--radius);box-shadow:var(--shadow);backdrop-filter:blur(8px)}
     .hero{display:grid;grid-template-columns:minmax(0,1.2fr) 310px;gap:12px;margin-bottom:12px}
     .hero-main{padding:18px}
-    h1{margin:0 0 6px;font-size:clamp(22px,3.2vw,34px);line-height:1.08;letter-spacing:-.035em}
+    h1{margin:0 0 6px;font-size:clamp(22px,3.2vw,36px);line-height:1.08;letter-spacing:-.035em}
     .subtitle{margin:0;color:var(--muted);font-size:13px;line-height:1.45}
     .chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
     .chip{display:inline-flex;align-items:center;padding:6px 9px;border-radius:999px;font-weight:850;font-size:11.5px;color:var(--primary);background:var(--soft);border:1px solid rgba(23,58,138,.13)}
@@ -36,6 +37,21 @@
     .metric span{display:block;margin-top:4px;color:var(--muted);font-size:11.5px}
     .status{padding:10px 12px;margin-bottom:12px;line-height:1.45;font-size:12.5px;color:#334155}
     .status.warn{background:var(--warnbg);color:#573a09;border-color:rgba(122,79,8,.20)}
+    .landing{display:block}
+    .landing.hidden{display:none}
+    .course-toolbar{display:flex;gap:10px;align-items:center;padding:12px;margin-bottom:12px}
+    .course-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+    .course-card{padding:16px;cursor:pointer;transition:transform .12s ease,box-shadow .12s ease,border-color .12s ease;min-height:180px;display:flex;flex-direction:column;justify-content:space-between}
+    .course-card:hover{transform:translateY(-2px);border-color:rgba(23,58,138,.30);box-shadow:0 18px 42px rgba(15,23,42,.13)}
+    .course-icon{width:44px;height:44px;border-radius:16px;background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;display:grid;place-items:center;font-weight:950;font-size:18px;margin-bottom:12px}
+    .course-card h2{margin:0 0 6px;font-size:22px;letter-spacing:-.03em}
+    .course-card p{margin:0;color:var(--muted);line-height:1.45;font-size:13px}
+    .course-meta{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}
+    .course-empty{display:none;padding:16px;text-align:center;color:var(--muted)}
+    .app-view{display:none}
+    .app-view.active{display:block}
+    .top-nav{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-bottom:12px;padding:10px 12px}
+    .top-nav-title{font-weight:950;color:var(--primary);letter-spacing:-.02em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
     .toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;margin-bottom:12px}
     .progress-shell{flex:1;height:9px;border-radius:999px;border:1px solid var(--line);background:#e8edf5;overflow:hidden}
     .progress{height:100%;width:0%;border-radius:999px;background:linear-gradient(90deg,var(--primary),var(--primary2));transition:width .16s ease}
@@ -106,9 +122,29 @@
     .review-item .q{font-weight:800;white-space:pre-wrap;margin-bottom:5px}
     .small{color:var(--muted);font-size:11px;line-height:1.35}
     .hidden{display:none!important}
-    @media (max-width:980px){.hero,.layout,.result-head{grid-template-columns:1fr}.side-panel{position:static;max-height:none}.toolbar{align-items:stretch;flex-direction:column}.counter{text-align:left}}
-    @media (max-width:680px){.meta{grid-template-columns:1fr}.hero-side{grid-template-columns:1fr 1fr}.button-grid{grid-template-columns:1fr}.jump-grid{grid-template-columns:repeat(5,1fr)}}
-    @media (max-width:560px){.wrap{width:min(100% - 14px,1240px);margin-top:8px}.hero-main,.question-card,.results{padding:12px}.option{grid-template-columns:28px 1fr;padding:9px}.letter{width:25px;height:25px}button{flex:1}h1{font-size:22px}}
+    @media (max-width:980px){
+      .hero,.layout,.result-head{grid-template-columns:1fr}
+      .course-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .side-panel{position:static;max-height:none}
+      .toolbar{align-items:stretch;flex-direction:column}
+      .counter{text-align:left}
+      .course-toolbar{flex-direction:column;align-items:stretch}
+    }
+    @media (max-width:680px){
+      .meta{grid-template-columns:1fr}.hero-side{grid-template-columns:1fr 1fr}
+      .button-grid{grid-template-columns:1fr}.jump-grid{grid-template-columns:repeat(5,1fr)}
+      .course-grid{grid-template-columns:1fr}
+    }
+    @media (max-width:560px){
+      .wrap{width:min(100% - 14px,1240px);margin-top:8px}
+      .hero-main,.question-card,.results{padding:12px}
+      .option{grid-template-columns:28px 1fr;padding:9px}
+      .letter{width:25px;height:25px}
+      button{flex:1}
+      h1{font-size:22px}
+      .top-nav{flex-wrap:wrap}
+      .top-nav-title{flex-basis:100%;order:-1}
+    }
   </style>
 </head>
 <body>
@@ -117,105 +153,123 @@
       <div class="hero-main">
         <h1>Tıp Dersleri Soru Bankası</h1>
         <p class="subtitle">
-          Bu index.html içinde soru gömülü değildir. Sayfa, repository içindeki <b>db/</b> klasöründe bulunan
-          <b>.db</b> ve <b>.sdb</b> dosyalarını otomatik okur; tekrar eden soruları ID’ye göre tekilleştirir.
+          Önce çalışmak istediğin dersi seç. Sorular <b>db/</b> klasöründeki <b>.db</b> ve <b>.sdb</b> dosyalarından okunur;
+          aynı soru tekrar gelirse otomatik ayıklanır.
         </p>
         <div class="chips">
+          <span class="chip">Ders seçmeli açılış</span>
           <span class="chip">Database tabanlı</span>
           <span class="chip">Yeni .db/.sdb dosyalarını otomatik okur</span>
           <span class="chip">Tekrar önleme</span>
-          <span class="chip">GitHub Pages uyumlu</span>
         </div>
       </div>
       <aside class="hero-side">
-        <div class="metric"><strong id="heroTotal">0</strong><span>Filtredeki soru</span></div>
-        <div class="metric"><strong id="heroScore">0%</strong><span>Anlık başarı</span></div>
+        <div class="metric"><strong id="totalQuestionsHero">0</strong><span>Toplam benzersiz soru</span></div>
+        <div class="metric"><strong id="totalSubjectsHero">0</strong><span>Ders</span></div>
       </aside>
     </section>
 
     <section class="panel status warn" id="statusBox">Database dosyaları yükleniyor...</section>
 
-    <section class="panel toolbar">
-      <div class="progress-shell"><div class="progress" id="progress"></div></div>
-      <div class="counter" id="counter">0 soru</div>
+    <section class="landing" id="landing">
+      <section class="course-toolbar panel">
+        <input class="search" id="courseSearch" placeholder="Ders ara: anatomi, fizyoloji, histoloji, biyokimya, mikrobiyoloji...">
+        <button class="secondary" id="clearCourseSearch" type="button">Aramayı temizle</button>
+        <button class="primary" id="startAllBtn" type="button">Tüm derslerle başla</button>
+      </section>
+      <section class="course-grid" id="courseGrid"></section>
+      <section class="panel course-empty" id="courseEmpty">Bu aramayla eşleşen ders bulunamadı.</section>
     </section>
 
-    <section class="layout" id="testArea">
-      <article class="panel question-card">
-        <div class="section" id="section"></div>
+    <section class="app-view" id="appView">
+      <section class="panel top-nav">
+        <button class="secondary" id="backHomeBtn" type="button">← Ders seçimine dön</button>
+        <div class="top-nav-title" id="activeTitle">Ders</div>
+        <button class="primary" id="changeCourseBtn" type="button">Dersi değiştir</button>
+      </section>
 
-        <details class="meta-box" id="metaDetails">
-          <summary>Ders / kurul / yıl / hoca / hedef / kaynak bilgilerini göster</summary>
-          <div class="meta" id="meta"></div>
-        </details>
+      <section class="panel toolbar">
+        <div class="progress-shell"><div class="progress" id="progress"></div></div>
+        <div class="counter" id="counter">0 soru</div>
+      </section>
 
-        <h2 class="question" id="question"></h2>
-        <div class="options" id="options"></div>
-        <div class="feedback" id="feedback"></div>
-        <div class="info-box" id="infoBox"></div>
+      <section class="layout" id="testArea">
+        <article class="panel question-card">
+          <div class="section" id="section"></div>
 
-        <div class="nav">
-          <button class="secondary" id="prevBtn">Önceki</button>
-          <button class="secondary" id="showInfoBtn">Açıklama/spot göster</button>
-          <button class="danger" id="clearCacheBtn">Önbelleği temizle</button>
-          <button class="secondary" id="resetVisibleBtn">Filtre cevaplarını sıfırla</button>
-          <button class="primary" id="nextBtn">Sonraki</button>
-        </div>
-      </article>
+          <details class="meta-box" id="metaDetails">
+            <summary>Ders / kurul / yıl / hoca / hedef / kaynak bilgilerini göster</summary>
+            <div class="meta" id="meta"></div>
+          </details>
 
-      <aside class="panel side-panel">
-        <h3 class="side-title">Durum</h3>
-        <div class="mini-stats">
-          <div class="mini"><span>Cevaplanan</span><b id="answeredCount">0</b></div>
-          <div class="mini"><span>Doğru</span><b id="correctCount">0</b></div>
-          <div class="mini"><span>Yanlış</span><b id="wrongCount">0</b></div>
-          <div class="mini"><span>Boş</span><b id="emptyCount">0</b></div>
-        </div>
+          <h2 class="question" id="question"></h2>
+          <div class="options" id="options"></div>
+          <div class="feedback" id="feedback"></div>
+          <div class="info-box" id="infoBox"></div>
 
-        <div class="combo-panel">
-          <h3 class="side-title">Kombine filtre</h3>
-          <div class="combo-grid">
-            <div class="select-row"><label for="subjectSelect">Ders</label><select id="subjectSelect"></select></div>
-            <div class="select-row"><label for="examSelect">Kurul / sınav grubu</label><select id="examSelect"></select></div>
-            <div class="select-row"><label for="yearSelect">Yıl / sene</label><select id="yearSelect"></select></div>
-            <div class="select-row"><label for="teacherSelect">Hoca</label><select id="teacherSelect"></select></div>
-            <div class="select-row"><label for="sourceGroupSelect">Kaynak türü</label><select id="sourceGroupSelect"></select></div>
-            <div class="select-row">
-              <label for="searchInput">Soru / konu / hedef / kaynak araması</label>
-              <input class="search" id="searchInput" placeholder="Örn: HPV, EKG, a. subclavia, keton, Sertoli...">
+          <div class="nav">
+            <button class="secondary" id="prevBtn">Önceki</button>
+            <button class="secondary" id="showInfoBtn">Açıklama/spot göster</button>
+            <button class="danger" id="clearCacheBtn">Önbelleği temizle</button>
+            <button class="secondary" id="resetVisibleBtn">Filtre cevaplarını sıfırla</button>
+            <button class="primary" id="nextBtn">Sonraki</button>
+          </div>
+        </article>
+
+        <aside class="panel side-panel">
+          <h3 class="side-title">Durum</h3>
+          <div class="mini-stats">
+            <div class="mini"><span>Cevaplanan</span><b id="answeredCount">0</b></div>
+            <div class="mini"><span>Doğru</span><b id="correctCount">0</b></div>
+            <div class="mini"><span>Yanlış</span><b id="wrongCount">0</b></div>
+            <div class="mini"><span>Boş</span><b id="emptyCount">0</b></div>
+          </div>
+
+          <div class="combo-panel">
+            <h3 class="side-title">Kombine filtre</h3>
+            <div class="combo-grid">
+              <div class="select-row"><label for="subjectSelect">Ders</label><select id="subjectSelect"></select></div>
+              <div class="select-row"><label for="examSelect">Kurul / sınav grubu</label><select id="examSelect"></select></div>
+              <div class="select-row"><label for="yearSelect">Yıl / sene</label><select id="yearSelect"></select></div>
+              <div class="select-row"><label for="teacherSelect">Hoca</label><select id="teacherSelect"></select></div>
+              <div class="select-row"><label for="sourceGroupSelect">Kaynak türü</label><select id="sourceGroupSelect"></select></div>
+              <div class="select-row">
+                <label for="searchInput">Soru / konu / hedef / kaynak araması</label>
+                <input class="search" id="searchInput" placeholder="Örn: HPV, EKG, a. subclavia, keton, Sertoli...">
+              </div>
+            </div>
+            <div class="active-filter-summary" id="activeFilterSummary"></div>
+            <div class="filter-actions">
+              <button class="secondary" id="clearFiltersBtn">Filtreleri temizle</button>
+              <button class="primary" id="goFirstFilteredBtn">İlk soruya git</button>
             </div>
           </div>
-          <div class="active-filter-summary" id="activeFilterSummary"></div>
-          <div class="filter-actions">
-            <button class="secondary" id="clearFiltersBtn">Filtreleri temizle</button>
-            <button class="primary" id="goFirstFilteredBtn">İlk soruya git</button>
+
+          <details class="quick-block">
+            <summary class="side-title" style="cursor:pointer;">Hızlı ders tuşları</summary>
+            <div style="height:8px;"></div>
+            <div class="button-grid" id="subjectButtons"></div>
+          </details>
+
+          <h3 class="side-title">Sorular</h3>
+          <div class="jump-grid" id="jumpGrid"></div>
+        </aside>
+      </section>
+
+      <section class="panel results" id="results">
+        <div class="result-head">
+          <div class="score-circle" id="scoreCircle"><div class="score-text" id="scoreText">0%</div></div>
+          <div class="result-summary">
+            <h2>Test Sonucu</h2>
+            <p class="subtitle" id="resultSubtitle"></p>
+            <div class="nav" style="border-top:0;padding-top:8px;margin-top:8px;">
+              <button class="secondary" id="hideResultBtn">Sonucu gizle</button>
+              <button class="primary" id="reviewToggleBtn">Cevap dökümünü göster</button>
+            </div>
           </div>
         </div>
-
-        <details class="quick-block">
-          <summary class="side-title" style="cursor:pointer;">Hızlı ders tuşları</summary>
-          <div style="height:8px;"></div>
-          <div class="button-grid" id="subjectButtons"></div>
-        </details>
-
-        <h3 class="side-title">Sorular</h3>
-        <div class="jump-grid" id="jumpGrid"></div>
-      </aside>
-    </section>
-
-    <section class="panel results" id="results">
-      <div class="result-head">
-        <div class="score-circle" id="scoreCircle"><div class="score-text" id="scoreText">0%</div></div>
-        <div class="result-summary">
-          <h2>Test Sonucu</h2>
-          <p class="subtitle" id="resultSubtitle"></p>
-          <div class="nav" style="border-top:0;padding-top:8px;margin-top:8px;">
-            <button class="secondary" id="hideResultBtn">Sonucu gizle</button>
-            <button class="primary" id="reviewToggleBtn">Cevap dökümünü göster</button>
-          </div>
-        </div>
-      </div>
-      <div class="review hidden" id="review"></div>
+        <div class="review hidden" id="review"></div>
+      </section>
     </section>
   </main>
 
@@ -223,7 +277,7 @@
     const DB_DIR = "db";
     const DB_EXTENSIONS = [".db", ".sdb"];
     const SEQUENTIAL_SCAN_MAX = 100;
-    const STORAGE_KEY = "database_loader_question_bank_progress_v1";
+    const STORAGE_KEY = "database_loader_question_bank_progress_v2";
 
     let dbFiles = [];
     let questions = [];
@@ -234,7 +288,11 @@
 
     const $ = id => document.getElementById(id);
     const els = {
-      heroTotal:$("heroTotal"), heroScore:$("heroScore"), progress:$("progress"), counter:$("counter"),
+      landing:$("landing"), appView:$("appView"), courseGrid:$("courseGrid"), courseEmpty:$("courseEmpty"),
+      courseSearch:$("courseSearch"), clearCourseSearch:$("clearCourseSearch"), startAllBtn:$("startAllBtn"),
+      backHomeBtn:$("backHomeBtn"), changeCourseBtn:$("changeCourseBtn"), activeTitle:$("activeTitle"),
+      totalQuestionsHero:$("totalQuestionsHero"), totalSubjectsHero:$("totalSubjectsHero"),
+      heroTotal:$("totalQuestionsHero"), heroScore:$("totalSubjectsHero"), progress:$("progress"), counter:$("counter"),
       status:$("statusBox"), section:$("section"), meta:$("meta"), question:$("question"), options:$("options"),
       feedback:$("feedback"), infoBox:$("infoBox"), showInfoBtn:$("showInfoBtn"), prevBtn:$("prevBtn"), nextBtn:$("nextBtn"),
       clearCacheBtn:$("clearCacheBtn"), resetVisibleBtn:$("resetVisibleBtn"), answeredCount:$("answeredCount"),
@@ -254,9 +312,7 @@
       try { s = s.normalize("NFKD").replace(/[\u0300-\u036f]/g,""); } catch(e) {}
       return s.replace(/ı/g,"i");
     }
-    function uniqueSorted(arr){
-      return [...new Set(arr.filter(v => String(v ?? "").trim()).map(v => String(v)))].sort((a,b)=>a.localeCompare(b,"tr"));
-    }
+    function initials(name){ return String(name||"?").split(/\s+/).map(x=>x[0]).join("").slice(0,2).toUpperCase(); }
     function countValues(fieldFn){
       const map = new Map();
       questions.forEach(q => {
@@ -274,9 +330,7 @@
       if (!host.endsWith(".github.io")) return null;
       const owner = host.split(".")[0];
       const parts = location.pathname.split("/").filter(Boolean);
-      let repo;
-      if (parts.length > 0) repo = parts[0];
-      else repo = owner + ".github.io";
+      const repo = parts.length > 0 ? parts[0] : owner + ".github.io";
       return {owner, repo};
     }
 
@@ -287,9 +341,8 @@
       const res = await fetch(api, {headers: {"Accept":"application/vnd.github+json"}});
       if (!res.ok) throw new Error("GitHub API listeleme başarısız: " + res.status);
       const items = await res.json();
-      return items
-        .filter(x => x.type === "file" && DB_EXTENSIONS.some(ext => x.name.toLowerCase().endsWith(ext)))
-        .map(x => ({name:x.name, url:x.download_url, source:"github-api"}));
+      return items.filter(x => x.type === "file" && DB_EXTENSIONS.some(ext => x.name.toLowerCase().endsWith(ext)))
+                  .map(x => ({name:x.name, url:x.download_url, source:"github-api"}));
     }
 
     async function listDbFilesFromManifest(){
@@ -297,18 +350,14 @@
       if (!res.ok) throw new Error("manifest.json yok.");
       const manifest = await res.json();
       const files = Array.isArray(manifest.files) ? manifest.files : [];
-      return files
-        .filter(name => DB_EXTENSIONS.some(ext => String(name).toLowerCase().endsWith(ext)))
-        .map(name => ({name, url:`${DB_DIR}/${encodeURIComponent(name)}`, source:"manifest"}));
+      return files.filter(name => DB_EXTENSIONS.some(ext => String(name).toLowerCase().endsWith(ext)))
+                  .map(name => ({name, url:`${DB_DIR}/${encodeURIComponent(name)}`, source:"manifest"}));
     }
 
     async function listDbFilesBySequentialProbe(){
       const found = [];
       const candidates = [];
-      for (let i=1; i<=SEQUENTIAL_SCAN_MAX; i++){
-        candidates.push(`soru${i}.db`);
-        candidates.push(`soru${i}.sdb`);
-      }
+      for (let i=1; i<=SEQUENTIAL_SCAN_MAX; i++){ candidates.push(`soru${i}.db`); candidates.push(`soru${i}.sdb`); }
       for (const name of candidates){
         try{
           const res = await fetch(`${DB_DIR}/${encodeURIComponent(name)}`, {cache:"no-store"});
@@ -339,7 +388,7 @@
       const map = new Map();
       let duplicates = 0;
       all.forEach(q => {
-        if (!q.id) q.id = cryptoRandomId(q);
+        if (!q.id) q.id = fallbackId(q);
         if (map.has(q.id)) duplicates++;
         else map.set(q.id, q);
       });
@@ -347,7 +396,7 @@
       return duplicates;
     }
 
-    function cryptoRandomId(q){
+    function fallbackId(q){
       return "qid_" + btoa(unescape(encodeURIComponent([q.subject, q.question, JSON.stringify(q.options), JSON.stringify(q.answer)].join("|")))).slice(0,24).replace(/[^a-zA-Z0-9]/g,"");
     }
 
@@ -413,17 +462,66 @@
     function setSelect(select, items, allLabel, value){
       select.innerHTML = "";
       const opt = document.createElement("option");
-      opt.value = "all";
-      opt.textContent = allLabel;
-      select.appendChild(opt);
+      opt.value = "all"; opt.textContent = allLabel; select.appendChild(opt);
       items.forEach(item => {
         const o = document.createElement("option");
-        o.value = item.value;
-        o.textContent = `${item.value} (${item.count})`;
-        select.appendChild(o);
+        o.value = item.value; o.textContent = `${item.value} (${item.count})`; select.appendChild(o);
       });
       select.value = value;
       if (select.value !== value) select.value = "all";
+    }
+
+    function renderLanding(){
+      els.totalQuestionsHero.textContent = questions.length;
+      els.totalSubjectsHero.textContent = countValues(q=>q.subject).length;
+      const term = normalize(els.courseSearch.value.trim());
+      els.courseGrid.innerHTML = "";
+      const courseCounts = countValues(q=>q.subject);
+      const filtered = courseCounts.filter(item => !term || normalize(item.value).includes(term));
+      filtered.forEach(item => {
+        const subjectQuestions = questions.filter(q => q.subject === item.value);
+        const examCount = new Set(subjectQuestions.map(q => meta(q,"examGroup")).filter(Boolean)).size;
+        const teacherCount = new Set(subjectQuestions.map(q => meta(q,"teacher")).filter(Boolean)).size;
+        const card = document.createElement("article");
+        card.className = "course-card panel";
+        card.tabIndex = 0;
+        card.innerHTML = `
+          <div>
+            <div class="course-icon">${escapeHTML(initials(item.value))}</div>
+            <h2>${escapeHTML(item.value)}</h2>
+            <p>${item.count} soru/kart · ${examCount} kurul/sınav grubu · ${teacherCount} hoca filtresi</p>
+          </div>
+          <div class="course-meta">
+            <span class="chip">${item.count} soru</span>
+            <span class="chip">Dersi aç</span>
+          </div>
+        `;
+        card.addEventListener("click", () => startCourse(item.value));
+        card.addEventListener("keydown", ev => {
+          if (ev.key === "Enter" || ev.key === " "){ ev.preventDefault(); startCourse(item.value); }
+        });
+        els.courseGrid.appendChild(card);
+      });
+      els.courseEmpty.style.display = filtered.length ? "none" : "block";
+    }
+
+    function showLanding(){
+      els.landing.classList.remove("hidden");
+      els.appView.classList.remove("active");
+      els.results.style.display = "none";
+      window.scrollTo(0,0);
+      renderLanding();
+    }
+
+    function startCourse(subject){
+      filters = {subject: subject || "all", exam:"all", year:"all", teacher:"all", sourceGroup:"all", search:""};
+      ensureCurrent();
+      els.landing.classList.add("hidden");
+      els.appView.classList.add("active");
+      els.activeTitle.textContent = subject && subject !== "all" ? subject + " soru bankası" : "Tüm dersler soru bankası";
+      els.results.style.display = "none";
+      render();
+      window.scrollTo(0,0);
     }
 
     function renderFilters(){
@@ -458,10 +556,8 @@
         els.meta.innerHTML = "";
         els.question.textContent = questions.length ? "Seçili filtrelerle eşleşen soru yok." : "Database dosyası yüklenemedi veya soru bulunamadı.";
         els.options.innerHTML = "";
-        els.feedback.className = "feedback";
-        els.feedback.innerHTML = "";
-        els.infoBox.className = "info-box";
-        els.infoBox.innerHTML = "";
+        els.feedback.className = "feedback"; els.feedback.innerHTML = "";
+        els.infoBox.className = "info-box"; els.infoBox.innerHTML = "";
         els.prevBtn.disabled = true; els.nextBtn.disabled = true;
         updateStats();
         return;
@@ -474,28 +570,21 @@
       const opts = optionList(q);
       const answer = q.answer || {};
 
+      els.activeTitle.textContent = filters.subject !== "all" ? filters.subject + " soru bankası" : "Tüm dersler soru bankası";
       els.section.textContent = `${q.subject} · ${meta(q,"examGroup") || "Grup yok"} · ${meta(q,"year") || "Yıl yok"} · ${meta(q,"teacher") || "Hoca yok"} · ${meta(q,"topic") || "Konu yok"}`;
 
       const rows = [
-        ["Ders", q.subject],
-        ["Database", q._dbFile || ""],
-        ["Kurul / sınav grubu", meta(q,"examGroup")],
-        ["Yıl / sene", meta(q,"year")],
-        ["Hoca", meta(q,"teacher")],
-        ["Konu", meta(q,"topic")],
-        ["Hedef / kazanım", meta(q,"target")],
-        ["Kaynak türü", meta(q,"sourceGroup")],
-        ["Kaynak", meta(q,"source")],
-        ["Kaynak soru no", meta(q,"sourceNo")],
-        ["Durum / güven", meta(q,"status")]
+        ["Ders", q.subject], ["Database", q._dbFile || ""], ["Kurul / sınav grubu", meta(q,"examGroup")],
+        ["Yıl / sene", meta(q,"year")], ["Hoca", meta(q,"teacher")], ["Konu", meta(q,"topic")],
+        ["Hedef / kazanım", meta(q,"target")], ["Kaynak türü", meta(q,"sourceGroup")], ["Kaynak", meta(q,"source")],
+        ["Kaynak soru no", meta(q,"sourceNo")], ["Durum / güven", meta(q,"status")]
       ];
-      els.meta.innerHTML = rows.filter(([,v]) => String(v ?? "").trim())
-        .map(([k,v]) => `<div><b>${escapeHTML(k)}:</b> ${escapeHTML(v)}</div>`).join("");
+      els.meta.innerHTML = rows.filter(([,v]) => String(v ?? "").trim()).map(([k,v]) => `<div><b>${escapeHTML(k)}:</b> ${escapeHTML(v)}</div>`).join("");
 
       els.question.textContent = q.question || "";
       els.options.innerHTML = "";
       if (!opts.length){
-        els.options.innerHTML = `<div class="feedback neutral" style="display:block"><b>Şık yok:</b> Bu kayıtta seçenekler bulunmuyor. Cevap anahtarı işaretleme sonrası değil, bilgi alanında gösterilir.</div>`;
+        els.options.innerHTML = `<div class="feedback neutral" style="display:block"><b>Şık yok:</b> Bu kayıtta seçenekler bulunmuyor. Cevap anahtarı bilgi alanında gösterilir.</div>`;
       } else {
         opts.forEach((opt, idx) => {
           const div = document.createElement("div");
@@ -506,11 +595,7 @@
             if (answer.index !== null && answer.index !== undefined && idx === selected && selected !== answer.index) div.classList.add("wrong");
           }
           div.innerHTML = `<span class="letter">${escapeHTML(opt.letter || String.fromCharCode(65+idx))}</span><span class="option-text">${escapeHTML(opt.text || "")}</span>`;
-          div.addEventListener("click", () => {
-            answers[answerKey(q)] = idx;
-            saveState();
-            render();
-          });
+          div.addEventListener("click", () => { answers[answerKey(q)] = idx; saveState(); render(); });
           els.options.appendChild(div);
         });
       }
@@ -550,8 +635,6 @@
 
     function updateStats(){
       const st = stats();
-      els.heroTotal.textContent = st.total;
-      els.heroScore.textContent = st.percent + "%";
       els.progress.style.width = st.total ? ((st.answered/st.total)*100) + "%" : "0%";
       els.counter.textContent = st.total ? `Soru ${filteredIndexes().indexOf(current)+1} / ${st.total} · Genel no: ${current+1}` : "0 soru";
       els.answeredCount.textContent = st.answered;
@@ -634,14 +717,37 @@
       saveState();
     }
 
+    function renderFilters(){
+      setSelect(els.subjectSelect, countValues(q=>q.subject), "Tüm dersler", filters.subject);
+      setSelect(els.examSelect, countValues(q=>meta(q,"examGroup")), "Tüm kurul/sınav grupları", filters.exam);
+      setSelect(els.yearSelect, countValues(q=>meta(q,"year")), "Tüm yıllar", filters.year);
+      setSelect(els.teacherSelect, countValues(q=>meta(q,"teacher")), "Tüm hocalar", filters.teacher);
+      setSelect(els.sourceGroupSelect, countValues(q=>meta(q,"sourceGroup")), "Tüm kaynak türleri", filters.sourceGroup);
+      els.searchInput.value = filters.search;
+
+      els.subjectButtons.innerHTML = "";
+      els.subjectButtons.appendChild(makeFilterButton("Tüm dersler", questions.length, filters.subject === "all", () => {filters.subject="all"; ensureCurrent(); saveState(); render();}, true));
+      countValues(q=>q.subject).forEach(item => {
+        els.subjectButtons.appendChild(makeFilterButton(item.value, item.count, filters.subject === item.value, () => {
+          filters.subject = item.value; ensureCurrent(); saveState(); render();
+        }));
+      });
+    }
+
     function bindEvents(){
+      els.courseSearch.addEventListener("input", renderLanding);
+      els.clearCourseSearch.addEventListener("click", () => {els.courseSearch.value=""; renderLanding(); els.courseSearch.focus();});
+      els.startAllBtn.addEventListener("click", () => startCourse("all"));
+      els.backHomeBtn.addEventListener("click", showLanding);
+      els.changeCourseBtn.addEventListener("click", showLanding);
+
       els.subjectSelect.addEventListener("change", () => {filters.subject=els.subjectSelect.value; ensureCurrent(); render();});
       els.examSelect.addEventListener("change", () => {filters.exam=els.examSelect.value; ensureCurrent(); render();});
       els.yearSelect.addEventListener("change", () => {filters.year=els.yearSelect.value; ensureCurrent(); render();});
       els.teacherSelect.addEventListener("change", () => {filters.teacher=els.teacherSelect.value; ensureCurrent(); render();});
       els.sourceGroupSelect.addEventListener("change", () => {filters.sourceGroup=els.sourceGroupSelect.value; ensureCurrent(); render();});
       els.searchInput.addEventListener("input", () => {filters.search=els.searchInput.value; ensureCurrent(); render();});
-      els.clearFiltersBtn.addEventListener("click", () => {filters={subject:"all",exam:"all",year:"all",teacher:"all",sourceGroup:"all",search:""}; ensureCurrent(); render();});
+      els.clearFiltersBtn.addEventListener("click", () => {filters={subject:filters.subject,exam:"all",year:"all",teacher:"all",sourceGroup:"all",search:""}; ensureCurrent(); render();});
       els.goFirstFilteredBtn.addEventListener("click", () => {const idxs=filteredIndexes(); if(idxs.length){current=idxs[0]; render();}});
       els.prevBtn.addEventListener("click", () => {const idxs=filteredIndexes(); const pos=idxs.indexOf(current); if(pos>0){current=idxs[pos-1]; render();}});
       els.nextBtn.addEventListener("click", () => {const idxs=filteredIndexes(); const pos=idxs.indexOf(current); if(pos<idxs.length-1){current=idxs[pos+1]; render();} else renderResults();});
@@ -650,7 +756,7 @@
         if(!confirm("Tüm cevaplar, filtreler ve kaldığın yer silinsin mi?")) return;
         answers={}; current=0; filters={subject:"all",exam:"all",year:"all",teacher:"all",sourceGroup:"all",search:""}; infoOpen=false;
         try{localStorage.removeItem(STORAGE_KEY);}catch(e){}
-        els.results.style.display="none"; render();
+        els.results.style.display="none"; showLanding();
       });
       els.resetVisibleBtn.addEventListener("click", () => {
         if(!confirm("Sadece şu anki filtrede görünen soruların cevapları silinsin mi?")) return;
@@ -672,14 +778,13 @@
         const all = [];
         for (const file of dbFiles) all.push(...await loadDbFile(file));
         const duplicates = dedupeAndSetQuestions(all);
-        ensureCurrent();
         els.status.className = "panel status";
         els.status.innerHTML = `<b>${dbFiles.length}</b> database dosyası yüklendi: ${dbFiles.map(f=>escapeHTML(f.name)).join(", ")}. <b>${questions.length}</b> benzersiz soru kullanılıyor${duplicates ? `; ${duplicates} tekrar otomatik ayıklandı` : ""}.`;
-        render();
+        renderLanding();
       }catch(e){
         els.status.className = "panel status warn";
         els.status.innerHTML = `<b>Database yüklenemedi:</b> ${escapeHTML(e.message)}<br><br>GitHub Pages üzerinde <b>db/soru1.db</b> gibi dosyaların bulunduğundan emin ol. Yerelde çift tıklayarak açarsan tarayıcı güvenlik kısıtları nedeniyle fetch çalışmayabilir; küçük bir yerel sunucu veya GitHub Pages kullan.`;
-        render();
+        renderLanding();
       }
     }
     init();
