@@ -150,6 +150,88 @@
     .all-q-option{padding:7px 8px;border-radius:10px;border:1px solid var(--line);background:#fff;line-height:1.45;white-space:pre-wrap;font-size:var(--opt-font)}
     .all-q-option.correct{background:var(--okbg);border-color:rgba(18,99,58,.35);color:#14532d;font-weight:780}
     .all-q-info{margin-top:8px;font-size:12px;color:#475467;line-height:1.45;white-space:pre-wrap}
+
+    /* Sade çözüm modu: soru, cevaplar ve işlem butonları öne çıkarılır. */
+    body.compact-mode .hero,
+    body.compact-mode #statusBox,
+    body.compact-mode #manualDbBox,
+    body.compact-mode .top-nav,
+    body.compact-mode .toolbar,
+    body.compact-mode .side-panel,
+    body.compact-mode .section,
+    body.compact-mode .meta-box,
+    body.compact-mode .results,
+    body.compact-mode .info-box:not(.show){
+      display:none!important;
+    }
+    body.compact-mode .wrap{width:min(900px,calc(100% - 14px));margin:8px auto 18px}
+    body.compact-mode .layout{display:block}
+    body.compact-mode .question-card{
+      padding:12px;
+      border-radius:14px;
+      box-shadow:0 8px 20px rgba(15,23,42,.08);
+    }
+    body.compact-mode .question{
+      margin-bottom:10px;
+      padding:12px 13px;
+      border-radius:12px;
+      box-shadow:none;
+      font-size:var(--q-font);
+      line-height:var(--line-q);
+    }
+    body.compact-mode .options{gap:7px}
+    body.compact-mode .option{padding:10px 11px;border-radius:11px}
+    body.compact-mode .feedback{margin-top:8px;padding:9px 10px;border-radius:11px}
+    body.compact-mode .nav{
+      margin-top:10px;
+      padding-top:10px;
+      gap:6px;
+      justify-content:center;
+    }
+    body.compact-mode .nav button{
+      padding:9px 10px;
+      border-radius:10px;
+      font-size:12px;
+    }
+    body.compact-mode .landing .hero,
+    body.compact-mode .landing #statusBox,
+    body.compact-mode .landing #manualDbBox{
+      display:block!important;
+    }
+    body.compact-mode .settings-grid{
+      grid-template-columns:1fr;
+    }
+    body.compact-mode .course-grid{
+      grid-template-columns:repeat(2,minmax(0,1fr));
+    }
+    body.compact-mode .course-card{
+      min-height:130px;
+      padding:12px;
+    }
+    body.compact-mode .course-icon{
+      width:34px;
+      height:34px;
+      border-radius:12px;
+      font-size:14px;
+      margin-bottom:8px;
+    }
+    body.compact-mode .course-card h2{
+      font-size:18px;
+    }
+    body.compact-mode .course-card p{
+      font-size:12px;
+    }
+    body.compact-mode .all-list-header{
+      position:static;
+      padding:10px;
+    }
+    body.compact-mode .all-list{
+      max-height:none;
+    }
+    @media (max-width:680px){
+      body.compact-mode .course-grid{grid-template-columns:1fr}
+    }
+
     .wrong-answer-note{margin-top:8px;padding:8px 9px;border-radius:10px;background:var(--badbg);border:1px solid rgba(166,29,53,.22);color:var(--bad);font-size:12px;line-height:1.4}
     .correct-answer-note{margin-top:6px;padding:8px 9px;border-radius:10px;background:var(--okbg);border:1px solid rgba(18,99,58,.22);color:var(--ok);font-size:12px;line-height:1.4}
     @media (max-width:980px){
@@ -189,6 +271,7 @@
         <div class="chips">
           <span class="chip">Soru dosyası seçimi</span>
           <span class="chip">Yazı boyutu ayarı</span>
+          <span class="chip">Sade çözüm modu</span>
           <span class="chip">Tek soru / liste görünümü</span>
           <span class="chip">Yanlışlarım</span>
           <span class="chip">Benzer soru ayıklama</span>
@@ -228,7 +311,14 @@
                 <option value="large">Büyük</option>
               </select>
             </div>
-            <p class="subtitle">Bu ayar ana sayfa, soru ekranı ve tüm soruları listeleme ekranına uygulanır.</p>
+            <div class="select-row">
+              <label for="designModeSelect">Tasarım modu</label>
+              <select id="designModeSelect">
+                <option value="standard">Standart görünüm</option>
+                <option value="compact">Sade çözüm modu</option>
+              </select>
+            </div>
+            <p class="subtitle">Sade çözüm modu, soru çözerken yalnızca soru, seçenekler, cevap bildirimi ve işlem butonlarını öne çıkarır.</p>
           </div>
         </div>
       </section>
@@ -368,6 +458,7 @@
     let listMode = "all";
     let selectedDbFiles = [];
     let fontSize = "normal";
+    let designMode = "standard";
 
     const $ = id => document.getElementById(id);
     const els = {
@@ -379,7 +470,7 @@
       listTitle:$("listTitle"), listSubtitle:$("listSubtitle"), allList:$("allList"),
       totalQuestionsHero:$("totalQuestionsHero"), totalSubjectsHero:$("totalSubjectsHero"), status:$("statusBox"),
       manualDbBox:$("manualDbBox"), manualDbInput:$("manualDbInput"), dbList:$("dbList"),
-      selectAllDbBtn:$("selectAllDbBtn"), clearDbBtn:$("clearDbBtn"), fontSizeSelect:$("fontSizeSelect"),
+      selectAllDbBtn:$("selectAllDbBtn"), clearDbBtn:$("clearDbBtn"), fontSizeSelect:$("fontSizeSelect"), designModeSelect:$("designModeSelect"),
       progress:$("progress"), counter:$("counter"), section:$("section"), meta:$("meta"), question:$("question"), options:$("options"),
       feedback:$("feedback"), infoBox:$("infoBox"), showInfoBtn:$("showInfoBtn"), prevBtn:$("prevBtn"), nextBtn:$("nextBtn"),
       clearCacheBtn:$("clearCacheBtn"), resetVisibleBtn:$("resetVisibleBtn"), answeredCount:$("answeredCount"),
@@ -677,7 +768,7 @@
     }
 
     function saveState(){
-      try{localStorage.setItem(STORAGE_KEY, JSON.stringify({answers,current,filters,infoOpen,selectedDbFiles,fontSize}));}catch(e){}
+      try{localStorage.setItem(STORAGE_KEY, JSON.stringify({answers,current,filters,infoOpen,selectedDbFiles,fontSize,designMode}));}catch(e){}
     }
     function loadState(){
       try{
@@ -690,6 +781,7 @@
         if(typeof data.infoOpen==="boolean") infoOpen=data.infoOpen;
         if(Array.isArray(data.selectedDbFiles)) selectedDbFiles=data.selectedDbFiles;
         if(["small","normal","large"].includes(data.fontSize)) fontSize=data.fontSize;
+        if(["standard","compact"].includes(data.designMode)) designMode=data.designMode;
         return true;
       }catch(e){return false;}
     }
@@ -698,6 +790,12 @@
       document.body.classList.remove("font-small","font-normal","font-large");
       document.body.classList.add("font-"+fontSize);
       if (els.fontSizeSelect) els.fontSizeSelect.value = fontSize;
+      applyDesignMode();
+    }
+
+    function applyDesignMode(){
+      document.body.classList.toggle("compact-mode", designMode === "compact");
+      if (els.designModeSelect) els.designModeSelect.value = designMode;
     }
 
     function ensureSelectedDbFiles(){
@@ -1050,7 +1148,8 @@
     }
 
     function render(){
-      applyFontSize(); renderFilters(); renderQuestion(); renderJumpGrid(); renderReview(); saveState();
+      applyFontSize();
+      applyDesignMode(); renderFilters(); renderQuestion(); renderJumpGrid(); renderReview(); saveState();
       if(els.listView.classList.contains("active")) renderAllList();
     }
 
@@ -1069,6 +1168,7 @@
       els.selectAllDbBtn.addEventListener("click",()=>{selectedDbFiles=dbFiles.map(f=>dbBaseName(f.name)); sanitizeFilters(); ensureCurrent(); saveState(); renderLanding();});
       els.clearDbBtn.addEventListener("click",()=>{selectedDbFiles=[]; sanitizeFilters(); saveState(); renderLanding();});
       els.fontSizeSelect.addEventListener("change",()=>{fontSize=els.fontSizeSelect.value; applyFontSize(); saveState(); renderLanding(); if(els.appView.classList.contains("active")) render();});
+      els.designModeSelect.addEventListener("change",()=>{designMode=els.designModeSelect.value; applyDesignMode(); saveState(); renderLanding(); if(els.appView.classList.contains("active")) render();});
       els.subjectSelect.addEventListener("change",()=>{filters.subject=els.subjectSelect.value; ensureCurrent(); render();});
       els.examSelect.addEventListener("change",()=>{filters.exam=els.examSelect.value; ensureCurrent(); render();});
       els.yearSelect.addEventListener("change",()=>{filters.year=els.yearSelect.value; ensureCurrent(); render();});
@@ -1102,6 +1202,7 @@
       bindEvents();
       loadState();
       applyFontSize();
+      applyDesignMode();
       try{
         dbFiles=await discoverDbFiles();
         dbFiles=[...new Map(dbFiles.map(f=>[dbCanonicalName(f.name), {...f, name:dbBaseName(f.name)}])).values()];
