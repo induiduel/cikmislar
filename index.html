@@ -173,6 +173,42 @@
       font-size:12px;
     }
 
+
+    /* Normal görünüm genişlet/daralt modları */
+    body.question-wide-mode:not(.compact-mode) .wrap{
+      width:min(1500px,calc(100% - 18px));
+    }
+    body.question-wide-mode:not(.compact-mode) .layout{
+      grid-template-columns:minmax(0,1fr);
+    }
+    body.question-wide-mode:not(.compact-mode) .side-panel{
+      display:none!important;
+    }
+    body.question-wide-mode:not(.compact-mode) .question-card{
+      max-width:1180px;
+      margin:0 auto;
+    }
+    body.question-wide-mode:not(.compact-mode) .question{
+      font-size:calc(var(--q-font) + 1px);
+    }
+
+    body.list-wide-mode:not(.compact-mode) .wrap{
+      width:min(1600px,calc(100% - 18px));
+    }
+    body.list-wide-mode:not(.compact-mode) .all-list{
+      max-height:none;
+      overflow:visible;
+      padding-right:0;
+    }
+    body.list-wide-mode:not(.compact-mode) .all-q-card{
+      max-width:1300px;
+      margin-left:auto;
+      margin-right:auto;
+    }
+    body.list-wide-mode:not(.compact-mode) .all-q-question{
+      font-size:calc(var(--q-font) + 1px);
+    }
+
     /* Sade çözüm modu: soru, cevaplar ve işlem butonları öne çıkarılır. */
     body.compact-mode .hero,
     body.compact-mode #statusBox,
@@ -280,6 +316,24 @@
       .top-nav-title{flex-basis:100%;order:-1}
       .all-list{max-height:none}
     }
+  
+    .quiz-card-btn{
+      appearance:none;-webkit-appearance:none;border:1px solid rgba(23,58,138,.16);
+      border-radius:999px;padding:7px 9px;font-weight:900;font-size:11.5px;cursor:pointer;
+      background:var(--soft);color:var(--primary);transition:transform .1s ease,box-shadow .1s ease;
+    }
+    .quiz-card-btn:hover{transform:translateY(-1px);box-shadow:0 6px 12px rgba(23,58,138,.10)}
+    .hidden-manager-note{
+      padding:9px 10px;border-radius:11px;background:var(--warnbg);
+      border:1px solid rgba(122,79,8,.20);color:#573a09;font-size:12px;line-height:1.4;margin-top:8px;
+    }
+    .all-q-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}
+    .all-q-actions button{padding:8px 9px;border-radius:10px;font-size:12px}
+    .hidden-badge{background:var(--warnbg)!important;color:#7a4f08!important;border-color:rgba(122,79,8,.22)!important}
+    body.quiz-active-mode .active-filter-summary::before{content:"Quiz modu aktif · ";font-weight:900}
+
+  
+    #restoreHiddenBtn{display:none}
   </style>
 </head>
 <body class="font-normal">
@@ -295,6 +349,9 @@
           <span class="chip">Yazı boyutu ayarı</span>
           <span class="chip">Sade çözüm modu</span>
           <span class="chip">Sade mod hızlı çıkış</span>
+          <span class="chip">Genişlet/daralt</span>
+          <span class="chip">Quiz modu</span>
+          <span class="chip">Soruyu gizle</span>
           <span class="chip">Tek soru / liste görünümü</span>
           <span class="chip">Yanlışlarım</span>
           <span class="chip">Benzer soru ayıklama</span>
@@ -351,6 +408,8 @@
         <button class="secondary" id="clearCourseSearch" type="button">Aramayı temizle</button>
         <button class="secondary" id="continueBtn" type="button">Kaldığım yerden devam et</button>
         <button class="secondary" id="wrongHomeBtn" type="button">Yanlışlarımı aç</button>
+        <button class="secondary" id="hiddenHomeBtn" type="button">Gizlenen soruları yönet</button>
+        <button class="secondary" id="quizAllBtn" type="button">Tüm dersler quiz modu</button>
         <button class="primary" id="startAllBtn" type="button">Tüm derslerle başla</button>
       </section>
       <section class="course-grid" id="courseGrid"></section>
@@ -394,6 +453,7 @@
             <div class="nav">
               <button class="secondary" id="prevBtn">Önceki</button>
               <button class="secondary" id="showInfoBtn">Açıklama/spot göster</button>
+              <button class="secondary" id="hideQuestionBtn">Bu soruyu bir daha gösterme</button>
               <button class="danger" id="clearCacheBtn">Önbelleği temizle</button>
               <button class="secondary" id="resetVisibleBtn">Filtre cevaplarını sıfırla</button>
               <button class="primary" id="nextBtn">Sonraki</button>
@@ -464,6 +524,8 @@
           </div>
           <div style="display:flex;gap:8px;flex-wrap:wrap;">
             <button class="secondary" id="backToQuizBtn" type="button">Tek soru moduna dön</button>
+            <button class="secondary" id="wideListBtn" type="button" title="Tüm sorular ekranını genişlet/daralt">⛶ Listeyi genişlet</button>
+            <button class="secondary" id="restoreHiddenBtn" type="button">Gizlenenleri geri yükle</button>
             <button class="primary" id="refreshListBtn" type="button">Listeyi güncelle</button>
           </div>
         </section>
@@ -485,23 +547,29 @@
     let filters = {subject:"all", exam:"all", year:"all", teacher:"all", sourceGroup:"all", search:""};
     let infoOpen = false;
     let listMode = "all";
+    let hiddenQuestionIds = [];
+    let quizActive = false;
+    let quizIds = [];
+    let quizTitle = "";
     let selectedDbFiles = [];
     let fontSize = "normal";
     let designMode = "standard";
+    let questionWideMode = false;
+    let listWideMode = false;
 
     const $ = id => document.getElementById(id);
     const els = {
       landing:$("landing"), appView:$("appView"), quizView:$("quizView"), listView:$("listView"),
       courseGrid:$("courseGrid"), courseEmpty:$("courseEmpty"), courseSearch:$("courseSearch"),
-      clearCourseSearch:$("clearCourseSearch"), continueBtn:$("continueBtn"), wrongHomeBtn:$("wrongHomeBtn"), startAllBtn:$("startAllBtn"),
+      clearCourseSearch:$("clearCourseSearch"), continueBtn:$("continueBtn"), wrongHomeBtn:$("wrongHomeBtn"), hiddenHomeBtn:$("hiddenHomeBtn"), quizAllBtn:$("quizAllBtn"), startAllBtn:$("startAllBtn"),
       backHomeBtn:$("backHomeBtn"), changeCourseBtn:$("changeCourseBtn"), activeTitle:$("activeTitle"),
-      showAllBtn:$("showAllBtn"), compactHomeBtn:$("compactHomeBtn"), compactShowAllBtn:$("compactShowAllBtn"), backToQuizBtn:$("backToQuizBtn"), refreshListBtn:$("refreshListBtn"),
+      wideQuestionBtn:$("wideQuestionBtn"), showAllBtn:$("showAllBtn"), compactHomeBtn:$("compactHomeBtn"), compactShowAllBtn:$("compactShowAllBtn"), backToQuizBtn:$("backToQuizBtn"), wideListBtn:$("wideListBtn"), restoreHiddenBtn:$("restoreHiddenBtn"), refreshListBtn:$("refreshListBtn"),
       listTitle:$("listTitle"), listSubtitle:$("listSubtitle"), allList:$("allList"),
       totalQuestionsHero:$("totalQuestionsHero"), totalSubjectsHero:$("totalSubjectsHero"), status:$("statusBox"),
       manualDbBox:$("manualDbBox"), manualDbInput:$("manualDbInput"), dbList:$("dbList"),
       selectAllDbBtn:$("selectAllDbBtn"), clearDbBtn:$("clearDbBtn"), fontSizeSelect:$("fontSizeSelect"), designModeSelect:$("designModeSelect"),
       progress:$("progress"), counter:$("counter"), section:$("section"), meta:$("meta"), question:$("question"), options:$("options"),
-      feedback:$("feedback"), infoBox:$("infoBox"), showInfoBtn:$("showInfoBtn"), prevBtn:$("prevBtn"), nextBtn:$("nextBtn"),
+      feedback:$("feedback"), infoBox:$("infoBox"), showInfoBtn:$("showInfoBtn"), hideQuestionBtn:$("hideQuestionBtn"), prevBtn:$("prevBtn"), nextBtn:$("nextBtn"),
       clearCacheBtn:$("clearCacheBtn"), resetVisibleBtn:$("resetVisibleBtn"), answeredCount:$("answeredCount"),
       correctCount:$("correctCount"), wrongCount:$("wrongCount"), emptyCount:$("emptyCount"), jumpGrid:$("jumpGrid"),
       subjectSelect:$("subjectSelect"), examSelect:$("examSelect"), yearSelect:$("yearSelect"), teacherSelect:$("teacherSelect"),
@@ -517,6 +585,67 @@
     function optionList(q){return Array.isArray(q.options) ? q.options : [];}
     function meta(q,key){return (q.metadata && q.metadata[key]) || "";}
     function answerKey(q){return q.id;}
+
+    function hiddenSet(){return new Set(hiddenQuestionIds);}
+    function isHiddenQuestion(q){return !!(q && q.id && hiddenSet().has(q.id));}
+    function activeVisibleQuestions(){return activeQuestions().filter(q => !isHiddenQuestion(q));}
+    function visibleQuestionCount(){return activeVisibleQuestions().length;}
+    function hiddenQuestionCount(){return activeQuestions().filter(q => isHiddenQuestion(q)).length;}
+    function hideQuestionById(id){
+      if(!id) return;
+      if(!hiddenQuestionIds.includes(id)) hiddenQuestionIds.push(id);
+      if(quizActive) quizIds = quizIds.filter(qid => qid !== id);
+      saveState();
+    }
+    function unhideQuestionById(id){
+      hiddenQuestionIds = hiddenQuestionIds.filter(qid => qid !== id);
+      saveState();
+    }
+    function restoreAllHiddenQuestions(){
+      if(!confirm("Gizlenen tüm sorular yeniden gösterilsin mi?")) return;
+      hiddenQuestionIds = [];
+      saveState();
+      renderLanding();
+      if(els.listView.classList.contains("active")) renderAllList();
+    }
+    function shuffleArray(arr){
+      const copy = arr.slice();
+      for(let i=copy.length-1; i>0; i--){
+        const j = Math.floor(Math.random() * (i+1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+    function startQuiz(subject, count){
+      const pool = activeVisibleQuestions().filter(q => !subject || subject === "all" || q.subject === subject);
+      if(!pool.length){
+        alert("Bu seçimde quiz için uygun soru yok. Gizlenen sorular veya aktif soru dosyası seçimini kontrol et.");
+        return;
+      }
+      const chosen = shuffleArray(pool).slice(0, Math.min(count, pool.length));
+      quizActive = true;
+      quizIds = chosen.map(q => q.id);
+      quizTitle = subject && subject !== "all" ? `${subject} quiz modu · ${chosen.length} soru` : `Tüm dersler quiz modu · ${chosen.length} soru`;
+      filters = {subject: subject || "all", exam:"all", year:"all", teacher:"all", sourceGroup:"all", search:""};
+      const firstIndex = questions.findIndex(q => q.id === quizIds[0]);
+      if(firstIndex >= 0) current = firstIndex;
+      els.landing.classList.add("hidden");
+      els.appView.classList.add("active");
+      els.quizView.classList.remove("hidden");
+      els.listView.classList.remove("active");
+      els.activeTitle.textContent = quizTitle;
+      els.results.style.display = "none";
+      render();
+      window.scrollTo(0,0);
+    }
+    function stopQuizMode(){
+      quizActive = false;
+      quizIds = [];
+      quizTitle = "";
+      document.body.classList.remove("quiz-active-mode");
+      saveState();
+    }
+
 
     function numericAnswerValue(value){
       if (typeof value === "number" && Number.isFinite(value)) return value;
@@ -550,7 +679,7 @@
       return ans.raw || ans.text || "Cevap anahtarı yok";
     }
     function activeWrongCount(){
-      return activeQuestions().filter(q => isWrongFromCache(q)).length;
+      return activeVisibleQuestions().filter(q => isWrongFromCache(q)).length;
     }
 
     function activeDbSet(){return new Set(selectedDbFiles.map(dbCanonicalName));}
@@ -797,7 +926,7 @@
     }
 
     function saveState(){
-      try{localStorage.setItem(STORAGE_KEY, JSON.stringify({answers,current,filters,infoOpen,selectedDbFiles,fontSize,designMode}));}catch(e){}
+      try{localStorage.setItem(STORAGE_KEY, JSON.stringify({answers,current,filters,infoOpen,selectedDbFiles,fontSize,designMode,questionWideMode,listWideMode,hiddenQuestionIds,quizActive,quizIds,quizTitle}));}catch(e){}
     }
     function loadState(){
       try{
@@ -811,6 +940,12 @@
         if(Array.isArray(data.selectedDbFiles)) selectedDbFiles=data.selectedDbFiles;
         if(["small","normal","large"].includes(data.fontSize)) fontSize=data.fontSize;
         if(["standard","compact"].includes(data.designMode)) designMode=data.designMode;
+        if(typeof data.questionWideMode === "boolean") questionWideMode=data.questionWideMode;
+        if(typeof data.listWideMode === "boolean") listWideMode=data.listWideMode;
+        if(Array.isArray(data.hiddenQuestionIds)) hiddenQuestionIds=data.hiddenQuestionIds;
+        if(typeof data.quizActive === "boolean") quizActive=data.quizActive;
+        if(Array.isArray(data.quizIds)) quizIds=data.quizIds;
+        if(typeof data.quizTitle === "string") quizTitle=data.quizTitle;
         return true;
       }catch(e){return false;}
     }
@@ -825,6 +960,22 @@
     function applyDesignMode(){
       document.body.classList.toggle("compact-mode", designMode === "compact");
       if (els.designModeSelect) els.designModeSelect.value = designMode;
+      applyWideModes();
+    }
+
+    function applyWideModes(){
+      document.body.classList.toggle("question-wide-mode", !!questionWideMode);
+      document.body.classList.toggle("list-wide-mode", !!listWideMode);
+      document.body.classList.toggle("quiz-active-mode", !!quizActive);
+
+      if (els.wideQuestionBtn) {
+        els.wideQuestionBtn.textContent = questionWideMode ? "↔ Tekli ekranı daralt" : "⛶ Tekli ekranı genişlet";
+        els.wideQuestionBtn.title = questionWideMode ? "Tekli soru ekranını normal genişliğe döndür" : "Tekli soru ekranını genişlet";
+      }
+      if (els.wideListBtn) {
+        els.wideListBtn.textContent = listWideMode ? "↔ Listeyi daralt" : "⛶ Listeyi genişlet";
+        els.wideListBtn.title = listWideMode ? "Tüm sorular ekranını normal genişliğe döndür" : "Tüm sorular ekranını genişlet";
+      }
     }
 
     function ensureSelectedDbFiles(){
@@ -835,6 +986,7 @@
 
     function matchesFilters(q, excludeField){
       if(!isDbActive(q)) return false;
+      if(isHiddenQuestion(q)) return false;
       const term = normalize(filters.search.trim());
       if(excludeField!=="subject" && filters.subject!=="all" && q.subject!==filters.subject) return false;
       if(excludeField!=="exam" && filters.exam!=="all" && meta(q,"examGroup")!==filters.exam) return false;
@@ -847,7 +999,14 @@
       }
       return true;
     }
-    function filteredIndexes(){return questions.map((q,i)=>[q,i]).filter(([q])=>matchesFilters(q,null)).map(([,i])=>i);}
+    function filteredIndexes(){
+      if(quizActive && quizIds.length){
+        return quizIds
+          .map(id => questions.findIndex(q => q.id === id))
+          .filter(i => i >= 0 && isDbActive(questions[i]) && !isHiddenQuestion(questions[i]));
+      }
+      return questions.map((q,i)=>[q,i]).filter(([q])=>matchesFilters(q,null)).map(([,i])=>i);
+    }
     function filteredQuestionsForOptions(excludeField){return questions.filter(q=>matchesFilters(q, excludeField));}
     function countValuesForOptions(fieldFn, excludeField){
       const map=new Map();
@@ -932,7 +1091,7 @@
     function renderLanding(){
       ensureSelectedDbFiles();
       sanitizeFilters();
-      const aq = activeQuestions();
+      const aq = activeVisibleQuestions();
       els.totalQuestionsHero.textContent=aq.length;
       els.totalSubjectsHero.textContent=countValues(q=>q.subject, aq).length;
       renderDbSelector();
@@ -954,8 +1113,14 @@
             <h2>${escapeHTML(item.value)}</h2>
             <p>${item.count} soru/kart · ${examCount} kurul/sınav grubu · ${teacherCount} hoca filtresi</p>
           </div>
-          <div class="course-meta"><span class="chip">${item.count} soru</span><span class="chip">Dersi aç</span></div>
+          <div class="course-meta">
+            <span class="chip">${item.count} soru</span>
+            <span class="chip">Dersi aç</span>
+            <button class="quiz-card-btn" type="button" data-subject="${escapeHTML(item.value)}">Quiz modu (${Math.min(30, item.count)})</button>
+          </div>
         `;
+        const quizBtn = card.querySelector(".quiz-card-btn");
+        quizBtn.addEventListener("click",(ev)=>{ev.stopPropagation(); startQuiz(item.value, 30);});
         card.addEventListener("click",()=>startCourse(item.value));
         card.addEventListener("keydown",ev=>{if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();startCourse(item.value);}});
         els.courseGrid.appendChild(card);
@@ -965,14 +1130,21 @@
       const wrongCount = activeWrongCount();
       els.wrongHomeBtn.disabled = wrongCount === 0;
       els.wrongHomeBtn.textContent = wrongCount ? `Yanlışlarımı aç (${wrongCount})` : "Yanlışlarımı aç";
+      const hiddenCount = hiddenQuestionCount();
+      els.hiddenHomeBtn.disabled = hiddenCount === 0;
+      els.hiddenHomeBtn.textContent = hiddenCount ? `Gizlenen soruları yönet (${hiddenCount})` : "Gizlenen soruları yönet";
+      els.quizAllBtn.disabled = aq.length === 0;
+      els.quizAllBtn.textContent = aq.length ? `Tüm dersler quiz modu (${Math.min(150, aq.length)})` : "Tüm dersler quiz modu";
     }
 
     function showLanding(){
+      stopQuizMode();
       els.landing.classList.remove("hidden"); els.appView.classList.remove("active");
       els.quizView.classList.remove("hidden"); els.listView.classList.remove("active");
       els.results.style.display="none"; window.scrollTo(0,0); renderLanding();
     }
     function startCourse(subject){
+      stopQuizMode();
       filters={subject:subject||"all", exam:"all", year:"all", teacher:"all", sourceGroup:"all", search:""};
       ensureCurrent(); els.landing.classList.add("hidden"); els.appView.classList.add("active");
       els.quizView.classList.remove("hidden"); els.listView.classList.remove("active");
@@ -995,7 +1167,7 @@
       setSelect(els.sourceGroupSelect, countValuesForOptions(q=>meta(q,"sourceGroup"),"sourceGroup"), "Tüm kaynak türleri", filters.sourceGroup);
       els.searchInput.value=filters.search;
       els.subjectButtons.innerHTML="";
-      els.subjectButtons.appendChild(makeFilterButton("Tüm dersler",activeQuestions().length,filters.subject==="all",()=>{filters.subject="all";ensureCurrent();render();},true));
+      els.subjectButtons.appendChild(makeFilterButton("Tüm dersler",activeVisibleQuestions().length,filters.subject==="all",()=>{filters.subject="all";ensureCurrent();render();},true));
       countValuesForOptions(q=>q.subject,"subject").forEach(item=>els.subjectButtons.appendChild(makeFilterButton(item.value,item.count,filters.subject===item.value,()=>{filters.subject=item.value;ensureCurrent();render();})));
     }
 
@@ -1007,7 +1179,7 @@
       }
       ensureCurrent();
       const q=questions[current], pos=idxs.indexOf(current), selected=answers[answerKey(q)], opts=optionList(q), answer=q.answer||{};
-      els.activeTitle.textContent=filters.subject!=="all"?filters.subject+" soru bankası":"Tüm dersler soru bankası";
+      els.activeTitle.textContent=quizActive ? quizTitle : (filters.subject!=="all"?filters.subject+" soru bankası":"Tüm dersler soru bankası");
       els.section.textContent=`${q.subject} · ${meta(q,"examGroup")||"Grup yok"} · ${meta(q,"year")||"Yıl yok"} · ${meta(q,"teacher")||"Hoca yok"} · ${meta(q,"topic")||"Konu yok"}`;
       const rows=[["Ders",q.subject],["Dosya",q._dbFile||""],["Kurul / sınav grubu",meta(q,"examGroup")],["Yıl / sene",meta(q,"year")],["Hoca",meta(q,"teacher")],["Konu",meta(q,"topic")],["Hedef / kazanım",meta(q,"target")],["Kaynak türü",meta(q,"sourceGroup")],["Kaynak",meta(q,"source")],["Kaynak soru no",meta(q,"sourceNo")],["Durum / güven",meta(q,"status")]];
       els.meta.innerHTML=rows.filter(([,v])=>String(v??"").trim()).map(([k,v])=>`<div><b>${escapeHTML(k)}:</b> ${escapeHTML(v)}</div>`).join("");
@@ -1047,6 +1219,7 @@
       els.prevBtn.disabled=pos<=0;
       els.nextBtn.disabled=false;
       els.nextBtn.textContent=pos===idxs.length-1?"Sonucu göster":"Sonraki";
+      if(els.hideQuestionBtn) els.hideQuestionBtn.disabled = !q || isHiddenQuestion(q);
       updateStats();
     }
 
@@ -1095,20 +1268,26 @@
     }
 
     function renderAllList(){
-      let idxs = filteredIndexes();
+      let idxs = listMode === "hidden"
+        ? questions.map((q,i)=>[q,i]).filter(([q]) => isDbActive(q) && isHiddenQuestion(q)).map(([,i])=>i)
+        : filteredIndexes();
       if (listMode === "wrong") idxs = idxs.filter(i => isWrongFromCache(questions[i]));
 
-      els.listTitle.textContent = listMode === "wrong"
-        ? "Yanlış yapılan sorular"
-        : (filters.subject !== "all" ? filters.subject + " · tüm sorular" : "Tüm dersler · tüm sorular");
+      els.listTitle.textContent = listMode === "hidden"
+        ? "Gizlenen sorular"
+        : (listMode === "wrong"
+          ? "Yanlış yapılan sorular"
+          : (filters.subject !== "all" ? filters.subject + " · tüm sorular" : "Tüm dersler · tüm sorular"));
 
-      els.listSubtitle.textContent = listMode === "wrong"
-        ? `${idxs.length} yanlış soru · kaydedilmiş cevaplarına göre`
-        : (els.activeFilterSummary.textContent || `${idxs.length} soru`);
+      els.listSubtitle.textContent = listMode === "hidden"
+        ? `${idxs.length} gizlenen soru · buradan yeniden görünür yapabilirsin`
+        : (listMode === "wrong"
+          ? `${idxs.length} yanlış soru · kaydedilmiş cevaplarına göre`
+          : (quizActive ? `${idxs.length} quiz sorusu` : (els.activeFilterSummary.textContent || `${idxs.length} soru`)));
 
       els.allList.innerHTML = "";
       if(!idxs.length){
-        els.allList.innerHTML = `<section class="panel status warn">${listMode === "wrong" ? "Seçili soru dosyalarında yanlış yaptığın soru bulunamadı." : "Bu filtreye uygun soru bulunamadı."}</section>`;
+        els.allList.innerHTML = `<section class="panel status warn">${listMode === "hidden" ? "Gizlenen soru bulunamadı." : (listMode === "wrong" ? "Seçili soru dosyalarında yanlış yaptığın soru bulunamadı." : "Bu filtreye uygun soru bulunamadı.")}</section>`;
         return;
       }
 
@@ -1130,6 +1309,9 @@
         const wrongNotes = listMode === "wrong"
           ? `<div class="wrong-answer-note"><b>Senin cevabın:</b> ${escapeHTML(cachedSelectedText(q))}</div><div class="correct-answer-note"><b>Doğru cevap:</b> ${escapeHTML(cachedCorrectText(q))}</div>`
           : "";
+        const cardActions = listMode === "hidden"
+          ? `<div class="all-q-actions"><button class="secondary unhide-question-btn" type="button" data-qid="${escapeHTML(q.id)}">Bu soruyu tekrar göster</button></div>`
+          : `<div class="all-q-actions"><button class="secondary hide-list-question-btn" type="button" data-qid="${escapeHTML(q.id)}">Bu soruyu bir daha gösterme</button></div>`;
 
         card.innerHTML = `
           <div class="all-q-meta">
@@ -1142,11 +1324,28 @@
           <div class="all-q-question">${escapeHTML(q.question || "")}</div>
           <div class="all-q-options">${optHtml}</div>
           ${wrongNotes}
+          ${cardActions}
+          ${listMode === "hidden" ? `<div class="hidden-manager-note">Bu soru gizlendiği için normal soru akışında ve quizlerde görünmez.</div>` : ""}
           ${info ? `<div class="all-q-info">${escapeHTML(info)}</div>` : ""}
         `;
         frag.appendChild(card);
       });
       els.allList.appendChild(frag);
+      els.allList.querySelectorAll(".hide-list-question-btn").forEach(btn=>{
+        btn.addEventListener("click",()=>{
+          hideQuestionById(btn.getAttribute("data-qid"));
+          renderAllList();
+          renderLanding();
+        });
+      });
+      els.allList.querySelectorAll(".unhide-question-btn").forEach(btn=>{
+        btn.addEventListener("click",()=>{
+          unhideQuestionById(btn.getAttribute("data-qid"));
+          renderAllList();
+          renderLanding();
+        });
+      });
+      if(els.restoreHiddenBtn) els.restoreHiddenBtn.style.display = listMode === "hidden" ? "" : "none";
     }
 
     function showListView(mode="all"){
@@ -1160,12 +1359,22 @@
     }
 
     function showWrongFromHome(){
+      stopQuizMode();
       filters={subject:"all", exam:"all", year:"all", teacher:"all", sourceGroup:"all", search:""};
       sanitizeFilters(); ensureCurrent();
       els.landing.classList.add("hidden");
       els.appView.classList.add("active");
       els.activeTitle.textContent="Yanlış yapılan sorular";
       showListView("wrong");
+    }
+
+    function showHiddenFromHome(){
+      stopQuizMode();
+      filters={subject:"all", exam:"all", year:"all", teacher:"all", sourceGroup:"all", search:""};
+      els.landing.classList.add("hidden");
+      els.appView.classList.add("active");
+      els.activeTitle.textContent="Gizlenen sorular";
+      showListView("hidden");
     }
 
     function showQuizView(){
@@ -1178,7 +1387,9 @@
 
     function render(){
       applyFontSize();
-      applyDesignMode(); renderFilters(); renderQuestion(); renderJumpGrid(); renderReview(); saveState();
+      applyDesignMode();
+      applyWideModes();
+      applyWideModes(); renderFilters(); renderQuestion(); renderJumpGrid(); renderReview(); saveState();
       if(els.listView.classList.contains("active")) renderAllList();
     }
 
@@ -1188,13 +1399,27 @@
       els.manualDbInput.addEventListener("change",async()=>{try{await loadManualDbFiles(els.manualDbInput.files);}catch(e){els.status.className="panel status warn"; els.status.innerHTML=`<b>Manuel database yüklenemedi:</b> ${escapeHTML(e.message)}`;}});
       els.continueBtn.addEventListener("click", continueLast);
       els.wrongHomeBtn.addEventListener("click", showWrongFromHome);
+      els.hiddenHomeBtn.addEventListener("click", showHiddenFromHome);
+      els.quizAllBtn.addEventListener("click",()=>startQuiz("all",150));
       els.startAllBtn.addEventListener("click",()=>startCourse("all"));
       els.backHomeBtn.addEventListener("click", showLanding);
       els.changeCourseBtn.addEventListener("click", showLanding);
+      els.wideQuestionBtn.addEventListener("click",()=>{
+        questionWideMode = !questionWideMode;
+        applyWideModes();
+        saveState();
+      });
       els.showAllBtn.addEventListener("click",()=>showListView("all"));
       els.compactHomeBtn.addEventListener("click", showLanding);
       els.compactShowAllBtn.addEventListener("click",()=>showListView("all"));
       els.backToQuizBtn.addEventListener("click", showQuizView);
+      els.wideListBtn.addEventListener("click",()=>{
+        listWideMode = !listWideMode;
+        applyWideModes();
+        saveState();
+        renderAllList();
+      });
+      els.restoreHiddenBtn.addEventListener("click", restoreAllHiddenQuestions);
       els.refreshListBtn.addEventListener("click", renderAllList);
       els.selectAllDbBtn.addEventListener("click",()=>{selectedDbFiles=dbFiles.map(f=>dbBaseName(f.name)); sanitizeFilters(); ensureCurrent(); saveState(); renderLanding();});
       els.clearDbBtn.addEventListener("click",()=>{selectedDbFiles=[]; sanitizeFilters(); saveState(); renderLanding();});
@@ -1211,9 +1436,21 @@
       els.prevBtn.addEventListener("click",()=>{const idxs=filteredIndexes(); const pos=idxs.indexOf(current); if(pos>0){current=idxs[pos-1]; render();}});
       els.nextBtn.addEventListener("click",()=>{const idxs=filteredIndexes(); const pos=idxs.indexOf(current); if(pos<idxs.length-1){current=idxs[pos+1]; render();}else renderResults();});
       els.showInfoBtn.addEventListener("click",()=>{infoOpen=!infoOpen; render();});
+      els.hideQuestionBtn.addEventListener("click",()=>{
+        const idxs=filteredIndexes();
+        if(!idxs.length) return;
+        const q=questions[current];
+        if(!q) return;
+        if(confirm("Bu soruyu bundan sonra normal akışta ve quizlerde gizlemek istiyor musun?")){
+          hideQuestionById(q.id);
+          ensureCurrent();
+          render();
+          renderLanding();
+        }
+      });
       els.clearCacheBtn.addEventListener("click",()=>{
         if(!confirm("Tüm cevaplar, filtreler ve kaldığın yer silinsin mi?")) return;
-        answers={}; current=0; filters={subject:"all",exam:"all",year:"all",teacher:"all",sourceGroup:"all",search:""}; infoOpen=false; listMode="all";
+        answers={}; current=0; filters={subject:"all",exam:"all",year:"all",teacher:"all",sourceGroup:"all",search:""}; infoOpen=false; listMode="all"; hiddenQuestionIds=[]; stopQuizMode();
         try{localStorage.removeItem(STORAGE_KEY);}catch(e){}
         els.results.style.display="none"; showLanding();
       });
