@@ -1132,6 +1132,15 @@
     function optionList(q){return Array.isArray(q.options) ? q.options : [];}
     function meta(q,key){return (q.metadata && q.metadata[key]) || "";}
     function answerKey(q){return q.id;}
+    async function fetchWithTimeout(url, options={}, timeoutMs=8000){
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), timeoutMs);
+      try{
+        return await fetch(url, {...options, signal: controller.signal});
+      }finally{
+        clearTimeout(timer);
+      }
+    }
 
     function aiAnswerObj(q){
       return q && q.aiAnswer && typeof q.aiAnswer === "object" ? q.aiAnswer : null;
@@ -1353,7 +1362,7 @@
         const apiPath = dir ? `/contents/${dir}` : `/contents`;
         const api = `https://api.github.com/repos/${info.owner}/${info.repo}${apiPath}`;
         try{
-          const res = await fetch(api, {headers: {"Accept":"application/vnd.github+json"}});
+          const res = await fetchWithTimeout(api, {headers: {"Accept":"application/vnd.github+json"}}, 6000);
           if (!res.ok) continue;
           const items = await res.json();
           if (!Array.isArray(items)) continue;
@@ -1370,7 +1379,7 @@
       for (const dir of DB_DIRS){
         const manifestUrl = dir ? `${dir}/manifest.json` : "manifest.json";
         try{
-          const res = await fetch(manifestUrl, {cache:"no-store"});
+          const res = await fetchWithTimeout(manifestUrl, {cache:"no-store"}, 5000);
           if (!res.ok) continue;
           const manifest = await res.json();
           const files = Array.isArray(manifest.files) ? manifest.files : [];
@@ -1389,16 +1398,29 @@
     async function listDbFilesBySequentialProbe(){
       const found = [];
       const candidates = [];
-      for (let i=1;i<=SEQUENTIAL_SCAN_MAX;i++){candidates.push(`soru${i}.db`);candidates.push(`soru${i}.sdb`);}
+      for (let i=1;i<=SEQUENTIAL_SCAN_MAX;i++){
+        candidates.push(`soru${i}.db`);
+        candidates.push(`soru${i}.sdb`);
+      }
+
+      const already = new Set();
       for (const dir of DB_DIRS){
-        const batchSize = 40;
+        const batchSize = 32;
         for (let start=0; start<candidates.length; start+=batchSize){
           const batch = candidates.slice(start,start+batchSize);
           await Promise.all(batch.map(async name => {
             const url = dir ? `${dir}/${encodeURIComponent(name)}` : encodeURIComponent(name);
+            const key = `${dir}/${name}`;
+            if(already.has(key)) return;
             try{
-              const res = await fetch(url, {cache:"no-store", method:"HEAD"});
-              if (res.ok) found.push({name:dir?`${dir}/${name}`:name, url, source:"sequential"});
+              let res = await fetchWithTimeout(url, {cache:"no-store", method:"HEAD"}, 2500);
+              if(!res.ok && (res.status === 403 || res.status === 405 || res.status === 0)){
+                res = await fetchWithTimeout(url, {cache:"no-store", headers: {"Range":"bytes=0-0"}}, 3000);
+              }
+              if (res.ok) {
+                already.add(key);
+                found.push({name:dir?`${dir}/${name}`:name, url, source:"sequential"});
+              }
             }catch(e){}
           }));
         }
@@ -1408,29 +1430,45 @@
     }
 
     async function discoverDbFiles(){
-      const merged = new Map();
+      const candidates = [];
       const errors = [];
+
       async function addFrom(fn,label){
         try{
           const list = await fn();
-          list.forEach(file => {const key=dbCanonicalName(file.name); if(!merged.has(key)) merged.set(key,{...file, displayName:dbDisplayName(file)});});
-        }catch(e){errors.push(label+": "+e.message);}
+          list.forEach(file => candidates.push({...file, canonicalName: dbCanonicalName(file.name)}));
+        }catch(e){
+          errors.push(label+": "+e.message);
+        }
       }
-      els.status.innerHTML = "Dosya listesi aranıyor: manifest, GitHub API ve soru1.db-soru500.db taraması deneniyor...";
+
+      els.status.classList.remove("hidden");
+      els.status.innerHTML = "Soru dosyaları aranıyor: manifest, GitHub ve soru1.db-soru500.db taraması yapılıyor...";
+
       await addFrom(listDbFilesFromManifest,"manifest");
       await addFrom(listDbFilesFromGithubApi,"github-api");
-      if (!merged.size) await addFrom(listDbFilesBySequentialProbe,"sequential");
-      const files=[...merged.values()].sort((a,b)=>a.name.localeCompare(b.name,"tr"));
-      if(!files.length) throw new Error(errors.join(" | "));
-      return files;
+      await addFrom(listDbFilesBySequentialProbe,"sequential");
+
+      if(!candidates.length) throw new Error(errors.join(" | "));
+      return candidates.sort((a,b)=>a.name.localeCompare(b.name,"tr"));
     }
 
     async function loadDbFile(file){
-      const res = await fetch(file.url, {cache:"no-store"});
+      const res = await fetchWithTimeout(file.url, {cache:"no-store"}, 15000);
       if(!res.ok) throw new Error(file.name+" okunamadı: HTTP "+res.status);
+
       let db;
-      try{db = await res.json();}catch(e){throw new Error(file.name+" JSON olarak okunamadı. Dosya gerçekten .db JSON formatında mı?");}
-      if(!db || !Array.isArray(db.questions)) throw new Error(file.name+" geçerli soru database dosyası değil. İçinde questions dizisi olmalı.");
+      try{
+        const text = await res.text();
+        db = JSON.parse(text);
+      }catch(e){
+        throw new Error(file.name+" JSON olarak okunamadı. Dosya gerçekten JSON tabanlı .db formatında mı?");
+      }
+
+      if(!db || !Array.isArray(db.questions)) {
+        throw new Error(file.name+" geçerli soru dosyası değil. İçinde questions dizisi olmalı.");
+      }
+
       return db.questions.map(q => ({...q, _dbFile:dbBaseName(file.name), _dbSource:file.source}));
     }
 
@@ -1447,6 +1485,7 @@
         all.push(...db.questions.map(q => ({...q, _dbFile:dbBaseName(file.name), _dbSource:"manual"})));
       }
       const duplicates=dedupeAndSetQuestions(all);
+      questionIndexById = new Map(questions.map((q,i)=>[q.id,i]));
       selectedDbFiles = dbFiles.map(f => dbBaseName(f.name));
       els.status.className = "panel status";
       els.status.innerHTML = `<b>${files.length}</b> manuel database dosyası yüklendi. <b>${activeQuestions().length}</b> benzersiz aktif soru kullanılıyor${duplicates ? `; ${duplicates} tekrar otomatik ayıklandı` : ""}.`;
@@ -2328,31 +2367,76 @@ ${body}
       });
     }
 
-    async function init(){
+    
+    async function loadCandidateGroups(candidates){
+      const groups = new Map();
+      candidates.forEach(file => {
+        const key = dbCanonicalName(file.name);
+        if(!groups.has(key)) groups.set(key, []);
+        groups.get(key).push(file);
+      });
+
+      const loadedFiles = [];
+      const all = [];
+      const loadErrors = [];
+      const priority = {"manifest":0, "github-api":1, "sequential":2, "manual":3};
+
+      for (const [key, files] of groups.entries()){
+        files.sort((a,b)=>(priority[a.source] ?? 9) - (priority[b.source] ?? 9));
+
+        let ok = false;
+        for (const file of files){
+          try{
+            const qs = await loadDbFile(file);
+            loadedFiles.push({name:dbBaseName(file.name), url:file.url, source:file.source});
+            all.push(...qs);
+            ok = true;
+            break;
+          }catch(e){
+            loadErrors.push(`${file.name}: ${e.message}`);
+          }
+        }
+        if(!ok) console.warn("Bu soru dosyası okunamadı:", key, files);
+      }
+
+      return {loadedFiles, all, loadErrors};
+    }
+
+async function init(){
       document.body.classList.remove("app-screen-active");
       bindEvents();
       loadState();
       applyFontSize();
       applyDesignMode();
       try{
-        dbFiles=await discoverDbFiles();
-        dbFiles=[...new Map(dbFiles.map(f=>[dbCanonicalName(f.name), {...f, name:dbBaseName(f.name)}])).values()];
-        const all=[];
-        for(const file of dbFiles) all.push(...await loadDbFile(file));
+        const candidates = await discoverDbFiles();
+        const loaded = await loadCandidateGroups(candidates);
+
+        if(!loaded.loadedFiles.length){
+          throw new Error("Dosya adı bulundu fakat hiçbir soru dosyası okunamadı. " + loaded.loadErrors.slice(0,6).join(" | "));
+        }
+
+        dbFiles=[...new Map(loaded.loadedFiles.map(f=>[dbCanonicalName(f.name), {...f, name:dbBaseName(f.name)}])).values()];
+        const all = loaded.all;
+
         els.status.innerHTML = "Sorular hazırlanıyor; benzer kayıtlar ayıklanıyor...";
         const duplicates=dedupeAndSetQuestions(all);
         questionIndexById = new Map(questions.map((q,i)=>[q.id,i]));
         ensureSelectedDbFiles();
         sanitizeFilters();
+
         els.status.className="panel status";
-        els.status.innerHTML=`<b>${dbFiles.length}</b> database dosyası yüklendi: ${[...new Set(dbFiles.map(f=>dbBaseName(f.name)))].map(escapeHTML).join(", ")}. <b>${questions.length}</b> benzersiz soru bulundu${duplicates?`; ${duplicates} aynı/benzer soru otomatik ayıklandı`:""}. Aktif database seçimine göre dersler güncellenir.`;
+        els.status.innerHTML=`<b>${dbFiles.length}</b> soru dosyası yüklendi: ${[...new Set(dbFiles.map(f=>dbBaseName(f.name)))].map(escapeHTML).join(", ")}. <b>${questions.length}</b> benzersiz soru bulundu${duplicates?`; ${duplicates} aynı/benzer soru otomatik ayıklandı`:""}.`;
         els.status.classList.add("hidden");
         els.manualDbBox.classList.add("hidden");
         renderLanding();
       }catch(e){
         els.status.className="panel status warn";
         els.status.classList.remove("hidden");
-        els.status.innerHTML=`<b>Dosya yüklenemedi:</b> ${escapeHTML(e.message)}<br><br>Dosyaları <b>db/soru1.db</b>, <b>db/soru2.db</b> şeklinde veya doğrudan kök dizinde <b>soru1.db</b>, <b>soru2.db</b> şeklinde tutabilirsin. GitHub Pages dışında dosyayı çift tıklayarak açarsan tarayıcı fetch erişimini engelleyebilir; bu durumda aşağıdan .db/.sdb dosyalarını manuel seçebilirsin.`;
+        els.status.innerHTML=`<b>Soru dosyası yüklenemedi:</b> ${escapeHTML(e.message)}<br><br>
+        <b>Kontrol:</b> Repository içinde <b>db/soru6.db</b> ve <b>db/soru7.db</b> dosyalarının gerçekten bulunduğundan emin ol. 
+        Bu sürüm manifest eski olsa bile <b>db/</b> ve kök dizindeki <b>soru1.db-soru500.db</b> dosyalarını ayrıca tarar.
+        Gerekirse aşağıdaki manuel yükleme alanından .db dosyalarını seçebilirsin.`;
         els.manualDbBox.classList.remove("hidden");
         renderLanding();
       }
