@@ -562,28 +562,73 @@
       .course-grid{grid-template-columns:1fr;}
     }
 
+  
+    /* Ders/soru ekranı açıkken ana sayfa üst bilgileri gizlenir. */
+    body.app-screen-active .hero,
+    body.app-screen-active #statusBox,
+    body.app-screen-active #manualDbBox{
+      display:none!important;
+    }
+    body.app-screen-active .wrap{
+      margin-top:8px;
+    }
+
+  
+    /* Ana sayfa ve soru ekranında gereksiz üst bilgiler kaldırıldı. */
+    body .hero{
+      display:none!important;
+    }
+    #statusBox.hidden{
+      display:none!important;
+    }
+    .landing{
+      margin-top:0;
+    }
+    .landing .course-grid{
+      margin-top:4px;
+    }
+    .landing .course-toolbar{
+      margin-top:12px;
+    }
+    body.app-screen-active .hero,
+    body.app-screen-active #statusBox,
+    body.app-screen-active #manualDbBox,
+    body.app-screen-active .top-nav,
+    body.app-screen-active .compact-actionbar,
+    body.app-screen-active .toolbar{
+      display:none!important;
+    }
+    body.app-screen-active .wrap{
+      margin-top:6px;
+    }
+    body.app-screen-active .quiz-view{
+      display:block;
+    }
+    body.app-screen-active .question-card{
+      margin-top:0!important;
+    }
+    body.app-screen-active .layout{
+      margin-top:0!important;
+    }
+
   </style>
 </head>
 <body class="font-normal">
   <main class="wrap">
-<section class="hero panel">
-      <div class="hero-main">
-        <h1>Tıp Dersleri Soru Bankası</h1>
-        <p class="subtitle">Çalışmak istediğin dersi seçerek soruları çözmeye başlayabilirsin.</p>
-</div>
-      <aside class="hero-side">
-        <div class="metric"><strong id="totalQuestionsHero">0</strong><span>Benzersiz soru</span></div>
-        <div class="metric"><strong id="totalSubjectsHero">0</strong><span>Ders</span></div>
-      </aside>
-    </section>
-
-    <section class="panel status warn" id="statusBox">Soru dosyaları yükleniyor...</section>
+    <div class="hidden" aria-hidden="true"><span id="totalQuestionsHero">0</span><span id="totalSubjectsHero">0</span></div>
+<section class="panel status warn hidden" id="statusBox">Soru dosyaları yükleniyor...</section>
     <section class="panel status warn hidden" id="manualDbBox">
       <b>Manuel database yükleme:</b> GitHub Pages dışında veya tarayıcı dosya erişimini engellediğinde .db/.sdb dosyalarını buradan seçebilirsin.
       <div style="margin-top:8px;"><input id="manualDbInput" type="file" accept=".db,.sdb,application/json" multiple></div>
     </section>
 
     <section class="landing" id="landing">
+
+      <section class="course-grid" id="courseGrid"></section>
+      
+      <section class="panel course-empty" id="courseEmpty">Bu aramayla eşleşen ders bulunamadı veya aktif database seçili değil.</section>
+
+      
 <section class="course-toolbar panel">
         <input class="search" id="courseSearch" placeholder="Ders ara: anatomi, fizyoloji, histoloji, biyokimya, mikrobiyoloji, biyofizik...">
         <button class="secondary" id="clearCourseSearch" type="button">Aramayı temizle</button>
@@ -593,8 +638,7 @@
         <button class="secondary" id="quizAllBtn" type="button">Tüm dersler quiz modu</button>
         <button class="primary" id="startAllBtn" type="button">Tüm derslerle başla</button>
       </section>
-      <section class="course-grid" id="courseGrid"></section>
-      <section class="panel course-empty" id="courseEmpty">Bu aramayla eşleşen ders bulunamadı veya aktif database seçili değil.</section>
+      
 
       <section class="settings-grid compact-settings-grid">
         <details class="panel settings-box collapsible-settings" id="dbSettingsDetails">
@@ -638,6 +682,7 @@
       </section>
 
       
+    
     </section>
 
     <section class="app-view" id="appView">
@@ -856,6 +901,7 @@
       return copy;
     }
     function startQuiz(subject, count){
+      document.body.classList.add("app-screen-active");
       const pool = activeVisibleQuestions().filter(q => !subject || subject === "all" || q.subject === subject);
       if(!pool.length){
         alert("Bu seçimde quiz için uygun soru yok. Gizlenen sorular veya aktif soru dosyası seçimini kontrol et.");
@@ -1387,6 +1433,7 @@
             quizActive = true;
             quizIds = chosen.map(q => q.id);
             quizTitle = `${item.value} · ${teacher} quiz modu · ${chosen.length} soru`;
+            document.body.classList.add("app-screen-active");
             filters = {subject:item.value, exam:"all", year:"all", teacher:teacher, sourceGroup:"all", search:""};
             const firstIndex = questions.findIndex(q => q.id === quizIds[0]);
             if(firstIndex >= 0) current = firstIndex;
@@ -1420,12 +1467,15 @@
 
     function showLanding(){
       stopQuizMode();
+      document.body.classList.remove("app-screen-active");
       els.landing.classList.remove("hidden"); els.appView.classList.remove("active");
       els.quizView.classList.remove("hidden"); els.listView.classList.remove("active");
       els.results.style.display="none"; window.scrollTo(0,0); renderLanding();
     }
     function startCourseWithTeacher(subject, teacher){
       stopQuizMode();
+      document.body.classList.add("app-screen-active");
+      document.body.classList.add("app-screen-active");
       filters={subject:subject||"all", exam:"all", year:"all", teacher:teacher||"all", sourceGroup:"all", search:""};
       ensureCurrent();
       els.landing.classList.add("hidden");
@@ -1442,17 +1492,20 @@
 
     function startCourse(subject){
       stopQuizMode();
+      document.body.classList.add("app-screen-active");
+      document.body.classList.add("app-screen-active");
       filters={subject:subject||"all", exam:"all", year:"all", teacher:"all", sourceGroup:"all", search:""};
       ensureCurrent(); els.landing.classList.add("hidden"); els.appView.classList.add("active");
       els.quizView.classList.remove("hidden"); els.listView.classList.remove("active");
       els.activeTitle.textContent=subject&&subject!=="all"?subject+" soru bankası":"Tüm dersler soru bankası";
-      els.results.style.display="none"; render(); window.scrollTo(0,0);
+      els.results.style.display="none"; render(); scrollToQuestion();
     }
     function continueLast(){
+      document.body.classList.add("app-screen-active");
       sanitizeFilters(); ensureCurrent(); els.landing.classList.add("hidden"); els.appView.classList.add("active");
       els.quizView.classList.remove("hidden"); els.listView.classList.remove("active");
       els.activeTitle.textContent=filters.subject&&filters.subject!=="all"?filters.subject+" soru bankası":"Tüm dersler soru bankası";
-      els.results.style.display="none"; render(); window.scrollTo(0,0);
+      els.results.style.display="none"; render(); scrollToQuestion();
     }
 
     function renderFilters(){
@@ -1777,6 +1830,8 @@ ${body}
 
     function showWrongFromHome(){
       stopQuizMode();
+      document.body.classList.add("app-screen-active");
+      document.body.classList.add("app-screen-active");
       filters={subject:"all", exam:"all", year:"all", teacher:"all", sourceGroup:"all", search:""};
       sanitizeFilters(); ensureCurrent();
       els.landing.classList.add("hidden");
@@ -1787,6 +1842,8 @@ ${body}
 
     function showHiddenFromHome(){
       stopQuizMode();
+      document.body.classList.add("app-screen-active");
+      document.body.classList.add("app-screen-active");
       filters={subject:"all", exam:"all", year:"all", teacher:"all", sourceGroup:"all", search:""};
       els.landing.classList.add("hidden");
       els.appView.classList.add("active");
@@ -1891,6 +1948,7 @@ ${body}
     }
 
     async function init(){
+      document.body.classList.remove("app-screen-active");
       bindEvents();
       loadState();
       applyFontSize();
@@ -1907,10 +1965,12 @@ ${body}
         sanitizeFilters();
         els.status.className="panel status";
         els.status.innerHTML=`<b>${dbFiles.length}</b> database dosyası yüklendi: ${[...new Set(dbFiles.map(f=>dbBaseName(f.name)))].map(escapeHTML).join(", ")}. <b>${questions.length}</b> benzersiz soru bulundu${duplicates?`; ${duplicates} aynı/benzer soru otomatik ayıklandı`:""}. Aktif database seçimine göre dersler güncellenir.`;
+        els.status.classList.add("hidden");
         els.manualDbBox.classList.add("hidden");
         renderLanding();
       }catch(e){
         els.status.className="panel status warn";
+        els.status.classList.remove("hidden");
         els.status.innerHTML=`<b>Dosya yüklenemedi:</b> ${escapeHTML(e.message)}<br><br>Dosyaları <b>db/soru1.db</b>, <b>db/soru2.db</b> şeklinde veya doğrudan kök dizinde <b>soru1.db</b>, <b>soru2.db</b> şeklinde tutabilirsin. GitHub Pages dışında dosyayı çift tıklayarak açarsan tarayıcı fetch erişimini engelleyebilir; bu durumda aşağıdan .db/.sdb dosyalarını manuel seçebilirsin.`;
         els.manualDbBox.classList.remove("hidden");
         renderLanding();
