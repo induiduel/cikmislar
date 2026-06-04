@@ -163,6 +163,8 @@
     .all-q-option{padding:7px 8px;border-radius:10px;border:1px solid var(--line);background:#fff;line-height:1.45;white-space:pre-wrap;font-size:var(--opt-font)}
     .all-q-option.correct{background:var(--okbg);border-color:rgba(18,99,58,.35);color:#14532d;font-weight:780}
     .all-q-info{margin-top:8px;font-size:12px;color:#475467;line-height:1.45;white-space:pre-wrap}
+    .wrong-answer-note{margin-top:8px;padding:8px 9px;border-radius:10px;background:var(--badbg);border:1px solid rgba(166,29,53,.22);color:var(--bad);font-size:12px;line-height:1.4}
+    .correct-answer-note{margin-top:6px;padding:8px 9px;border-radius:10px;background:var(--okbg);border:1px solid rgba(18,99,58,.22);color:var(--ok);font-size:12px;line-height:1.4}
     @media (max-width:980px){
       .hero,.layout,.result-head,.settings-grid{grid-template-columns:1fr}
       .course-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -192,8 +194,8 @@
 <body class="font-normal">
   <main class="wrap">
     <section class="version-banner">
-      <div><b>Index sürümü:</b> STABIL-COK-IYI-DB-LOADER-v1.0<br>Temel alınan dosya: çok iyi index.html | Database loader korunmuştur | Yanlışlar/boş bırak eklentileri bu stabil sürümde devre dışıdır</div>
-      <span class="version-pill">DB çalışan stabil sürüm</span>
+      <div><b>Index sürümü:</b> STABIL-COK-IYI-DB-LOADER-v1.1-WRONG-CACHE<br>Temel alınan dosya: çok iyi index.html | Database loader korunmuştur | Yanlışlar sayfası yalnızca localStorage önbelleğinden okunur | DB dosyalarına dokunulmaz</div>
+      <span class="version-pill">DB stabil + yanlışlar önbelleği</span>
     </section>
 
     <section class="hero panel">
@@ -207,6 +209,7 @@
           <span class="chip">Database seçimi</span>
           <span class="chip">Küçük/normal/büyük font</span>
           <span class="chip">Tek soru ve tüm soru liste görünümü</span>
+          <span class="chip">Yanlışlar önbellekten</span>
           <span class="chip">Tekrar önleme</span>
         </div>
       </div>
@@ -253,6 +256,7 @@
         <input class="search" id="courseSearch" placeholder="Ders ara: anatomi, fizyoloji, histoloji, biyokimya, mikrobiyoloji, biyofizik...">
         <button class="secondary" id="clearCourseSearch" type="button">Aramayı temizle</button>
         <button class="secondary" id="continueBtn" type="button">Kaldığım yerden devam et</button>
+        <button class="secondary" id="wrongHomeBtn" type="button">Yanlışlarımı aç</button>
         <button class="primary" id="startAllBtn" type="button">Tüm derslerle başla</button>
       </section>
       <section class="course-grid" id="courseGrid"></section>
@@ -380,6 +384,7 @@
     let current = 0;
     let filters = {subject:"all", exam:"all", year:"all", teacher:"all", sourceGroup:"all", search:""};
     let infoOpen = false;
+    let listMode = "all";
     let selectedDbFiles = [];
     let fontSize = "normal";
 
@@ -387,7 +392,7 @@
     const els = {
       landing:$("landing"), appView:$("appView"), quizView:$("quizView"), listView:$("listView"),
       courseGrid:$("courseGrid"), courseEmpty:$("courseEmpty"), courseSearch:$("courseSearch"),
-      clearCourseSearch:$("clearCourseSearch"), continueBtn:$("continueBtn"), startAllBtn:$("startAllBtn"),
+      clearCourseSearch:$("clearCourseSearch"), continueBtn:$("continueBtn"), wrongHomeBtn:$("wrongHomeBtn"), startAllBtn:$("startAllBtn"),
       backHomeBtn:$("backHomeBtn"), changeCourseBtn:$("changeCourseBtn"), activeTitle:$("activeTitle"),
       showAllBtn:$("showAllBtn"), backToQuizBtn:$("backToQuizBtn"), refreshListBtn:$("refreshListBtn"),
       listTitle:$("listTitle"), listSubtitle:$("listSubtitle"), allList:$("allList"),
@@ -411,6 +416,42 @@
     function optionList(q){return Array.isArray(q.options) ? q.options : [];}
     function meta(q,key){return (q.metadata && q.metadata[key]) || "";}
     function answerKey(q){return q.id;}
+
+    function numericAnswerValue(value){
+      if (typeof value === "number" && Number.isFinite(value)) return value;
+      if (typeof value === "string" && value.trim() !== "" && Number.isFinite(Number(value))) return Number(value);
+      return null;
+    }
+    function correctAnswerIndex(q){
+      const idx = q && q.answer ? q.answer.index : null;
+      return (typeof idx === "number" && Number.isFinite(idx) && idx >= 0) ? idx : null;
+    }
+    function isWrongFromCache(q){
+      if (!q || !q.id) return false;
+      const cached = answers[answerKey(q)];
+      const selected = numericAnswerValue(cached);
+      const correct = correctAnswerIndex(q);
+      if (selected === null || correct === null) return false;
+      return selected !== correct;
+    }
+    function cachedSelectedText(q){
+      const selected = numericAnswerValue(answers[answerKey(q)]);
+      const opts = optionList(q);
+      if (selected === null) return "Kayıt yok";
+      if (opts[selected]) return `${opts[selected].letter || String.fromCharCode(65+selected)}) ${opts[selected].text || ""}`;
+      return `Seçilen indeks: ${selected}`;
+    }
+    function cachedCorrectText(q){
+      const correct = correctAnswerIndex(q);
+      const opts = optionList(q);
+      const ans = q && q.answer ? q.answer : {};
+      if (correct !== null && opts[correct]) return `${opts[correct].letter || String.fromCharCode(65+correct)}) ${opts[correct].text || ""}`;
+      return ans.raw || ans.text || "Cevap anahtarı yok";
+    }
+    function activeWrongCount(){
+      return activeQuestions().filter(q => isWrongFromCache(q)).length;
+    }
+
     function activeDbSet(){return new Set(selectedDbFiles.map(dbCanonicalName));}
 
     function dbBaseName(name){
@@ -720,6 +761,9 @@
       });
       els.courseEmpty.style.display=filtered.length?"none":"block";
       els.continueBtn.disabled=!aq.length;
+      const wrongCount = activeWrongCount();
+      els.wrongHomeBtn.disabled = wrongCount === 0;
+      els.wrongHomeBtn.textContent = wrongCount ? `Yanlışlarımı aç (${wrongCount})` : "Yanlışlarımı aç";
     }
 
     function showLanding(){
@@ -850,24 +894,42 @@
     }
 
     function renderAllList(){
-      const idxs = filteredIndexes();
-      els.listTitle.textContent = filters.subject !== "all" ? filters.subject + " · tüm sorular" : "Tüm dersler · tüm sorular";
-      els.listSubtitle.textContent = els.activeFilterSummary.textContent || `${idxs.length} soru`;
+      let idxs = filteredIndexes();
+      if (listMode === "wrong") idxs = idxs.filter(i => isWrongFromCache(questions[i]));
+
+      els.listTitle.textContent = listMode === "wrong"
+        ? "Yanlış yapılan sorular"
+        : (filters.subject !== "all" ? filters.subject + " · tüm sorular" : "Tüm dersler · tüm sorular");
+
+      els.listSubtitle.textContent = listMode === "wrong"
+        ? `${idxs.length} yanlış soru · yalnızca localStorage önbelleğindeki cevaplardan hesaplandı`
+        : (els.activeFilterSummary.textContent || `${idxs.length} soru`);
+
       els.allList.innerHTML = "";
       if(!idxs.length){
-        els.allList.innerHTML = `<section class="panel status warn">Bu filtreye uygun soru bulunamadı.</section>`;
+        els.allList.innerHTML = `<section class="panel status warn">${listMode === "wrong" ? "Aktif database seçimine göre önbellekte yanlış yapılmış soru bulunamadı. Sadece işaretlenmiş ve yanlış olduğu hesaplanabilen sorular listelenir." : "Bu filtreye uygun soru bulunamadı."}</section>`;
         return;
       }
+
       const frag = document.createDocumentFragment();
       idxs.forEach((i, pos) => {
         const q = questions[i], opts = optionList(q), ans = q.answer || {};
         const card = document.createElement("article");
         card.className = "all-q-card";
+
         const optHtml = opts.length ? opts.map((opt, idx) => {
           const isCorrect = ans.index !== null && ans.index !== undefined && idx === ans.index;
-          return `<div class="all-q-option ${isCorrect ? "correct" : ""}"><b>${escapeHTML(opt.letter || String.fromCharCode(65+idx))})</b> ${escapeHTML(opt.text || "")}</div>`;
+          const selected = numericAnswerValue(answers[answerKey(q)]);
+          const isSelectedWrong = listMode === "wrong" && selected !== null && idx === selected && !isCorrect;
+          return `<div class="all-q-option ${isCorrect ? "correct" : ""}" style="${isSelectedWrong ? "background:var(--badbg);border-color:rgba(166,29,53,.35);color:var(--bad);font-weight:780;" : ""}"><b>${escapeHTML(opt.letter || String.fromCharCode(65+idx))})</b> ${escapeHTML(opt.text || "")}</div>`;
         }).join("") : `<div class="all-q-option correct"><b>Cevap:</b> ${escapeHTML(ans.raw || ans.text || "")}</div>`;
+
         const info = [q.explanation ? "Açıklama: " + q.explanation : "", q.spot ? "Spot: " + q.spot : "", ans.raw ? "Cevap anahtarı: " + ans.raw : ""].filter(Boolean).join("\n");
+
+        const wrongNotes = listMode === "wrong"
+          ? `<div class="wrong-answer-note"><b>Senin cevabın:</b> ${escapeHTML(cachedSelectedText(q))}</div><div class="correct-answer-note"><b>Doğru cevap:</b> ${escapeHTML(cachedCorrectText(q))}</div>`
+          : "";
+
         card.innerHTML = `
           <div class="all-q-meta">
             <span class="chip">${pos+1}. soru</span>
@@ -878,6 +940,7 @@
           </div>
           <div class="all-q-question">${escapeHTML(q.question || "")}</div>
           <div class="all-q-options">${optHtml}</div>
+          ${wrongNotes}
           ${info ? `<div class="all-q-info">${escapeHTML(info)}</div>` : ""}
         `;
         frag.appendChild(card);
@@ -885,7 +948,8 @@
       els.allList.appendChild(frag);
     }
 
-    function showListView(){
+    function showListView(mode="all"){
+      listMode = mode;
       render();
       els.quizView.classList.add("hidden");
       els.listView.classList.add("active");
@@ -894,7 +958,17 @@
       window.scrollTo(0,0);
     }
 
+    function showWrongFromHome(){
+      filters={subject:"all", exam:"all", year:"all", teacher:"all", sourceGroup:"all", search:""};
+      sanitizeFilters(); ensureCurrent();
+      els.landing.classList.add("hidden");
+      els.appView.classList.add("active");
+      els.activeTitle.textContent="Yanlış yapılan sorular";
+      showListView("wrong");
+    }
+
     function showQuizView(){
+      listMode = "all";
       els.listView.classList.remove("active");
       els.quizView.classList.remove("hidden");
       render();
@@ -911,10 +985,11 @@
       els.clearCourseSearch.addEventListener("click",()=>{els.courseSearch.value=""; renderLanding(); els.courseSearch.focus();});
       els.manualDbInput.addEventListener("change",async()=>{try{await loadManualDbFiles(els.manualDbInput.files);}catch(e){els.status.className="panel status warn"; els.status.innerHTML=`<b>Manuel database yüklenemedi:</b> ${escapeHTML(e.message)}`;}});
       els.continueBtn.addEventListener("click", continueLast);
+      els.wrongHomeBtn.addEventListener("click", showWrongFromHome);
       els.startAllBtn.addEventListener("click",()=>startCourse("all"));
       els.backHomeBtn.addEventListener("click", showLanding);
       els.changeCourseBtn.addEventListener("click", showLanding);
-      els.showAllBtn.addEventListener("click", showListView);
+      els.showAllBtn.addEventListener("click",()=>showListView("all"));
       els.backToQuizBtn.addEventListener("click", showQuizView);
       els.refreshListBtn.addEventListener("click", renderAllList);
       els.selectAllDbBtn.addEventListener("click",()=>{selectedDbFiles=dbFiles.map(f=>dbBaseName(f.name)); sanitizeFilters(); ensureCurrent(); saveState(); renderLanding();});
@@ -933,7 +1008,7 @@
       els.showInfoBtn.addEventListener("click",()=>{infoOpen=!infoOpen; render();});
       els.clearCacheBtn.addEventListener("click",()=>{
         if(!confirm("Tüm cevaplar, filtreler ve kaldığın yer silinsin mi?")) return;
-        answers={}; current=0; filters={subject:"all",exam:"all",year:"all",teacher:"all",sourceGroup:"all",search:""}; infoOpen=false;
+        answers={}; current=0; filters={subject:"all",exam:"all",year:"all",teacher:"all",sourceGroup:"all",search:""}; infoOpen=false; listMode="all";
         try{localStorage.removeItem(STORAGE_KEY);}catch(e){}
         els.results.style.display="none"; showLanding();
       });
