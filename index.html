@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Tıp Dersleri Soru Bankası</title>
+  <title>Etkileşimli Soru Bankası</title>
   <style>
     :root{
       --bg:#f5f7fb;--text:#101828;--muted:#667085;--line:#dbe4f0;
@@ -31,19 +31,6 @@
     body.font-large{
       --q-font:21px; --opt-font:16px; --ui-font:15.5px; --meta-font:13px; --card-title:25px; --h1-size:40px; --line-q:1.66;
     }
-    .version-banner{
-      display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
-      padding:10px 12px;margin-bottom:12px;border-radius:14px;
-      background:#fff7df;border:1px solid rgba(122,79,8,.22);color:#573a09;
-      font-size:12.5px;line-height:1.35;
-    }
-    .version-banner b{color:#7a4f08}
-    .version-pill{
-      display:inline-flex;align-items:center;padding:5px 8px;border-radius:999px;
-      background:#fff;border:1px solid rgba(122,79,8,.18);font-weight:900;color:#7a4f08;
-      white-space:nowrap;
-    }
-    
     .wrap{width:min(1240px,calc(100% - 22px));margin:14px auto 32px}
     .panel{background:rgba(255,255,255,.94);border:1px solid rgba(219,228,240,.96);border-radius:var(--radius);box-shadow:var(--shadow);backdrop-filter:blur(8px)}
     .hero{display:grid;grid-template-columns:minmax(0,1.2fr) 310px;gap:12px;margin-bottom:12px}
@@ -193,33 +180,27 @@
 </head>
 <body class="font-normal">
   <main class="wrap">
-    <section class="version-banner">
-      <div><b>Index sürümü:</b> STABIL-COK-IYI-DB-LOADER-v1.1-WRONG-CACHE<br>Temel alınan dosya: çok iyi index.html | Database loader korunmuştur | Yanlışlar sayfası yalnızca localStorage önbelleğinden okunur | DB dosyalarına dokunulmaz</div>
-      <span class="version-pill">DB stabil + yanlışlar önbelleği</span>
-    </section>
-
-    <section class="hero panel">
+<section class="hero panel">
       <div class="hero-main">
         <h1>Tıp Dersleri Soru Bankası</h1>
         <p class="subtitle">
-          Önce aktif database dosyalarını ve çalışmak istediğin dersi seç. Bu sürümde çalışan database okuma sistemi korunmuştur. Sorular <b>db/</b> klasöründen veya kök dizindeki <b>soru1.db, soru2.db...</b> dosyalarından okunur.
-          Filtreler ve ders kartları aktif database seçimine göre canlı güncellenir.
+          Önce kullanmak istediğin soru dosyalarını ve çalışmak istediğin dersi seç. Benzer veya tekrarlayan sorular otomatik ayıklanır.
         </p>
         <div class="chips">
-          <span class="chip">Database seçimi</span>
-          <span class="chip">Küçük/normal/büyük font</span>
-          <span class="chip">Tek soru ve tüm soru liste görünümü</span>
-          <span class="chip">Yanlışlar önbellekten</span>
-          <span class="chip">Tekrar önleme</span>
+          <span class="chip">Soru dosyası seçimi</span>
+          <span class="chip">Yazı boyutu ayarı</span>
+          <span class="chip">Tek soru / liste görünümü</span>
+          <span class="chip">Yanlışlarım</span>
+          <span class="chip">Benzer soru ayıklama</span>
         </div>
       </div>
       <aside class="hero-side">
-        <div class="metric"><strong id="totalQuestionsHero">0</strong><span>Aktif benzersiz soru</span></div>
-        <div class="metric"><strong id="totalSubjectsHero">0</strong><span>Aktif ders</span></div>
+        <div class="metric"><strong id="totalQuestionsHero">0</strong><span>Benzersiz soru</span></div>
+        <div class="metric"><strong id="totalSubjectsHero">0</strong><span>Ders</span></div>
       </aside>
     </section>
 
-    <section class="panel status warn" id="statusBox">Database dosyaları yükleniyor...</section>
+    <section class="panel status warn" id="statusBox">Dosya dosyaları yükleniyor...</section>
     <section class="panel status warn hidden" id="manualDbBox">
       <b>Manuel database yükleme:</b> GitHub Pages dışında veya tarayıcı dosya erişimini engellediğinde .db/.sdb dosyalarını buradan seçebilirsin.
       <div style="margin-top:8px;"><input id="manualDbInput" type="file" accept=".db,.sdb,application/json" multiple></div>
@@ -228,8 +209,8 @@
     <section class="landing" id="landing">
       <section class="settings-grid">
         <div class="panel settings-box">
-          <h3 class="settings-title">Aktif database dosyaları</h3>
-          <p class="subtitle" style="margin-bottom:8px;">Sadece seçili database dosyalarındaki sorular kullanılır. Yeni dosya eklediğinde burada ayrıca seçebilirsin.</p>
+          <h3 class="settings-title">Aktif soru dosyaları</h3>
+          <p class="subtitle" style="margin-bottom:8px;">Sadece seçili soru dosyalarındaki sorular kullanılır. Birden fazla dosyada benzer soru varsa tek kez gösterilir.</p>
           <div class="db-list" id="dbList"></div>
           <div class="db-actions">
             <button class="secondary" id="selectAllDbBtn" type="button">Tümünü seç</button>
@@ -547,7 +528,7 @@
           list.forEach(file => {const key=dbCanonicalName(file.name); if(!merged.has(key)) merged.set(key,{...file, displayName:dbDisplayName(file)});});
         }catch(e){errors.push(label+": "+e.message);}
       }
-      els.status.innerHTML = "Database listesi aranıyor: manifest, GitHub API ve soru1.db-soru500.db taraması deneniyor...";
+      els.status.innerHTML = "Dosya listesi aranıyor: manifest, GitHub API ve soru1.db-soru500.db taraması deneniyor...";
       await addFrom(listDbFilesFromManifest,"manifest");
       await addFrom(listDbFilesFromGithubApi,"github-api");
       if (!merged.size) await addFrom(listDbFilesBySequentialProbe,"sequential");
@@ -585,21 +566,114 @@
       sanitizeFilters(); saveState(); renderLanding();
     }
 
+    
+    function normalizeQuestionTextForDedupe(value){
+      let s = String(value ?? "").toLocaleLowerCase("tr-TR");
+      try { s = s.normalize("NFKD").replace(/[\u0300-\u036f]/g, ""); } catch(e) {}
+      s = s
+        .replace(/ı/g, "i")
+        .replace(/[abcde]\s*\)/g, " ")
+        .replace(/\b(i|ii|iii|iv|v|vi|vii|viii|ix|x)\s*[\.\)]/g, " ")
+        .replace(/[^a-z0-9çğıöşü\s]/gi, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+      return s;
+    }
+
+    function dedupeSignature(q){
+      const optionText = optionList(q).map(o => o && o.text ? o.text : "").join(" ");
+      return normalizeQuestionTextForDedupe([q.question || "", optionText].join(" "));
+    }
+
+    function tokenSet(value){
+      const stop = new Set(["ve","veya","ile","icin","hangisi","asagidakilerden","degildir","dogrudur","olan","olarak","en","bir","bu","da","de","mi","midir","nedir"]);
+      return new Set(normalizeQuestionTextForDedupe(value).split(" ").filter(t => t.length > 1 && !stop.has(t)));
+    }
+
+    function jaccardSimilarity(a, b){
+      if (!a.size && !b.size) return 1;
+      let inter = 0;
+      a.forEach(x => { if (b.has(x)) inter++; });
+      const union = a.size + b.size - inter;
+      return union ? inter / union : 0;
+    }
+
+    function isNearDuplicateQuestion(a, b){
+      if (!a || !b) return false;
+
+      // Aynı dosya içindeki soruları agresif şekilde silmemek için asıl hedef farklı soru dosyalarıdır.
+      if (a._dbFile && b._dbFile && dbCanonicalName(a._dbFile) === dbCanonicalName(b._dbFile)) return false;
+
+      const sigA = dedupeSignature(a);
+      const sigB = dedupeSignature(b);
+      if (!sigA || !sigB) return false;
+      if (sigA === sigB) return true;
+
+      const lenRatio = Math.min(sigA.length, sigB.length) / Math.max(sigA.length, sigB.length);
+      if (lenRatio < 0.72) return false;
+
+      const sim = jaccardSimilarity(tokenSet(sigA), tokenSet(sigB));
+      return sim >= 0.90;
+    }
+
+    function dedupeKeyBucket(q){
+      const subject = normalizeQuestionTextForDedupe(q.subject || "genel");
+      const tokens = Array.from(tokenSet(dedupeSignature(q))).slice(0, 6).sort().join("|");
+      return subject + "::" + tokens.slice(0, 80);
+    }
+
+
     function fallbackId(q){
       try{return "qid_"+btoa(unescape(encodeURIComponent([q.subject,q.question,JSON.stringify(q.options),JSON.stringify(q.answer)].join("|")))).slice(0,24).replace(/[^a-zA-Z0-9]/g,"");}
       catch(e){return "qid_"+Math.random().toString(36).slice(2);}
     }
 
     function dedupeAndSetQuestions(all){
-      const map = new Map();
+      const exactMap = new Map();
+      const kept = [];
+      const buckets = new Map();
       let duplicates = 0;
+      let nearDuplicates = 0;
+
       all.forEach(q => {
         if(!q.id) q.id = fallbackId(q);
-        if(map.has(q.id)) duplicates++;
-        else map.set(q.id,q);
+
+        // 1) Aynı ID birebir tekrar ise sil.
+        if(exactMap.has(q.id)){
+          duplicates++;
+          return;
+        }
+
+        // 2) Farklı database dosyalarında %90 ve üzeri benzer soru varsa tekrar listeleme.
+        const bucket = dedupeKeyBucket(q);
+        const possibleBuckets = [bucket];
+
+        // Çok kısa/bozuk bucketlarda kaçırmamak için aynı dersteki son kayıtların küçük bir kısmı da kontrol edilir.
+        const localCandidates = [];
+        possibleBuckets.forEach(b => {
+          if (buckets.has(b)) localCandidates.push(...buckets.get(b));
+        });
+
+        if (localCandidates.length < 10) {
+          const sameSubjectRecent = kept.filter(x => normalizeQuestionTextForDedupe(x.subject || "") === normalizeQuestionTextForDedupe(q.subject || "")).slice(-80);
+          localCandidates.push(...sameSubjectRecent);
+        }
+
+        const near = localCandidates.some(prev => isNearDuplicateQuestion(prev, q));
+        if(near){
+          nearDuplicates++;
+          return;
+        }
+
+        exactMap.set(q.id, q);
+        kept.push(q);
+        if(!buckets.has(bucket)) buckets.set(bucket, []);
+        buckets.get(bucket).push(q);
       });
-      questions = [...map.values()];
-      return duplicates;
+
+      questions = kept;
+      window.__lastDedupeStats = {duplicates, nearDuplicates};
+      return duplicates + nearDuplicates;
     }
 
     function saveState(){
@@ -801,14 +875,14 @@
     function renderQuestion(){
       const idxs=filteredIndexes();
       if(!idxs.length){
-        els.section.textContent="Soru bulunamadı"; els.meta.innerHTML=""; els.question.textContent=questions.length?"Seçili filtrelerle veya aktif database seçimiyle eşleşen soru yok.":"Database dosyası yüklenemedi veya soru bulunamadı.";
+        els.section.textContent="Soru bulunamadı"; els.meta.innerHTML=""; els.question.textContent=questions.length?"Seçili filtrelerle veya aktif database seçimiyle eşleşen soru yok.":"Dosya dosyası yüklenemedi veya soru bulunamadı.";
         els.options.innerHTML=""; els.feedback.className="feedback"; els.feedback.innerHTML=""; els.infoBox.className="info-box"; els.infoBox.innerHTML=""; els.prevBtn.disabled=true; els.nextBtn.disabled=true; updateStats(); return;
       }
       ensureCurrent();
       const q=questions[current], pos=idxs.indexOf(current), selected=answers[answerKey(q)], opts=optionList(q), answer=q.answer||{};
       els.activeTitle.textContent=filters.subject!=="all"?filters.subject+" soru bankası":"Tüm dersler soru bankası";
       els.section.textContent=`${q.subject} · ${meta(q,"examGroup")||"Grup yok"} · ${meta(q,"year")||"Yıl yok"} · ${meta(q,"teacher")||"Hoca yok"} · ${meta(q,"topic")||"Konu yok"}`;
-      const rows=[["Ders",q.subject],["Database",q._dbFile||""],["Kurul / sınav grubu",meta(q,"examGroup")],["Yıl / sene",meta(q,"year")],["Hoca",meta(q,"teacher")],["Konu",meta(q,"topic")],["Hedef / kazanım",meta(q,"target")],["Kaynak türü",meta(q,"sourceGroup")],["Kaynak",meta(q,"source")],["Kaynak soru no",meta(q,"sourceNo")],["Durum / güven",meta(q,"status")]];
+      const rows=[["Ders",q.subject],["Dosya",q._dbFile||""],["Kurul / sınav grubu",meta(q,"examGroup")],["Yıl / sene",meta(q,"year")],["Hoca",meta(q,"teacher")],["Konu",meta(q,"topic")],["Hedef / kazanım",meta(q,"target")],["Kaynak türü",meta(q,"sourceGroup")],["Kaynak",meta(q,"source")],["Kaynak soru no",meta(q,"sourceNo")],["Durum / güven",meta(q,"status")]];
       els.meta.innerHTML=rows.filter(([,v])=>String(v??"").trim()).map(([k,v])=>`<div><b>${escapeHTML(k)}:</b> ${escapeHTML(v)}</div>`).join("");
       els.question.textContent=q.question||"";
       els.options.innerHTML="";
@@ -880,7 +954,7 @@
         const correctBody=ans.index!==null&&ans.index!==undefined&&opts[ans.index]?`${opts[ans.index].letter}) ${opts[ans.index].text}`:(ans.raw||ans.text||"");
         const item=document.createElement("div");
         item.className="review-item";
-        item.innerHTML=`<div class="small"><b>${i+1}. soru</b> · ${escapeHTML(q.subject)} · ${escapeHTML(meta(q,"examGroup"))} · ${escapeHTML(meta(q,"topic"))}</div><div class="q">${escapeHTML(q.question)}</div><div class="small"><b>Senin cevabın:</b> ${escapeHTML(selectedText)}</div><div class="small"><b>Doğru cevap:</b> ${escapeHTML(correctBody)}</div><div class="small"><b>Database:</b> ${escapeHTML(q._dbFile||"")}</div>`;
+        item.innerHTML=`<div class="small"><b>${i+1}. soru</b> · ${escapeHTML(q.subject)} · ${escapeHTML(meta(q,"examGroup"))} · ${escapeHTML(meta(q,"topic"))}</div><div class="q">${escapeHTML(q.question)}</div><div class="small"><b>Senin cevabın:</b> ${escapeHTML(selectedText)}</div><div class="small"><b>Doğru cevap:</b> ${escapeHTML(correctBody)}</div><div class="small"><b>Dosya:</b> ${escapeHTML(q._dbFile||"")}</div>`;
         els.review.appendChild(item);
       });
     }
@@ -902,12 +976,12 @@
         : (filters.subject !== "all" ? filters.subject + " · tüm sorular" : "Tüm dersler · tüm sorular");
 
       els.listSubtitle.textContent = listMode === "wrong"
-        ? `${idxs.length} yanlış soru · yalnızca localStorage önbelleğindeki cevaplardan hesaplandı`
+        ? `${idxs.length} yanlış soru · kaydedilmiş cevaplarına göre`
         : (els.activeFilterSummary.textContent || `${idxs.length} soru`);
 
       els.allList.innerHTML = "";
       if(!idxs.length){
-        els.allList.innerHTML = `<section class="panel status warn">${listMode === "wrong" ? "Aktif database seçimine göre önbellekte yanlış yapılmış soru bulunamadı. Sadece işaretlenmiş ve yanlış olduğu hesaplanabilen sorular listelenir." : "Bu filtreye uygun soru bulunamadı."}</section>`;
+        els.allList.innerHTML = `<section class="panel status warn">${listMode === "wrong" ? "Seçili soru dosyalarında yanlış yaptığın soru bulunamadı." : "Bu filtreye uygun soru bulunamadı."}</section>`;
         return;
       }
 
@@ -1037,12 +1111,12 @@
         ensureSelectedDbFiles();
         sanitizeFilters();
         els.status.className="panel status";
-        els.status.innerHTML=`<b>${dbFiles.length}</b> database dosyası yüklendi: ${[...new Set(dbFiles.map(f=>dbBaseName(f.name)))].map(escapeHTML).join(", ")}. <b>${questions.length}</b> benzersiz soru bulundu${duplicates?`; ${duplicates} tekrar otomatik ayıklandı`:""}. Aktif database seçimine göre dersler güncellenir.`;
+        els.status.innerHTML=`<b>${dbFiles.length}</b> database dosyası yüklendi: ${[...new Set(dbFiles.map(f=>dbBaseName(f.name)))].map(escapeHTML).join(", ")}. <b>${questions.length}</b> benzersiz soru bulundu${duplicates?`; ${duplicates} aynı/benzer soru otomatik ayıklandı`:""}. Aktif database seçimine göre dersler güncellenir.`;
         els.manualDbBox.classList.add("hidden");
         renderLanding();
       }catch(e){
         els.status.className="panel status warn";
-        els.status.innerHTML=`<b>Database yüklenemedi:</b> ${escapeHTML(e.message)}<br><br>Dosyaları <b>db/soru1.db</b>, <b>db/soru2.db</b> şeklinde veya doğrudan kök dizinde <b>soru1.db</b>, <b>soru2.db</b> şeklinde tutabilirsin. GitHub Pages dışında dosyayı çift tıklayarak açarsan tarayıcı fetch erişimini engelleyebilir; bu durumda aşağıdan .db/.sdb dosyalarını manuel seçebilirsin.`;
+        els.status.innerHTML=`<b>Dosya yüklenemedi:</b> ${escapeHTML(e.message)}<br><br>Dosyaları <b>db/soru1.db</b>, <b>db/soru2.db</b> şeklinde veya doğrudan kök dizinde <b>soru1.db</b>, <b>soru2.db</b> şeklinde tutabilirsin. GitHub Pages dışında dosyayı çift tıklayarak açarsan tarayıcı fetch erişimini engelleyebilir; bu durumda aşağıdan .db/.sdb dosyalarını manuel seçebilirsin.`;
         els.manualDbBox.classList.remove("hidden");
         renderLanding();
       }
