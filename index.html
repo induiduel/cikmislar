@@ -1323,6 +1323,722 @@
       contain:none;
     }
 
+  
+    /* Soru üstündeki kısa bilgi alanı */
+    .question-mini-header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:8px;
+      color:var(--primary);
+      background:var(--soft);
+      border:1px solid rgba(23,58,138,.13);
+      padding:5px 7px;
+      border-radius:10px;
+      line-height:1.2;
+      margin-bottom:7px;
+      min-height:30px;
+      position:relative;
+      overflow:visible;
+    }
+    .question-mini-header .section{
+      flex:1 1 auto;
+      min-width:0;
+      margin:0!important;
+      padding:0!important;
+      border:0!important;
+      background:transparent!important;
+      border-radius:0!important;
+      font-size:11px!important;
+      font-weight:850;
+      line-height:1.25;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .question-mini-header details.meta-box{
+      flex:0 0 auto;
+      margin:0!important;
+      padding:0!important;
+      border:0!important;
+      background:transparent!important;
+      overflow:visible!important;
+      position:relative;
+      border-radius:0!important;
+    }
+    .question-mini-header details.meta-box summary{
+      width:24px;
+      height:24px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      list-style:none;
+      padding:0!important;
+      border-radius:999px;
+      border:1px solid rgba(23,58,138,.18);
+      background:#fff;
+      color:var(--primary);
+      font-size:13px;
+      font-weight:950;
+      user-select:none;
+      box-shadow:0 2px 6px rgba(15,23,42,.06);
+    }
+    .question-mini-header details.meta-box summary::-webkit-details-marker{
+      display:none;
+    }
+    .question-mini-header details.meta-box[open] summary{
+      background:var(--primary);
+      color:#fff;
+      border-color:var(--primary);
+    }
+    .question-mini-header .meta{
+      position:absolute;
+      right:0;
+      top:calc(100% + 6px);
+      z-index:130;
+      width:min(520px, calc(100vw - 28px));
+      max-height:min(58vh, 420px);
+      overflow:auto;
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:6px;
+      padding:8px;
+      color:var(--muted);
+      font-size:11px;
+      line-height:1.3;
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:12px;
+      box-shadow:0 16px 34px rgba(15,23,42,.16);
+    }
+    .question-mini-header .meta div{
+      border:1px solid var(--line);
+      border-radius:9px;
+      padding:6px 7px;
+      background:#fbfdff;
+      overflow-wrap:anywhere;
+    }
+    .question-mini-header .meta b{
+      color:#334155;
+    }
+    body.compact-mode .question-mini-header{
+      padding:4px 6px;
+      min-height:26px;
+      margin-bottom:5px;
+      border-radius:9px;
+    }
+    body.compact-mode .question-mini-header .section{
+      font-size:10px!important;
+    }
+    body.compact-mode .question-mini-header details.meta-box summary{
+      width:22px;
+      height:22px;
+      font-size:12px;
+    }
+    body.font-xsmall .question-mini-header .section{
+      font-size:9.5px!important;
+    }
+    @media (max-width:560px){
+      .question-mini-header{
+        gap:6px;
+      }
+      .question-mini-header .section{
+        font-size:10.5px!important;
+      }
+      .question-mini-header .meta{
+        position:fixed;
+        left:8px;
+        right:8px;
+        top:54px;
+        width:auto;
+        max-height:62vh;
+        grid-template-columns:1fr;
+      }
+    }
+
+  
+    .continue-card-btn{
+      appearance:none;
+      -webkit-appearance:none;
+      border:1px solid rgba(23,58,138,.18);
+      border-radius:999px;
+      padding:7px 9px;
+      font-weight:900;
+      font-size:11.5px;
+      cursor:pointer;
+      background:#eef4ff;
+      color:var(--primary);
+      transition:transform .1s ease,box-shadow .1s ease,opacity .1s ease;
+    }
+    .continue-card-btn:hover:not(:disabled){
+      transform:translateY(-1px);
+      box-shadow:0 6px 12px rgba(23,58,138,.10);
+    }
+    .continue-card-btn:disabled{
+      opacity:.48;
+      cursor:not-allowed;
+      background:#f8fafc;
+      color:#94a3b8;
+    }
+
+  
+    /* Soru kartı sağ üst tam ekran ikonu */
+    .question-fullscreen-btn{
+      flex:0 0 auto;
+      width:24px;
+      height:24px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid rgba(23,58,138,.18);
+      border-radius:999px;
+      background:#fff;
+      color:var(--primary);
+      cursor:pointer;
+      box-shadow:0 2px 6px rgba(15,23,42,.06);
+      padding:0;
+    }
+    .question-fullscreen-btn svg{
+      width:15px;
+      height:15px;
+      display:block;
+    }
+    .question-fullscreen-btn:hover{
+      background:#eef4ff;
+      border-color:rgba(23,58,138,.35);
+    }
+    body.question-card-fullscreen .question-fullscreen-btn,
+    .question-card:fullscreen .question-fullscreen-btn{
+      background:var(--primary);
+      color:#fff;
+      border-color:var(--primary);
+    }
+
+    /* Browser Fullscreen API çalıştığında */
+    .question-card:fullscreen{
+      width:100vw!important;
+      height:100vh!important;
+      max-width:none!important;
+      margin:0!important;
+      border-radius:0!important;
+      border:0!important;
+      box-shadow:none!important;
+      padding:10px 10px 82px!important;
+      background:#fff!important;
+      display:flex!important;
+      flex-direction:column!important;
+      overflow:hidden!important;
+    }
+    .question-card:fullscreen .question-mini-header{
+      flex:0 0 auto;
+      margin-bottom:6px!important;
+    }
+    .question-card:fullscreen .question{
+      flex:0 1 auto;
+      max-height:40vh;
+      overflow:auto;
+      margin-bottom:8px!important;
+      font-size:clamp(14px, 2.1vw, 19px)!important;
+      line-height:1.42!important;
+      padding:10px 11px!important;
+    }
+    .question-card:fullscreen .options{
+      flex:1 1 auto;
+      overflow:auto;
+      gap:7px!important;
+      padding:0 2px 4px!important;
+      align-content:start;
+    }
+    .question-card:fullscreen .option{
+      min-height:42px;
+      padding:8px 10px!important;
+      border-radius:12px!important;
+    }
+    .question-card:fullscreen .feedback,
+    .question-card:fullscreen .ai-warning-box.show,
+    .question-card:fullscreen .info-box.show{
+      flex:0 0 auto;
+      max-height:26vh;
+      overflow:auto;
+      margin-top:7px!important;
+      padding:8px 9px!important;
+    }
+    .question-card:fullscreen .floating-question-nav{
+      width:min(760px, calc(100vw - 14px));
+      bottom:8px;
+      padding:7px;
+      border-radius:15px;
+    }
+
+    /* Fullscreen API desteklenmezse CSS sınıfıyla yedek tam ekran */
+    body.question-card-fullscreen{
+      overflow:hidden;
+      padding-bottom:0!important;
+    }
+    body.question-card-fullscreen .top-menu,
+    body.question-card-fullscreen .compact-actionbar,
+    body.question-card-fullscreen .toolbar,
+    body.question-card-fullscreen .top-nav,
+    body.question-card-fullscreen .side-panel,
+    body.question-card-fullscreen .section:not(.question-mini-header .section),
+    body.question-card-fullscreen .results,
+    body.question-card-fullscreen .list-view{
+      display:none!important;
+    }
+    body.question-card-fullscreen .wrap{
+      width:100vw!important;
+      max-width:none!important;
+      margin:0!important;
+      padding:0!important;
+    }
+    body.question-card-fullscreen .app-view.active,
+    body.question-card-fullscreen .quiz-view,
+    body.question-card-fullscreen .layout{
+      display:block!important;
+      width:100%!important;
+      margin:0!important;
+      padding:0!important;
+    }
+    body.question-card-fullscreen .question-card{
+      width:100vw!important;
+      height:100vh!important;
+      max-width:none!important;
+      margin:0!important;
+      border-radius:0!important;
+      border:0!important;
+      box-shadow:none!important;
+      padding:10px 10px 82px!important;
+      background:#fff!important;
+      display:flex!important;
+      flex-direction:column!important;
+      overflow:hidden!important;
+    }
+    body.question-card-fullscreen .question-card .question-mini-header{
+      flex:0 0 auto;
+      margin-bottom:6px!important;
+    }
+    body.question-card-fullscreen .question-card .question{
+      flex:0 1 auto;
+      max-height:40vh;
+      overflow:auto;
+      margin-bottom:8px!important;
+      font-size:clamp(14px, 2.1vw, 19px)!important;
+      line-height:1.42!important;
+      padding:10px 11px!important;
+    }
+    body.question-card-fullscreen .question-card .options{
+      flex:1 1 auto;
+      overflow:auto;
+      gap:7px!important;
+      padding:0 2px 4px!important;
+      align-content:start;
+    }
+    body.question-card-fullscreen .question-card .option{
+      min-height:42px;
+      padding:8px 10px!important;
+      border-radius:12px!important;
+    }
+    body.question-card-fullscreen .question-card .feedback,
+    body.question-card-fullscreen .question-card .ai-warning-box.show,
+    body.question-card-fullscreen .question-card .info-box.show{
+      flex:0 0 auto;
+      max-height:26vh;
+      overflow:auto;
+      margin-top:7px!important;
+      padding:8px 9px!important;
+    }
+    body.question-card-fullscreen .floating-question-nav{
+      width:min(760px, calc(100vw - 14px));
+      bottom:8px;
+      padding:7px;
+      border-radius:15px;
+    }
+    @media (max-width:520px){
+      .question-fullscreen-btn{
+        width:22px;
+        height:22px;
+      }
+      .question-fullscreen-btn svg{
+        width:14px;
+        height:14px;
+      }
+      .question-card:fullscreen,
+      body.question-card-fullscreen .question-card{
+        padding:7px 7px 76px!important;
+      }
+      .question-card:fullscreen .question,
+      body.question-card-fullscreen .question-card .question{
+        max-height:34vh;
+        font-size:14px!important;
+        line-height:1.36!important;
+      }
+      .question-card:fullscreen .option,
+      body.question-card-fullscreen .question-card .option{
+        min-height:38px;
+        padding:7px 8px!important;
+      }
+    }
+
+  
+    /* Şüphe/dikkat/hata: soruyu ChatGPT'ye çözdürme butonu */
+    .question-chatgpt-btn{
+      flex:0 0 auto;
+      width:24px;
+      height:24px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid rgba(122,79,8,.25);
+      border-radius:999px;
+      background:#fff7df;
+      color:#7a4f08;
+      cursor:pointer;
+      box-shadow:0 2px 6px rgba(15,23,42,.06);
+      padding:0;
+    }
+    .question-chatgpt-btn svg{
+      width:15px;
+      height:15px;
+      display:block;
+    }
+    .question-chatgpt-btn:hover{
+      background:#ffefbd;
+      border-color:rgba(122,79,8,.42);
+    }
+    body.compact-mode .question-chatgpt-btn,
+    body.compact-mode .question-fullscreen-btn,
+    body.compact-mode .question-mini-header details.meta-box summary{
+      width:22px;
+      height:22px;
+    }
+    body.compact-mode .question-chatgpt-btn svg,
+    body.compact-mode .question-fullscreen-btn svg{
+      width:14px;
+      height:14px;
+    }
+    body.exam-mode .question-chatgpt-btn{
+      display:none!important;
+    }
+
+  
+    /* Sayfa içi ChatGPT webview penceresi */
+    .chatgpt-webview-modal{
+      position:fixed;
+      inset:0;
+      z-index:400;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:10px;
+      background:rgba(15,23,42,.46);
+      backdrop-filter:blur(6px);
+    }
+    .chatgpt-webview-modal.hidden{
+      display:none!important;
+    }
+    .chatgpt-webview-panel{
+      width:min(1120px, 100%);
+      height:min(92vh, 900px);
+      display:flex;
+      flex-direction:column;
+      overflow:hidden;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.32);
+      background:#fff;
+      box-shadow:0 24px 70px rgba(15,23,42,.34);
+    }
+    .chatgpt-webview-header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding:10px 12px;
+      border-bottom:1px solid var(--line);
+      background:#fbfdff;
+    }
+    .chatgpt-webview-header b{
+      display:block;
+      color:var(--primary);
+      font-size:14px;
+      font-weight:950;
+    }
+    .chatgpt-webview-header small{
+      display:block;
+      color:var(--muted);
+      font-size:11px;
+      margin-top:2px;
+      line-height:1.3;
+    }
+    .chatgpt-webview-header button{
+      flex:0 0 auto;
+      padding:7px 10px;
+      border-radius:10px;
+      font-size:12px;
+    }
+    .chatgpt-webview-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:7px;
+      padding:8px 12px;
+      border-bottom:1px solid var(--line);
+      background:#fff;
+    }
+    .chatgpt-webview-actions button{
+      padding:8px 10px;
+      border-radius:10px;
+      font-size:12px;
+    }
+    .chatgpt-webview-note{
+      padding:7px 12px;
+      background:#fff7df;
+      color:#573a09;
+      border-bottom:1px solid rgba(122,79,8,.18);
+      font-size:11.5px;
+      line-height:1.35;
+    }
+    .chatgpt-webview-panel iframe{
+      flex:1 1 auto;
+      width:100%;
+      border:0;
+      background:#fff;
+    }
+    @media (max-width:560px){
+      .chatgpt-webview-modal{
+        padding:0;
+      }
+      .chatgpt-webview-panel{
+        height:100vh;
+        width:100vw;
+        border-radius:0;
+        border:0;
+      }
+      .chatgpt-webview-header{
+        padding:8px 9px;
+      }
+      .chatgpt-webview-header b{
+        font-size:13px;
+      }
+      .chatgpt-webview-header small{
+        font-size:10.5px;
+      }
+      .chatgpt-webview-actions{
+        padding:7px 9px;
+      }
+      .chatgpt-webview-actions button{
+        flex:1 1 auto;
+        padding:7px 8px;
+        font-size:11px;
+      }
+    }
+
+  
+    /* Daha küçük soru üst bilgi alanı + yıldız */
+    .question-mini-header{
+      padding:3px 5px!important;
+      min-height:24px!important;
+      gap:4px!important;
+      border-radius:8px!important;
+      margin-bottom:5px!important;
+    }
+    .question-mini-header .section{
+      font-size:9.5px!important;
+      line-height:1.15!important;
+      font-weight:820!important;
+    }
+    .question-star-btn,
+    .question-chatgpt-btn,
+    .question-fullscreen-btn,
+    .question-mini-header details.meta-box summary{
+      width:20px!important;
+      height:20px!important;
+      min-width:20px!important;
+      flex:0 0 20px!important;
+      border-radius:999px!important;
+      font-size:12px!important;
+      line-height:1!important;
+      padding:0!important;
+    }
+    .question-star-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid rgba(122,79,8,.25);
+      background:#fff;
+      color:#a66b00;
+      cursor:pointer;
+      box-shadow:0 2px 5px rgba(15,23,42,.05);
+      font-weight:950;
+    }
+    .question-star-btn.starred{
+      background:#fff1b8!important;
+      border-color:#d69e00!important;
+      color:#9a6700!important;
+    }
+    .question-star-btn:hover{
+      background:#fff7df;
+      border-color:#d69e00;
+    }
+    .question-chatgpt-btn svg,
+    .question-fullscreen-btn svg{
+      width:12px!important;
+      height:12px!important;
+    }
+    .question-mini-header details.meta-box summary{
+      font-size:11px!important;
+    }
+    body.font-xsmall .question-mini-header .section{
+      font-size:8.8px!important;
+    }
+    @media (max-width:560px){
+      .question-mini-header{
+        padding:3px 4px!important;
+        gap:3px!important;
+      }
+      .question-mini-header .section{
+        font-size:9px!important;
+      }
+      .question-star-btn,
+      .question-chatgpt-btn,
+      .question-fullscreen-btn,
+      .question-mini-header details.meta-box summary{
+        width:19px!important;
+        height:19px!important;
+        min-width:19px!important;
+        flex-basis:19px!important;
+      }
+      .question-chatgpt-btn svg,
+      .question-fullscreen-btn svg{
+        width:11px!important;
+        height:11px!important;
+      }
+    }
+
+    /* Tam ekran + yatay ekran düzeltmesi */
+    .question-card:fullscreen,
+    body.question-card-fullscreen .question-card{
+      height:100dvh!important;
+      min-height:100dvh!important;
+      max-height:100dvh!important;
+      overflow:hidden!important;
+      box-sizing:border-box!important;
+    }
+    .question-card:fullscreen .question,
+    body.question-card-fullscreen .question-card .question{
+      min-height:0!important;
+      overflow:auto!important;
+      overscroll-behavior:contain;
+    }
+    .question-card:fullscreen .options,
+    body.question-card-fullscreen .question-card .options{
+      min-height:0!important;
+      overflow:auto!important;
+      overscroll-behavior:contain;
+    }
+    @media (orientation:landscape) and (max-height:560px){
+      .question-card:fullscreen,
+      body.question-card-fullscreen .question-card{
+        padding:6px 8px 58px!important;
+      }
+      .question-card:fullscreen .question-mini-header,
+      body.question-card-fullscreen .question-mini-header{
+        min-height:22px!important;
+        margin-bottom:4px!important;
+      }
+      .question-card:fullscreen .question,
+      body.question-card-fullscreen .question-card .question{
+        max-height:30dvh!important;
+        margin-bottom:5px!important;
+        padding:7px 8px!important;
+        font-size:clamp(12px, 1.55vw, 15px)!important;
+        line-height:1.30!important;
+        border-radius:10px!important;
+      }
+      .question-card:fullscreen .options,
+      body.question-card-fullscreen .question-card .options{
+        gap:5px!important;
+        padding-bottom:2px!important;
+      }
+      .question-card:fullscreen .option,
+      body.question-card-fullscreen .question-card .option{
+        min-height:30px!important;
+        padding:5px 7px!important;
+        grid-template-columns:22px 1fr!important;
+        gap:6px!important;
+        border-radius:9px!important;
+      }
+      .question-card:fullscreen .letter,
+      body.question-card-fullscreen .question-card .letter{
+        width:22px!important;
+        height:22px!important;
+        font-size:10px!important;
+        border-radius:7px!important;
+      }
+      .question-card:fullscreen .option-text,
+      body.question-card-fullscreen .question-card .option-text{
+        font-size:clamp(10.5px, 1.35vw, 13px)!important;
+        line-height:1.25!important;
+      }
+      .question-card:fullscreen .feedback,
+      .question-card:fullscreen .ai-warning-box.show,
+      .question-card:fullscreen .info-box.show,
+      body.question-card-fullscreen .question-card .feedback,
+      body.question-card-fullscreen .question-card .ai-warning-box.show,
+      body.question-card-fullscreen .question-card .info-box.show{
+        max-height:18dvh!important;
+        padding:5px 7px!important;
+        margin-top:4px!important;
+        font-size:10.5px!important;
+      }
+      body.question-card-fullscreen .floating-question-nav,
+      .question-card:fullscreen .floating-question-nav{
+        bottom:4px!important;
+        padding:4px!important;
+        gap:4px!important;
+        border-radius:11px!important;
+      }
+      body.question-card-fullscreen .floating-question-nav button,
+      .question-card:fullscreen .floating-question-nav button{
+        min-height:30px!important;
+        padding:5px 6px!important;
+        font-size:10.5px!important;
+        border-radius:8px!important;
+      }
+    }
+
+  
+    /* Minimal düzeltme: yalnızca mavi bilgi alanı biraz küçültüldü */
+    .question-mini-header{
+      padding:4px 6px!important;
+      min-height:27px!important;
+      margin-bottom:6px!important;
+      gap:6px!important;
+    }
+    .question-mini-header .section{
+      font-size:10px!important;
+      line-height:1.18!important;
+      font-weight:820!important;
+    }
+    body.compact-mode .question-mini-header{
+      padding:3px 5px!important;
+      min-height:24px!important;
+    }
+    body.compact-mode .question-mini-header .section{
+      font-size:9.2px!important;
+    }
+    body.font-xsmall .question-mini-header .section{
+      font-size:8.8px!important;
+    }
+    @media (max-width:560px){
+      .question-mini-header{
+        padding:3px 5px!important;
+        min-height:25px!important;
+      }
+      .question-mini-header .section{
+        font-size:9.4px!important;
+      }
+    }
+
   </style>
 </head>
 <body class="font-normal">
@@ -1342,6 +2058,7 @@
         <button class="secondary" id="menuCacheBtn" type="button">Önbelleği yenile</button>
         <button class="secondary" id="menuInfoBtn" type="button">Açıklama/spot</button>
         <button class="secondary" id="menuShowAllBtn" type="button">Tüm soruları görüntüle</button>
+        <button class="secondary" id="menuStarredBtn" type="button">Yıldızlı sorular</button>
         <button class="secondary" id="menuExamBtn" type="button">Sınav modu</button>
         <button class="secondary" id="menuWideToggleBtn" type="button">Tekli ekranı aç/kapat</button>
         <button class="secondary" id="menuResetVisibleBtn" type="button">Filtre cevaplarını sıfırla</button>
@@ -1369,6 +2086,7 @@
         <button class="secondary" id="continueBtn" type="button">Kaldığım yerden devam et</button>
         <button class="secondary" id="wrongHomeBtn" type="button">Yanlışlarımı aç</button>
         <button class="secondary" id="hiddenHomeBtn" type="button">Gizlenen soruları yönet</button>
+        <button class="secondary" id="starredHomeBtn" type="button">Yıldızlı sorular</button>
         <button class="secondary" id="quizAllBtn" type="button">Tüm dersler quiz modu</button>
         <button class="primary" id="startAllBtn" type="button">Tüm derslerle başla</button>
       </section>
@@ -1456,12 +2174,25 @@
 
         <section class="layout" id="testArea">
           <article class="panel question-card">
-            <div class="section" id="section"></div>
-
-            <details class="meta-box" id="metaDetails">
-              <summary>Ders / kurul / yıl / hoca / hedef / kaynak bilgilerini göster</summary>
-              <div class="meta" id="meta"></div>
-            </details>
+            <div class="question-mini-header">
+              <div class="section" id="section"></div>
+              <button class="question-star-btn" id="questionStarBtn" type="button" title="Soruyu yıldızla" aria-label="Soruyu yıldızla">☆</button>
+              <button class="question-chatgpt-btn" id="questionChatGPTBtn" type="button" title="Bu soruyu ChatGPT'ye çözdür" aria-label="Bu soruyu ChatGPT'ye çözdür">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M12 3 2.8 20h18.4L12 3Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                  <path d="M12 8v5M12 17h.01" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </button>
+              <button class="question-fullscreen-btn" id="questionFullscreenBtn" type="button" title="Tam ekran yap" aria-label="Tam ekran yap">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <details class="meta-box meta-icon-box" id="metaDetails">
+                <summary title="Soru bilgilerini göster" aria-label="Soru bilgilerini göster">ⓘ</summary>
+                <div class="meta" id="meta"></div>
+              </details>
+            </div>
 
             <h2 class="question" id="question"></h2>
             <div class="options" id="options"></div>
@@ -1574,6 +2305,27 @@
         <section class="all-list" id="allList"></section>
       </section>
     </section>
+  
+    <section class="chatgpt-webview-modal hidden" id="chatgptWebviewModal" aria-hidden="true">
+      <div class="chatgpt-webview-panel" role="dialog" aria-modal="true" aria-label="ChatGPT soru çözüm penceresi">
+        <div class="chatgpt-webview-header">
+          <div>
+            <b>ChatGPT ile çöz</b>
+            <small>Webview açılmazsa yeni sekme veya kopyalama seçeneklerini kullan.</small>
+          </div>
+          <button class="secondary" id="chatgptWebviewCloseBtn" type="button">Kapat</button>
+        </div>
+        <div class="chatgpt-webview-actions">
+          <button class="primary" id="chatgptOpenNewTabBtn" type="button">Yeni sekmede aç</button>
+          <button class="secondary" id="chatgptCopyPromptBtn" type="button">Promptu kopyala</button>
+        </div>
+        <div class="chatgpt-webview-note" id="chatgptWebviewNote">
+          ChatGPT bazı tarayıcılarda güvenlik nedeniyle sayfa içinde açılmayabilir. Bu durumda “Yeni sekmede aç” butonunu kullan.
+        </div>
+        <iframe id="chatgptWebviewFrame" title="ChatGPT webview" loading="lazy" referrerpolicy="no-referrer"></iframe>
+      </div>
+    </section>
+
   </main>
 
   <script>
@@ -1584,6 +2336,7 @@
     const DB_FILE_LIST_CACHE_KEY = "question_bank_db_file_list_cache_v2";
     const DB_CONTENT_CACHE_NAME = "question_bank_indexeddb_cache_v2";
     const DB_CONTENT_STORE_NAME = "dbFiles";
+    const LAST_POSITION_KEY = "question_bank_last_positions_v1";
 
     let dbFiles = [];
     let questions = [];
@@ -1593,6 +2346,7 @@
     let infoOpen = false;
     let listMode = "all";
     let hiddenQuestionIds = [];
+    let starredQuestionIds = [];
     let quizActive = false;
     let quizIds = [];
     let quizTitle = "";
@@ -1622,15 +2376,18 @@
     let lastJumpGridKey = "";
     let renderStructureDirty = true;
     let answerVersion = 0;
+    let lastPositions = {};
+    let currentChatGPTPrompt = "";
+    let currentChatGPTUrl = "";
     const LIST_BATCH_SIZE = 60;
 
     const $ = id => document.getElementById(id);
     const els = {
       landing:$("landing"), appView:$("appView"), quizView:$("quizView"), listView:$("listView"),
       topMenu:$("topMenu"), menuHomeBtn:$("menuHomeBtn"), menuSourceBtn:$("menuSourceBtn"), menuViewBtn:$("menuViewBtn"), menuDuplicateBtn:$("menuDuplicateBtn"), menuShuffleBtn:$("menuShuffleBtn"), menuCacheBtn:$("menuCacheBtn"),
-      menuInfoBtn:$("menuInfoBtn"), menuShowAllBtn:$("menuShowAllBtn"), menuExamBtn:$("menuExamBtn"), menuWideToggleBtn:$("menuWideToggleBtn"), menuResetVisibleBtn:$("menuResetVisibleBtn"), menuClearCacheBtn:$("menuClearCacheBtn"),
+      menuInfoBtn:$("menuInfoBtn"), menuShowAllBtn:$("menuShowAllBtn"), menuStarredBtn:$("menuStarredBtn"), menuExamBtn:$("menuExamBtn"), menuWideToggleBtn:$("menuWideToggleBtn"), menuResetVisibleBtn:$("menuResetVisibleBtn"), menuClearCacheBtn:$("menuClearCacheBtn"),
       courseGrid:$("courseGrid"), courseEmpty:$("courseEmpty"), courseSearch:$("courseSearch"),
-      clearCourseSearch:$("clearCourseSearch"), continueBtn:$("continueBtn"), wrongHomeBtn:$("wrongHomeBtn"), hiddenHomeBtn:$("hiddenHomeBtn"), quizAllBtn:$("quizAllBtn"), startAllBtn:$("startAllBtn"),
+      clearCourseSearch:$("clearCourseSearch"), continueBtn:$("continueBtn"), wrongHomeBtn:$("wrongHomeBtn"), hiddenHomeBtn:$("hiddenHomeBtn"), starredHomeBtn:$("starredHomeBtn"), quizAllBtn:$("quizAllBtn"), startAllBtn:$("startAllBtn"),
       backHomeBtn:$("backHomeBtn"), changeCourseBtn:$("changeCourseBtn"), activeTitle:$("activeTitle"),
       wideQuestionBtn:$("wideQuestionBtn"), showAllBtn:$("showAllBtn"), compactHomeBtn:$("compactHomeBtn"), compactShowAllBtn:$("compactShowAllBtn"), backToQuizBtn:$("backToQuizBtn"), wideListBtn:$("wideListBtn"), pdfListBtn:$("pdfListBtn"), restoreHiddenBtn:$("restoreHiddenBtn"), refreshListBtn:$("refreshListBtn"),
       listTitle:$("listTitle"), listSubtitle:$("listSubtitle"), allList:$("allList"),
@@ -1638,6 +2395,8 @@
       manualDbBox:$("manualDbBox"), manualDbInput:$("manualDbInput"), dbList:$("dbList"),
       selectAllDbBtn:$("selectAllDbBtn"), clearDbBtn:$("clearDbBtn"), fontSizeSelect:$("fontSizeSelect"), designModeSelect:$("designModeSelect"), duplicateFilterSelect:$("duplicateFilterSelect"), questionOrderSelect:$("questionOrderSelect"), reshuffleBtn:$("reshuffleBtn"),
       examTopbar:$("examTopbar"), examModeTitle:$("examModeTitle"), examTimerText:$("examTimerText"), cancelExamBtn:$("cancelExamBtn"),
+      questionFullscreenBtn:$("questionFullscreenBtn"), questionChatGPTBtn:$("questionChatGPTBtn"), questionStarBtn:$("questionStarBtn"),
+      chatgptWebviewModal:$("chatgptWebviewModal"), chatgptWebviewFrame:$("chatgptWebviewFrame"), chatgptWebviewCloseBtn:$("chatgptWebviewCloseBtn"), chatgptOpenNewTabBtn:$("chatgptOpenNewTabBtn"), chatgptCopyPromptBtn:$("chatgptCopyPromptBtn"), chatgptWebviewNote:$("chatgptWebviewNote"),
       progress:$("progress"), counter:$("counter"), section:$("section"), meta:$("meta"), question:$("question"), options:$("options"),
       feedback:$("feedback"), aiWarningBox:$("aiWarningBox"), infoBox:$("infoBox"), showInfoBtn:$("showInfoBtn"), cardShowAllBtn:$("cardShowAllBtn"), hideQuestionBtn:$("hideQuestionBtn"), wideExitBtn:$("wideExitBtn"), prevBtn:$("prevBtn"), nextBtn:$("nextBtn"),
       clearCacheBtn:$("clearCacheBtn"), resetVisibleBtn:$("resetVisibleBtn"), answeredCount:$("answeredCount"),
@@ -1662,6 +2421,117 @@
     function optionList(q){return Array.isArray(q.options) ? q.options : [];}
     function meta(q,key){return (q.metadata && q.metadata[key]) || "";}
     function answerKey(q){return duplicateMode === "all" ? (q._instanceId || q.id) : q.id;}
+
+    function lastPositionKey(subject="all", teacher="all"){
+      return `${subject || "all"}::${teacher || "all"}::${selectedDbFiles.map(dbCanonicalName).sort().join("|") || "all-db"}`;
+    }
+
+    function loadLastPositions(){
+      try{
+        const raw = localStorage.getItem(LAST_POSITION_KEY);
+        lastPositions = raw ? (JSON.parse(raw) || {}) : {};
+      }catch(e){
+        lastPositions = {};
+      }
+    }
+
+    function saveLastPositions(){
+      try{
+        localStorage.setItem(LAST_POSITION_KEY, JSON.stringify(lastPositions));
+      }catch(e){}
+    }
+
+    function recordLastPosition(q=null){
+      if(!q) q = questions[current];
+      if(!q || examMode) return;
+
+      const idxs = filteredIndexes();
+      const pos = Math.max(0, idxs.indexOf(current));
+      const record = {
+        questionKey: answerKey(q),
+        index: current,
+        position: pos,
+        subject: q.subject || filters.subject || "all",
+        teacher: meta(q,"teacher") || filters.teacher || "all",
+        filters: {...filters},
+        selectedDbFiles: selectedDbFiles.slice(),
+        savedAt: Date.now()
+      };
+
+      lastPositions["__global__"] = record;
+      lastPositions[lastPositionKey("all","all")] = record;
+      if(q.subject) lastPositions[lastPositionKey(q.subject,"all")] = record;
+      if(q.subject && record.teacher) lastPositions[lastPositionKey(q.subject,record.teacher)] = record;
+      saveLastPositions();
+    }
+
+    function findSavedQuestionIndex(record){
+      if(!record) return -1;
+      if(record.questionKey){
+        const idx = questions.findIndex(q => answerKey(q) === record.questionKey);
+        if(idx >= 0 && matchesFilters(questions[idx], null)) return idx;
+      }
+      if(typeof record.index === "number" && questions[record.index] && matchesFilters(questions[record.index], null)){
+        return record.index;
+      }
+      const idxs = filteredIndexes();
+      if(idxs.length && typeof record.position === "number"){
+        return idxs[Math.min(Math.max(0, record.position), idxs.length-1)] ?? idxs[0];
+      }
+      return idxs.length ? idxs[0] : -1;
+    }
+
+    function restoreLastPosition(subject="all", teacher="all"){
+      const keys = [
+        lastPositionKey(subject, teacher),
+        lastPositionKey(subject, "all"),
+        lastPositionKey("all", "all"),
+        "__global__"
+      ];
+      const record = keys.map(k => lastPositions[k]).find(Boolean);
+      if(record && record.filters){
+        filters = {...filters, ...record.filters};
+        if(subject && subject !== "all") filters.subject = subject;
+        if(teacher && teacher !== "all") filters.teacher = teacher;
+        sanitizeFilters();
+      }
+      const idx = findSavedQuestionIndex(record);
+      if(idx >= 0){
+        current = idx;
+        return true;
+      }
+      ensureCurrent();
+      return false;
+    }
+
+    function hasLastPosition(subject="all", teacher="all"){
+      return !!(
+        lastPositions[lastPositionKey(subject, teacher)] ||
+        lastPositions[lastPositionKey(subject, "all")] ||
+        (subject === "all" && lastPositions["__global__"])
+      );
+    }
+
+    function continueCourse(subject="all", teacher="all"){
+      stopQuizMode();
+      document.body.classList.add("app-screen-active");
+      if(subject && subject !== "all"){
+        filters={subject, exam:"all", year:"all", teacher:teacher||"all", sourceGroup:"all", search:""};
+      }
+      restoreLastPosition(subject, teacher || "all");
+      els.landing.classList.add("hidden");
+      els.appView.classList.add("active");
+      els.quizView.classList.remove("hidden");
+      els.listView.classList.remove("active");
+      els.activeTitle.textContent = filters.subject && filters.subject !== "all"
+        ? (filters.teacher && filters.teacher !== "all" ? filters.subject + " · " + filters.teacher : filters.subject + " soru bankası")
+        : "Tüm dersler soru bankası";
+      els.results.style.display="none";
+      render();
+      scrollToQuestion("auto");
+    }
+
+
 
     function prepareQuestionRecord(q){
       if(!q) return q;
@@ -1904,6 +2774,23 @@
     function activeVisibleQuestions(){return activeQuestions().filter(q => !isHiddenQuestion(q));}
     function visibleQuestionCount(){return activeVisibleQuestions().length;}
     function hiddenQuestionCount(){return activeQuestions().filter(q => isHiddenQuestion(q)).length;}
+
+    function starredSet(){return new Set(starredQuestionIds);}
+    function isStarredQuestion(q){return !!(q && answerKey(q) && starredSet().has(answerKey(q)));}
+    function starredQuestionCount(){return activeQuestions().filter(q => isStarredQuestion(q)).length;}
+    function toggleStarQuestion(q=null){
+      if(!q) q = questions[current];
+      if(!q) return;
+      const id = answerKey(q);
+      if(!id) return;
+      if(starredQuestionIds.includes(id)){
+        starredQuestionIds = starredQuestionIds.filter(x => x !== id);
+      }else{
+        starredQuestionIds.push(id);
+      }
+      saveState();
+    }
+
     function hideQuestionById(id){
       if(!id) return;
       if(!hiddenQuestionIds.includes(id)) hiddenQuestionIds.push(id);
@@ -2080,17 +2967,18 @@
       return out;
     }
 
-    async function listDbFilesBySequentialProbe(){
+    async function listDbFilesBySequentialProbe(maxScan=SEQUENTIAL_SCAN_MAX){
       const found = [];
       const candidates = [];
-      for (let i=1;i<=SEQUENTIAL_SCAN_MAX;i++){
+      const limit = Math.max(1, Math.min(Number(maxScan) || SEQUENTIAL_SCAN_MAX, SEQUENTIAL_SCAN_MAX));
+      for (let i=1;i<=limit;i++){
         candidates.push(`soru${i}.db`);
         candidates.push(`soru${i}.sdb`);
       }
 
       const already = new Set();
       for (const dir of DB_DIRS){
-        const batchSize = 32;
+        const batchSize = 24;
         for (let start=0; start<candidates.length; start+=batchSize){
           const batch = candidates.slice(start,start+batchSize);
           await Promise.all(batch.map(async name => {
@@ -2098,11 +2986,12 @@
             const key = `${dir}/${name}`;
             if(already.has(key)) return;
             try{
-              let res = await fetchWithTimeout(url, {cache:"no-store", method:"HEAD"}, 2500);
-              if(!res.ok && (res.status === 403 || res.status === 405 || res.status === 0)){
-                res = await fetchWithTimeout(url, {cache:"no-store", headers: {"Range":"bytes=0-0"}}, 3000);
+              // Bazı GitHub/CDN ortamlarında HEAD güvenilir olmayabiliyor. Önce küçük GET deniyoruz.
+              let res = await fetchWithTimeout(url, {cache:"no-store", headers: {"Range":"bytes=0-0"}}, 3500);
+              if(!res.ok){
+                res = await fetchWithTimeout(url, {cache:"no-store", method:"HEAD"}, 2500);
               }
-              if (res.ok) {
+              if (res.ok || res.status === 206) {
                 already.add(key);
                 found.push({name:dir?`${dir}/${name}`:name, url, source:"sequential"});
               }
@@ -2110,51 +2999,72 @@
           }));
         }
       }
-      if (!found.length) throw new Error("soru1.db/soru2.db/... taramasında dosya bulunamadı.");
+      if (!found.length) throw new Error(`soru1.db-soru${limit}.db taramasında dosya bulunamadı.`);
       return found;
     }
 
     async function discoverDbFiles(){
-      const cachedList = dbFileListCacheRead();
-      if(cachedList && cachedList.length){
-        els.status.classList.remove("hidden");
-        els.status.innerHTML = "Soru dosyası listesi önbellekten yükleniyor...";
-        return cachedList;
-      }
-
       const candidates = [];
       const errors = [];
+
+      function addList(list, label){
+        (list || []).forEach(file => {
+          if(!file || !file.name || !file.url) return;
+          candidates.push({...file, source:file.source || label, canonicalName: dbCanonicalName(file.name)});
+        });
+      }
+
+      const cachedList = dbFileListCacheRead();
+      if(cachedList && cachedList.length){
+        addList(cachedList, "cache");
+      }
 
       async function addFrom(fn,label){
         try{
           const list = await fn();
-          list.forEach(file => candidates.push({...file, canonicalName: dbCanonicalName(file.name)}));
+          addList(list, label);
         }catch(e){
           errors.push(label+": "+e.message);
         }
       }
 
       els.status.classList.remove("hidden");
-      els.status.innerHTML = "Soru dosyaları aranıyor...";
+      els.status.innerHTML = cachedList && cachedList.length
+        ? "Soru dosyası listesi önbellekten alındı; yeni soru3.db-soru6.db dosyaları ayrıca taranıyor..."
+        : "Soru dosyaları aranıyor...";
+
+      // Manifest ve GitHub API her açılışta tekrar denenir; böylece yeni eklenen db dosyaları görünür.
       await addFrom(listDbFilesFromManifest,"manifest");
+      await addFrom(listDbFilesFromGithubApi,"github-api");
 
-      if(!candidates.length){
-        await addFrom(listDbFilesFromGithubApi,"github-api");
-      }
+      // Cache/manifest eski kalırsa özellikle soru3.db, soru4.db, soru5.db, soru6.db gibi yeni dosyalar kaçmasın.
+      await addFrom(()=>listDbFilesBySequentialProbe(50),"sequential-fast");
 
+      // Hiçbir şey bulunamazsa geniş tarama yap.
       if(!candidates.length){
-        els.status.innerHTML = "Soru dosyaları doğrudan taranıyor. Bu işlem ilk açılışta biraz sürebilir...";
-        await addFrom(listDbFilesBySequentialProbe,"sequential");
+        els.status.innerHTML = "Soru dosyaları geniş tarama ile aranıyor...";
+        await addFrom(()=>listDbFilesBySequentialProbe(SEQUENTIAL_SCAN_MAX),"sequential-full");
       }
 
       if(!candidates.length) throw new Error(errors.join(" | "));
-      const files = [...new Map(candidates.map(f=>[dbCanonicalName(f.name), f])).values()].sort((a,b)=>a.name.localeCompare(b.name,"tr"));
+
+      const priority = {"manifest":0, "github-api":1, "sequential-fast":2, "sequential":2, "sequential-full":3, "cache":4};
+      const best = new Map();
+      candidates.forEach(file=>{
+        const key = dbCanonicalName(file.name);
+        const prev = best.get(key);
+        if(!prev || (priority[file.source] ?? 9) < (priority[prev.source] ?? 9)){
+          best.set(key, file);
+        }
+      });
+
+      const files = [...best.values()].sort((a,b)=>dbBaseName(a.name).localeCompare(dbBaseName(b.name),"tr", {numeric:true}));
       dbFileListCacheWrite(files);
       return files;
     }
 
     async function loadDbFile(file){
-      const cacheKey = `${dbCanonicalName(file.name)}::${file.url || ""}`;
+      const cacheKey = `v3::${dbCanonicalName(file.name)}::${file.url || ""}`;
       const cached = await getCachedDbPayload(cacheKey);
       if(cached && cached.payload && Array.isArray(cached.payload.questions)){
         return cached.payload.questions.map((q,idx) => {
@@ -2426,9 +3336,10 @@
     }
 
     function saveState(){
-      try{localStorage.setItem(STORAGE_KEY, JSON.stringify({answers,current,filters,infoOpen,selectedDbFiles,fontSize,designMode,duplicateMode,duplicateFilterEnabled,questionWideMode,listWideMode,shuffleQuestions,shuffleSeed,hiddenQuestionIds,quizActive,quizIds,quizTitle}));}catch(e){}
+      try{localStorage.setItem(STORAGE_KEY, JSON.stringify({answers,current,filters,infoOpen,selectedDbFiles,fontSize,designMode,duplicateMode,duplicateFilterEnabled,questionWideMode,listWideMode,shuffleQuestions,shuffleSeed,hiddenQuestionIds,starredQuestionIds,quizActive,quizIds,quizTitle}));}catch(e){}
     }
     function loadState(){
+      loadLastPositions();
       try{
         const raw=localStorage.getItem(STORAGE_KEY);
         if(!raw) return false;
@@ -2448,6 +3359,7 @@
         if(typeof data.shuffleQuestions === "boolean") shuffleQuestions=data.shuffleQuestions;
         if(Number.isFinite(data.shuffleSeed)) shuffleSeed=data.shuffleSeed;
         if(Array.isArray(data.hiddenQuestionIds)) hiddenQuestionIds=data.hiddenQuestionIds;
+        if(Array.isArray(data.starredQuestionIds)) starredQuestionIds=data.starredQuestionIds;
         if(typeof data.quizActive === "boolean") quizActive=data.quizActive;
         if(Array.isArray(data.quizIds)) quizIds=data.quizIds;
         if(typeof data.quizTitle === "string") quizTitle=data.quizTitle;
@@ -2685,10 +3597,12 @@
             <span class="chip">Dersi aç</span>
             <button class="quiz-card-btn" type="button" data-subject="${escapeHTML(item.value)}">Quiz (${Math.min(30, item.count)})</button>
             <button class="exam-card-btn" type="button" data-subject="${escapeHTML(item.value)}">Sınav modu</button>
+            <button class="continue-card-btn" type="button" data-subject="${escapeHTML(item.value)}">Kaldığım yerden devam</button>
           </div>
         `;
         const quizBtn = card.querySelector(".quiz-card-btn");
         const examBtn = card.querySelector(".exam-card-btn");
+        const continueCourseBtn = card.querySelector(".continue-card-btn");
         const teacherSelect = card.querySelector(".teacher-select-mini");
         teacherSelect.addEventListener("click", ev => ev.stopPropagation());
         teacherSelect.addEventListener("change", ev => ev.stopPropagation());
@@ -2696,6 +3610,21 @@
           ev.stopPropagation();
           startExamMode(item.value, teacherSelect ? teacherSelect.value : "all");
         });
+        if(continueCourseBtn) {
+          const updateContinueButton = () => {
+            const teacher = teacherSelect ? teacherSelect.value : "all";
+            const available = hasLastPosition(item.value, teacher);
+            continueCourseBtn.disabled = !available;
+            continueCourseBtn.textContent = available ? "Kaldığım yerden devam" : "Kayıt yok";
+          };
+          updateContinueButton();
+          teacherSelect.addEventListener("change", updateContinueButton);
+          continueCourseBtn.addEventListener("click",(ev)=>{
+            ev.stopPropagation();
+            const teacher = teacherSelect ? teacherSelect.value : "all";
+            continueCourse(item.value, teacher);
+          });
+        }
         quizBtn.addEventListener("click",(ev)=>{
           ev.stopPropagation();
           const teacher = teacherSelect ? teacherSelect.value : "all";
@@ -2727,13 +3656,18 @@
         els.courseGrid.appendChild(card);
       });
       els.courseEmpty.style.display=filtered.length?"none":"block";
-      els.continueBtn.disabled=!aq.length;
+      els.continueBtn.disabled=!aq.length || !hasLastPosition("all","all");
       const wrongCount = activeWrongCount();
       els.wrongHomeBtn.disabled = wrongCount === 0;
       els.wrongHomeBtn.textContent = wrongCount ? `Yanlışlarımı aç (${wrongCount})` : "Yanlışlarımı aç";
       const hiddenCount = hiddenQuestionCount();
       els.hiddenHomeBtn.disabled = hiddenCount === 0;
       els.hiddenHomeBtn.textContent = hiddenCount ? `Gizlenen soruları yönet (${hiddenCount})` : "Gizlenen soruları yönet";
+      const starredCount = starredQuestionCount();
+      if(els.starredHomeBtn){
+        els.starredHomeBtn.disabled = starredCount === 0;
+        els.starredHomeBtn.textContent = starredCount ? `Yıldızlı sorular (${starredCount})` : "Yıldızlı sorular";
+      }
       els.quizAllBtn.disabled = aq.length === 0;
       els.quizAllBtn.textContent = aq.length ? `Tüm dersler quiz modu (${Math.min(150, aq.length)})` : "Tüm dersler quiz modu";
     }
@@ -2852,7 +3786,191 @@
       document.body.classList.remove("exam-mode");
     }
 
+    
+    
+    function buildQuestionForChatGPT(q){
+      const opts = optionList(q);
+      const parts = [];
+
+      parts.push("Aşağıdaki çoktan seçmeli soruyu çöz.");
+      parts.push("Bu sorunun cevabı nedir? Doğru şıkkı ve kısa gerekçesini yaz.");
+      parts.push("");
+
+      const info = [
+        q.subject ? `Ders: ${q.subject}` : "",
+        meta(q,"examGroup") ? `Kurul/Sınav: ${meta(q,"examGroup")}` : "",
+        meta(q,"year") ? `Yıl: ${meta(q,"year")}` : "",
+        meta(q,"teacher") ? `Hoca: ${meta(q,"teacher")}` : "",
+        meta(q,"topic") ? `Konu: ${meta(q,"topic")}` : "",
+        meta(q,"target") ? `Hedef/Kazanım: ${meta(q,"target")}` : ""
+      ].filter(Boolean);
+
+      if(info.length){
+        parts.push("Soru bilgisi:");
+        parts.push(info.join(" | "));
+        parts.push("");
+      }
+
+      parts.push("Soru:");
+      parts.push(q.question || "");
+
+      if(opts.length){
+        parts.push("");
+        parts.push("Şıklar:");
+        opts.forEach((opt, idx)=>{
+          parts.push(`${opt.letter || String.fromCharCode(65+idx)}) ${opt.text || ""}`);
+        });
+      }
+
+      parts.push("");
+      parts.push("Lütfen yalnızca soruyu çöz; doğru cevabı, neden doğru olduğunu ve diğer şıkların neden uygun olmadığını kısa şekilde açıkla.");
+      return parts.join("\n");
+    }
+
+    async function copyTextSafely(text){
+      try{
+        if(navigator.clipboard && window.isSecureContext){
+          await navigator.clipboard.writeText(text);
+          return true;
+        }
+      }catch(e){}
+      try{
+        const area = document.createElement("textarea");
+        area.value = text;
+        area.style.position = "fixed";
+        area.style.left = "-9999px";
+        area.style.top = "0";
+        document.body.appendChild(area);
+        area.focus();
+        area.select();
+        const ok = document.execCommand("copy");
+        document.body.removeChild(area);
+        return ok;
+      }catch(e){
+        return false;
+      }
+    }
+
+    
+    function closeChatGPTWebview(){
+      if(els.chatgptWebviewFrame) els.chatgptWebviewFrame.removeAttribute("src");
+      if(els.chatgptWebviewModal){
+        els.chatgptWebviewModal.classList.add("hidden");
+        els.chatgptWebviewModal.setAttribute("aria-hidden","true");
+      }
+    }
+
+    function openChatGPTNewTab(){
+      if(currentChatGPTUrl){
+        window.open(currentChatGPTUrl, "_blank", "noopener,noreferrer");
+      }else{
+        window.open("https://chatgpt.com/", "_blank", "noopener,noreferrer");
+      }
+    }
+
+    async function copyCurrentChatGPTPrompt(){
+      if(!currentChatGPTPrompt){
+        alert("Kopyalanacak prompt bulunamadı.");
+        return;
+      }
+      const ok = await copyTextSafely(currentChatGPTPrompt);
+      alert(ok ? "Prompt panoya kopyalandı." : "Prompt otomatik kopyalanamadı.");
+    }
+
+    function openChatGPTWebview(url, promptWasCopied=false){
+      currentChatGPTUrl = url;
+      if(!els.chatgptWebviewModal || !els.chatgptWebviewFrame){
+        openChatGPTNewTab();
+        return;
+      }
+
+      els.chatgptWebviewModal.classList.remove("hidden");
+      els.chatgptWebviewModal.setAttribute("aria-hidden","false");
+
+      if(els.chatgptWebviewNote){
+        els.chatgptWebviewNote.textContent = promptWasCopied
+          ? "Soru metni çok uzun olduğu için prompt panoya kopyalandı. Webview içinde ChatGPT açılırsa promptu yapıştırabilirsin. Açılmazsa yeni sekmede aç."
+          : "ChatGPT bazı tarayıcılarda güvenlik nedeniyle sayfa içinde açılmayabilir. Açılmazsa “Yeni sekmede aç” butonunu kullan.";
+      }
+
+      try{
+        els.chatgptWebviewFrame.src = url;
+      }catch(e){
+        openChatGPTNewTab();
+      }
+
+      setTimeout(()=>{
+        if(!els.chatgptWebviewModal.classList.contains("hidden") && els.chatgptWebviewNote){
+          els.chatgptWebviewNote.textContent = "Webview boş/engellenmiş görünüyorsa ChatGPT sayfa içinde açılmıyor olabilir. “Yeni sekmede aç” ya da “Promptu kopyala” seçeneklerini kullan.";
+        }
+      }, 2800);
+    }
+
+async function openCurrentQuestionInChatGPT(){
+      const q = questions[current];
+      if(!q){
+        alert("Gönderilecek soru bulunamadı.");
+        return;
+      }
+
+      const prompt = buildQuestionForChatGPT(q);
+      currentChatGPTPrompt = prompt;
+      let url = "https://chatgpt.com/?q=" + encodeURIComponent(prompt);
+      currentChatGPTUrl = url;
+
+      if(url.length > 7500){
+        const copied = await copyTextSafely(prompt);
+        window.open("https://chatgpt.com/", "_blank", "noopener,noreferrer");
+        alert(copied
+          ? "Soru metni çok uzun olduğu için panoya kopyalandı. Açılan ChatGPT sekmesine yapıştırabilirsin."
+          : "Soru metni çok uzun olduğu için doğrudan aktarılamadı. ChatGPT açıldı; soruyu manuel kopyalaman gerekebilir.");
+        return;
+      }
+
+      window.open(url, "_blank", "noopener,noreferrer");
+    }
+
+    function questionCardElement(){
+      return document.querySelector(".question-card");
+    }
+
+    function updateQuestionFullscreenIcon(){
+      const btn = els.questionFullscreenBtn;
+      if(!btn) return;
+      const active = document.body.classList.contains("question-card-fullscreen") ||
+        (document.fullscreenElement && document.fullscreenElement.classList && document.fullscreenElement.classList.contains("question-card"));
+      btn.title = active ? "Tam ekrandan çık" : "Tam ekran yap";
+      btn.setAttribute("aria-label", active ? "Tam ekrandan çık" : "Tam ekran yap");
+      btn.innerHTML = active
+        ? `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+        : `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+    }
+
+    async function toggleQuestionFullscreen(){
+      const card = questionCardElement();
+      if(!card) return;
+
+      try{
+        if(document.fullscreenElement){
+          await document.exitFullscreen();
+          document.body.classList.remove("question-card-fullscreen");
+        }else if(card.requestFullscreen){
+          await card.requestFullscreen();
+          document.body.classList.add("question-card-fullscreen");
+        }else{
+          document.body.classList.toggle("question-card-fullscreen");
+        }
+      }catch(e){
+        document.body.classList.toggle("question-card-fullscreen");
+      }
+
+      updateQuestionFullscreenIcon();
+      requestAnimationFrame(()=>scrollToQuestion("auto"));
+    }
+
     function showLanding(){
+      closeChatGPTWebview();
+      document.body.classList.remove("question-card-fullscreen");
       exitExamModeWithoutConfirm();
       stopQuizMode();
       document.body.classList.remove("app-screen-active");
@@ -2865,7 +3983,7 @@
       document.body.classList.add("app-screen-active");
       document.body.classList.add("app-screen-active");
       filters={subject:subject||"all", exam:"all", year:"all", teacher:teacher||"all", sourceGroup:"all", search:""};
-      ensureCurrent();
+      restoreLastPosition(subject||"all", teacher||"all");
       els.landing.classList.add("hidden");
       els.appView.classList.add("active");
       els.quizView.classList.remove("hidden");
@@ -2883,17 +4001,13 @@
       document.body.classList.add("app-screen-active");
       document.body.classList.add("app-screen-active");
       filters={subject:subject||"all", exam:"all", year:"all", teacher:"all", sourceGroup:"all", search:""};
-      ensureCurrent(); els.landing.classList.add("hidden"); els.appView.classList.add("active");
+      restoreLastPosition(subject||"all","all"); els.landing.classList.add("hidden"); els.appView.classList.add("active");
       els.quizView.classList.remove("hidden"); els.listView.classList.remove("active");
       els.activeTitle.textContent=subject&&subject!=="all"?subject+" soru bankası":"Tüm dersler soru bankası";
       els.results.style.display="none"; render(); scrollToQuestion("auto");
     }
     function continueLast(){
-      document.body.classList.add("app-screen-active");
-      sanitizeFilters(); ensureCurrent(); els.landing.classList.add("hidden"); els.appView.classList.add("active");
-      els.quizView.classList.remove("hidden"); els.listView.classList.remove("active");
-      els.activeTitle.textContent=filters.subject&&filters.subject!=="all"?filters.subject+" soru bankası":"Tüm dersler soru bankası";
-      els.results.style.display="none"; render(); scrollToQuestion("auto");
+      continueCourse(filters.subject || "all", filters.teacher || "all");
     }
 
     function renderFilters(){
@@ -2914,11 +4028,20 @@
       if(!idxs.length){
         document.body.classList.add("no-question-active");
         els.section.textContent="Soru bulunamadı"; els.meta.innerHTML=""; els.question.textContent=questions.length?"Seçili filtrelerle veya aktif database seçimiyle eşleşen soru yok.":"Soru dosyası yüklenemedi veya soru bulunamadı.";
-        els.options.innerHTML=""; els.feedback.className="feedback"; els.feedback.innerHTML=""; if(els.aiWarningBox){els.aiWarningBox.className="ai-warning-box"; els.aiWarningBox.innerHTML="";} els.infoBox.className="info-box"; els.infoBox.innerHTML=""; els.prevBtn.disabled=true; els.nextBtn.disabled=true; updateStats(); return;
+        els.options.innerHTML=""; els.feedback.className="feedback"; els.feedback.innerHTML=""; if(els.aiWarningBox){els.aiWarningBox.className="ai-warning-box"; els.aiWarningBox.innerHTML="";} els.infoBox.className="info-box"; els.infoBox.innerHTML=""; if(els.questionChatGPTBtn) els.questionChatGPTBtn.disabled=true; if(els.questionStarBtn){els.questionStarBtn.disabled=true; els.questionStarBtn.classList.remove("starred"); els.questionStarBtn.textContent="☆";} els.prevBtn.disabled=true; els.nextBtn.disabled=true; updateStats(); return;
       }
       document.body.classList.remove("no-question-active");
       ensureCurrent();
       const q=questions[current], pos=idxs.indexOf(current), selected=answers[answerKey(q)], opts=optionList(q), answer=q.answer||{};
+      if(els.questionChatGPTBtn) els.questionChatGPTBtn.disabled=false;
+      if(els.questionStarBtn){
+        els.questionStarBtn.disabled=false;
+        const starred = isStarredQuestion(q);
+        els.questionStarBtn.classList.toggle("starred", starred);
+        els.questionStarBtn.textContent = starred ? "★" : "☆";
+        els.questionStarBtn.title = starred ? "Yıldızı kaldır" : "Soruyu yıldızla";
+        els.questionStarBtn.setAttribute("aria-label", starred ? "Yıldızı kaldır" : "Soruyu yıldızla");
+      }
       if(examMode){
         if(els.examModeTitle) els.examModeTitle.textContent = `${examSubject}${examTeacher !== "all" ? " · " + examTeacher : ""} · ${pos+1}/${idxs.length}`;
         const qKey = answerKey(q);
@@ -2928,7 +4051,7 @@
         }
       }
       els.activeTitle.textContent=quizActive ? quizTitle : (filters.subject!=="all"?filters.subject+" soru bankası":"Tüm dersler soru bankası");
-      els.section.textContent=`${q.subject} · ${meta(q,"examGroup")||"Grup yok"} · ${meta(q,"year")||"Yıl yok"} · ${meta(q,"teacher")||"Hoca yok"} · ${meta(q,"topic")||"Konu yok"}`;
+      els.section.textContent=`${q.subject || "Ders yok"} · Soru ${pos+1}/${idxs.length} · ${meta(q,"examGroup")||"Kurul yok"} · ${meta(q,"teacher")||"Hoca yok"}`;
       const rows=[["Ders",q.subject],["Dosya",q._dbFile||""],["Kurul / sınav grubu",meta(q,"examGroup")],["Yıl / sene",meta(q,"year")],["Hoca",meta(q,"teacher")],["Konu",meta(q,"topic")],["Hedef / kazanım",meta(q,"target")],["Kaynak türü",meta(q,"sourceGroup")],["Kaynak",meta(q,"source")],["Kaynak soru no",meta(q,"sourceNo")],["Durum / güven",meta(q,"status")]];
       els.meta.innerHTML=rows.filter(([,v])=>String(v??"").trim()).map(([k,v])=>`<div><b>${escapeHTML(k)}:</b> ${escapeHTML(v)}</div>`).join("");
       els.question.textContent=q.question||"";
@@ -2980,6 +4103,7 @@
       els.nextBtn.textContent=pos===idxs.length-1?"Sonucu göster":"Sonraki";
       if(els.hideQuestionBtn) els.hideQuestionBtn.disabled = !q || isHiddenQuestion(q);
       updateStats();
+      recordLastPosition(q);
     }
 
     function updateStats(){
@@ -3065,7 +4189,9 @@
     function getListIndexesForCurrentMode(){
       let idxs = listMode === "hidden"
         ? questions.map((q,i)=>[q,i]).filter(([q]) => isDbActive(q) && isHiddenQuestion(q)).map(([,i])=>i)
-        : filteredIndexes();
+        : (listMode === "starred"
+          ? orderIndexes(questions.map((q,i)=>[q,i]).filter(([q]) => isDbActive(q) && !isHiddenQuestion(q) && isStarredQuestion(q)).map(([,i])=>i))
+          : filteredIndexes());
 
       if (listMode === "wrong") idxs = idxs.filter(i => isWrongFromCache(questions[i]));
       return idxs;
@@ -3074,17 +4200,21 @@
     function listModeTitle(){
       return listMode === "hidden"
         ? "Gizlenen sorular"
-        : (listMode === "wrong"
-          ? "Yanlış yapılan sorular"
-          : (filters.subject !== "all" ? filters.subject + " · tüm sorular" : "Tüm dersler · tüm sorular"));
+        : (listMode === "starred"
+          ? "Yıldızlı sorular"
+          : (listMode === "wrong"
+            ? "Yanlış yapılan sorular"
+            : (filters.subject !== "all" ? filters.subject + " · tüm sorular" : "Tüm dersler · tüm sorular")));
     }
 
     function listModeSubtitle(total){
       const base = listMode === "hidden"
         ? `${total} gizlenen soru · buradan yeniden görünür yapabilirsin`
-        : (listMode === "wrong"
-          ? `${total} yanlış soru · kaydedilmiş cevaplarına göre`
-          : (quizActive ? `${total} quiz sorusu` : (els.activeFilterSummary.textContent || `${total} soru`)));
+        : (listMode === "starred"
+          ? `${total} yıldızlı soru · buradan yıldızları kaldırabilir veya soruları inceleyebilirsin`
+          : (listMode === "wrong"
+            ? `${total} yanlış soru · kaydedilmiş cevaplarına göre`
+            : (quizActive ? `${total} quiz sorusu` : (els.activeFilterSummary.textContent || `${total} soru`))));
       return shuffleQuestions && listMode !== "hidden" ? base + " · karışık sıra" : base;
     }
 
@@ -3106,7 +4236,9 @@
 
       const cardActions = listMode === "hidden"
         ? `<div class="all-q-actions"><button class="secondary unhide-question-btn" type="button" data-qid="${escapeHTML(answerKey(q))}">Bu soruyu tekrar göster</button></div>`
-        : `<div class="all-q-actions"><button class="secondary hide-list-question-btn" type="button" data-qid="${escapeHTML(answerKey(q))}">Bu soruyu bir daha gösterme</button></div>`;
+        : (listMode === "starred"
+          ? `<div class="all-q-actions"><button class="secondary unstar-question-btn" type="button" data-qid="${escapeHTML(answerKey(q))}">Yıldızı kaldır</button><button class="secondary hide-list-question-btn" type="button" data-qid="${escapeHTML(answerKey(q))}">Bu soruyu bir daha gösterme</button></div>`
+          : `<div class="all-q-actions"><button class="secondary star-list-question-btn" type="button" data-qid="${escapeHTML(answerKey(q))}">${isStarredQuestion(q) ? "Yıldızı kaldır" : "Yıldızla"}</button><button class="secondary hide-list-question-btn" type="button" data-qid="${escapeHTML(answerKey(q))}">Bu soruyu bir daha gösterme</button></div>`);
 
       return `
         <article class="all-q-card">
@@ -3123,6 +4255,7 @@
           ${aiWarning ? `<div class="all-q-ai-warning">${aiWarning}</div>` : ""}
           ${cardActions}
           ${listMode === "hidden" ? `<div class="hidden-manager-note">Bu soru gizlendiği için normal soru akışında ve quizlerde görünmez.</div>` : ""}
+          ${listMode === "starred" ? `<div class="hidden-manager-note">Bu soru yıldızlı listendedir.</div>` : ""}
           ${info ? `<div class="all-q-info">${escapeHTML(info)}</div>` : ""}
         </article>
       `;
@@ -3136,6 +4269,18 @@
           hideQuestionById(btn.getAttribute("data-qid"));
           renderAllList(true);
           renderLanding();
+        });
+      });
+      els.allList.querySelectorAll(".star-list-question-btn,.unstar-question-btn").forEach(btn=>{
+        if(btn.dataset.bound === "1") return;
+        btn.dataset.bound = "1";
+        btn.addEventListener("click",()=>{
+          const id = btn.getAttribute("data-qid");
+          const q = questions.find(x => answerKey(x) === id);
+          if(q) toggleStarQuestion(q);
+          renderAllList(true);
+          renderLanding();
+          if(els.appView.classList.contains("active")) render();
         });
       });
       els.allList.querySelectorAll(".unhide-question-btn").forEach(btn=>{
@@ -3162,7 +4307,7 @@
       els.allList.innerHTML = "";
 
       if(!total){
-        els.allList.innerHTML = `<section class="panel status warn">${listMode === "hidden" ? "Gizlenen soru bulunamadı." : (listMode === "wrong" ? "Seçili soru dosyalarında yanlış yaptığın soru bulunamadı." : "Bu filtreye uygun soru bulunamadı.")}</section>`;
+        els.allList.innerHTML = `<section class="panel status warn">${listMode === "hidden" ? "Gizlenen soru bulunamadı." : (listMode === "starred" ? "Yıldızlı soru bulunamadı." : (listMode === "wrong" ? "Seçili soru dosyalarında yanlış yaptığın soru bulunamadı." : "Bu filtreye uygun soru bulunamadı."))}</section>`;
         return;
       }
 
@@ -3304,6 +4449,17 @@ ${body}
       showListView("hidden");
     }
 
+    function showStarredFromHome(){
+      stopQuizMode();
+      document.body.classList.add("app-screen-active");
+      filters={subject:"all", exam:"all", year:"all", teacher:"all", sourceGroup:"all", search:""};
+      sanitizeFilters();
+      els.landing.classList.add("hidden");
+      els.appView.classList.add("active");
+      els.activeTitle.textContent="Yıldızlı sorular";
+      showListView("starred");
+    }
+
     function showQuizView(){
       listMode = "all";
       els.listView.classList.remove("active");
@@ -3325,6 +4481,7 @@ ${body}
       }
 
       renderQuestion();
+      updateQuestionFullscreenIcon();
       renderJumpGrid(renderStructureDirty);
       renderStructureDirty = false;
 
@@ -3334,6 +4491,25 @@ ${body}
     }
 
     function bindEvents(){
+      if(els.questionFullscreenBtn) els.questionFullscreenBtn.addEventListener("click", toggleQuestionFullscreen);
+      if(els.questionChatGPTBtn) els.questionChatGPTBtn.addEventListener("click", openCurrentQuestionInChatGPT);
+      if(els.questionStarBtn) els.questionStarBtn.addEventListener("click",()=>{
+        toggleStarQuestion();
+        renderPreserveScroll();
+        renderLanding();
+      });
+      if(els.chatgptWebviewCloseBtn) els.chatgptWebviewCloseBtn.addEventListener("click", closeChatGPTWebview);
+      if(els.chatgptOpenNewTabBtn) els.chatgptOpenNewTabBtn.addEventListener("click", openChatGPTNewTab);
+      if(els.chatgptCopyPromptBtn) els.chatgptCopyPromptBtn.addEventListener("click", copyCurrentChatGPTPrompt);
+      if(els.chatgptWebviewModal) els.chatgptWebviewModal.addEventListener("click",(ev)=>{ if(ev.target === els.chatgptWebviewModal) closeChatGPTWebview(); });
+      document.addEventListener("keydown",(ev)=>{ if(ev.key === "Escape" && els.chatgptWebviewModal && !els.chatgptWebviewModal.classList.contains("hidden")) closeChatGPTWebview(); });
+      window.addEventListener("orientationchange",()=>setTimeout(()=>{ if(document.body.classList.contains("question-card-fullscreen")) scrollToQuestion("auto"); }, 250));
+      window.addEventListener("resize",()=>{ if(document.body.classList.contains("question-card-fullscreen")) updateQuestionFullscreenIcon(); });
+      document.addEventListener("fullscreenchange",()=>{
+        const active = !!(document.fullscreenElement && document.fullscreenElement.classList && document.fullscreenElement.classList.contains("question-card"));
+        document.body.classList.toggle("question-card-fullscreen", active);
+        updateQuestionFullscreenIcon();
+      });
       els.menuHomeBtn.addEventListener("click",()=>{ showLanding(); if(els.topMenu) els.topMenu.open=false; });
       els.menuSourceBtn.addEventListener("click",()=>openHomeSettingsPanel("dbSettingsDetails"));
       els.menuViewBtn.addEventListener("click",()=>openHomeSettingsPanel("viewSettingsDetails"));
@@ -3362,6 +4538,11 @@ ${body}
       els.menuShowAllBtn.addEventListener("click",()=>{
         if(examMode) return;
         showListView("all");
+        if(els.topMenu) els.topMenu.open = false;
+      });
+      if(els.menuStarredBtn) els.menuStarredBtn.addEventListener("click",()=>{
+        if(examMode) return;
+        showStarredFromHome();
         if(els.topMenu) els.topMenu.open = false;
       });
       if(els.menuExamBtn) els.menuExamBtn.addEventListener("click",()=>{
@@ -3393,6 +4574,7 @@ ${body}
       els.continueBtn.addEventListener("click", continueLast);
       els.wrongHomeBtn.addEventListener("click", showWrongFromHome);
       els.hiddenHomeBtn.addEventListener("click", showHiddenFromHome);
+      if(els.starredHomeBtn) els.starredHomeBtn.addEventListener("click", showStarredFromHome);
       els.quizAllBtn.addEventListener("click",()=>startQuiz("all",150));
       els.startAllBtn.addEventListener("click",()=>startCourse("all"));
       els.backHomeBtn.addEventListener("click", showLanding);
@@ -3468,8 +4650,8 @@ ${body}
       });
       els.clearCacheBtn.addEventListener("click",()=>{
         if(!confirm("Tüm cevaplar, filtreler ve kaldığın yer silinsin mi?")) return;
-        answers={}; current=0; filters={subject:"all",exam:"all",year:"all",teacher:"all",sourceGroup:"all",search:""}; infoOpen=false; listMode="all"; hiddenQuestionIds=[]; stopQuizMode();
-        try{localStorage.removeItem(STORAGE_KEY);}catch(e){}
+        answers={}; current=0; filters={subject:"all",exam:"all",year:"all",teacher:"all",sourceGroup:"all",search:""}; infoOpen=false; listMode="all"; hiddenQuestionIds=[]; starredQuestionIds=[]; stopQuizMode();
+        try{localStorage.removeItem(STORAGE_KEY); localStorage.removeItem(LAST_POSITION_KEY); lastPositions={};}catch(e){}
         els.results.style.display="none"; showLanding();
       });
       els.resetVisibleBtn.addEventListener("click",()=>{
