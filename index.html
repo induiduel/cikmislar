@@ -874,6 +874,7 @@
         <button class="secondary" id="menuViewBtn" type="button">Görünüm ayarları</button>
         <button class="secondary" id="menuDuplicateBtn" type="button">Tekrarları kapat</button>
         <button class="secondary" id="menuShuffleBtn" type="button">Karışık sırayı aç</button>
+        <button class="secondary" id="menuCacheBtn" type="button">Önbelleği yenile</button>
       </div>
     </details>
 
@@ -1093,6 +1094,9 @@
     const DB_EXTENSIONS = [".db", ".sdb"];
     const SEQUENTIAL_SCAN_MAX = 500;
     const STORAGE_KEY = "database_loader_question_bank_progress_v4";
+    const DB_FILE_LIST_CACHE_KEY = "question_bank_db_file_list_cache_v2";
+    const DB_CONTENT_CACHE_NAME = "question_bank_indexeddb_cache_v2";
+    const DB_CONTENT_STORE_NAME = "dbFiles";
 
     let dbFiles = [];
     let questions = [];
@@ -1118,12 +1122,18 @@
     let currentListIndexes = [];
     let renderedListCount = 0;
     let questionIndexById = new Map();
+    let filteredIndexesCacheKey = "";
+    let filteredIndexesCache = [];
+    let lastFilterControlsKey = "";
+    let lastJumpGridKey = "";
+    let renderStructureDirty = true;
+    let answerVersion = 0;
     const LIST_BATCH_SIZE = 60;
 
     const $ = id => document.getElementById(id);
     const els = {
       landing:$("landing"), appView:$("appView"), quizView:$("quizView"), listView:$("listView"),
-      topMenu:$("topMenu"), menuHomeBtn:$("menuHomeBtn"), menuSourceBtn:$("menuSourceBtn"), menuViewBtn:$("menuViewBtn"), menuDuplicateBtn:$("menuDuplicateBtn"), menuShuffleBtn:$("menuShuffleBtn"),
+      topMenu:$("topMenu"), menuHomeBtn:$("menuHomeBtn"), menuSourceBtn:$("menuSourceBtn"), menuViewBtn:$("menuViewBtn"), menuDuplicateBtn:$("menuDuplicateBtn"), menuShuffleBtn:$("menuShuffleBtn"), menuCacheBtn:$("menuCacheBtn"),
       courseGrid:$("courseGrid"), courseEmpty:$("courseEmpty"), courseSearch:$("courseSearch"),
       clearCourseSearch:$("clearCourseSearch"), continueBtn:$("continueBtn"), wrongHomeBtn:$("wrongHomeBtn"), hiddenHomeBtn:$("hiddenHomeBtn"), quizAllBtn:$("quizAllBtn"), startAllBtn:$("startAllBtn"),
       backHomeBtn:$("backHomeBtn"), changeCourseBtn:$("changeCourseBtn"), activeTitle:$("activeTitle"),
@@ -1156,6 +1166,120 @@
     function optionList(q){return Array.isArray(q.options) ? q.options : [];}
     function meta(q,key){return (q.metadata && q.metadata[key]) || "";}
     function answerKey(q){return duplicateMode === "all" ? (q._instanceId || q.id) : q.id;}
+
+    function prepareQuestionRecord(q){
+      if(!q) return q;
+      q._searchText = normalize([
+        q.subject, q.question, q.explanation, q.spot, q.sourceNote,
+        meta(q,"examGroup"), meta(q,"year"), meta(q,"teacher"), meta(q,"topic"),
+        meta(q,"target"), meta(q,"sourceGroup"), meta(q,"source"),
+        ...optionList(q).map(o=>o.text)
+      ].join(" "));
+      return q;
+    }
+
+    function invalidateQuestionIndexes(){
+      filteredIndexesCacheKey = "";
+      filteredIndexesCache = [];
+      lastJumpGridKey = "";
+      renderStructureDirty = true;
+    }
+
+    function filterCacheKey(){
+      return JSON.stringify([
+        questions.length,
+        filters.subject, filters.exam, filters.year, filters.teacher, filters.sourceGroup, filters.search,
+        selectedDbFiles.map(dbCanonicalName).sort().join("|"),
+        hiddenQuestionIds.join("|"),
+        duplicateMode,
+        quizActive ? "quiz" : "normal",
+        quizIds.join("|"),
+        shuffleQuestions ? shuffleSeed : "normal"
+      ]);
+    }
+
+    function filterControlsKey(){
+      return JSON.stringify([
+        questions.length,
+        filters.subject, filters.exam, filters.year, filters.teacher, filters.sourceGroup, filters.search,
+        selectedDbFiles.map(dbCanonicalName).sort().join("|"),
+        hiddenQuestionIds.length,
+        duplicateMode
+      ]);
+    }
+
+    function dbFileListCacheRead(){
+      try{
+        const raw = localStorage.getItem(DB_FILE_LIST_CACHE_KEY);
+        if(!raw) return null;
+        const parsed = JSON.parse(raw);
+        if(!parsed || !Array.isArray(parsed.files) || !parsed.files.length) return null;
+        return parsed.files;
+      }catch(e){return null;}
+    }
+
+    function dbFileListCacheWrite(files){
+      try{
+        const compact = files.map(f=>({name:f.name, url:f.url, source:f.source || "cache"}));
+        localStorage.setItem(DB_FILE_LIST_CACHE_KEY, JSON.stringify({createdAt:Date.now(), files:compact}));
+      }catch(e){}
+    }
+
+    function openContentCache(){
+      return new Promise((resolve,reject)=>{
+        if(!("indexedDB" in window)) { reject(new Error("IndexedDB desteklenmiyor.")); return; }
+        const req = indexedDB.open(DB_CONTENT_CACHE_NAME, 1);
+        req.onupgradeneeded = () => {
+          const db = req.result;
+          if(!db.objectStoreNames.contains(DB_CONTENT_STORE_NAME)) db.createObjectStore(DB_CONTENT_STORE_NAME, {keyPath:"key"});
+        };
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error || new Error("IndexedDB açılamadı."));
+      });
+    }
+
+    async function getCachedDbPayload(key){
+      try{
+        const db = await openContentCache();
+        return await new Promise(resolve=>{
+          const tx = db.transaction(DB_CONTENT_STORE_NAME, "readonly");
+          const store = tx.objectStore(DB_CONTENT_STORE_NAME);
+          const req = store.get(key);
+          req.onsuccess = () => { db.close(); resolve(req.result || null); };
+          req.onerror = () => { db.close(); resolve(null); };
+        });
+      }catch(e){return null;}
+    }
+
+    async function setCachedDbPayload(key, payload){
+      try{
+        const db = await openContentCache();
+        await new Promise(resolve=>{
+          const tx = db.transaction(DB_CONTENT_STORE_NAME, "readwrite");
+          const store = tx.objectStore(DB_CONTENT_STORE_NAME);
+          store.put({key, createdAt:Date.now(), payload});
+          tx.oncomplete = () => { db.close(); resolve(); };
+          tx.onerror = () => { db.close(); resolve(); };
+        });
+      }catch(e){}
+    }
+
+    function deleteIndexedDbCache(){
+      return new Promise(resolve=>{
+        try{
+          const req = indexedDB.deleteDatabase(DB_CONTENT_CACHE_NAME);
+          req.onsuccess = req.onerror = req.onblocked = () => resolve();
+        }catch(e){resolve();}
+      });
+    }
+
+    async function clearDatabaseCacheAndReload(){
+      if(!confirm("Soru dosyası önbelleği temizlenip sayfa yeniden yüklensin mi?")) return;
+      try{localStorage.removeItem(DB_FILE_LIST_CACHE_KEY);}catch(e){}
+      await deleteIndexedDbCache();
+      location.reload();
+    }
+
     async function fetchWithTimeout(url, options={}, timeoutMs=8000){
       const controller = new AbortController();
       const timer = setTimeout(() => controller.abort(), timeoutMs);
@@ -1481,6 +1605,13 @@
     }
 
     async function discoverDbFiles(){
+      const cachedList = dbFileListCacheRead();
+      if(cachedList && cachedList.length){
+        els.status.classList.remove("hidden");
+        els.status.innerHTML = "Soru dosyası listesi önbellekten yükleniyor...";
+        return cachedList;
+      }
+
       const candidates = [];
       const errors = [];
 
@@ -1494,18 +1625,37 @@
       }
 
       els.status.classList.remove("hidden");
-      els.status.innerHTML = "Soru dosyaları aranıyor: manifest, GitHub ve soru1.db-soru500.db taraması yapılıyor...";
-
+      els.status.innerHTML = "Soru dosyaları aranıyor...";
       await addFrom(listDbFilesFromManifest,"manifest");
-      await addFrom(listDbFilesFromGithubApi,"github-api");
-      await addFrom(listDbFilesBySequentialProbe,"sequential");
+
+      if(!candidates.length){
+        await addFrom(listDbFilesFromGithubApi,"github-api");
+      }
+
+      if(!candidates.length){
+        els.status.innerHTML = "Soru dosyaları doğrudan taranıyor. Bu işlem ilk açılışta biraz sürebilir...";
+        await addFrom(listDbFilesBySequentialProbe,"sequential");
+      }
 
       if(!candidates.length) throw new Error(errors.join(" | "));
-      return candidates.sort((a,b)=>a.name.localeCompare(b.name,"tr"));
+      const files = [...new Map(candidates.map(f=>[dbCanonicalName(f.name), f])).values()].sort((a,b)=>a.name.localeCompare(b.name,"tr"));
+      dbFileListCacheWrite(files);
+      return files;
     }
 
     async function loadDbFile(file){
-      const res = await fetchWithTimeout(file.url, {cache:"no-store"}, 15000);
+      const cacheKey = `${dbCanonicalName(file.name)}::${file.url || ""}`;
+      const cached = await getCachedDbPayload(cacheKey);
+      if(cached && cached.payload && Array.isArray(cached.payload.questions)){
+        return cached.payload.questions.map((q,idx) => {
+          const qq = {...q, _dbFile:dbBaseName(file.name), _dbSource:file.source || "cache"};
+          if(!qq.id) qq.id = fallbackId(qq);
+          qq._instanceId = `${dbBaseName(file.name)}::${idx}::${qq.id}`;
+          return prepareQuestionRecord(qq);
+        });
+      }
+
+      const res = await fetchWithTimeout(file.url, {cache:"force-cache"}, 15000);
       if(!res.ok) throw new Error(file.name+" okunamadı: HTTP "+res.status);
 
       let db;
@@ -1520,11 +1670,13 @@
         throw new Error(file.name+" geçerli soru dosyası değil. İçinde questions dizisi olmalı.");
       }
 
+      await setCachedDbPayload(cacheKey, {schemaVersion:db.schemaVersion || "", questions:db.questions});
+
       return db.questions.map((q,idx) => {
         const qq = {...q, _dbFile:dbBaseName(file.name), _dbSource:file.source};
         if(!qq.id) qq.id = fallbackId(qq);
         qq._instanceId = `${dbBaseName(file.name)}::${idx}::${qq.id}`;
-        return qq;
+        return prepareQuestionRecord(qq);
       });
     }
 
@@ -1542,7 +1694,7 @@
           const qq = {...q, _dbFile:dbBaseName(file.name), _dbSource:"manual"};
           if(!qq.id) qq.id = fallbackId(qq);
           qq._instanceId = `${dbBaseName(file.name)}::${idx}::${qq.id}`;
-          return qq;
+          return prepareQuestionRecord(qq);
         }));
       }
       allLoadedQuestions = all;
@@ -1722,6 +1874,7 @@
     }
 
     function rebuildQuestionsFromActiveFiles(preserveCurrent=true){
+      invalidateQuestionIndexes();
       const currentKey = preserveCurrent && questions[current] ? answerKey(questions[current]) : null;
       const raw = selectedRawQuestions();
       const duplicates = dedupeAndSetQuestions(raw);
@@ -1840,7 +1993,7 @@
       if(excludeField!=="teacher" && filters.teacher!=="all" && meta(q,"teacher")!==filters.teacher) return false;
       if(excludeField!=="sourceGroup" && filters.sourceGroup!=="all" && meta(q,"sourceGroup")!==filters.sourceGroup) return false;
       if(term){
-        const haystack = normalize([q.subject,q.question,q.explanation,q.spot,q.sourceNote,meta(q,"examGroup"),meta(q,"year"),meta(q,"teacher"),meta(q,"topic"),meta(q,"target"),meta(q,"sourceGroup"),meta(q,"source"),...optionList(q).map(o=>o.text)].join(" "));
+        const haystack = q._searchText || prepareQuestionRecord(q)._searchText || "";
         if(!haystack.includes(term)) return false;
       }
       return true;
@@ -1872,6 +2025,7 @@
 
     function setShuffleMode(enabled, regenerate=false){
       shuffleQuestions = !!enabled;
+      invalidateQuestionIndexes();
       if(regenerate || !Number.isFinite(shuffleSeed)) shuffleSeed = Date.now();
       if(els.questionOrderSelect) els.questionOrderSelect.value = shuffleQuestions ? "shuffle" : "normal";
       saveState();
@@ -1882,12 +2036,23 @@
     }
 
     function filteredIndexes(){
+      const key = filterCacheKey();
+      if(key === filteredIndexesCacheKey && Array.isArray(filteredIndexesCache)){
+        return filteredIndexesCache;
+      }
+
+      let idxs;
       if(quizActive && quizIds.length){
-        return quizIds
+        idxs = quizIds
           .map(id => questionIndexById.has(id) ? questionIndexById.get(id) : questions.findIndex(q => answerKey(q) === id))
           .filter(i => i >= 0 && isDbActive(questions[i]) && !isHiddenQuestion(questions[i]));
+      }else{
+        idxs = orderIndexes(questions.map((q,i)=>[q,i]).filter(([q])=>matchesFilters(q,null)).map(([,i])=>i));
       }
-      return orderIndexes(questions.map((q,i)=>[q,i]).filter(([q])=>matchesFilters(q,null)).map(([,i])=>i));
+
+      filteredIndexesCacheKey = key;
+      filteredIndexesCache = idxs;
+      return idxs;
     }
     function filteredQuestionsForOptions(excludeField){return questions.filter(q=>matchesFilters(q, excludeField));}
     function countValuesForOptions(fieldFn, excludeField){
@@ -2149,7 +2314,7 @@
             if(answer.index!==null&&answer.index!==undefined&&idx===selected&&selected!==answer.index) div.classList.add("wrong");
           }
           div.innerHTML=`<span class="letter">${escapeHTML(opt.letter||String.fromCharCode(65+idx))}</span><span class="option-text">${escapeHTML(opt.text||"")}</span>`;
-          div.addEventListener("click",()=>{answers[answerKey(q)]=idx; render();});
+          div.addEventListener("click",()=>{answers[answerKey(q)]=idx; answerVersion++; render();});
           els.options.appendChild(div);
         });
       }
@@ -2185,24 +2350,54 @@
     function updateStats(){
       const st=stats();
       els.progress.style.width=st.total?((st.answered/st.total)*100)+"%":"0%";
-      els.counter.textContent=st.total?`Soru ${filteredIndexes().indexOf(current)+1} / ${st.total} · Genel no: ${current+1}`:"0 soru";
+      const idxsForCounter = filteredIndexes();
+      els.counter.textContent=st.total?`Soru ${idxsForCounter.indexOf(current)+1} / ${st.total} · Genel no: ${current+1}`:"0 soru";
       els.answeredCount.textContent=st.answered; els.correctCount.textContent=st.correct; els.wrongCount.textContent=st.wrong+(st.neutral?` (+${st.neutral} manuel)`:""); els.emptyCount.textContent=st.empty;
       els.activeFilterSummary.textContent=[filters.subject==="all"?"Tüm dersler":filters.subject,filters.exam==="all"?"Tüm gruplar":filters.exam,filters.year==="all"?"Tüm yıllar":filters.year,filters.teacher==="all"?"Tüm hocalar":filters.teacher,filters.sourceGroup==="all"?"Tüm kaynak türleri":filters.sourceGroup,filters.search.trim()?`Arama: “${filters.search.trim()}”`:"Arama yok"].join(" + ")+` → ${st.total} soru`;
     }
 
-    function renderJumpGrid(){
-      els.jumpGrid.innerHTML="";
+    function updateJumpGridState(){
+      const buttons = els.jumpGrid.querySelectorAll("button.jump");
+      buttons.forEach(btn=>{
+        const i = Number(btn.dataset.index);
+        const q = questions[i];
+        if(!q) return;
+        btn.classList.toggle("active", i === current);
+        btn.classList.remove("done-neutral","done-ok","done-bad");
+        const a = answers[answerKey(q)];
+        if(a!==undefined && a!==null){
+          const ci=q.answer?q.answer.index:null;
+          if(ci===null||ci===undefined||ci<0) btn.classList.add("done-neutral");
+          else btn.classList.add(a===ci?"done-ok":"done-bad");
+        }
+      });
+    }
+
+    function renderJumpGrid(force=false){
       const idxs=filteredIndexes();
+      const key = idxs.length + ":" + idxs.join("|");
+      if(!force && key === lastJumpGridKey && els.jumpGrid.children.length){
+        updateJumpGridState();
+        return;
+      }
+
+      els.jumpGrid.innerHTML="";
+      lastJumpGridKey = key;
       if(!idxs.length){els.jumpGrid.innerHTML=`<div class="small" style="grid-column:1 / -1;">Bu filtre/arama ile eşleşen soru yok.</div>`; return;}
+
+      const frag = document.createDocumentFragment();
       idxs.forEach((i,pos)=>{
         const q=questions[i], b=document.createElement("button");
-        b.className="jump"; if(i===current) b.classList.add("active");
+        b.className="jump";
+        b.dataset.index = String(i);
+        if(i===current) b.classList.add("active");
         const a=answers[answerKey(q)];
         if(a!==undefined&&a!==null){const ci=q.answer?q.answer.index:null; if(ci===null||ci===undefined||ci<0)b.classList.add("done-neutral"); else b.classList.add(a===ci?"done-ok":"done-bad");}
         b.textContent=pos+1; b.title=`${shuffleQuestions ? "Karışık sıra: " + (pos+1) + " · " : ""}${q.subject} · ${meta(q,"examGroup")} · ${meta(q,"topic")}`;
         b.addEventListener("click",()=>{current=i; render(); scrollToQuestion();});
-        els.jumpGrid.appendChild(b);
+        frag.appendChild(b);
       });
+      els.jumpGrid.appendChild(frag);
     }
 
     function renderReview(){
@@ -2266,6 +2461,7 @@
       const wrongNotes = listMode === "wrong"
         ? `<div class="wrong-answer-note"><b>Senin cevabın:</b> ${escapeHTML(cachedSelectedText(q))}</div><div class="correct-answer-note"><b>Doğru cevap:</b> ${escapeHTML(cachedCorrectText(q))}</div>`
         : "";
+      const aiWarning = aiDiscrepancyHTML(q);
 
       const cardActions = listMode === "hidden"
         ? `<div class="all-q-actions"><button class="secondary unhide-question-btn" type="button" data-qid="${escapeHTML(answerKey(q))}">Bu soruyu tekrar göster</button></div>`
@@ -2478,7 +2674,20 @@ ${body}
       applyFontSize();
       applyDesignMode();
       applyWideModes();
-      applyWideModes(); renderFilters(); renderQuestion(); renderJumpGrid(); if(els.results && els.results.style.display === "block" && !els.review.classList.contains("hidden")) renderReview(); saveState();
+
+      const controlsKey = filterControlsKey();
+      const shouldRenderFilters = renderStructureDirty || controlsKey !== lastFilterControlsKey;
+      if(shouldRenderFilters){
+        renderFilters();
+        lastFilterControlsKey = filterControlsKey();
+      }
+
+      renderQuestion();
+      renderJumpGrid(renderStructureDirty);
+      renderStructureDirty = false;
+
+      if(els.results && els.results.style.display === "block" && !els.review.classList.contains("hidden")) renderReview();
+      saveState();
       // Liste ekranı açıkken ağır yeniden çizim yalnızca liste komutlarıyla yapılır.
     }
 
@@ -2498,6 +2707,7 @@ ${body}
         applyDesignMode();
         if(els.topMenu) els.topMenu.open=false;
       });
+      els.menuCacheBtn.addEventListener("click", clearDatabaseCacheAndReload);
       els.courseSearch.addEventListener("input", debounce(renderLanding, 180));
       els.clearCourseSearch.addEventListener("click",()=>{els.courseSearch.value=""; renderLanding(); els.courseSearch.focus();});
       els.manualDbInput.addEventListener("change",async()=>{try{await loadManualDbFiles(els.manualDbInput.files);}catch(e){els.status.className="panel status warn"; els.status.innerHTML=`<b>Manuel database yüklenemedi:</b> ${escapeHTML(e.message)}`;}});
@@ -2643,7 +2853,7 @@ async function init(){
         dbFiles=[...new Map(loaded.loadedFiles.map(f=>[dbCanonicalName(f.name), {...f, name:dbBaseName(f.name)}])).values()];
         const all = loaded.all;
 
-        els.status.innerHTML = "Sorular hazırlanıyor; benzer kayıtlar ayıklanıyor...";
+        els.status.innerHTML = "Sorular hazırlanıyor; önbellek ve indeksler kuruluyor...";
         allLoadedQuestions = all;
         ensureSelectedDbFiles();
         const duplicates = rebuildQuestionsFromActiveFiles(false);
