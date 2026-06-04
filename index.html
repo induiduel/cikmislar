@@ -151,6 +151,28 @@
     .all-q-option.correct{background:var(--okbg);border-color:rgba(18,99,58,.35);color:#14532d;font-weight:780}
     .all-q-info{margin-top:8px;font-size:12px;color:#475467;line-height:1.45;white-space:pre-wrap}
 
+
+    .compact-actionbar{
+      display:none;
+      margin-bottom:8px;
+      padding:8px;
+      gap:8px;
+      align-items:center;
+      justify-content:space-between;
+    }
+    body.compact-mode .compact-actionbar{
+      display:flex!important;
+      position:sticky;
+      top:6px;
+      z-index:40;
+      box-shadow:0 8px 18px rgba(15,23,42,.09);
+    }
+    body.compact-mode .compact-actionbar button{
+      padding:9px 11px;
+      border-radius:10px;
+      font-size:12px;
+    }
+
     /* Sade çözüm modu: soru, cevaplar ve işlem butonları öne çıkarılır. */
     body.compact-mode .hero,
     body.compact-mode #statusBox,
@@ -272,6 +294,7 @@
           <span class="chip">Soru dosyası seçimi</span>
           <span class="chip">Yazı boyutu ayarı</span>
           <span class="chip">Sade çözüm modu</span>
+          <span class="chip">Sade mod hızlı çıkış</span>
           <span class="chip">Tek soru / liste görünümü</span>
           <span class="chip">Yanlışlarım</span>
           <span class="chip">Benzer soru ayıklama</span>
@@ -340,6 +363,12 @@
         <div class="top-nav-title" id="activeTitle">Ders</div>
         <button class="secondary" id="showAllBtn" type="button">Tüm soruları listele</button>
         <button class="primary" id="changeCourseBtn" type="button">Dersi değiştir</button>
+      </section>
+
+      
+      <section class="panel compact-actionbar" id="compactActionbar">
+        <button class="secondary" id="compactHomeBtn" type="button">← Ana ekrana dön</button>
+        <button class="primary" id="compactShowAllBtn" type="button">Tüm soruları gör</button>
       </section>
 
       <section class="quiz-view" id="quizView">
@@ -466,7 +495,7 @@
       courseGrid:$("courseGrid"), courseEmpty:$("courseEmpty"), courseSearch:$("courseSearch"),
       clearCourseSearch:$("clearCourseSearch"), continueBtn:$("continueBtn"), wrongHomeBtn:$("wrongHomeBtn"), startAllBtn:$("startAllBtn"),
       backHomeBtn:$("backHomeBtn"), changeCourseBtn:$("changeCourseBtn"), activeTitle:$("activeTitle"),
-      showAllBtn:$("showAllBtn"), backToQuizBtn:$("backToQuizBtn"), refreshListBtn:$("refreshListBtn"),
+      showAllBtn:$("showAllBtn"), compactHomeBtn:$("compactHomeBtn"), compactShowAllBtn:$("compactShowAllBtn"), backToQuizBtn:$("backToQuizBtn"), refreshListBtn:$("refreshListBtn"),
       listTitle:$("listTitle"), listSubtitle:$("listSubtitle"), allList:$("allList"),
       totalQuestionsHero:$("totalQuestionsHero"), totalSubjectsHero:$("totalSubjectsHero"), status:$("statusBox"),
       manualDbBox:$("manualDbBox"), manualDbInput:$("manualDbInput"), dbList:$("dbList"),
@@ -1163,6 +1192,8 @@
       els.backHomeBtn.addEventListener("click", showLanding);
       els.changeCourseBtn.addEventListener("click", showLanding);
       els.showAllBtn.addEventListener("click",()=>showListView("all"));
+      els.compactHomeBtn.addEventListener("click", showLanding);
+      els.compactShowAllBtn.addEventListener("click",()=>showListView("all"));
       els.backToQuizBtn.addEventListener("click", showQuizView);
       els.refreshListBtn.addEventListener("click", renderAllList);
       els.selectAllDbBtn.addEventListener("click",()=>{selectedDbFiles=dbFiles.map(f=>dbBaseName(f.name)); sanitizeFilters(); ensureCurrent(); saveState(); renderLanding();});
