@@ -1323,6 +1323,140 @@
       contain:none;
     }
 
+  
+    /* Soru üstündeki kısa bilgi alanı */
+    .question-mini-header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:8px;
+      color:var(--primary);
+      background:var(--soft);
+      border:1px solid rgba(23,58,138,.13);
+      padding:5px 7px;
+      border-radius:10px;
+      line-height:1.2;
+      margin-bottom:7px;
+      min-height:30px;
+      position:relative;
+      overflow:visible;
+    }
+    .question-mini-header .section{
+      flex:1 1 auto;
+      min-width:0;
+      margin:0!important;
+      padding:0!important;
+      border:0!important;
+      background:transparent!important;
+      border-radius:0!important;
+      font-size:11px!important;
+      font-weight:850;
+      line-height:1.25;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .question-mini-header details.meta-box{
+      flex:0 0 auto;
+      margin:0!important;
+      padding:0!important;
+      border:0!important;
+      background:transparent!important;
+      overflow:visible!important;
+      position:relative;
+      border-radius:0!important;
+    }
+    .question-mini-header details.meta-box summary{
+      width:24px;
+      height:24px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      list-style:none;
+      padding:0!important;
+      border-radius:999px;
+      border:1px solid rgba(23,58,138,.18);
+      background:#fff;
+      color:var(--primary);
+      font-size:13px;
+      font-weight:950;
+      user-select:none;
+      box-shadow:0 2px 6px rgba(15,23,42,.06);
+    }
+    .question-mini-header details.meta-box summary::-webkit-details-marker{
+      display:none;
+    }
+    .question-mini-header details.meta-box[open] summary{
+      background:var(--primary);
+      color:#fff;
+      border-color:var(--primary);
+    }
+    .question-mini-header .meta{
+      position:absolute;
+      right:0;
+      top:calc(100% + 6px);
+      z-index:130;
+      width:min(520px, calc(100vw - 28px));
+      max-height:min(58vh, 420px);
+      overflow:auto;
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:6px;
+      padding:8px;
+      color:var(--muted);
+      font-size:11px;
+      line-height:1.3;
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:12px;
+      box-shadow:0 16px 34px rgba(15,23,42,.16);
+    }
+    .question-mini-header .meta div{
+      border:1px solid var(--line);
+      border-radius:9px;
+      padding:6px 7px;
+      background:#fbfdff;
+      overflow-wrap:anywhere;
+    }
+    .question-mini-header .meta b{
+      color:#334155;
+    }
+    body.compact-mode .question-mini-header{
+      padding:4px 6px;
+      min-height:26px;
+      margin-bottom:5px;
+      border-radius:9px;
+    }
+    body.compact-mode .question-mini-header .section{
+      font-size:10px!important;
+    }
+    body.compact-mode .question-mini-header details.meta-box summary{
+      width:22px;
+      height:22px;
+      font-size:12px;
+    }
+    body.font-xsmall .question-mini-header .section{
+      font-size:9.5px!important;
+    }
+    @media (max-width:560px){
+      .question-mini-header{
+        gap:6px;
+      }
+      .question-mini-header .section{
+        font-size:10.5px!important;
+      }
+      .question-mini-header .meta{
+        position:fixed;
+        left:8px;
+        right:8px;
+        top:54px;
+        width:auto;
+        max-height:62vh;
+        grid-template-columns:1fr;
+      }
+    }
+
   </style>
 </head>
 <body class="font-normal">
@@ -1456,12 +1590,13 @@
 
         <section class="layout" id="testArea">
           <article class="panel question-card">
-            <div class="section" id="section"></div>
-
-            <details class="meta-box" id="metaDetails">
-              <summary>Ders / kurul / yıl / hoca / hedef / kaynak bilgilerini göster</summary>
-              <div class="meta" id="meta"></div>
-            </details>
+            <div class="question-mini-header">
+              <div class="section" id="section"></div>
+              <details class="meta-box meta-icon-box" id="metaDetails">
+                <summary title="Soru bilgilerini göster" aria-label="Soru bilgilerini göster">ⓘ</summary>
+                <div class="meta" id="meta"></div>
+              </details>
+            </div>
 
             <h2 class="question" id="question"></h2>
             <div class="options" id="options"></div>
@@ -2951,7 +3086,7 @@
         }
       }
       els.activeTitle.textContent=quizActive ? quizTitle : (filters.subject!=="all"?filters.subject+" soru bankası":"Tüm dersler soru bankası");
-      els.section.textContent=`${q.subject} · ${meta(q,"examGroup")||"Grup yok"} · ${meta(q,"year")||"Yıl yok"} · ${meta(q,"teacher")||"Hoca yok"} · ${meta(q,"topic")||"Konu yok"}`;
+      els.section.textContent=`${q.subject || "Ders yok"} · Soru ${pos+1}/${idxs.length} · ${meta(q,"examGroup")||"Kurul yok"} · ${meta(q,"teacher")||"Hoca yok"}`;
       const rows=[["Ders",q.subject],["Dosya",q._dbFile||""],["Kurul / sınav grubu",meta(q,"examGroup")],["Yıl / sene",meta(q,"year")],["Hoca",meta(q,"teacher")],["Konu",meta(q,"topic")],["Hedef / kazanım",meta(q,"target")],["Kaynak türü",meta(q,"sourceGroup")],["Kaynak",meta(q,"source")],["Kaynak soru no",meta(q,"sourceNo")],["Durum / güven",meta(q,"status")]];
       els.meta.innerHTML=rows.filter(([,v])=>String(v??"").trim()).map(([k,v])=>`<div><b>${escapeHTML(k)}:</b> ${escapeHTML(v)}</div>`).join("");
       els.question.textContent=q.question||"";
