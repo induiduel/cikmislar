@@ -455,6 +455,23 @@
       padding:0 12px 12px;
     }
 
+  
+    .load-more-wrap{
+      display:flex;
+      justify-content:center;
+      padding:12px 0 4px;
+    }
+    .load-more-wrap button{
+      min-width:180px;
+    }
+    .list-performance-note{
+      margin-top:6px;
+      color:var(--muted);
+      font-size:11.5px;
+      line-height:1.35;
+      text-align:center;
+    }
+
   </style>
 </head>
 <body class="font-normal">
@@ -673,6 +690,10 @@
     let designMode = "standard";
     let questionWideMode = false;
     let listWideMode = false;
+    let currentListIndexes = [];
+    let renderedListCount = 0;
+    let questionIndexById = new Map();
+    const LIST_BATCH_SIZE = 60;
 
     const $ = id => document.getElementById(id);
     const els = {
@@ -697,6 +718,13 @@
     };
 
     function escapeHTML(str){return String(str ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");}
+    function debounce(fn, wait=160){
+      let timer;
+      return (...args) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => fn(...args), wait);
+      };
+    }
     function normalize(str){let s=String(str ?? "").toLocaleLowerCase("tr-TR");try{s=s.normalize("NFKD").replace(/[\u0300-\u036f]/g,"");}catch(e){} return s.replace(/ı/g,"i");}
     function initials(name){return String(name||"?").split(/\s+/).map(x=>x[0]).join("").slice(0,2).toUpperCase();}
     function optionList(q){return Array.isArray(q.options) ? q.options : [];}
@@ -723,7 +751,7 @@
       hiddenQuestionIds = [];
       saveState();
       renderLanding();
-      if(els.listView.classList.contains("active")) renderAllList();
+      // Liste ekranı açıkken ağır yeniden çizim yalnızca liste komutlarıyla yapılır.
     }
     function shuffleArray(arr){
       const copy = arr.slice();
@@ -998,31 +1026,30 @@
       const exactMap = new Map();
       const kept = [];
       const buckets = new Map();
+      const subjectRecent = new Map();
       let duplicates = 0;
       let nearDuplicates = 0;
 
       all.forEach(q => {
         if(!q.id) q.id = fallbackId(q);
 
-        // 1) Aynı ID birebir tekrar ise sil.
         if(exactMap.has(q.id)){
           duplicates++;
           return;
         }
 
-        // 2) Farklı database dosyalarında %90 ve üzeri benzer soru varsa tekrar listeleme.
         const bucket = dedupeKeyBucket(q);
-        const possibleBuckets = [bucket];
-
-        // Çok kısa/bozuk bucketlarda kaçırmamak için aynı dersteki son kayıtların küçük bir kısmı da kontrol edilir.
         const localCandidates = [];
-        possibleBuckets.forEach(b => {
-          if (buckets.has(b)) localCandidates.push(...buckets.get(b));
-        });
 
-        if (localCandidates.length < 10) {
-          const sameSubjectRecent = kept.filter(x => normalizeQuestionTextForDedupe(x.subject || "") === normalizeQuestionTextForDedupe(q.subject || "")).slice(-80);
-          localCandidates.push(...sameSubjectRecent);
+        if (buckets.has(bucket)) {
+          localCandidates.push(...buckets.get(bucket));
+        }
+
+        // Açılış donmasını azaltmak için her soruda tüm listeyi taramak yerine
+        // aynı derse ait son kayıtların küçük bir önbelleği kullanılır.
+        const subjectKey = normalizeQuestionTextForDedupe(q.subject || "");
+        if (localCandidates.length < 10 && subjectRecent.has(subjectKey)) {
+          localCandidates.push(...subjectRecent.get(subjectKey));
         }
 
         const near = localCandidates.some(prev => isNearDuplicateQuestion(prev, q));
@@ -1033,8 +1060,16 @@
 
         exactMap.set(q.id, q);
         kept.push(q);
+
         if(!buckets.has(bucket)) buckets.set(bucket, []);
-        buckets.get(bucket).push(q);
+        const bucketArr = buckets.get(bucket);
+        bucketArr.push(q);
+        if (bucketArr.length > 60) bucketArr.shift();
+
+        if(!subjectRecent.has(subjectKey)) subjectRecent.set(subjectKey, []);
+        const recent = subjectRecent.get(subjectKey);
+        recent.push(q);
+        if (recent.length > 80) recent.shift();
       });
 
       questions = kept;
@@ -1119,7 +1154,7 @@
     function filteredIndexes(){
       if(quizActive && quizIds.length){
         return quizIds
-          .map(id => questions.findIndex(q => q.id === id))
+          .map(id => questionIndexById.has(id) ? questionIndexById.get(id) : questions.findIndex(q => q.id === id))
           .filter(i => i >= 0 && isDbActive(questions[i]) && !isHiddenQuestion(questions[i]));
       }
       return questions.map((q,i)=>[q,i]).filter(([q])=>matchesFilters(q,null)).map(([,i])=>i);
@@ -1384,53 +1419,52 @@
       els.results.style.display="block"; renderReview();
     }
 
-    function renderAllList(){
+    function getListIndexesForCurrentMode(){
       let idxs = listMode === "hidden"
         ? questions.map((q,i)=>[q,i]).filter(([q]) => isDbActive(q) && isHiddenQuestion(q)).map(([,i])=>i)
         : filteredIndexes();
-      if (listMode === "wrong") idxs = idxs.filter(i => isWrongFromCache(questions[i]));
 
-      els.listTitle.textContent = listMode === "hidden"
+      if (listMode === "wrong") idxs = idxs.filter(i => isWrongFromCache(questions[i]));
+      return idxs;
+    }
+
+    function listModeTitle(){
+      return listMode === "hidden"
         ? "Gizlenen sorular"
         : (listMode === "wrong"
           ? "Yanlış yapılan sorular"
           : (filters.subject !== "all" ? filters.subject + " · tüm sorular" : "Tüm dersler · tüm sorular"));
+    }
 
-      els.listSubtitle.textContent = listMode === "hidden"
-        ? `${idxs.length} gizlenen soru · buradan yeniden görünür yapabilirsin`
+    function listModeSubtitle(total){
+      return listMode === "hidden"
+        ? `${total} gizlenen soru · buradan yeniden görünür yapabilirsin`
         : (listMode === "wrong"
-          ? `${idxs.length} yanlış soru · kaydedilmiş cevaplarına göre`
-          : (quizActive ? `${idxs.length} quiz sorusu` : (els.activeFilterSummary.textContent || `${idxs.length} soru`)));
+          ? `${total} yanlış soru · kaydedilmiş cevaplarına göre`
+          : (quizActive ? `${total} quiz sorusu` : (els.activeFilterSummary.textContent || `${total} soru`)));
+    }
 
-      els.allList.innerHTML = "";
-      if(!idxs.length){
-        els.allList.innerHTML = `<section class="panel status warn">${listMode === "hidden" ? "Gizlenen soru bulunamadı." : (listMode === "wrong" ? "Seçili soru dosyalarında yanlış yaptığın soru bulunamadı." : "Bu filtreye uygun soru bulunamadı.")}</section>`;
-        return;
-      }
+    function buildListCardHTML(i, pos){
+      const q = questions[i], opts = optionList(q), ans = q.answer || {};
+      const optHtml = opts.length ? opts.map((opt, idx) => {
+        const isCorrect = ans.index !== null && ans.index !== undefined && idx === ans.index;
+        const selected = numericAnswerValue(answers[answerKey(q)]);
+        const isSelectedWrong = listMode === "wrong" && selected !== null && idx === selected && !isCorrect;
+        return `<div class="all-q-option ${isCorrect ? "correct" : ""}" style="${isSelectedWrong ? "background:var(--badbg);border-color:rgba(166,29,53,.35);color:var(--bad);font-weight:780;" : ""}"><b>${escapeHTML(opt.letter || String.fromCharCode(65+idx))})</b> ${escapeHTML(opt.text || "")}</div>`;
+      }).join("") : `<div class="all-q-option correct"><b>Cevap:</b> ${escapeHTML(ans.raw || ans.text || "")}</div>`;
 
-      const frag = document.createDocumentFragment();
-      idxs.forEach((i, pos) => {
-        const q = questions[i], opts = optionList(q), ans = q.answer || {};
-        const card = document.createElement("article");
-        card.className = "all-q-card";
+      const info = [q.explanation ? "Açıklama: " + q.explanation : "", q.spot ? "Spot: " + q.spot : "", ans.raw ? "Cevap anahtarı: " + ans.raw : ""].filter(Boolean).join("\n");
 
-        const optHtml = opts.length ? opts.map((opt, idx) => {
-          const isCorrect = ans.index !== null && ans.index !== undefined && idx === ans.index;
-          const selected = numericAnswerValue(answers[answerKey(q)]);
-          const isSelectedWrong = listMode === "wrong" && selected !== null && idx === selected && !isCorrect;
-          return `<div class="all-q-option ${isCorrect ? "correct" : ""}" style="${isSelectedWrong ? "background:var(--badbg);border-color:rgba(166,29,53,.35);color:var(--bad);font-weight:780;" : ""}"><b>${escapeHTML(opt.letter || String.fromCharCode(65+idx))})</b> ${escapeHTML(opt.text || "")}</div>`;
-        }).join("") : `<div class="all-q-option correct"><b>Cevap:</b> ${escapeHTML(ans.raw || ans.text || "")}</div>`;
+      const wrongNotes = listMode === "wrong"
+        ? `<div class="wrong-answer-note"><b>Senin cevabın:</b> ${escapeHTML(cachedSelectedText(q))}</div><div class="correct-answer-note"><b>Doğru cevap:</b> ${escapeHTML(cachedCorrectText(q))}</div>`
+        : "";
 
-        const info = [q.explanation ? "Açıklama: " + q.explanation : "", q.spot ? "Spot: " + q.spot : "", ans.raw ? "Cevap anahtarı: " + ans.raw : ""].filter(Boolean).join("\n");
+      const cardActions = listMode === "hidden"
+        ? `<div class="all-q-actions"><button class="secondary unhide-question-btn" type="button" data-qid="${escapeHTML(q.id)}">Bu soruyu tekrar göster</button></div>`
+        : `<div class="all-q-actions"><button class="secondary hide-list-question-btn" type="button" data-qid="${escapeHTML(q.id)}">Bu soruyu bir daha gösterme</button></div>`;
 
-        const wrongNotes = listMode === "wrong"
-          ? `<div class="wrong-answer-note"><b>Senin cevabın:</b> ${escapeHTML(cachedSelectedText(q))}</div><div class="correct-answer-note"><b>Doğru cevap:</b> ${escapeHTML(cachedCorrectText(q))}</div>`
-          : "";
-        const cardActions = listMode === "hidden"
-          ? `<div class="all-q-actions"><button class="secondary unhide-question-btn" type="button" data-qid="${escapeHTML(q.id)}">Bu soruyu tekrar göster</button></div>`
-          : `<div class="all-q-actions"><button class="secondary hide-list-question-btn" type="button" data-qid="${escapeHTML(q.id)}">Bu soruyu bir daha gösterme</button></div>`;
-
-        card.innerHTML = `
+      return `
+        <article class="all-q-card">
           <div class="all-q-meta">
             <span class="chip">${pos+1}. soru</span>
             <span class="chip">${escapeHTML(q.subject || "")}</span>
@@ -1444,25 +1478,146 @@
           ${cardActions}
           ${listMode === "hidden" ? `<div class="hidden-manager-note">Bu soru gizlendiği için normal soru akışında ve quizlerde görünmez.</div>` : ""}
           ${info ? `<div class="all-q-info">${escapeHTML(info)}</div>` : ""}
-        `;
-        frag.appendChild(card);
-      });
-      els.allList.appendChild(frag);
+        </article>
+      `;
+    }
+
+    function attachListActionEvents(){
       els.allList.querySelectorAll(".hide-list-question-btn").forEach(btn=>{
+        if(btn.dataset.bound === "1") return;
+        btn.dataset.bound = "1";
         btn.addEventListener("click",()=>{
           hideQuestionById(btn.getAttribute("data-qid"));
-          renderAllList();
+          renderAllList(true);
           renderLanding();
         });
       });
       els.allList.querySelectorAll(".unhide-question-btn").forEach(btn=>{
+        if(btn.dataset.bound === "1") return;
+        btn.dataset.bound = "1";
         btn.addEventListener("click",()=>{
           unhideQuestionById(btn.getAttribute("data-qid"));
-          renderAllList();
+          renderAllList(true);
           renderLanding();
         });
       });
       if(els.restoreHiddenBtn) els.restoreHiddenBtn.style.display = listMode === "hidden" ? "" : "none";
+    }
+
+    function renderAllList(reset=true){
+      if(reset){
+        currentListIndexes = getListIndexesForCurrentMode();
+        renderedListCount = 0;
+      }
+
+      const total = currentListIndexes.length;
+      els.listTitle.textContent = listModeTitle();
+      els.listSubtitle.textContent = listModeSubtitle(total) + (total > LIST_BATCH_SIZE ? ` · performans için ${LIST_BATCH_SIZE}'lik parçalarla gösteriliyor` : "");
+      els.allList.innerHTML = "";
+
+      if(!total){
+        els.allList.innerHTML = `<section class="panel status warn">${listMode === "hidden" ? "Gizlenen soru bulunamadı." : (listMode === "wrong" ? "Seçili soru dosyalarında yanlış yaptığın soru bulunamadı." : "Bu filtreye uygun soru bulunamadı.")}</section>`;
+        return;
+      }
+
+      renderMoreListItems();
+    }
+
+    function renderMoreListItems(){
+      const start = renderedListCount;
+      const end = Math.min(start + LIST_BATCH_SIZE, currentListIndexes.length);
+      const htmlParts = [];
+
+      for(let pos=start; pos<end; pos++){
+        htmlParts.push(buildListCardHTML(currentListIndexes[pos], pos));
+      }
+
+      const existingLoader = els.allList.querySelector(".load-more-wrap");
+      if(existingLoader) existingLoader.remove();
+
+      els.allList.insertAdjacentHTML("beforeend", htmlParts.join(""));
+      renderedListCount = end;
+
+      if(renderedListCount < currentListIndexes.length){
+        els.allList.insertAdjacentHTML("beforeend", `
+          <div class="load-more-wrap">
+            <button class="secondary" id="loadMoreListBtn" type="button">Daha fazla göster (${renderedListCount}/${currentListIndexes.length})</button>
+          </div>
+        `);
+        const btn = document.getElementById("loadMoreListBtn");
+        btn.addEventListener("click", renderMoreListItems);
+      } else {
+        els.allList.insertAdjacentHTML("beforeend", `<div class="list-performance-note">Tüm liste gösteriliyor. Toplam ${currentListIndexes.length} soru.</div>`);
+      }
+
+      attachListActionEvents();
+    }
+
+    function buildPrintableQuestionHTML(i, pos){
+      const q = questions[i], opts = optionList(q), ans = q.answer || {};
+      const options = opts.map((opt, idx) => {
+        const isCorrect = ans.index !== null && ans.index !== undefined && idx === ans.index;
+        return `<div class="p-option ${isCorrect ? "p-correct" : ""}"><b>${escapeHTML(opt.letter || String.fromCharCode(65+idx))})</b> ${escapeHTML(opt.text || "")}</div>`;
+      }).join("");
+      const correctText = cachedCorrectText(q);
+      const info = [q.explanation ? "Açıklama: " + q.explanation : "", q.spot ? "Spot: " + q.spot : "", ans.raw ? "Cevap anahtarı: " + ans.raw : ""].filter(Boolean).join("<br>");
+      return `
+        <section class="p-card">
+          <div class="p-meta">${pos+1}. soru · ${escapeHTML(q.subject || "")} · ${escapeHTML(meta(q,"examGroup") || "")} · ${escapeHTML(meta(q,"topic") || "")}</div>
+          <div class="p-question">${escapeHTML(q.question || "")}</div>
+          <div class="p-options">${options || `<div class="p-option p-correct"><b>Cevap:</b> ${escapeHTML(ans.raw || ans.text || "")}</div>`}</div>
+          <div class="p-answer"><b>Doğru cevap:</b> ${escapeHTML(correctText)}</div>
+          ${info ? `<div class="p-info">${info}</div>` : ""}
+        </section>
+      `;
+    }
+
+    function createPdfFromCurrentList(){
+      const idxs = currentListIndexes.length ? currentListIndexes : getListIndexesForCurrentMode();
+      if(!idxs.length){
+        alert("PDF oluşturmak için uygun soru bulunamadı.");
+        return;
+      }
+
+      const title = listModeTitle();
+      const body = idxs.map((i,pos)=>buildPrintableQuestionHTML(i,pos)).join("");
+      const printDoc = `<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<title>${escapeHTML(title)}</title>
+<style>
+  body{font-family:Arial, sans-serif;color:#111827;margin:24px;line-height:1.45}
+  h1{font-size:20px;margin:0 0 6px}
+  .sub{font-size:12px;color:#475467;margin-bottom:18px}
+  .p-card{page-break-inside:avoid;border:1px solid #d0d5dd;border-radius:10px;padding:12px;margin:0 0 12px}
+  .p-meta{font-size:11px;color:#475467;margin-bottom:8px}
+  .p-question{font-weight:700;font-size:14px;white-space:pre-wrap;margin-bottom:8px}
+  .p-option{border:1px solid #eaecf0;border-radius:8px;padding:6px 8px;margin:5px 0;white-space:pre-wrap;font-size:12.5px}
+  .p-correct{background:#e8f7ee;border-color:#9bd6b3}
+  .p-answer{margin-top:7px;font-size:12.5px;color:#12633a}
+  .p-info{margin-top:6px;font-size:11.5px;color:#344054}
+  @media print{body{margin:12mm}.p-card{break-inside:avoid}}
+</style>
+</head>
+<body>
+<h1>${escapeHTML(title)}</h1>
+<div class="sub">${idxs.length} soru · PDF olarak kaydetmek için yazdırma penceresinde “PDF olarak kaydet” seçeneğini kullan.</div>
+${body}
+<script>
+  window.onload = function(){ setTimeout(function(){ window.print(); }, 250); };
+<\/script>
+</body>
+</html>`;
+
+      const w = window.open("", "_blank");
+      if(!w){
+        alert("PDF penceresi açılamadı. Tarayıcı açılır pencereyi engellemiş olabilir.");
+        return;
+      }
+      w.document.open();
+      w.document.write(printDoc);
+      w.document.close();
     }
 
     function showListView(mode="all"){
@@ -1471,7 +1626,7 @@
       els.quizView.classList.add("hidden");
       els.listView.classList.add("active");
       els.results.style.display = "none";
-      renderAllList();
+      renderAllList(true);
       window.scrollTo(0,0);
     }
 
@@ -1506,12 +1661,12 @@
       applyFontSize();
       applyDesignMode();
       applyWideModes();
-      applyWideModes(); renderFilters(); renderQuestion(); renderJumpGrid(); renderReview(); saveState();
-      if(els.listView.classList.contains("active")) renderAllList();
+      applyWideModes(); renderFilters(); renderQuestion(); renderJumpGrid(); if(els.results && els.results.style.display === "block" && !els.review.classList.contains("hidden")) renderReview(); saveState();
+      // Liste ekranı açıkken ağır yeniden çizim yalnızca liste komutlarıyla yapılır.
     }
 
     function bindEvents(){
-      els.courseSearch.addEventListener("input", renderLanding);
+      els.courseSearch.addEventListener("input", debounce(renderLanding, 180));
       els.clearCourseSearch.addEventListener("click",()=>{els.courseSearch.value=""; renderLanding(); els.courseSearch.focus();});
       els.manualDbInput.addEventListener("change",async()=>{try{await loadManualDbFiles(els.manualDbInput.files);}catch(e){els.status.className="panel status warn"; els.status.innerHTML=`<b>Manuel database yüklenemedi:</b> ${escapeHTML(e.message)}`;}});
       els.continueBtn.addEventListener("click", continueLast);
@@ -1537,7 +1692,8 @@
         renderAllList();
       });
       if(els.restoreHiddenBtn) els.restoreHiddenBtn.addEventListener("click", restoreAllHiddenQuestions);
-      els.refreshListBtn.addEventListener("click", renderAllList);
+      if(els.pdfListBtn) els.pdfListBtn.addEventListener("click", createPdfFromCurrentList);
+      els.refreshListBtn.addEventListener("click",()=>renderAllList(true));
       els.selectAllDbBtn.addEventListener("click",()=>{selectedDbFiles=dbFiles.map(f=>dbBaseName(f.name)); sanitizeFilters(); ensureCurrent(); saveState(); renderLanding();});
       els.clearDbBtn.addEventListener("click",()=>{selectedDbFiles=[]; sanitizeFilters(); saveState(); renderLanding();});
       els.fontSizeSelect.addEventListener("change",()=>{fontSize=els.fontSizeSelect.value; applyFontSize(); saveState(); renderLanding(); if(els.appView.classList.contains("active")) render();});
@@ -1547,7 +1703,7 @@
       els.yearSelect.addEventListener("change",()=>{filters.year=els.yearSelect.value; ensureCurrent(); render();});
       els.teacherSelect.addEventListener("change",()=>{filters.teacher=els.teacherSelect.value; ensureCurrent(); render();});
       els.sourceGroupSelect.addEventListener("change",()=>{filters.sourceGroup=els.sourceGroupSelect.value; ensureCurrent(); render();});
-      els.searchInput.addEventListener("input",()=>{filters.search=els.searchInput.value; ensureCurrent(); render();});
+      els.searchInput.addEventListener("input", debounce(()=>{filters.search=els.searchInput.value; ensureCurrent(); render();}, 180));
       els.clearFiltersBtn.addEventListener("click",()=>{filters={subject:filters.subject,exam:"all",year:"all",teacher:"all",sourceGroup:"all",search:""}; ensureCurrent(); render();});
       els.goFirstFilteredBtn.addEventListener("click",()=>{const idxs=filteredIndexes(); if(idxs.length){current=idxs[0]; render();}});
       els.prevBtn.addEventListener("click",()=>{const idxs=filteredIndexes(); const pos=idxs.indexOf(current); if(pos>0){current=idxs[pos-1]; render();}});
@@ -1599,7 +1755,9 @@
         dbFiles=[...new Map(dbFiles.map(f=>[dbCanonicalName(f.name), {...f, name:dbBaseName(f.name)}])).values()];
         const all=[];
         for(const file of dbFiles) all.push(...await loadDbFile(file));
+        els.status.innerHTML = "Sorular hazırlanıyor; benzer kayıtlar ayıklanıyor...";
         const duplicates=dedupeAndSetQuestions(all);
+        questionIndexById = new Map(questions.map((q,i)=>[q.id,i]));
         ensureSelectedDbFiles();
         sanitizeFilters();
         els.status.className="panel status";
