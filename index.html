@@ -1275,6 +1275,54 @@
       color:#102a5c;
     }
 
+  
+    /* Üst menüde diğer işlemler artık tek tek görünür */
+    .top-menu-content #menuWideToggleBtn,
+    .top-menu-content #menuResetVisibleBtn,
+    .top-menu-content #menuClearCacheBtn{
+      display:inline-flex!important;
+      align-items:center;
+      justify-content:center;
+    }
+    .top-menu-content #menuClearCacheBtn{
+      border-color:rgba(166,29,53,.22);
+    }
+    @media (max-width:520px){
+      .top-menu-content{
+        display:grid!important;
+        grid-template-columns:1fr 1fr;
+        gap:6px;
+      }
+      .top-menu-content button{
+        width:100%;
+        min-height:36px;
+      }
+      .top-menu-content #menuClearCacheBtn{
+        grid-column:1 / -1;
+      }
+    }
+
+  
+    /* Tekli soru çözümünde istenmeyen otomatik kaydırmayı azalt */
+    .question-card,
+    .question,
+    .options,
+    .option,
+    .feedback,
+    .ai-warning-box,
+    .info-box{
+      overflow-anchor:none;
+    }
+    .question{
+      scroll-margin-top:72px;
+    }
+    body.app-screen-active .question-card{
+      contain:layout style;
+    }
+    body.exam-mode .question-card{
+      contain:none;
+    }
+
   </style>
 </head>
 <body class="font-normal">
@@ -1295,14 +1343,9 @@
         <button class="secondary" id="menuInfoBtn" type="button">Açıklama/spot</button>
         <button class="secondary" id="menuShowAllBtn" type="button">Tüm soruları görüntüle</button>
         <button class="secondary" id="menuExamBtn" type="button">Sınav modu</button>
-        <details class="top-menu-subtools" id="menuOtherTools">
-          <summary>Diğer işlemler</summary>
-          <div class="top-menu-subtools-content">
-            <button class="secondary" id="menuWideToggleBtn" type="button">Tekli ekranı aç/kapat</button>
-            <button class="secondary" id="menuResetVisibleBtn" type="button">Filtre cevaplarını sıfırla</button>
-            <button class="danger" id="menuClearCacheBtn" type="button">Önbelleği temizle</button>
-          </div>
-        </details>
+        <button class="secondary" id="menuWideToggleBtn" type="button">Tekli ekranı aç/kapat</button>
+        <button class="secondary" id="menuResetVisibleBtn" type="button">Filtre cevaplarını sıfırla</button>
+        <button class="danger" id="menuClearCacheBtn" type="button">Önbelleği temizle</button>
       </div>
     </details>
 
@@ -1585,7 +1628,7 @@
     const els = {
       landing:$("landing"), appView:$("appView"), quizView:$("quizView"), listView:$("listView"),
       topMenu:$("topMenu"), menuHomeBtn:$("menuHomeBtn"), menuSourceBtn:$("menuSourceBtn"), menuViewBtn:$("menuViewBtn"), menuDuplicateBtn:$("menuDuplicateBtn"), menuShuffleBtn:$("menuShuffleBtn"), menuCacheBtn:$("menuCacheBtn"),
-      menuInfoBtn:$("menuInfoBtn"), menuShowAllBtn:$("menuShowAllBtn"), menuExamBtn:$("menuExamBtn"), menuOtherTools:$("menuOtherTools"), menuWideToggleBtn:$("menuWideToggleBtn"), menuResetVisibleBtn:$("menuResetVisibleBtn"), menuClearCacheBtn:$("menuClearCacheBtn"),
+      menuInfoBtn:$("menuInfoBtn"), menuShowAllBtn:$("menuShowAllBtn"), menuExamBtn:$("menuExamBtn"), menuWideToggleBtn:$("menuWideToggleBtn"), menuResetVisibleBtn:$("menuResetVisibleBtn"), menuClearCacheBtn:$("menuClearCacheBtn"),
       courseGrid:$("courseGrid"), courseEmpty:$("courseEmpty"), courseSearch:$("courseSearch"),
       clearCourseSearch:$("clearCourseSearch"), continueBtn:$("continueBtn"), wrongHomeBtn:$("wrongHomeBtn"), hiddenHomeBtn:$("hiddenHomeBtn"), quizAllBtn:$("quizAllBtn"), startAllBtn:$("startAllBtn"),
       backHomeBtn:$("backHomeBtn"), changeCourseBtn:$("changeCourseBtn"), activeTitle:$("activeTitle"),
@@ -1909,9 +1952,23 @@
       render();
       window.scrollTo(0,0);
     }
-    function scrollToQuestion(){
+    function scrollToQuestion(behavior="auto"){
       const target = document.getElementById("question") || document.getElementById("testArea");
-      if(target) target.scrollIntoView({behavior:"smooth", block:"start"});
+      if(!target) return;
+      const menu = document.getElementById("topMenu");
+      const examBar = document.getElementById("examTopbar");
+      const stickyHeight =
+        (menu && getComputedStyle(menu).display !== "none" ? menu.getBoundingClientRect().height : 0) +
+        (document.body.classList.contains("exam-mode") && examBar ? examBar.getBoundingClientRect().height : 0);
+      const top = target.getBoundingClientRect().top + window.scrollY - Math.max(8, stickyHeight + 8);
+      window.scrollTo({top:Math.max(0, top), behavior});
+    }
+
+    function renderPreserveScroll(){
+      const x = window.scrollX;
+      const y = window.scrollY;
+      render();
+      requestAnimationFrame(()=>window.scrollTo(x, y));
     }
 
     function stopQuizMode(){
@@ -2660,7 +2717,7 @@
             els.activeTitle.textContent = quizTitle;
             els.results.style.display = "none";
             render();
-            scrollToQuestion();
+            scrollToQuestion("auto");
             return;
           }
           startQuiz(item.value, 30);
@@ -2742,7 +2799,7 @@
           if(pos >= 0 && pos < idxs.length - 1){
             current = idxs[pos+1];
             render();
-            scrollToQuestion();
+            scrollToQuestion("auto");
           }else{
             stopExamTimer();
             renderResults();
@@ -2775,7 +2832,7 @@
       if(els.topMenu) els.topMenu.open = false;
       render();
       startExamTimer();
-      scrollToQuestion();
+      scrollToQuestion("auto");
     }
 
     function cancelExamMode(){
@@ -2818,7 +2875,7 @@
         : "Tüm dersler soru bankası";
       els.results.style.display="none";
       render();
-      scrollToQuestion();
+      scrollToQuestion("auto");
     }
 
     function startCourse(subject){
@@ -2829,14 +2886,14 @@
       ensureCurrent(); els.landing.classList.add("hidden"); els.appView.classList.add("active");
       els.quizView.classList.remove("hidden"); els.listView.classList.remove("active");
       els.activeTitle.textContent=subject&&subject!=="all"?subject+" soru bankası":"Tüm dersler soru bankası";
-      els.results.style.display="none"; render(); scrollToQuestion();
+      els.results.style.display="none"; render(); scrollToQuestion("auto");
     }
     function continueLast(){
       document.body.classList.add("app-screen-active");
       sanitizeFilters(); ensureCurrent(); els.landing.classList.add("hidden"); els.appView.classList.add("active");
       els.quizView.classList.remove("hidden"); els.listView.classList.remove("active");
       els.activeTitle.textContent=filters.subject&&filters.subject!=="all"?filters.subject+" soru bankası":"Tüm dersler soru bankası";
-      els.results.style.display="none"; render(); scrollToQuestion();
+      els.results.style.display="none"; render(); scrollToQuestion("auto");
     }
 
     function renderFilters(){
@@ -2891,7 +2948,7 @@
             }
           }
           div.innerHTML=`<span class="letter">${escapeHTML(opt.letter||String.fromCharCode(65+idx))}</span><span class="option-text">${escapeHTML(opt.text||"")}</span>`;
-          div.addEventListener("click",()=>{answers[answerKey(q)]=idx; answerVersion++; render();});
+          div.addEventListener("click",()=>{answers[answerKey(q)]=idx; answerVersion++; renderPreserveScroll();});
           els.options.appendChild(div);
         });
       }
@@ -2972,7 +3029,7 @@
         const a=answers[answerKey(q)];
         if(a!==undefined&&a!==null){const ci=q.answer?q.answer.index:null; if(ci===null||ci===undefined||ci<0)b.classList.add("done-neutral"); else b.classList.add(a===ci?"done-ok":"done-bad");}
         b.textContent=pos+1; b.title=`${shuffleQuestions ? "Karışık sıra: " + (pos+1) + " · " : ""}${q.subject} · ${meta(q,"examGroup")} · ${meta(q,"topic")}`;
-        b.addEventListener("click",()=>{current=i; render(); scrollToQuestion();});
+        b.addEventListener("click",()=>{current=i; render(); requestAnimationFrame(()=>scrollToQuestion("auto"));});
         frag.appendChild(b);
       });
       els.jumpGrid.appendChild(frag);
@@ -3295,9 +3352,12 @@ ${body}
       els.menuCacheBtn.addEventListener("click", clearDatabaseCacheAndReload);
       if(els.cancelExamBtn) els.cancelExamBtn.addEventListener("click", cancelExamMode);
       els.menuInfoBtn.addEventListener("click",()=>{
+        const x = window.scrollX;
+        const y = window.scrollY;
         infoOpen = !infoOpen;
-        render();
         if(els.topMenu) els.topMenu.open = false;
+        render();
+        requestAnimationFrame(()=>window.scrollTo(x, y));
       });
       els.menuShowAllBtn.addEventListener("click",()=>{
         if(examMode) return;
@@ -3316,18 +3376,15 @@ ${body}
         questionWideMode = !questionWideMode;
         applyWideModes();
         saveState();
-        render();
-        if(els.menuOtherTools) els.menuOtherTools.open = false;
+        renderPreserveScroll();
         if(els.topMenu) els.topMenu.open = false;
       });
       els.menuResetVisibleBtn.addEventListener("click",()=>{
         if(els.resetVisibleBtn) els.resetVisibleBtn.click();
-        if(els.menuOtherTools) els.menuOtherTools.open = false;
         if(els.topMenu) els.topMenu.open = false;
       });
       els.menuClearCacheBtn.addEventListener("click",()=>{
         if(els.clearCacheBtn) els.clearCacheBtn.click();
-        if(els.menuOtherTools) els.menuOtherTools.open = false;
         if(els.topMenu) els.topMenu.open = false;
       });
       els.courseSearch.addEventListener("input", debounce(renderLanding, 180));
@@ -3385,9 +3442,9 @@ ${body}
       els.searchInput.addEventListener("input", debounce(()=>{filters.search=els.searchInput.value; ensureCurrent(); render();}, 180));
       els.clearFiltersBtn.addEventListener("click",()=>{filters={subject:filters.subject,exam:"all",year:"all",teacher:"all",sourceGroup:"all",search:""}; ensureCurrent(); render();});
       els.goFirstFilteredBtn.addEventListener("click",()=>{const idxs=filteredIndexes(); if(idxs.length){current=idxs[0]; render();}});
-      els.prevBtn.addEventListener("click",()=>{const idxs=filteredIndexes(); const pos=idxs.indexOf(current); if(pos>0){current=idxs[pos-1]; render(); scrollToQuestion();}});
-      els.nextBtn.addEventListener("click",()=>{const idxs=filteredIndexes(); const pos=idxs.indexOf(current); if(pos<idxs.length-1){current=idxs[pos+1]; render(); scrollToQuestion();}else{ if(examMode) stopExamTimer(); renderResults(); }});
-      els.showInfoBtn.addEventListener("click",()=>{infoOpen=!infoOpen; render();});
+      els.prevBtn.addEventListener("click",()=>{const idxs=filteredIndexes(); const pos=idxs.indexOf(current); if(pos>0){current=idxs[pos-1]; render(); requestAnimationFrame(()=>scrollToQuestion("auto"));}});
+      els.nextBtn.addEventListener("click",()=>{const idxs=filteredIndexes(); const pos=idxs.indexOf(current); if(pos<idxs.length-1){current=idxs[pos+1]; render(); requestAnimationFrame(()=>scrollToQuestion("auto"));}else{ if(examMode) stopExamTimer(); renderResults(); }});
+      els.showInfoBtn.addEventListener("click",()=>{infoOpen=!infoOpen; renderPreserveScroll();});
       if(els.wideExitBtn) els.wideExitBtn.addEventListener("click",()=>{
         questionWideMode = false;
         applyWideModes();
@@ -3403,8 +3460,10 @@ ${body}
         if(doHide){
           hideQuestionById(answerKey(q));
           ensureCurrent();
+          const beforeY = window.scrollY;
           render();
           if(!examMode) renderLanding();
+          requestAnimationFrame(()=>window.scrollTo(window.scrollX, beforeY));
         }
       });
       els.clearCacheBtn.addEventListener("click",()=>{
