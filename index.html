@@ -816,6 +816,48 @@
       font-size:11.5px;
     }
 
+  
+    .ai-warning-box{
+      display:none;
+      margin-top:10px;
+      padding:10px 11px;
+      border-radius:13px;
+      border:1px solid rgba(166,29,53,.28);
+      background:#fff7df;
+      color:#573a09;
+      line-height:1.45;
+      font-size:12.5px;
+      white-space:pre-wrap;
+    }
+    .ai-warning-box.show{
+      display:block;
+    }
+    .ai-warning-box b{
+      font-weight:950;
+      color:#7a4f08;
+    }
+    .ai-warning-box .ai-diff-title{
+      color:#a61d35;
+      font-weight:950;
+      display:block;
+      margin-bottom:5px;
+    }
+    .ai-warning-box .ai-diff-row{
+      display:block;
+      margin-top:4px;
+    }
+    .all-q-ai-warning{
+      margin-top:8px;
+      padding:8px 9px;
+      border-radius:10px;
+      background:#fff7df;
+      border:1px solid rgba(122,79,8,.22);
+      color:#573a09;
+      font-size:12px;
+      line-height:1.4;
+      white-space:pre-wrap;
+    }
+
   </style>
 </head>
 <body class="font-normal">
@@ -928,6 +970,7 @@
             <h2 class="question" id="question"></h2>
             <div class="options" id="options"></div>
             <div class="feedback" id="feedback"></div>
+            <div class="ai-warning-box" id="aiWarningBox"></div>
             <div class="info-box" id="infoBox"></div>
 
             <div class="nav">
@@ -1066,7 +1109,7 @@
       manualDbBox:$("manualDbBox"), manualDbInput:$("manualDbInput"), dbList:$("dbList"),
       selectAllDbBtn:$("selectAllDbBtn"), clearDbBtn:$("clearDbBtn"), fontSizeSelect:$("fontSizeSelect"), designModeSelect:$("designModeSelect"),
       progress:$("progress"), counter:$("counter"), section:$("section"), meta:$("meta"), question:$("question"), options:$("options"),
-      feedback:$("feedback"), infoBox:$("infoBox"), showInfoBtn:$("showInfoBtn"), hideQuestionBtn:$("hideQuestionBtn"), wideExitBtn:$("wideExitBtn"), prevBtn:$("prevBtn"), nextBtn:$("nextBtn"),
+      feedback:$("feedback"), aiWarningBox:$("aiWarningBox"), infoBox:$("infoBox"), showInfoBtn:$("showInfoBtn"), hideQuestionBtn:$("hideQuestionBtn"), wideExitBtn:$("wideExitBtn"), prevBtn:$("prevBtn"), nextBtn:$("nextBtn"),
       clearCacheBtn:$("clearCacheBtn"), resetVisibleBtn:$("resetVisibleBtn"), answeredCount:$("answeredCount"),
       correctCount:$("correctCount"), wrongCount:$("wrongCount"), emptyCount:$("emptyCount"), jumpGrid:$("jumpGrid"),
       subjectSelect:$("subjectSelect"), examSelect:$("examSelect"), yearSelect:$("yearSelect"), teacherSelect:$("teacherSelect"),
@@ -1089,6 +1132,92 @@
     function optionList(q){return Array.isArray(q.options) ? q.options : [];}
     function meta(q,key){return (q.metadata && q.metadata[key]) || "";}
     function answerKey(q){return q.id;}
+
+    function aiAnswerObj(q){
+      return q && q.aiAnswer && typeof q.aiAnswer === "object" ? q.aiAnswer : null;
+    }
+    function normalizeLetterValue(value){
+      return String(value ?? "").trim().toLocaleUpperCase("tr-TR");
+    }
+    function normalizeAnswerText(value){
+      return String(value ?? "")
+        .toLocaleLowerCase("tr-TR")
+        .replace(/\s+/g," ")
+        .trim();
+    }
+    function storedAnswerLabel(q){
+      const ans = q && q.answer ? q.answer : {};
+      const opts = optionList(q || {});
+      const idx = typeof ans.index === "number" ? ans.index : null;
+      const letter = ans.letter || (idx !== null && opts[idx] ? opts[idx].letter : "");
+      const text = ans.text || ans.raw || (idx !== null && opts[idx] ? opts[idx].text : "");
+      return `${letter ? letter + ") " : ""}${text || "Kaynak cevap yok"}`;
+    }
+    function aiAnswerLabel(q){
+      const ai = aiAnswerObj(q);
+      if(!ai) return "";
+      const opts = optionList(q || {});
+      const idx = typeof ai.index === "number" ? ai.index : null;
+      const letter = ai.letter || (idx !== null && opts[idx] ? opts[idx].letter : "");
+      const text = ai.text || (idx !== null && opts[idx] ? opts[idx].text : "") || ai.raw || "";
+      return `${letter ? letter + ") " : ""}${text || "Yapay zeka cevabı metni yok"}`;
+    }
+    function aiAnswerDiffers(q){
+      const ai = aiAnswerObj(q);
+      if(!ai || !q || !q.answer) return false;
+
+      const ans = q.answer || {};
+      const storedIdx = typeof ans.index === "number" ? ans.index : null;
+      const aiIdx = typeof ai.index === "number" ? ai.index : null;
+
+      const storedLetter = normalizeLetterValue(ans.letter || (storedIdx !== null ? String.fromCharCode(65+storedIdx) : ""));
+      const aiLetter = normalizeLetterValue(ai.letter || (aiIdx !== null ? String.fromCharCode(65+aiIdx) : ""));
+
+      const indexDiff = storedIdx !== null && aiIdx !== null && storedIdx !== aiIdx;
+      const letterDiff = storedLetter && aiLetter && storedLetter !== aiLetter;
+
+      const storedText = normalizeAnswerText(ans.text || ans.raw || "");
+      const aiText = normalizeAnswerText(ai.text || ai.raw || "");
+      const textDiff = storedText && aiText && storedText !== aiText && (indexDiff || letterDiff);
+
+      return indexDiff || letterDiff || textDiff;
+    }
+    function hasAiDiscrepancy(q){
+      const ai = aiAnswerObj(q);
+      if(!ai) return false;
+      const status = normalizeAnswerText(ai.verificationStatus || "");
+      const explicitMismatch = ai.matchesStoredAnswer === false || status.includes("uyumsuz") || status.includes("farkli") || status.includes("farklı") || status.includes("hata");
+      return explicitMismatch || aiAnswerDiffers(q);
+    }
+    function aiDiscrepancyHTML(q){
+      if(!hasAiDiscrepancy(q)) return "";
+      const ai = aiAnswerObj(q) || {};
+      const status = ai.verificationStatus ? `\nDurum: ${ai.verificationStatus}` : "";
+      const confidence = ai.confidence ? `\nGüven: ${ai.confidence}` : "";
+      const explanation = ai.explanation ? `\n\nYapay zeka açıklaması: ${ai.explanation}` : (q.yapayZekaCevabi ? `\n\nYapay zeka açıklaması: ${q.yapayZekaCevabi}` : "");
+      return `<span class="ai-diff-title">⚠ Yapay zeka doğrulama uyarısı</span><span class="ai-diff-row"><b>Kaynakta kayıtlı cevap:</b> ${escapeHTML(storedAnswerLabel(q))}</span><span class="ai-diff-row"><b>Yapay zeka cevabı:</b> ${escapeHTML(aiAnswerLabel(q))}</span>${escapeHTML(status + confidence + explanation)}`;
+    }
+    function aiPlainWarningText(q){
+      if(!hasAiDiscrepancy(q)) return "";
+      const ai = aiAnswerObj(q) || {};
+      const parts = [
+        "Yapay zeka doğrulama uyarısı",
+        "Kaynakta kayıtlı cevap: " + storedAnswerLabel(q),
+        "Yapay zeka cevabı: " + aiAnswerLabel(q)
+      ];
+      if(ai.verificationStatus) parts.push("Durum: " + ai.verificationStatus);
+      if(ai.confidence) parts.push("Güven: " + ai.confidence);
+      if(ai.explanation) parts.push("Yapay zeka açıklaması: " + ai.explanation);
+      else if(q.yapayZekaCevabi) parts.push("Yapay zeka açıklaması: " + q.yapayZekaCevabi);
+      return parts.join("\n");
+    }
+    function aiExplanationText(q){
+      const ai = aiAnswerObj(q);
+      if(ai && ai.explanation) return ai.explanation;
+      if(q && q.yapayZekaCevabi) return q.yapayZekaCevabi;
+      return "";
+    }
+
 
     function hiddenSet(){return new Set(hiddenQuestionIds);}
     function isHiddenQuestion(q){return !!(q && q.id && hiddenSet().has(q.id));}
@@ -1762,7 +1891,7 @@
       const idxs=filteredIndexes();
       if(!idxs.length){
         els.section.textContent="Soru bulunamadı"; els.meta.innerHTML=""; els.question.textContent=questions.length?"Seçili filtrelerle veya aktif database seçimiyle eşleşen soru yok.":"Soru dosyası yüklenemedi veya soru bulunamadı.";
-        els.options.innerHTML=""; els.feedback.className="feedback"; els.feedback.innerHTML=""; els.infoBox.className="info-box"; els.infoBox.innerHTML=""; els.prevBtn.disabled=true; els.nextBtn.disabled=true; updateStats(); return;
+        els.options.innerHTML=""; els.feedback.className="feedback"; els.feedback.innerHTML=""; if(els.aiWarningBox){els.aiWarningBox.className="ai-warning-box"; els.aiWarningBox.innerHTML="";} els.infoBox.className="info-box"; els.infoBox.innerHTML=""; els.prevBtn.disabled=true; els.nextBtn.disabled=true; updateStats(); return;
       }
       ensureCurrent();
       const q=questions[current], pos=idxs.indexOf(current), selected=answers[answerKey(q)], opts=optionList(q), answer=q.answer||{};
@@ -1795,11 +1924,18 @@
         else if(selected===answer.index){els.feedback.className="feedback ok"; els.feedback.innerHTML=`<b>Doğru.</b> Doğru cevap: <b>${escapeHTML(letter)} şıkkı</b> — ${escapeHTML(text)}`;}
         else{els.feedback.className="feedback bad"; els.feedback.innerHTML=`<b>Yanlış.</b> Doğru cevap: <b>${escapeHTML(letter)} şıkkı</b> — ${escapeHTML(text)}`;}
       }else{els.feedback.className="feedback"; els.feedback.innerHTML="";}
+      const aiWarning = aiDiscrepancyHTML(q);
+      if(els.aiWarningBox){
+        els.aiWarningBox.innerHTML = aiWarning;
+        els.aiWarningBox.className = aiWarning ? "ai-warning-box show" : "ai-warning-box";
+      }
       const infoParts=[];
       if(q.explanation) infoParts.push("<b>Açıklama:</b> "+escapeHTML(q.explanation));
       if(q.spot) infoParts.push("<b>Spot bilgi:</b> "+escapeHTML(q.spot));
       if(q.sourceNote) infoParts.push("<b>Kaynak notu:</b> "+escapeHTML(q.sourceNote));
       if(answer.raw) infoParts.push("<b>Cevap anahtarı:</b> "+escapeHTML(answer.raw));
+      const aiExplanation = aiExplanationText(q);
+      if(aiExplanation) infoParts.push("<b>Yapay zeka cevabı:</b> "+escapeHTML(aiExplanation));
       els.infoBox.innerHTML=infoParts.join("\n\n")||"<b>Bilgi:</b> Bu kayıtta açıklama/spot alanı boş.";
       els.infoBox.className=infoOpen?"info-box show":"info-box";
       els.showInfoBtn.textContent=infoOpen?"Açıklama/spot gizle":"Açıklama/spot göster";
@@ -1910,6 +2046,7 @@
           <div class="all-q-question">${escapeHTML(q.question || "")}</div>
           <div class="all-q-options">${optHtml}</div>
           ${wrongNotes}
+          ${aiWarning ? `<div class="all-q-ai-warning">${aiWarning}</div>` : ""}
           ${cardActions}
           ${listMode === "hidden" ? `<div class="hidden-manager-note">Bu soru gizlendiği için normal soru akışında ve quizlerde görünmez.</div>` : ""}
           ${info ? `<div class="all-q-info">${escapeHTML(info)}</div>` : ""}
@@ -1995,13 +2132,16 @@
         return `<div class="p-option ${isCorrect ? "p-correct" : ""}"><b>${escapeHTML(opt.letter || String.fromCharCode(65+idx))})</b> ${escapeHTML(opt.text || "")}</div>`;
       }).join("");
       const correctText = cachedCorrectText(q);
-      const info = [q.explanation ? "Açıklama: " + q.explanation : "", q.spot ? "Spot: " + q.spot : "", ans.raw ? "Cevap anahtarı: " + ans.raw : ""].filter(Boolean).join("<br>");
+      const aiWarningText = aiPlainWarningText(q);
+      const aiExplanation = aiExplanationText(q);
+      const info = [q.explanation ? "Açıklama: " + q.explanation : "", q.spot ? "Spot: " + q.spot : "", ans.raw ? "Cevap anahtarı: " + ans.raw : "", aiExplanation ? "Yapay zeka cevabı: " + aiExplanation : ""].filter(Boolean).join("<br>");
       return `
         <section class="p-card">
           <div class="p-meta">${pos+1}. soru · ${escapeHTML(q.subject || "")} · ${escapeHTML(meta(q,"examGroup") || "")} · ${escapeHTML(meta(q,"topic") || "")}</div>
           <div class="p-question">${escapeHTML(q.question || "")}</div>
           <div class="p-options">${options || `<div class="p-option p-correct"><b>Cevap:</b> ${escapeHTML(ans.raw || ans.text || "")}</div>`}</div>
           <div class="p-answer"><b>Doğru cevap:</b> ${escapeHTML(correctText)}</div>
+          ${aiWarningText ? `<div class="p-ai-warning">${escapeHTML(aiWarningText).replace(/\n/g,"<br>")}</div>` : ""}
           ${info ? `<div class="p-info">${info}</div>` : ""}
         </section>
       `;
@@ -2031,6 +2171,7 @@
   .p-option{border:1px solid #eaecf0;border-radius:8px;padding:6px 8px;margin:5px 0;white-space:pre-wrap;font-size:12.5px}
   .p-correct{background:#e8f7ee;border-color:#9bd6b3}
   .p-answer{margin-top:7px;font-size:12.5px;color:#12633a}
+  .p-ai-warning{margin-top:7px;padding:7px 8px;border-radius:8px;background:#fff7df;border:1px solid #d4a72c;color:#573a09;font-size:11.5px}
   .p-info{margin-top:6px;font-size:11.5px;color:#344054}
   @media print{body{margin:12mm}.p-card{break-inside:avoid}}
 </style>
