@@ -479,6 +479,89 @@
     body.list-wide-mode #pdfListBtn{
       display:inline-flex!important;
     }
+  
+    /* Ana sayfa: dersler daha kompakt, ayarlar altta */
+    .course-grid{
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:9px;
+    }
+    .course-card{
+      min-height:120px!important;
+      padding:11px!important;
+    }
+    .course-icon{
+      width:34px!important;
+      height:34px!important;
+      border-radius:12px!important;
+      font-size:14px!important;
+      margin-bottom:8px!important;
+    }
+    .course-card h2{
+      font-size:18px!important;
+      margin-bottom:4px!important;
+    }
+    .course-card p{
+      font-size:11.5px!important;
+      line-height:1.35!important;
+    }
+    .course-meta{
+      margin-top:9px!important;
+      gap:5px!important;
+    }
+    .teacher-select-mini{
+      width:100%;
+      padding:7px 8px;
+      border-radius:10px;
+      border:1px solid var(--line);
+      background:#fff;
+      color:#334155;
+      font-size:11.5px;
+      font-weight:750;
+      outline:none;
+      margin-top:8px;
+    }
+
+    /* Ders seçildikten sonra: önce soru, sonra ayarlar/filtreler */
+    .app-view.active .toolbar{
+      display:none!important;
+    }
+    .app-view.active .layout{
+      grid-template-columns:minmax(0,1fr)!important;
+      gap:10px;
+    }
+    .app-view.active .question-card{
+      max-width:980px;
+      width:100%;
+      margin:0 auto;
+    }
+    .app-view.active .side-panel{
+      position:static!important;
+      max-height:none!important;
+      width:min(980px,100%);
+      margin:0 auto;
+      order:2;
+    }
+    .app-view.active .top-nav{
+      width:min(980px,100%);
+      margin:10px auto 12px;
+      box-shadow:none;
+    }
+    .app-view.active .top-nav-title{
+      font-size:12px;
+    }
+    .app-view.active .jump-grid{
+      max-height:none;
+    }
+    @media (max-width:1100px){
+      .course-grid{grid-template-columns:repeat(3,minmax(0,1fr));}
+    }
+    @media (max-width:760px){
+      .course-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+    }
+    @media (max-width:520px){
+      .course-grid{grid-template-columns:1fr;}
+    }
+
   </style>
 </head>
 <body class="font-normal">
@@ -501,6 +584,18 @@
     </section>
 
     <section class="landing" id="landing">
+<section class="course-toolbar panel">
+        <input class="search" id="courseSearch" placeholder="Ders ara: anatomi, fizyoloji, histoloji, biyokimya, mikrobiyoloji, biyofizik...">
+        <button class="secondary" id="clearCourseSearch" type="button">Aramayı temizle</button>
+        <button class="secondary" id="continueBtn" type="button">Kaldığım yerden devam et</button>
+        <button class="secondary" id="wrongHomeBtn" type="button">Yanlışlarımı aç</button>
+        <button class="secondary" id="hiddenHomeBtn" type="button">Gizlenen soruları yönet</button>
+        <button class="secondary" id="quizAllBtn" type="button">Tüm dersler quiz modu</button>
+        <button class="primary" id="startAllBtn" type="button">Tüm derslerle başla</button>
+      </section>
+      <section class="course-grid" id="courseGrid"></section>
+      <section class="panel course-empty" id="courseEmpty">Bu aramayla eşleşen ders bulunamadı veya aktif database seçili değil.</section>
+
       <section class="settings-grid compact-settings-grid">
         <details class="panel settings-box collapsible-settings" id="dbSettingsDetails">
           <summary class="settings-summary">
@@ -542,30 +637,11 @@
         </details>
       </section>
 
-      <section class="course-toolbar panel">
-        <input class="search" id="courseSearch" placeholder="Ders ara: anatomi, fizyoloji, histoloji, biyokimya, mikrobiyoloji, biyofizik...">
-        <button class="secondary" id="clearCourseSearch" type="button">Aramayı temizle</button>
-        <button class="secondary" id="continueBtn" type="button">Kaldığım yerden devam et</button>
-        <button class="secondary" id="wrongHomeBtn" type="button">Yanlışlarımı aç</button>
-        <button class="secondary" id="hiddenHomeBtn" type="button">Gizlenen soruları yönet</button>
-        <button class="secondary" id="quizAllBtn" type="button">Tüm dersler quiz modu</button>
-        <button class="primary" id="startAllBtn" type="button">Tüm derslerle başla</button>
-      </section>
-      <section class="course-grid" id="courseGrid"></section>
-      <section class="panel course-empty" id="courseEmpty">Bu aramayla eşleşen ders bulunamadı veya aktif database seçili değil.</section>
+      
     </section>
 
     <section class="app-view" id="appView">
-      <section class="panel top-nav">
-        <button class="secondary" id="backHomeBtn" type="button">← Ders seçimine dön</button>
-        <div class="top-nav-title" id="activeTitle">Ders</div>
-        <button class="secondary" id="wideQuestionBtn" type="button" title="Tekli soru ekranını genişlet/daralt">⛶ Tekli çözüm ekranı</button>
-        <button class="secondary" id="showAllBtn" type="button">Tüm soruları listele</button>
-        <button class="primary" id="changeCourseBtn" type="button">Dersi değiştir</button>
-      </section>
-
-      
-      <section class="panel compact-actionbar" id="compactActionbar">
+<section class="panel compact-actionbar" id="compactActionbar">
         <button class="secondary" id="compactHomeBtn" type="button">← Ana ekrana dön</button>
         <button class="primary" id="compactShowAllBtn" type="button">Tüm soruları gör</button>
       </section>
@@ -657,6 +733,16 @@
         </section>
       </section>
 
+      <section class="panel top-nav">
+        <button class="secondary" id="backHomeBtn" type="button">← Ders seçimine dön</button>
+        <div class="top-nav-title" id="activeTitle">Ders</div>
+        <button class="secondary" id="wideQuestionBtn" type="button" title="Tekli soru ekranını genişlet/daralt">⛶ Tekli çözüm ekranı</button>
+        <button class="secondary" id="showAllBtn" type="button">Tüm soruları listele</button>
+        <button class="primary" id="changeCourseBtn" type="button">Dersi değiştir</button>
+      </section>
+
+      
+      
       <section class="list-view" id="listView">
         <section class="panel all-list-header">
           <div>
@@ -791,6 +877,11 @@
       render();
       window.scrollTo(0,0);
     }
+    function scrollToQuestion(){
+      const target = document.getElementById("question") || document.getElementById("testArea");
+      if(target) target.scrollIntoView({behavior:"smooth", block:"start"});
+    }
+
     function stopQuizMode(){
       quizActive = false;
       quizIds = [];
@@ -1267,22 +1358,52 @@
         const teacherCount=new Set(subjectQuestions.map(q=>meta(q,"teacher")).filter(Boolean)).size;
         const card=document.createElement("article");
         card.className="course-card panel"; card.tabIndex=0;
+        const teachers = [...new Set(subjectQuestions.map(q=>meta(q,"teacher")).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"tr"));
+        const teacherOptions = [`<option value="all">Tüm hocalar</option>`].concat(teachers.map(t=>`<option value="${escapeHTML(t)}">${escapeHTML(t)}</option>`)).join("");
         card.innerHTML=`
           <div>
             <div class="course-icon">${escapeHTML(initials(item.value))}</div>
             <h2>${escapeHTML(item.value)}</h2>
-            <p>${item.count} soru/kart · ${examCount} kurul/sınav grubu · ${teacherCount} hoca filtresi</p>
+            <p>${item.count} soru · ${examCount} grup · ${teacherCount} hoca</p>
+            <select class="teacher-select-mini" aria-label="${escapeHTML(item.value)} hoca seçimi">${teacherOptions}</select>
           </div>
           <div class="course-meta">
             <span class="chip">${item.count} soru</span>
             <span class="chip">Dersi aç</span>
-            <button class="quiz-card-btn" type="button" data-subject="${escapeHTML(item.value)}">Quiz modu (${Math.min(30, item.count)})</button>
+            <button class="quiz-card-btn" type="button" data-subject="${escapeHTML(item.value)}">Quiz (${Math.min(30, item.count)})</button>
           </div>
         `;
         const quizBtn = card.querySelector(".quiz-card-btn");
-        quizBtn.addEventListener("click",(ev)=>{ev.stopPropagation(); startQuiz(item.value, 30);});
-        card.addEventListener("click",()=>startCourse(item.value));
-        card.addEventListener("keydown",ev=>{if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();startCourse(item.value);}});
+        const teacherSelect = card.querySelector(".teacher-select-mini");
+        teacherSelect.addEventListener("click", ev => ev.stopPropagation());
+        teacherSelect.addEventListener("change", ev => ev.stopPropagation());
+        quizBtn.addEventListener("click",(ev)=>{
+          ev.stopPropagation();
+          const teacher = teacherSelect ? teacherSelect.value : "all";
+          if(teacher && teacher !== "all"){
+            const pool = activeVisibleQuestions().filter(q => q.subject === item.value && meta(q,"teacher") === teacher);
+            if(!pool.length){ alert("Bu hoca için quiz sorusu bulunamadı."); return; }
+            const chosen = shuffleArray(pool).slice(0, Math.min(30, pool.length));
+            quizActive = true;
+            quizIds = chosen.map(q => q.id);
+            quizTitle = `${item.value} · ${teacher} quiz modu · ${chosen.length} soru`;
+            filters = {subject:item.value, exam:"all", year:"all", teacher:teacher, sourceGroup:"all", search:""};
+            const firstIndex = questions.findIndex(q => q.id === quizIds[0]);
+            if(firstIndex >= 0) current = firstIndex;
+            els.landing.classList.add("hidden");
+            els.appView.classList.add("active");
+            els.quizView.classList.remove("hidden");
+            els.listView.classList.remove("active");
+            els.activeTitle.textContent = quizTitle;
+            els.results.style.display = "none";
+            render();
+            scrollToQuestion();
+            return;
+          }
+          startQuiz(item.value, 30);
+        });
+        card.addEventListener("click",()=>startCourseWithTeacher(item.value, teacherSelect ? teacherSelect.value : "all"));
+        card.addEventListener("keydown",ev=>{if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();startCourseWithTeacher(item.value, teacherSelect ? teacherSelect.value : "all");}});
         els.courseGrid.appendChild(card);
       });
       els.courseEmpty.style.display=filtered.length?"none":"block";
@@ -1303,6 +1424,22 @@
       els.quizView.classList.remove("hidden"); els.listView.classList.remove("active");
       els.results.style.display="none"; window.scrollTo(0,0); renderLanding();
     }
+    function startCourseWithTeacher(subject, teacher){
+      stopQuizMode();
+      filters={subject:subject||"all", exam:"all", year:"all", teacher:teacher||"all", sourceGroup:"all", search:""};
+      ensureCurrent();
+      els.landing.classList.add("hidden");
+      els.appView.classList.add("active");
+      els.quizView.classList.remove("hidden");
+      els.listView.classList.remove("active");
+      els.activeTitle.textContent = subject && subject !== "all"
+        ? (teacher && teacher !== "all" ? subject + " · " + teacher : subject + " soru bankası")
+        : "Tüm dersler soru bankası";
+      els.results.style.display="none";
+      render();
+      scrollToQuestion();
+    }
+
     function startCourse(subject){
       stopQuizMode();
       filters={subject:subject||"all", exam:"all", year:"all", teacher:"all", sourceGroup:"all", search:""};
@@ -1401,7 +1538,7 @@
         const a=answers[answerKey(q)];
         if(a!==undefined&&a!==null){const ci=q.answer?q.answer.index:null; if(ci===null||ci===undefined||ci<0)b.classList.add("done-neutral"); else b.classList.add(a===ci?"done-ok":"done-bad");}
         b.textContent=i+1; b.title=`${q.subject} · ${meta(q,"examGroup")} · ${meta(q,"topic")}`;
-        b.addEventListener("click",()=>{current=i; render();});
+        b.addEventListener("click",()=>{current=i; render(); scrollToQuestion();});
         els.jumpGrid.appendChild(b);
       });
     }
