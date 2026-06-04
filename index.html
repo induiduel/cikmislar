@@ -20,23 +20,30 @@
       background:radial-gradient(circle at 8% 0%,rgba(23,58,138,.13),transparent 28rem),
                  radial-gradient(circle at 92% 4%,rgba(47,91,189,.10),transparent 30rem),
                  linear-gradient(180deg,#fff 0%,var(--bg) 56%,#edf3f9 100%);
-      font-size:14px;
+      font-size:var(--ui-font);
     }
-    body.font-small{font-size:12.5px}
-    body.font-large{font-size:15.5px}
+    body.font-small{
+      --q-font:15px; --opt-font:12.5px; --ui-font:12px; --meta-font:10.5px; --card-title:18px; --h1-size:24px; --line-q:1.46;
+    }
+    body.font-normal{
+      --q-font:18px; --opt-font:14px; --ui-font:14px; --meta-font:11.5px; --card-title:22px; --h1-size:34px; --line-q:1.58;
+    }
+    body.font-large{
+      --q-font:21px; --opt-font:16px; --ui-font:15.5px; --meta-font:13px; --card-title:25px; --h1-size:40px; --line-q:1.66;
+    }
     .wrap{width:min(1240px,calc(100% - 22px));margin:14px auto 32px}
     .panel{background:rgba(255,255,255,.94);border:1px solid rgba(219,228,240,.96);border-radius:var(--radius);box-shadow:var(--shadow);backdrop-filter:blur(8px)}
     .hero{display:grid;grid-template-columns:minmax(0,1.2fr) 310px;gap:12px;margin-bottom:12px}
     .hero-main{padding:18px}
-    h1{margin:0 0 6px;font-size:clamp(22px,3.2vw,36px);line-height:1.08;letter-spacing:-.035em}
-    .subtitle{margin:0;color:var(--muted);font-size:13px;line-height:1.45}
+    h1{margin:0 0 6px;font-size:clamp(21px,3.2vw,var(--h1-size));line-height:1.08;letter-spacing:-.035em}
+    .subtitle{margin:0;color:var(--muted);font-size:calc(var(--ui-font) - 1px);line-height:1.45}
     .chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
-    .chip{display:inline-flex;align-items:center;padding:6px 9px;border-radius:999px;font-weight:850;font-size:11.5px;color:var(--primary);background:var(--soft);border:1px solid rgba(23,58,138,.13)}
+    .chip{display:inline-flex;align-items:center;padding:6px 9px;border-radius:999px;font-weight:850;font-size:calc(var(--ui-font) - 2px);color:var(--primary);background:var(--soft);border:1px solid rgba(23,58,138,.13)}
     .hero-side{padding:12px;display:grid;grid-template-columns:1fr 1fr;gap:8px;align-content:center}
     .metric{border:1px solid var(--line);border-radius:14px;padding:10px;background:#fbfdff}
     .metric strong{display:block;font-size:22px;line-height:1;color:var(--primary);letter-spacing:-.03em}
     .metric span{display:block;margin-top:4px;color:var(--muted);font-size:11.5px}
-    .status{padding:10px 12px;margin-bottom:12px;line-height:1.45;font-size:12.5px;color:#334155}
+    .status{padding:10px 12px;margin-bottom:12px;line-height:1.45;font-size:calc(var(--ui-font) - 1px);color:#334155}
     .status.warn{background:var(--warnbg);color:#573a09;border-color:rgba(122,79,8,.20)}
     .hidden{display:none!important}
     .landing{display:block}.landing.hidden{display:none}
@@ -54,7 +61,7 @@
     .course-card{padding:16px;cursor:pointer;transition:transform .12s ease,box-shadow .12s ease,border-color .12s ease;min-height:180px;display:flex;flex-direction:column;justify-content:space-between}
     .course-card:hover{transform:translateY(-2px);border-color:rgba(23,58,138,.30);box-shadow:0 18px 42px rgba(15,23,42,.13)}
     .course-icon{width:44px;height:44px;border-radius:16px;background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;display:grid;place-items:center;font-weight:950;font-size:18px;margin-bottom:12px}
-    .course-card h2{margin:0 0 6px;font-size:22px;letter-spacing:-.03em}
+    .course-card h2{margin:0 0 6px;font-size:var(--card-title);letter-spacing:-.03em}
     .course-card p{margin:0;color:var(--muted);line-height:1.45;font-size:13px}
     .course-meta{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}
     .course-empty{display:none;padding:16px;text-align:center;color:var(--muted)}
@@ -67,18 +74,15 @@
     .counter{color:var(--primary);font-weight:900;min-width:176px;text-align:right;font-size:12.5px}
     .layout{display:grid;grid-template-columns:minmax(0,1fr) 350px;gap:12px;align-items:start}
     .question-card{padding:16px}
-    .section{font-weight:820;color:var(--primary);background:var(--soft);border:1px solid rgba(23,58,138,.13);padding:8px 10px;border-radius:12px;line-height:1.28;margin-bottom:9px;font-size:12.8px}
+    .section{font-weight:820;color:var(--primary);background:var(--soft);border:1px solid rgba(23,58,138,.13);padding:8px 10px;border-radius:12px;line-height:1.32;margin-bottom:9px;font-size:calc(var(--ui-font) - 1px)}
     details.meta-box{margin-bottom:10px;border:1px solid var(--line);border-radius:12px;background:#fbfdff;overflow:hidden}
     details.meta-box summary{cursor:pointer;padding:8px 10px;color:var(--primary);font-weight:900;font-size:12.5px;user-select:none}
-    .meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;padding:0 10px 10px;color:var(--muted);font-size:11.5px;line-height:1.35}
+    .meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;padding:0 10px 10px;color:var(--muted);font-size:var(--meta-font);line-height:1.35}
     .meta div{border:1px solid var(--line);border-radius:10px;padding:7px 8px;background:white;overflow-wrap:anywhere}
     .meta b{color:#334155}
-    .question{
-      white-space:pre-wrap;font-weight:620;font-size:clamp(17px,2vw,21px);line-height:1.58;letter-spacing:.002em;margin:0 0 14px;color:#1f2937;
+    .question{white-space:pre-wrap;font-weight:620;font-size:var(--q-font);line-height:var(--line-q);letter-spacing:.002em;margin:0 0 14px;color:#1f2937;
       background:#fbfdff;border:1px solid var(--line);border-left:5px solid var(--primary2);border-radius:14px;padding:14px 15px;box-shadow:0 6px 16px rgba(15,23,42,.045)
     }
-    body.font-small .question{font-size:clamp(15px,1.8vw,19px);line-height:1.5}
-    body.font-large .question{font-size:clamp(19px,2.3vw,24px);line-height:1.65}
     .options{display:grid;gap:8px}
     .option{border:1px solid var(--line);border-radius:13px;background:#fff;padding:12px 13px;display:grid;grid-template-columns:30px 1fr;gap:10px;align-items:start;cursor:pointer;transition:transform .1s ease,box-shadow .1s ease,border-color .1s ease,background .1s ease}
     .option:hover{transform:translateY(-1px);box-shadow:0 6px 14px rgba(15,23,42,.07);border-color:rgba(23,58,138,.28)}
@@ -88,9 +92,7 @@
     .letter{width:28px;height:28px;border-radius:9px;background:var(--soft);border:1px solid rgba(23,58,138,.12);color:var(--primary);display:inline-flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;text-transform:uppercase}
     .option.correct .letter{background:#d7f1e0;color:var(--ok);border-color:rgba(18,99,58,.35)}
     .option.wrong .letter{background:#f8d6dc;color:var(--bad);border-color:rgba(166,29,53,.35)}
-    .option-text{white-space:pre-wrap;line-height:1.52;font-size:14px;font-weight:520;color:#344054}
-    body.font-small .option-text{font-size:13px}
-    body.font-large .option-text{font-size:15.5px}
+    .option-text{white-space:pre-wrap;line-height:1.52;font-size:var(--opt-font);font-weight:520;color:#344054}
     .feedback{display:none;margin-top:10px;padding:10px 11px;border-radius:13px;border:1px solid var(--line);line-height:1.4;white-space:pre-wrap;font-size:13px}
     .feedback.ok{display:block;background:var(--okbg);color:var(--ok);border-color:rgba(18,99,58,.35)}
     .feedback.bad{display:block;background:var(--badbg);color:var(--bad);border-color:rgba(166,29,53,.35)}
@@ -143,9 +145,9 @@
     .all-list{display:grid;gap:12px;max-height:calc(100vh - 140px);overflow:auto;padding-right:4px}
     .all-q-card{padding:14px;border-radius:16px;border:1px solid var(--line);background:#fff;box-shadow:0 8px 20px rgba(15,23,42,.055)}
     .all-q-meta{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
-    .all-q-question{white-space:pre-wrap;font-weight:620;line-height:1.55;background:#fbfdff;border:1px solid var(--line);border-left:4px solid var(--primary2);border-radius:12px;padding:10px 11px;margin-bottom:9px;color:#1f2937}
+    .all-q-question{white-space:pre-wrap;font-weight:620;line-height:var(--line-q);font-size:var(--q-font);background:#fbfdff;border:1px solid var(--line);border-left:4px solid var(--primary2);border-radius:12px;padding:10px 11px;margin-bottom:9px;color:#1f2937}
     .all-q-options{display:grid;gap:5px}
-    .all-q-option{padding:7px 8px;border-radius:10px;border:1px solid var(--line);background:#fff;line-height:1.4;white-space:pre-wrap}
+    .all-q-option{padding:7px 8px;border-radius:10px;border:1px solid var(--line);background:#fff;line-height:1.45;white-space:pre-wrap;font-size:var(--opt-font)}
     .all-q-option.correct{background:var(--okbg);border-color:rgba(18,99,58,.35);color:#14532d;font-weight:780}
     .all-q-info{margin-top:8px;font-size:12px;color:#475467;line-height:1.45;white-space:pre-wrap}
     @media (max-width:980px){
@@ -391,8 +393,19 @@
     function optionList(q){return Array.isArray(q.options) ? q.options : [];}
     function meta(q,key){return (q.metadata && q.metadata[key]) || "";}
     function answerKey(q){return q.id;}
-    function activeDbSet(){return new Set(selectedDbFiles);}
-    function isDbActive(q){return selectedDbFiles.length && activeDbSet().has(q._dbFile);}
+    function activeDbSet(){return new Set(selectedDbFiles.map(dbCanonicalName));}
+
+    function dbBaseName(name){
+      return String(name || "").split("/").pop().trim();
+    }
+    function dbCanonicalName(name){
+      return dbBaseName(name).toLocaleLowerCase("tr-TR");
+    }
+    function dbDisplayName(file){
+      return dbBaseName(file && file.name ? file.name : "");
+    }
+
+    function isDbActive(q){return selectedDbFiles.length && activeDbSet().has(dbCanonicalName(q._dbFile));}
     function activeQuestions(){return questions.filter(isDbActive);}
 
     function inferRepoFromGithubPages(){
@@ -472,7 +485,7 @@
       async function addFrom(fn,label){
         try{
           const list = await fn();
-          list.forEach(file => {const key=file.url||file.name; if(!merged.has(key)) merged.set(key,file);});
+          list.forEach(file => {const key=dbCanonicalName(file.name); if(!merged.has(key)) merged.set(key,{...file, displayName:dbDisplayName(file)});});
         }catch(e){errors.push(label+": "+e.message);}
       }
       els.status.innerHTML = "Database listesi aranıyor: manifest, GitHub API ve soru1.db-soru500.db taraması deneniyor...";
@@ -490,7 +503,7 @@
       let db;
       try{db = await res.json();}catch(e){throw new Error(file.name+" JSON olarak okunamadı. Dosya gerçekten .db JSON formatında mı?");}
       if(!db || !Array.isArray(db.questions)) throw new Error(file.name+" geçerli soru database dosyası değil. İçinde questions dizisi olmalı.");
-      return db.questions.map(q => ({...q, _dbFile:file.name, _dbSource:file.source}));
+      return db.questions.map(q => ({...q, _dbFile:dbBaseName(file.name), _dbSource:file.source}));
     }
 
     async function loadManualDbFiles(fileList){
@@ -502,11 +515,11 @@
         let db;
         try{db = JSON.parse(text);}catch(e){throw new Error(file.name+" JSON olarak okunamadı.");}
         if(!db || !Array.isArray(db.questions)) throw new Error(file.name+" geçerli database değil. questions dizisi bulunamadı.");
-        dbFiles.push({name:file.name, url:file.name, source:"manual"});
-        all.push(...db.questions.map(q => ({...q, _dbFile:file.name, _dbSource:"manual"})));
+        dbFiles.push({name:dbBaseName(file.name), url:file.name, source:"manual", displayName:dbBaseName(file.name)});
+        all.push(...db.questions.map(q => ({...q, _dbFile:dbBaseName(file.name), _dbSource:"manual"})));
       }
       const duplicates=dedupeAndSetQuestions(all);
-      selectedDbFiles = dbFiles.map(f => f.name);
+      selectedDbFiles = dbFiles.map(f => dbBaseName(f.name));
       els.status.className = "panel status";
       els.status.innerHTML = `<b>${files.length}</b> manuel database dosyası yüklendi. <b>${activeQuestions().length}</b> benzersiz aktif soru kullanılıyor${duplicates ? `; ${duplicates} tekrar otomatik ayıklandı` : ""}.`;
       els.manualDbBox.classList.add("hidden");
@@ -555,9 +568,9 @@
     }
 
     function ensureSelectedDbFiles(){
-      const available = new Set(dbFiles.map(f => f.name));
-      selectedDbFiles = selectedDbFiles.filter(name => available.has(name));
-      if (!selectedDbFiles.length) selectedDbFiles = dbFiles.map(f => f.name);
+      const available = new Set(dbFiles.map(f => dbCanonicalName(f.name)));
+      selectedDbFiles = selectedDbFiles.map(dbBaseName).filter(name => available.has(dbCanonicalName(name)));
+      if (!selectedDbFiles.length) selectedDbFiles = dbFiles.map(f => dbBaseName(f.name));
     }
 
     function matchesFilters(q, excludeField){
@@ -633,21 +646,22 @@
     function renderDbSelector(){
       els.dbList.innerHTML = "";
       const activeCounts = new Map();
-      questions.forEach(q => activeCounts.set(q._dbFile, (activeCounts.get(q._dbFile) || 0) + 1));
-      dbFiles.forEach(file => {
+      questions.forEach(q => { const n=dbBaseName(q._dbFile); activeCounts.set(n, (activeCounts.get(n) || 0) + 1); });
+      [...new Map(dbFiles.map(f=>[dbCanonicalName(f.name), f])).values()].forEach(file => {
         const label = document.createElement("label");
         label.className = "db-item";
-        const checked = selectedDbFiles.includes(file.name);
+        const shownName = dbBaseName(file.name);
+        const checked = activeDbSet().has(dbCanonicalName(shownName));
         label.innerHTML = `
-          <input type="checkbox" value="${escapeHTML(file.name)}" ${checked ? "checked" : ""}>
-          <span><b>${escapeHTML(file.name)}</b><br><span class="small">${activeCounts.get(file.name) || 0} benzersiz soru · ${escapeHTML(file.source || "")}</span></span>
+          <input type="checkbox" value="${escapeHTML(shownName)}" ${checked ? "checked" : ""}>
+          <span><b>${escapeHTML(shownName)}</b><br><span class="small">${activeCounts.get(shownName) || activeCounts.get(file.name) || 0} benzersiz soru · ${escapeHTML(file.source || "")}</span></span>
         `;
         const input = label.querySelector("input");
         input.addEventListener("change", () => {
           if (input.checked) {
-            if (!selectedDbFiles.includes(file.name)) selectedDbFiles.push(file.name);
+            if (!activeDbSet().has(dbCanonicalName(shownName))) selectedDbFiles.push(shownName);
           } else {
-            selectedDbFiles = selectedDbFiles.filter(x => x !== file.name);
+            selectedDbFiles = selectedDbFiles.filter(x => dbCanonicalName(x) !== dbCanonicalName(shownName));
           }
           sanitizeFilters(); ensureCurrent(); saveState(); renderLanding();
         });
@@ -885,9 +899,9 @@
       els.showAllBtn.addEventListener("click", showListView);
       els.backToQuizBtn.addEventListener("click", showQuizView);
       els.refreshListBtn.addEventListener("click", renderAllList);
-      els.selectAllDbBtn.addEventListener("click",()=>{selectedDbFiles=dbFiles.map(f=>f.name); sanitizeFilters(); ensureCurrent(); saveState(); renderLanding();});
+      els.selectAllDbBtn.addEventListener("click",()=>{selectedDbFiles=dbFiles.map(f=>dbBaseName(f.name)); sanitizeFilters(); ensureCurrent(); saveState(); renderLanding();});
       els.clearDbBtn.addEventListener("click",()=>{selectedDbFiles=[]; sanitizeFilters(); saveState(); renderLanding();});
-      els.fontSizeSelect.addEventListener("change",()=>{fontSize=els.fontSizeSelect.value; applyFontSize(); saveState(); renderLanding();});
+      els.fontSizeSelect.addEventListener("change",()=>{fontSize=els.fontSizeSelect.value; applyFontSize(); saveState(); renderLanding(); if(els.appView.classList.contains("active")) render();});
       els.subjectSelect.addEventListener("change",()=>{filters.subject=els.subjectSelect.value; ensureCurrent(); render();});
       els.examSelect.addEventListener("change",()=>{filters.exam=els.examSelect.value; ensureCurrent(); render();});
       els.yearSelect.addEventListener("change",()=>{filters.year=els.yearSelect.value; ensureCurrent(); render();});
@@ -923,13 +937,14 @@
       applyFontSize();
       try{
         dbFiles=await discoverDbFiles();
+        dbFiles=[...new Map(dbFiles.map(f=>[dbCanonicalName(f.name), {...f, name:dbBaseName(f.name)}])).values()];
         const all=[];
         for(const file of dbFiles) all.push(...await loadDbFile(file));
         const duplicates=dedupeAndSetQuestions(all);
         ensureSelectedDbFiles();
         sanitizeFilters();
         els.status.className="panel status";
-        els.status.innerHTML=`<b>${dbFiles.length}</b> database dosyası yüklendi: ${dbFiles.map(f=>escapeHTML(f.name)).join(", ")}. <b>${questions.length}</b> benzersiz soru bulundu${duplicates?`; ${duplicates} tekrar otomatik ayıklandı`:""}. Aktif database seçimine göre dersler güncellenir.`;
+        els.status.innerHTML=`<b>${dbFiles.length}</b> database dosyası yüklendi: ${[...new Set(dbFiles.map(f=>dbBaseName(f.name)))].map(escapeHTML).join(", ")}. <b>${questions.length}</b> benzersiz soru bulundu${duplicates?`; ${duplicates} tekrar otomatik ayıklandı`:""}. Aktif database seçimine göre dersler güncellenir.`;
         els.manualDbBox.classList.add("hidden");
         renderLanding();
       }catch(e){
