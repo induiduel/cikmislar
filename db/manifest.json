@@ -1,7 +1,8 @@
 {
   "schemaVersion": "1.0",
   "files": [
-    "soru1.db"
+    "soru1.db",
+    "soru2.db"
   ],
-  "note": "GitHub API çalışmazsa index.html bu manifest üzerinden db dosyalarını okur. GitHub API aktifken yeni .db/.sdb dosyaları manifest güncellemeden de algılanır."
+  "note": "index.html manifest, GitHub API ve soru*.db taramasını dener. Stale/bozuk yollar yüzünden yükleme artık takılmaz."
 }
