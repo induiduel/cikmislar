@@ -1233,6 +1233,48 @@
       }
     }
 
+  
+    /* İşaretlenen şık belirgin görünsün */
+    .option.selected{
+      border-color:rgba(23,58,138,.55)!important;
+      background:#eef4ff!important;
+      box-shadow:0 0 0 3px rgba(23,58,138,.12)!important;
+    }
+    .option.selected .letter{
+      background:var(--primary)!important;
+      color:#fff!important;
+      border-color:var(--primary)!important;
+    }
+    body.exam-mode .option.selected{
+      border-color:rgba(23,58,138,.70)!important;
+      background:#eaf1ff!important;
+      box-shadow:0 0 0 3px rgba(23,58,138,.16)!important;
+    }
+    body.exam-mode .option.selected .letter{
+      background:var(--primary)!important;
+      color:#fff!important;
+      border-color:var(--primary)!important;
+    }
+    body.exam-mode .option.selected::after{
+      content:"Seçildi";
+      justify-self:end;
+      align-self:center;
+      grid-column:2;
+      font-size:11px;
+      font-weight:950;
+      color:var(--primary);
+      background:#fff;
+      border:1px solid rgba(23,58,138,.18);
+      border-radius:999px;
+      padding:3px 7px;
+      margin-top:4px;
+      width:max-content;
+    }
+    body.exam-mode .option.selected .option-text{
+      font-weight:850;
+      color:#102a5c;
+    }
+
   </style>
 </head>
 <body class="font-normal">
@@ -2842,6 +2884,7 @@
           div.className="option";
           if(selected!==undefined&&selected!==null){
             div.classList.add("answered");
+            if(idx === selected) div.classList.add("selected");
             if(!examMode){
               if(answer.index!==null&&answer.index!==undefined&&idx===answer.index) div.classList.add("correct");
               if(answer.index!==null&&answer.index!==undefined&&idx===selected&&selected!==answer.index) div.classList.add("wrong");
