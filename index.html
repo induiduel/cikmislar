@@ -860,6 +860,145 @@
 
   
     body.no-question-active .floating-question-nav{display:none!important;}
+  
+    /* Üst menüye taşınan soru araçları */
+    .top-menu-subtools{
+      display:inline-flex;
+      position:relative;
+    }
+    .top-menu-subtools summary{
+      cursor:pointer;
+      list-style:none;
+      border:1px solid var(--line);
+      border-radius:10px;
+      padding:8px 10px;
+      background:#fff;
+      color:var(--primary);
+      font-weight:900;
+      font-size:12px;
+      user-select:none;
+    }
+    .top-menu-subtools summary::-webkit-details-marker{
+      display:none;
+    }
+    .top-menu-subtools summary::after{
+      content:" ▾";
+      font-weight:950;
+    }
+    .top-menu-subtools[open] summary::after{
+      content:" ▴";
+    }
+    .top-menu-subtools-content{
+      position:absolute;
+      right:0;
+      top:calc(100% + 6px);
+      z-index:140;
+      min-width:230px;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      padding:8px;
+      border:1px solid var(--line);
+      border-radius:12px;
+      background:#fff;
+      box-shadow:0 14px 30px rgba(15,23,42,.14);
+    }
+    .top-menu-subtools-content button{
+      width:100%;
+      justify-content:center;
+    }
+
+    /* Soru kartındaki ekstra işlem butonları gizlendi; işlemler üst menüde */
+    .question-top-actions{
+      display:none!important;
+    }
+
+    /* Soru ekranı filtresi kompakt ve açılır/kapanır */
+    .compact-filter-panel{
+      padding:0!important;
+      overflow:hidden;
+    }
+    .compact-filter-summary{
+      cursor:pointer;
+      list-style:none;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:8px;
+      margin:0!important;
+      padding:9px 10px;
+      user-select:none;
+    }
+    .compact-filter-summary::-webkit-details-marker{
+      display:none;
+    }
+    .compact-filter-summary::after{
+      content:"＋";
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:22px;
+      height:22px;
+      border-radius:999px;
+      background:var(--soft);
+      color:var(--primary);
+      border:1px solid rgba(23,58,138,.13);
+      font-weight:950;
+      flex:0 0 auto;
+    }
+    .compact-filter-panel[open] .compact-filter-summary::after{
+      content:"−";
+    }
+    .compact-filter-content{
+      padding:0 9px 9px;
+    }
+    .compact-filter-content .combo-grid{
+      gap:7px;
+    }
+    .compact-filter-content .select-row{
+      gap:3px;
+    }
+    .compact-filter-content label{
+      font-size:10.5px;
+    }
+    .compact-filter-content select,
+    .compact-filter-content input{
+      padding:7px 8px;
+      border-radius:9px;
+      font-size:11.5px;
+    }
+    .compact-filter-content .filter-actions{
+      gap:6px;
+      margin-top:7px;
+    }
+    .compact-filter-content .filter-actions button{
+      padding:7px 8px;
+      font-size:11.5px;
+      border-radius:9px;
+    }
+    body.compact-mode .compact-filter-content select,
+    body.compact-mode .compact-filter-content input{
+      padding:6px 7px;
+      font-size:10.5px;
+    }
+    body.compact-mode .compact-filter-summary{
+      padding:7px 8px;
+    }
+    @media (max-width:520px){
+      .top-menu-subtools{
+        width:100%;
+      }
+      .top-menu-subtools summary{
+        width:100%;
+        text-align:center;
+      }
+      .top-menu-subtools-content{
+        left:0;
+        right:auto;
+        width:min(260px, calc(100vw - 34px));
+      }
+    }
+
   </style>
 </head>
 <body class="font-normal">
@@ -877,6 +1016,16 @@
         <button class="secondary" id="menuDuplicateBtn" type="button">Tekrarları kapat</button>
         <button class="secondary" id="menuShuffleBtn" type="button">Karışık sırayı aç</button>
         <button class="secondary" id="menuCacheBtn" type="button">Önbelleği yenile</button>
+        <button class="secondary" id="menuInfoBtn" type="button">Açıklama/spot</button>
+        <button class="secondary" id="menuShowAllBtn" type="button">Tüm soruları görüntüle</button>
+        <details class="top-menu-subtools" id="menuOtherTools">
+          <summary>Diğer işlemler</summary>
+          <div class="top-menu-subtools-content">
+            <button class="secondary" id="menuWideToggleBtn" type="button">Tekli ekranı aç/kapat</button>
+            <button class="secondary" id="menuResetVisibleBtn" type="button">Filtre cevaplarını sıfırla</button>
+            <button class="danger" id="menuClearCacheBtn" type="button">Önbelleği temizle</button>
+          </div>
+        </details>
       </div>
     </details>
 
@@ -1024,25 +1173,27 @@
               <div class="mini"><span>Boş</span><b id="emptyCount">0</b></div>
             </div>
 
-            <div class="combo-panel">
-              <h3 class="side-title">Kombine filtre</h3>
-              <div class="combo-grid">
-                <div class="select-row"><label for="subjectSelect">Ders</label><select id="subjectSelect"></select></div>
-                <div class="select-row"><label for="examSelect">Kurul / sınav grubu</label><select id="examSelect"></select></div>
-                <div class="select-row"><label for="yearSelect">Yıl / sene</label><select id="yearSelect"></select></div>
-                <div class="select-row"><label for="teacherSelect">Hoca</label><select id="teacherSelect"></select></div>
-                <div class="select-row"><label for="sourceGroupSelect">Kaynak türü</label><select id="sourceGroupSelect"></select></div>
-                <div class="select-row">
-                  <label for="searchInput">Soru / konu / hedef / kaynak araması</label>
-                  <input class="search" id="searchInput" placeholder="Örn: HPV, EKG, a. subclavia, keton, Sertoli...">
+            <details class="combo-panel compact-filter-panel" id="filterPanelDetails">
+              <summary class="side-title compact-filter-summary">Filtreler</summary>
+              <div class="compact-filter-content">
+                <div class="combo-grid">
+                  <div class="select-row"><label for="subjectSelect">Ders</label><select id="subjectSelect"></select></div>
+                  <div class="select-row"><label for="examSelect">Kurul / sınav grubu</label><select id="examSelect"></select></div>
+                  <div class="select-row"><label for="yearSelect">Yıl / sene</label><select id="yearSelect"></select></div>
+                  <div class="select-row"><label for="teacherSelect">Hoca</label><select id="teacherSelect"></select></div>
+                  <div class="select-row"><label for="sourceGroupSelect">Kaynak türü</label><select id="sourceGroupSelect"></select></div>
+                  <div class="select-row">
+                    <label for="searchInput">Soru / konu / hedef / kaynak araması</label>
+                    <input class="search" id="searchInput" placeholder="Örn: HPV, EKG, a. subclavia, keton, Sertoli...">
+                  </div>
+                </div>
+                <div class="active-filter-summary" id="activeFilterSummary"></div>
+                <div class="filter-actions">
+                  <button class="secondary" id="clearFiltersBtn">Filtreleri temizle</button>
+                  <button class="primary" id="goFirstFilteredBtn">İlk soruya git</button>
                 </div>
               </div>
-              <div class="active-filter-summary" id="activeFilterSummary"></div>
-              <div class="filter-actions">
-                <button class="secondary" id="clearFiltersBtn">Filtreleri temizle</button>
-                <button class="primary" id="goFirstFilteredBtn">İlk soruya git</button>
-              </div>
-            </div>
+            </details>
 
             <details class="quick-block">
               <summary class="side-title" style="cursor:pointer;">Hızlı ders tuşları</summary>
@@ -1145,6 +1296,7 @@
     const els = {
       landing:$("landing"), appView:$("appView"), quizView:$("quizView"), listView:$("listView"),
       topMenu:$("topMenu"), menuHomeBtn:$("menuHomeBtn"), menuSourceBtn:$("menuSourceBtn"), menuViewBtn:$("menuViewBtn"), menuDuplicateBtn:$("menuDuplicateBtn"), menuShuffleBtn:$("menuShuffleBtn"), menuCacheBtn:$("menuCacheBtn"),
+      menuInfoBtn:$("menuInfoBtn"), menuShowAllBtn:$("menuShowAllBtn"), menuOtherTools:$("menuOtherTools"), menuWideToggleBtn:$("menuWideToggleBtn"), menuResetVisibleBtn:$("menuResetVisibleBtn"), menuClearCacheBtn:$("menuClearCacheBtn"),
       courseGrid:$("courseGrid"), courseEmpty:$("courseEmpty"), courseSearch:$("courseSearch"),
       clearCourseSearch:$("clearCourseSearch"), continueBtn:$("continueBtn"), wrongHomeBtn:$("wrongHomeBtn"), hiddenHomeBtn:$("hiddenHomeBtn"), quizAllBtn:$("quizAllBtn"), startAllBtn:$("startAllBtn"),
       backHomeBtn:$("backHomeBtn"), changeCourseBtn:$("changeCourseBtn"), activeTitle:$("activeTitle"),
@@ -1982,6 +2134,9 @@
         els.wideQuestionBtn.textContent = questionWideMode ? "↔ Tekli çözüm ekranından çık" : "⛶ Tekli çözüm ekranı";
         els.wideQuestionBtn.title = questionWideMode ? "Tekli soru ekranını normal genişliğe döndür" : "Tekli soru ekranını genişlet";
       }
+      if (els.menuWideToggleBtn) {
+        els.menuWideToggleBtn.textContent = questionWideMode ? "Tekli ekranı daralt" : "Tekli ekranı genişlet";
+      }
       if (els.wideListBtn) {
         els.wideListBtn.textContent = listWideMode ? "↔ Listeyi daralt" : "⛶ Listeyi genişlet";
         els.wideListBtn.title = listWideMode ? "Tüm sorular ekranını normal genişliğe döndür" : "Tüm sorular ekranını genişlet";
@@ -2353,6 +2508,7 @@
       els.infoBox.innerHTML=infoParts.join("\n\n")||"<b>Bilgi:</b> Bu kayıtta açıklama/spot alanı boş.";
       els.infoBox.className=infoOpen?"info-box show":"info-box";
       els.showInfoBtn.textContent=infoOpen?"Açıklamayı gizle":"Açıklama/spot";
+      if(els.menuInfoBtn) els.menuInfoBtn.textContent = infoOpen ? "Açıklamayı gizle" : "Açıklama/spot";
       els.prevBtn.disabled=pos<=0;
       els.nextBtn.disabled=false;
       els.nextBtn.textContent=pos===idxs.length-1?"Sonucu göster":"Sonraki";
@@ -2721,6 +2877,33 @@ ${body}
         if(els.topMenu) els.topMenu.open=false;
       });
       els.menuCacheBtn.addEventListener("click", clearDatabaseCacheAndReload);
+      els.menuInfoBtn.addEventListener("click",()=>{
+        infoOpen = !infoOpen;
+        render();
+        if(els.topMenu) els.topMenu.open = false;
+      });
+      els.menuShowAllBtn.addEventListener("click",()=>{
+        showListView("all");
+        if(els.topMenu) els.topMenu.open = false;
+      });
+      els.menuWideToggleBtn.addEventListener("click",()=>{
+        questionWideMode = !questionWideMode;
+        applyWideModes();
+        saveState();
+        render();
+        if(els.menuOtherTools) els.menuOtherTools.open = false;
+        if(els.topMenu) els.topMenu.open = false;
+      });
+      els.menuResetVisibleBtn.addEventListener("click",()=>{
+        if(els.resetVisibleBtn) els.resetVisibleBtn.click();
+        if(els.menuOtherTools) els.menuOtherTools.open = false;
+        if(els.topMenu) els.topMenu.open = false;
+      });
+      els.menuClearCacheBtn.addEventListener("click",()=>{
+        if(els.clearCacheBtn) els.clearCacheBtn.click();
+        if(els.menuOtherTools) els.menuOtherTools.open = false;
+        if(els.topMenu) els.topMenu.open = false;
+      });
       els.courseSearch.addEventListener("input", debounce(renderLanding, 180));
       els.clearCourseSearch.addEventListener("click",()=>{els.courseSearch.value=""; renderLanding(); els.courseSearch.focus();});
       els.manualDbInput.addEventListener("change",async()=>{try{await loadManualDbFiles(els.manualDbInput.files);}catch(e){els.status.className="panel status warn"; els.status.innerHTML=`<b>Manuel database yüklenemedi:</b> ${escapeHTML(e.message)}`;}});
