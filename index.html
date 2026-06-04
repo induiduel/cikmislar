@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Tıp Dersleri Soru Bankası | Database Loader</title>
+  <title>Tıp Dersleri Soru Bankası</title>
   <style>
     :root{
       --bg:#f5f7fb;--text:#101828;--muted:#667085;--line:#dbe4f0;
@@ -37,6 +37,7 @@
     .metric span{display:block;margin-top:4px;color:var(--muted);font-size:11.5px}
     .status{padding:10px 12px;margin-bottom:12px;line-height:1.45;font-size:12.5px;color:#334155}
     .status.warn{background:var(--warnbg);color:#573a09;border-color:rgba(122,79,8,.20)}
+    .hidden{display:none!important}
     .landing{display:block}
     .landing.hidden{display:none}
     .course-toolbar{display:flex;gap:10px;align-items:center;padding:12px;margin-bottom:12px}
@@ -121,7 +122,6 @@
     .review-item{padding:10px;border:1px solid var(--line);border-radius:13px;background:#fff;line-height:1.4;font-size:12px}
     .review-item .q{font-weight:800;white-space:pre-wrap;margin-bottom:5px}
     .small{color:var(--muted);font-size:11px;line-height:1.35}
-    .hidden{display:none!important}
     @media (max-width:980px){
       .hero,.layout,.result-head{grid-template-columns:1fr}
       .course-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -153,13 +153,13 @@
       <div class="hero-main">
         <h1>Tıp Dersleri Soru Bankası</h1>
         <p class="subtitle">
-          Önce çalışmak istediğin dersi seç. Sorular <b>db/</b> klasöründeki <b>.db</b> ve <b>.sdb</b> dosyalarından okunur.
-          Filtre seçenekleri seçime göre canlı güncellenir; aynı soru tekrar gelirse otomatik ayıklanır.
+          Önce çalışmak istediğin dersi seç. Sorular <b>db/</b> klasöründen veya kök dizindeki <b>soru1.db, soru2.db...</b> dosyalarından okunur.
+          Filtreler seçime göre canlı güncellenir.
         </p>
         <div class="chips">
           <span class="chip">Ders seçmeli açılış</span>
           <span class="chip">Database tabanlı</span>
-          <span class="chip">Yeni .db/.sdb dosyalarını otomatik okur</span>
+          <span class="chip">soru1.db → soru500.db</span>
           <span class="chip">Tekrar önleme</span>
         </div>
       </div>
@@ -172,9 +172,7 @@
     <section class="panel status warn" id="statusBox">Database dosyaları yükleniyor...</section>
     <section class="panel status warn hidden" id="manualDbBox">
       <b>Manuel database yükleme:</b> GitHub Pages dışında veya tarayıcı dosya erişimini engellediğinde .db/.sdb dosyalarını buradan seçebilirsin.
-      <div style="margin-top:8px;">
-        <input id="manualDbInput" type="file" accept=".db,.sdb,application/json" multiple>
-      </div>
+      <div style="margin-top:8px;"><input id="manualDbInput" type="file" accept=".db,.sdb,application/json" multiple></div>
     </section>
 
     <section class="landing" id="landing">
@@ -284,7 +282,7 @@
     const DB_DIRS = ["db", ""];
     const DB_EXTENSIONS = [".db", ".sdb"];
     const SEQUENTIAL_SCAN_MAX = 500;
-    const STORAGE_KEY = "database_loader_question_bank_progress_v2";
+    const STORAGE_KEY = "database_loader_question_bank_progress_v3";
 
     let dbFiles = [];
     let questions = [];
@@ -298,9 +296,9 @@
       landing:$("landing"), appView:$("appView"), courseGrid:$("courseGrid"), courseEmpty:$("courseEmpty"),
       courseSearch:$("courseSearch"), clearCourseSearch:$("clearCourseSearch"), continueBtn:$("continueBtn"), startAllBtn:$("startAllBtn"),
       backHomeBtn:$("backHomeBtn"), changeCourseBtn:$("changeCourseBtn"), activeTitle:$("activeTitle"),
-      totalQuestionsHero:$("totalQuestionsHero"), totalSubjectsHero:$("totalSubjectsHero"),
-      heroTotal:$("totalQuestionsHero"), heroScore:$("totalSubjectsHero"), progress:$("progress"), counter:$("counter"),
-      status:$("statusBox"), manualDbBox:$("manualDbBox"), manualDbInput:$("manualDbInput"), section:$("section"), meta:$("meta"), question:$("question"), options:$("options"),
+      totalQuestionsHero:$("totalQuestionsHero"), totalSubjectsHero:$("totalSubjectsHero"), status:$("statusBox"),
+      manualDbBox:$("manualDbBox"), manualDbInput:$("manualDbInput"),
+      progress:$("progress"), counter:$("counter"), section:$("section"), meta:$("meta"), question:$("question"), options:$("options"),
       feedback:$("feedback"), infoBox:$("infoBox"), showInfoBtn:$("showInfoBtn"), prevBtn:$("prevBtn"), nextBtn:$("nextBtn"),
       clearCacheBtn:$("clearCacheBtn"), resetVisibleBtn:$("resetVisibleBtn"), answeredCount:$("answeredCount"),
       correctCount:$("correctCount"), wrongCount:$("wrongCount"), emptyCount:$("emptyCount"), jumpGrid:$("jumpGrid"),
@@ -311,26 +309,12 @@
       review:$("review"), reviewToggleBtn:$("reviewToggleBtn"), hideResultBtn:$("hideResultBtn")
     };
 
-    function escapeHTML(str){
-      return String(str ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");
-    }
-    function normalize(str){
-      let s = String(str ?? "").toLocaleLowerCase("tr-TR");
-      try { s = s.normalize("NFKD").replace(/[\u0300-\u036f]/g,""); } catch(e) {}
-      return s.replace(/ı/g,"i");
-    }
-    function initials(name){ return String(name||"?").split(/\s+/).map(x=>x[0]).join("").slice(0,2).toUpperCase(); }
-    function countValues(fieldFn){
-      const map = new Map();
-      questions.forEach(q => {
-        const v = fieldFn(q) || "Belirtilmemiş";
-        map.set(v, (map.get(v) || 0) + 1);
-      });
-      return [...map.entries()].map(([value,count])=>({value,count})).sort((a,b)=>a.value.localeCompare(b.value,"tr"));
-    }
-    function optionList(q){ return Array.isArray(q.options) ? q.options : []; }
-    function meta(q, key){ return (q.metadata && q.metadata[key]) || ""; }
-    function answerKey(q){ return q.id; }
+    function escapeHTML(str){return String(str ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");}
+    function normalize(str){let s=String(str ?? "").toLocaleLowerCase("tr-TR");try{s=s.normalize("NFKD").replace(/[\u0300-\u036f]/g,"");}catch(e){} return s.replace(/ı/g,"i");}
+    function initials(name){return String(name||"?").split(/\s+/).map(x=>x[0]).join("").slice(0,2).toUpperCase();}
+    function optionList(q){return Array.isArray(q.options) ? q.options : [];}
+    function meta(q,key){return (q.metadata && q.metadata[key]) || "";}
+    function answerKey(q){return q.id;}
 
     function inferRepoFromGithubPages(){
       const host = location.hostname;
@@ -345,83 +329,60 @@
       const info = inferRepoFromGithubPages();
       if (!info) throw new Error("GitHub Pages host algılanmadı.");
       const out = [];
-
       for (const dir of DB_DIRS){
         const apiPath = dir ? `/contents/${dir}` : `/contents`;
         const api = `https://api.github.com/repos/${info.owner}/${info.repo}${apiPath}`;
-        const res = await fetch(api, {headers: {"Accept":"application/vnd.github+json"}});
-        if (!res.ok) continue;
-        const items = await res.json();
-        if (!Array.isArray(items)) continue;
-
-        items
-          .filter(x => x.type === "file" && DB_EXTENSIONS.some(ext => x.name.toLowerCase().endsWith(ext)))
-          .forEach(x => out.push({
-            name: dir ? `${dir}/${x.name}` : x.name,
-            url: x.download_url,
-            source: "github-api"
-          }));
+        try{
+          const res = await fetch(api, {headers: {"Accept":"application/vnd.github+json"}});
+          if (!res.ok) continue;
+          const items = await res.json();
+          if (!Array.isArray(items)) continue;
+          items.filter(x => x.type === "file" && DB_EXTENSIONS.some(ext => x.name.toLowerCase().endsWith(ext)))
+               .forEach(x => out.push({name: dir ? `${dir}/${x.name}` : x.name, url:x.download_url, source:"github-api"}));
+        }catch(e){}
       }
-
       if (!out.length) throw new Error("GitHub API ile .db/.sdb bulunamadı.");
       return out;
     }
 
     async function listDbFilesFromManifest(){
       const out = [];
-
       for (const dir of DB_DIRS){
-        const manifestUrl = dir ? `${dir}/manifest.json` : `manifest.json`;
+        const manifestUrl = dir ? `${dir}/manifest.json` : "manifest.json";
         try{
           const res = await fetch(manifestUrl, {cache:"no-store"});
           if (!res.ok) continue;
           const manifest = await res.json();
           const files = Array.isArray(manifest.files) ? manifest.files : [];
-
-          files
-            .filter(name => DB_EXTENSIONS.some(ext => String(name).toLowerCase().endsWith(ext)))
-            .forEach(name => {
-              const nameStr = String(name);
-              const alreadyHasDir = nameStr.includes("/");
-              const url = alreadyHasDir ? nameStr : (dir ? `${dir}/${encodeURIComponent(nameStr)}` : encodeURIComponent(nameStr));
-              out.push({
-                name: alreadyHasDir ? nameStr : (dir ? `${dir}/${nameStr}` : nameStr),
-                url,
-                source: "manifest"
-              });
-            });
+          files.filter(name => DB_EXTENSIONS.some(ext => String(name).toLowerCase().endsWith(ext))).forEach(name => {
+            const nameStr = String(name);
+            const alreadyHasDir = nameStr.includes("/");
+            const url = alreadyHasDir ? nameStr : (dir ? `${dir}/${encodeURIComponent(nameStr)}` : encodeURIComponent(nameStr));
+            out.push({name: alreadyHasDir ? nameStr : (dir ? `${dir}/${nameStr}` : nameStr), url, source:"manifest"});
+          });
         }catch(e){}
       }
-
       if (!out.length) throw new Error("manifest.json içinde .db/.sdb bulunamadı.");
       return out;
     }
 
     async function listDbFilesBySequentialProbe(){
       const found = [];
-
+      const candidates = [];
+      for (let i=1;i<=SEQUENTIAL_SCAN_MAX;i++){candidates.push(`soru${i}.db`);candidates.push(`soru${i}.sdb`);}
       for (const dir of DB_DIRS){
-        const candidates = [];
-        for (let i=1; i<=SEQUENTIAL_SCAN_MAX; i++){
-          candidates.push(`soru${i}.db`);
-          candidates.push(`soru${i}.sdb`);
-        }
-
-        for (const name of candidates){
-          const url = dir ? `${dir}/${encodeURIComponent(name)}` : encodeURIComponent(name);
-          try{
-            const res = await fetch(url, {cache:"no-store"});
-            if (res.ok) {
-              found.push({
-                name: dir ? `${dir}/${name}` : name,
-                url,
-                source: "sequential"
-              });
-            }
-          }catch(e){}
+        const batchSize = 40;
+        for (let start=0; start<candidates.length; start+=batchSize){
+          const batch = candidates.slice(start,start+batchSize);
+          await Promise.all(batch.map(async name => {
+            const url = dir ? `${dir}/${encodeURIComponent(name)}` : encodeURIComponent(name);
+            try{
+              const res = await fetch(url, {cache:"no-store", method:"HEAD"});
+              if (res.ok) found.push({name:dir?`${dir}/${name}`:name, url, source:"sequential"});
+            }catch(e){}
+          }));
         }
       }
-
       if (!found.length) throw new Error("soru1.db/soru2.db/... taramasında dosya bulunamadı.");
       return found;
     }
@@ -429,67 +390,40 @@
     async function discoverDbFiles(){
       const merged = new Map();
       const errors = [];
-
-      async function addFrom(fn, label){
+      async function addFrom(fn,label){
         try{
           const list = await fn();
-          list.forEach(file => {
-            const key = file.url || file.name;
-            if (!merged.has(key)) merged.set(key, file);
-          });
-        }catch(e){
-          errors.push(label + ": " + e.message);
-        }
+          list.forEach(file => {const key=file.url||file.name; if(!merged.has(key)) merged.set(key,file);});
+        }catch(e){errors.push(label+": "+e.message);}
       }
-
-      // 1) manifest.json: hem kök dizinde hem db/ altında desteklenir.
-      // 2) soru1.db ... soru500.db ve soru1.sdb ... soru500.sdb: hem kök hem db/ altında taranır.
-      // 3) GitHub API: GitHub Pages üzerinde kök ve db/ dizinindeki tüm .db/.sdb dosyalarını bulur.
-      await addFrom(listDbFilesFromManifest, "manifest");
-      await addFrom(listDbFilesBySequentialProbe, "sequential");
-      await addFrom(listDbFilesFromGithubApi, "github-api");
-
-      const files = [...merged.values()].sort((a,b) => a.name.localeCompare(b.name, "tr"));
-      if (!files.length) throw new Error(errors.join(" | "));
+      els.status.innerHTML = "Database listesi aranıyor: manifest, GitHub API ve soru1.db-soru500.db taraması deneniyor...";
+      await addFrom(listDbFilesFromManifest,"manifest");
+      await addFrom(listDbFilesFromGithubApi,"github-api");
+      if (!merged.size) await addFrom(listDbFilesBySequentialProbe,"sequential");
+      const files=[...merged.values()].sort((a,b)=>a.name.localeCompare(b.name,"tr"));
+      if(!files.length) throw new Error(errors.join(" | "));
       return files;
     }
 
     async function loadDbFile(file){
       const res = await fetch(file.url, {cache:"no-store"});
-      if (!res.ok) throw new Error(file.name + " okunamadı: HTTP " + res.status);
-
+      if(!res.ok) throw new Error(file.name+" okunamadı: HTTP "+res.status);
       let db;
-      try{
-        db = await res.json();
-      }catch(e){
-        throw new Error(file.name + " JSON olarak okunamadı. Dosya gerçekten .db JSON formatında mı?");
-      }
-
-      if (!db || !Array.isArray(db.questions)) {
-        throw new Error(file.name + " geçerli soru database dosyası değil. İçinde questions dizisi olmalı.");
-      }
-
+      try{db = await res.json();}catch(e){throw new Error(file.name+" JSON olarak okunamadı. Dosya gerçekten .db JSON formatında mı?");}
+      if(!db || !Array.isArray(db.questions)) throw new Error(file.name+" geçerli soru database dosyası değil. İçinde questions dizisi olmalı.");
       return db.questions.map(q => ({...q, _dbFile:file.name, _dbSource:file.source}));
     }
 
     async function loadManualDbFiles(fileList){
       const all = [];
       const files = Array.from(fileList || []);
-
       for (const file of files){
         const text = await file.text();
         let db;
-        try{
-          db = JSON.parse(text);
-        }catch(e){
-          throw new Error(file.name + " JSON olarak okunamadı.");
-        }
-        if (!db || !Array.isArray(db.questions)) {
-          throw new Error(file.name + " geçerli database değil. questions dizisi bulunamadı.");
-        }
+        try{db = JSON.parse(text);}catch(e){throw new Error(file.name+" JSON olarak okunamadı.");}
+        if(!db || !Array.isArray(db.questions)) throw new Error(file.name+" geçerli database değil. questions dizisi bulunamadı.");
         all.push(...db.questions.map(q => ({...q, _dbFile:file.name, _dbSource:"manual"})));
       }
-
       const duplicates = dedupeAndSetQuestions(all);
       els.status.className = "panel status";
       els.status.innerHTML = `<b>${files.length}</b> manuel database dosyası yüklendi. <b>${questions.length}</b> benzersiz soru kullanılıyor${duplicates ? `; ${duplicates} tekrar otomatik ayıklandı` : ""}.`;
@@ -498,275 +432,283 @@
       renderLanding();
     }
 
+    function fallbackId(q){
+      try{return "qid_"+btoa(unescape(encodeURIComponent([q.subject,q.question,JSON.stringify(q.options),JSON.stringify(q.answer)].join("|")))).slice(0,24).replace(/[^a-zA-Z0-9]/g,"");}
+      catch(e){return "qid_"+Math.random().toString(36).slice(2);}
+    }
 
     function dedupeAndSetQuestions(all){
       const map = new Map();
       let duplicates = 0;
       all.forEach(q => {
-        if (!q.id) q.id = fallbackId(q);
-        if (map.has(q.id)) duplicates++;
-        else map.set(q.id, q);
+        if(!q.id) q.id = fallbackId(q);
+        if(map.has(q.id)) duplicates++;
+        else map.set(q.id,q);
       });
       questions = [...map.values()];
       return duplicates;
     }
 
-    function fallbackId(q){
-      return "qid_" + btoa(unescape(encodeURIComponent([q.subject, q.question, JSON.stringify(q.options), JSON.stringify(q.answer)].join("|")))).slice(0,24).replace(/[^a-zA-Z0-9]/g,"");
-    }
-
-    function saveState(){
-      try { localStorage.setItem(STORAGE_KEY, JSON.stringify({answers,current,filters,infoOpen})); } catch(e){}
-    }
+    function saveState(){try{localStorage.setItem(STORAGE_KEY, JSON.stringify({answers,current,filters,infoOpen}));}catch(e){}}
     function loadState(){
       try{
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (!raw) return false;
-        const data = JSON.parse(raw);
-        if (data.answers && typeof data.answers === "object") answers = data.answers;
-        if (Number.isInteger(data.current)) current = data.current;
-        if (data.filters) filters = {...filters, ...data.filters};
-        if (typeof data.infoOpen === "boolean") infoOpen = data.infoOpen;
+        const raw=localStorage.getItem(STORAGE_KEY);
+        if(!raw) return false;
+        const data=JSON.parse(raw);
+        if(data.answers && typeof data.answers==="object") answers=data.answers;
+        if(Number.isInteger(data.current)) current=data.current;
+        if(data.filters) filters={...filters,...data.filters};
+        if(typeof data.infoOpen==="boolean") infoOpen=data.infoOpen;
         return true;
-      }catch(e){ return false; }
+      }catch(e){return false;}
     }
 
     function matchesFilters(q, excludeField){
       const term = normalize(filters.search.trim());
-
-      if (excludeField !== "subject" && filters.subject !== "all" && q.subject !== filters.subject) return false;
-      if (excludeField !== "exam" && filters.exam !== "all" && meta(q,"examGroup") !== filters.exam) return false;
-      if (excludeField !== "year" && filters.year !== "all" && meta(q,"year") !== filters.year) return false;
-      if (excludeField !== "teacher" && filters.teacher !== "all" && meta(q,"teacher") !== filters.teacher) return false;
-      if (excludeField !== "sourceGroup" && filters.sourceGroup !== "all" && meta(q,"sourceGroup") !== filters.sourceGroup) return false;
-
-      if (term){
-        const haystack = normalize([
-          q.subject, q.question, q.explanation, q.spot, q.sourceNote,
-          meta(q,"examGroup"), meta(q,"year"), meta(q,"teacher"), meta(q,"topic"), meta(q,"target"), meta(q,"sourceGroup"), meta(q,"source"),
-          ...(optionList(q).map(o => o.text))
-        ].join(" "));
-        if (!haystack.includes(term)) return false;
+      if(excludeField!=="subject" && filters.subject!=="all" && q.subject!==filters.subject) return false;
+      if(excludeField!=="exam" && filters.exam!=="all" && meta(q,"examGroup")!==filters.exam) return false;
+      if(excludeField!=="year" && filters.year!=="all" && meta(q,"year")!==filters.year) return false;
+      if(excludeField!=="teacher" && filters.teacher!=="all" && meta(q,"teacher")!==filters.teacher) return false;
+      if(excludeField!=="sourceGroup" && filters.sourceGroup!=="all" && meta(q,"sourceGroup")!==filters.sourceGroup) return false;
+      if(term){
+        const haystack = normalize([q.subject,q.question,q.explanation,q.spot,q.sourceNote,meta(q,"examGroup"),meta(q,"year"),meta(q,"teacher"),meta(q,"topic"),meta(q,"target"),meta(q,"sourceGroup"),meta(q,"source"),...optionList(q).map(o=>o.text)].join(" "));
+        if(!haystack.includes(term)) return false;
       }
-
       return true;
     }
-
-    function filteredIndexes(){
-      return questions.map((q,i)=>[q,i]).filter(([q]) => matchesFilters(q, null)).map(([,i]) => i);
-    }
-
-    function filteredQuestionsForOptions(excludeField){
-      return questions.filter(q => matchesFilters(q, excludeField));
-    }
-
+    function filteredIndexes(){return questions.map((q,i)=>[q,i]).filter(([q])=>matchesFilters(q,null)).map(([,i])=>i);}
+    function filteredQuestionsForOptions(excludeField){return questions.filter(q=>matchesFilters(q, excludeField));}
     function countValuesForOptions(fieldFn, excludeField){
-      const map = new Map();
-      filteredQuestionsForOptions(excludeField).forEach(q => {
-        const v = fieldFn(q) || "Belirtilmemiş";
-        map.set(v, (map.get(v) || 0) + 1);
-      });
+      const map=new Map();
+      filteredQuestionsForOptions(excludeField).forEach(q=>{const v=fieldFn(q)||"Belirtilmemiş"; map.set(v,(map.get(v)||0)+1);});
       return [...map.entries()].map(([value,count])=>({value,count})).sort((a,b)=>a.value.localeCompare(b.value,"tr"));
     }
-
-    function optionSet(fieldFn, excludeField){
-      return new Set(countValuesForOptions(fieldFn, excludeField).map(x => x.value));
+    function countValues(fieldFn){
+      const map=new Map();
+      questions.forEach(q=>{const v=fieldFn(q)||"Belirtilmemiş"; map.set(v,(map.get(v)||0)+1);});
+      return [...map.entries()].map(([value,count])=>({value,count})).sort((a,b)=>a.value.localeCompare(b.value,"tr"));
     }
-
+    function optionSet(fieldFn, excludeField){return new Set(countValuesForOptions(fieldFn, excludeField).map(x=>x.value));}
     function sanitizeFilters(){
-      let changed = true;
-      let guard = 0;
-      while (changed && guard < 10){
-        changed = false;
-        guard++;
-        const checks = [
-          ["subject", q => q.subject, "subject"],
-          ["exam", q => meta(q,"examGroup"), "exam"],
-          ["year", q => meta(q,"year"), "year"],
-          ["teacher", q => meta(q,"teacher"), "teacher"],
-          ["sourceGroup", q => meta(q,"sourceGroup"), "sourceGroup"]
-        ];
-        checks.forEach(([key, fn, exclude]) => {
-          if (filters[key] !== "all"){
-            const set = optionSet(fn, exclude);
-            if (!set.has(filters[key])){
-              filters[key] = "all";
-              changed = true;
-            }
-          }
+      let changed=true, guard=0;
+      while(changed && guard<10){
+        changed=false; guard++;
+        [["subject",q=>q.subject,"subject"],["exam",q=>meta(q,"examGroup"),"exam"],["year",q=>meta(q,"year"),"year"],["teacher",q=>meta(q,"teacher"),"teacher"],["sourceGroup",q=>meta(q,"sourceGroup"),"sourceGroup"]].forEach(([key,fn,exclude])=>{
+          if(filters[key]!=="all" && !optionSet(fn,exclude).has(filters[key])){filters[key]="all"; changed=true;}
         });
       }
     }
-
-    function ensureCurrent(){    function ensureCurrent(){
-      const idxs = filteredIndexes();
-      if (!idxs.length) return;
-      if (!idxs.includes(current)) current = idxs[0];
-    }
+    function ensureCurrent(){const idxs=filteredIndexes(); if(idxs.length && !idxs.includes(current)) current=idxs[0];}
 
     function stats(){
-      const idxs = filteredIndexes();
+      const idxs=filteredIndexes();
       let answered=0, correct=0, wrong=0, neutral=0;
-      idxs.forEach(i => {
-        const q = questions[i];
-        const a = answers[answerKey(q)];
-        if (a !== undefined && a !== null){
+      idxs.forEach(i=>{
+        const q=questions[i], a=answers[answerKey(q)];
+        if(a!==undefined && a!==null){
           answered++;
-          const ci = q.answer ? q.answer.index : null;
-          if (ci === null || ci === undefined || ci < 0) neutral++;
-          else if (a === ci) correct++;
+          const ci=q.answer ? q.answer.index : null;
+          if(ci===null || ci===undefined || ci<0) neutral++;
+          else if(a===ci) correct++;
           else wrong++;
         }
       });
-      return {total:idxs.length, answered, correct, wrong, neutral, empty:idxs.length-answered, percent:answered ? Math.round((correct/answered)*100) : 0};
+      return {total:idxs.length, answered, correct, wrong, neutral, empty:idxs.length-answered, percent:answered?Math.round((correct/answered)*100):0};
     }
 
     function setSelect(select, items, allLabel, value){
-      select.innerHTML = "";
-      const opt = document.createElement("option");
-      opt.value = "all"; opt.textContent = allLabel; select.appendChild(opt);
-      items.forEach(item => {
-        const o = document.createElement("option");
-        o.value = item.value;
-        o.textContent = `${item.value} (${item.count})`;
-        select.appendChild(o);
-      });
-      select.value = value;
-      if (select.value !== value) select.value = "all";
+      select.innerHTML="";
+      const all=document.createElement("option"); all.value="all"; all.textContent=allLabel; select.appendChild(all);
+      items.forEach(item=>{const opt=document.createElement("option"); opt.value=item.value; opt.textContent=`${item.value} (${item.count})`; select.appendChild(opt);});
+      select.value=value;
+      if(select.value!==value) select.value="all";
     }
 
-    function renderLanding(){    function renderLanding(){
-      els.totalQuestionsHero.textContent = questions.length;
-      els.totalSubjectsHero.textContent = countValues(q=>q.subject).length;
-      const term = normalize(els.courseSearch.value.trim());
-      els.courseGrid.innerHTML = "";
-      const courseCounts = countValues(q=>q.subject);
-      const filtered = courseCounts.filter(item => !term || normalize(item.value).includes(term));
-      filtered.forEach(item => {
-        const subjectQuestions = questions.filter(q => q.subject === item.value);
-        const examCount = new Set(subjectQuestions.map(q => meta(q,"examGroup")).filter(Boolean)).size;
-        const teacherCount = new Set(subjectQuestions.map(q => meta(q,"teacher")).filter(Boolean)).size;
-        const card = document.createElement("article");
-        card.className = "course-card panel";
-        card.tabIndex = 0;
-        card.innerHTML = `
+    function makeFilterButton(label,count,active,onClick,wide=false){
+      const b=document.createElement("button");
+      b.className="filter-btn"+(active?" active":"")+(wide?" wide":"");
+      b.innerHTML=`${escapeHTML(label)} <span class="small">(${count})</span>`;
+      b.addEventListener("click", onClick);
+      return b;
+    }
+
+    function renderLanding(){
+      els.totalQuestionsHero.textContent=questions.length;
+      els.totalSubjectsHero.textContent=countValues(q=>q.subject).length;
+      const term=normalize(els.courseSearch.value.trim());
+      els.courseGrid.innerHTML="";
+      const courseCounts=countValues(q=>q.subject);
+      const filtered=courseCounts.filter(item=>!term || normalize(item.value).includes(term));
+      filtered.forEach(item=>{
+        const subjectQuestions=questions.filter(q=>q.subject===item.value);
+        const examCount=new Set(subjectQuestions.map(q=>meta(q,"examGroup")).filter(Boolean)).size;
+        const teacherCount=new Set(subjectQuestions.map(q=>meta(q,"teacher")).filter(Boolean)).size;
+        const card=document.createElement("article");
+        card.className="course-card panel"; card.tabIndex=0;
+        card.innerHTML=`
           <div>
             <div class="course-icon">${escapeHTML(initials(item.value))}</div>
             <h2>${escapeHTML(item.value)}</h2>
             <p>${item.count} soru/kart · ${examCount} kurul/sınav grubu · ${teacherCount} hoca filtresi</p>
           </div>
-          <div class="course-meta">
-            <span class="chip">${item.count} soru</span>
-            <span class="chip">Dersi aç</span>
-          </div>
+          <div class="course-meta"><span class="chip">${item.count} soru</span><span class="chip">Dersi aç</span></div>
         `;
-        card.addEventListener("click", () => startCourse(item.value));
-        card.addEventListener("keydown", ev => {
-          if (ev.key === "Enter" || ev.key === " "){ ev.preventDefault(); startCourse(item.value); }
-        });
+        card.addEventListener("click",()=>startCourse(item.value));
+        card.addEventListener("keydown",ev=>{if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();startCourse(item.value);}});
         els.courseGrid.appendChild(card);
       });
-      els.courseEmpty.style.display = filtered.length ? "none" : "block";
+      els.courseEmpty.style.display=filtered.length?"none":"block";
+      els.continueBtn.disabled=!questions.length;
     }
 
-    function showLanding(){
-      els.landing.classList.remove("hidden");
-      els.appView.classList.remove("active");
-      els.results.style.display = "none";
-      if (els.continueBtn) {
-        const hasProgress = Object.keys(answers || {}).length > 0 || filteredIndexes().length > 0;
-        els.continueBtn.disabled = !questions.length || !hasProgress;
-      }
-      window.scrollTo(0,0);
-      renderLanding();
-    }
-
-    function startCourse(subject){
-      filters = {subject: subject || "all", exam:"all", year:"all", teacher:"all", sourceGroup:"all", search:""};
-      ensureCurrent();
-      els.landing.classList.add("hidden");
-      els.appView.classList.add("active");
-      els.activeTitle.textContent = subject && subject !== "all" ? subject + " soru bankası" : "Tüm dersler soru bankası";
-      els.results.style.display = "none";
-      render();
-      window.scrollTo(0,0);
-    }
-
-    function continueLast(){
-      sanitizeFilters();
-      ensureCurrent();
-      els.landing.classList.add("hidden");
-      els.appView.classList.add("active");
-      els.activeTitle.textContent = filters.subject && filters.subject !== "all" ? filters.subject + " soru bankası" : "Tüm dersler soru bankası";
-      els.results.style.display = "none";
-      render();
-      window.scrollTo(0,0);
-    }
+    function showLanding(){els.landing.classList.remove("hidden"); els.appView.classList.remove("active"); els.results.style.display="none"; window.scrollTo(0,0); renderLanding();}
+    function startCourse(subject){filters={subject:subject||"all", exam:"all", year:"all", teacher:"all", sourceGroup:"all", search:""}; ensureCurrent(); els.landing.classList.add("hidden"); els.appView.classList.add("active"); els.activeTitle.textContent=subject&&subject!=="all"?subject+" soru bankası":"Tüm dersler soru bankası"; els.results.style.display="none"; render(); window.scrollTo(0,0);}
+    function continueLast(){sanitizeFilters(); ensureCurrent(); els.landing.classList.add("hidden"); els.appView.classList.add("active"); els.activeTitle.textContent=filters.subject&&filters.subject!=="all"?filters.subject+" soru bankası":"Tüm dersler soru bankası"; els.results.style.display="none"; render(); window.scrollTo(0,0);}
 
     function renderFilters(){
       sanitizeFilters();
+      setSelect(els.subjectSelect, countValuesForOptions(q=>q.subject,"subject"), "Tüm dersler", filters.subject);
+      setSelect(els.examSelect, countValuesForOptions(q=>meta(q,"examGroup"),"exam"), "Tüm kurul/sınav grupları", filters.exam);
+      setSelect(els.yearSelect, countValuesForOptions(q=>meta(q,"year"),"year"), "Tüm yıllar", filters.year);
+      setSelect(els.teacherSelect, countValuesForOptions(q=>meta(q,"teacher"),"teacher"), "Tüm hocalar", filters.teacher);
+      setSelect(els.sourceGroupSelect, countValuesForOptions(q=>meta(q,"sourceGroup"),"sourceGroup"), "Tüm kaynak türleri", filters.sourceGroup);
+      els.searchInput.value=filters.search;
+      els.subjectButtons.innerHTML="";
+      els.subjectButtons.appendChild(makeFilterButton("Tüm dersler",questions.length,filters.subject==="all",()=>{filters.subject="all";ensureCurrent();render();},true));
+      countValuesForOptions(q=>q.subject,"subject").forEach(item=>els.subjectButtons.appendChild(makeFilterButton(item.value,item.count,filters.subject===item.value,()=>{filters.subject=item.value;ensureCurrent();render();})));
+    }
 
-      setSelect(els.subjectSelect, countValuesForOptions(q=>q.subject, "subject"), "Tüm dersler", filters.subject);
-      setSelect(els.examSelect, countValuesForOptions(q=>meta(q,"examGroup"), "exam"), "Tüm kurul/sınav grupları", filters.exam);
-      setSelect(els.yearSelect, countValuesForOptions(q=>meta(q,"year"), "year"), "Tüm yıllar", filters.year);
-      setSelect(els.teacherSelect, countValuesForOptions(q=>meta(q,"teacher"), "teacher"), "Tüm hocalar", filters.teacher);
-      setSelect(els.sourceGroupSelect, countValuesForOptions(q=>meta(q,"sourceGroup"), "sourceGroup"), "Tüm kaynak türleri", filters.sourceGroup);
-      els.searchInput.value = filters.search;
+    function renderQuestion(){
+      const idxs=filteredIndexes();
+      if(!idxs.length){
+        els.section.textContent="Soru bulunamadı"; els.meta.innerHTML=""; els.question.textContent=questions.length?"Seçili filtrelerle eşleşen soru yok.":"Database dosyası yüklenemedi veya soru bulunamadı.";
+        els.options.innerHTML=""; els.feedback.className="feedback"; els.feedback.innerHTML=""; els.infoBox.className="info-box"; els.infoBox.innerHTML=""; els.prevBtn.disabled=true; els.nextBtn.disabled=true; updateStats(); return;
+      }
+      ensureCurrent();
+      const q=questions[current], pos=idxs.indexOf(current), selected=answers[answerKey(q)], opts=optionList(q), answer=q.answer||{};
+      els.activeTitle.textContent=filters.subject!=="all"?filters.subject+" soru bankası":"Tüm dersler soru bankası";
+      els.section.textContent=`${q.subject} · ${meta(q,"examGroup")||"Grup yok"} · ${meta(q,"year")||"Yıl yok"} · ${meta(q,"teacher")||"Hoca yok"} · ${meta(q,"topic")||"Konu yok"}`;
+      const rows=[["Ders",q.subject],["Database",q._dbFile||""],["Kurul / sınav grubu",meta(q,"examGroup")],["Yıl / sene",meta(q,"year")],["Hoca",meta(q,"teacher")],["Konu",meta(q,"topic")],["Hedef / kazanım",meta(q,"target")],["Kaynak türü",meta(q,"sourceGroup")],["Kaynak",meta(q,"source")],["Kaynak soru no",meta(q,"sourceNo")],["Durum / güven",meta(q,"status")]];
+      els.meta.innerHTML=rows.filter(([,v])=>String(v??"").trim()).map(([k,v])=>`<div><b>${escapeHTML(k)}:</b> ${escapeHTML(v)}</div>`).join("");
+      els.question.textContent=q.question||"";
+      els.options.innerHTML="";
+      if(!opts.length){
+        els.options.innerHTML=`<div class="feedback neutral" style="display:block"><b>Şık yok:</b> Bu kayıtta seçenekler bulunmuyor. Cevap anahtarı bilgi alanında gösterilir.</div>`;
+      }else{
+        opts.forEach((opt,idx)=>{
+          const div=document.createElement("div");
+          div.className="option";
+          if(selected!==undefined&&selected!==null){
+            div.classList.add("answered");
+            if(answer.index!==null&&answer.index!==undefined&&idx===answer.index) div.classList.add("correct");
+            if(answer.index!==null&&answer.index!==undefined&&idx===selected&&selected!==answer.index) div.classList.add("wrong");
+          }
+          div.innerHTML=`<span class="letter">${escapeHTML(opt.letter||String.fromCharCode(65+idx))}</span><span class="option-text">${escapeHTML(opt.text||"")}</span>`;
+          div.addEventListener("click",()=>{answers[answerKey(q)]=idx; render();});
+          els.options.appendChild(div);
+        });
+      }
+      if(selected!==undefined&&selected!==null){
+        const letter=answer.letter||(answer.index!==null&&answer.index!==undefined&&opts[answer.index]?opts[answer.index].letter:"");
+        const text=answer.text||answer.raw||"";
+        if(answer.index===null||answer.index===undefined||answer.index<0){els.feedback.className="feedback neutral"; els.feedback.innerHTML=`<b>Cevap anahtarı:</b> ${escapeHTML(answer.raw||text)}`;}
+        else if(selected===answer.index){els.feedback.className="feedback ok"; els.feedback.innerHTML=`<b>Doğru.</b> Doğru cevap: <b>${escapeHTML(letter)} şıkkı</b> — ${escapeHTML(text)}`;}
+        else{els.feedback.className="feedback bad"; els.feedback.innerHTML=`<b>Yanlış.</b> Doğru cevap: <b>${escapeHTML(letter)} şıkkı</b> — ${escapeHTML(text)}`;}
+      }else{els.feedback.className="feedback"; els.feedback.innerHTML="";}
+      const infoParts=[];
+      if(q.explanation) infoParts.push("<b>Açıklama:</b> "+escapeHTML(q.explanation));
+      if(q.spot) infoParts.push("<b>Spot bilgi:</b> "+escapeHTML(q.spot));
+      if(q.sourceNote) infoParts.push("<b>Kaynak notu:</b> "+escapeHTML(q.sourceNote));
+      if(answer.raw) infoParts.push("<b>Cevap anahtarı:</b> "+escapeHTML(answer.raw));
+      els.infoBox.innerHTML=infoParts.join("\n\n")||"<b>Bilgi:</b> Bu kayıtta açıklama/spot alanı boş.";
+      els.infoBox.className=infoOpen?"info-box show":"info-box";
+      els.showInfoBtn.textContent=infoOpen?"Açıklama/spot gizle":"Açıklama/spot göster";
+      els.prevBtn.disabled=pos<=0;
+      els.nextBtn.disabled=false;
+      els.nextBtn.textContent=pos===idxs.length-1?"Sonucu göster":"Sonraki";
+      updateStats();
+    }
 
-      els.subjectButtons.innerHTML = "";
-      els.subjectButtons.appendChild(makeFilterButton("Tüm dersler", questions.length, filters.subject === "all", () => {
-        filters.subject="all"; ensureCurrent(); saveState(); render();
-      }, true));
+    function updateStats(){
+      const st=stats();
+      els.progress.style.width=st.total?((st.answered/st.total)*100)+"%":"0%";
+      els.counter.textContent=st.total?`Soru ${filteredIndexes().indexOf(current)+1} / ${st.total} · Genel no: ${current+1}`:"0 soru";
+      els.answeredCount.textContent=st.answered; els.correctCount.textContent=st.correct; els.wrongCount.textContent=st.wrong+(st.neutral?` (+${st.neutral} manuel)`:""); els.emptyCount.textContent=st.empty;
+      els.activeFilterSummary.textContent=[filters.subject==="all"?"Tüm dersler":filters.subject,filters.exam==="all"?"Tüm gruplar":filters.exam,filters.year==="all"?"Tüm yıllar":filters.year,filters.teacher==="all"?"Tüm hocalar":filters.teacher,filters.sourceGroup==="all"?"Tüm kaynak türleri":filters.sourceGroup,filters.search.trim()?`Arama: “${filters.search.trim()}”`:"Arama yok"].join(" + ")+` → ${st.total} soru`;
+    }
 
-      countValuesForOptions(q=>q.subject, "subject").forEach(item => {
-        els.subjectButtons.appendChild(makeFilterButton(item.value, item.count, filters.subject === item.value, () => {
-          filters.subject = item.value; ensureCurrent(); saveState(); render();
-        }));
+    function renderJumpGrid(){
+      els.jumpGrid.innerHTML="";
+      const idxs=filteredIndexes();
+      if(!idxs.length){els.jumpGrid.innerHTML=`<div class="small" style="grid-column:1 / -1;">Bu filtre/arama ile eşleşen soru yok.</div>`; return;}
+      idxs.forEach(i=>{
+        const q=questions[i], b=document.createElement("button");
+        b.className="jump"; if(i===current) b.classList.add("active");
+        const a=answers[answerKey(q)];
+        if(a!==undefined&&a!==null){const ci=q.answer?q.answer.index:null; if(ci===null||ci===undefined||ci<0)b.classList.add("done-neutral"); else b.classList.add(a===ci?"done-ok":"done-bad");}
+        b.textContent=i+1; b.title=`${q.subject} · ${meta(q,"examGroup")} · ${meta(q,"topic")}`;
+        b.addEventListener("click",()=>{current=i; render();});
+        els.jumpGrid.appendChild(b);
       });
     }
 
-    function bindEvents(){    function bindEvents(){
-      els.courseSearch.addEventListener("input", renderLanding);
-      els.manualDbInput.addEventListener("change", async () => {
-        try{
-          await loadManualDbFiles(els.manualDbInput.files);
-        }catch(e){
-          els.status.className = "panel status warn";
-          els.status.innerHTML = `<b>Manuel database yüklenemedi:</b> ${escapeHTML(e.message)}`;
-        }
+    function renderReview(){
+      els.review.innerHTML="";
+      filteredIndexes().forEach(i=>{
+        const q=questions[i], a=answers[answerKey(q)], opts=optionList(q), ans=q.answer||{};
+        const selectedText=a===undefined||a===null?"Boş":`${opts[a]?.letter||""}) ${opts[a]?.text||""}`;
+        const correctBody=ans.index!==null&&ans.index!==undefined&&opts[ans.index]?`${opts[ans.index].letter}) ${opts[ans.index].text}`:(ans.raw||ans.text||"");
+        const item=document.createElement("div");
+        item.className="review-item";
+        item.innerHTML=`<div class="small"><b>${i+1}. soru</b> · ${escapeHTML(q.subject)} · ${escapeHTML(meta(q,"examGroup"))} · ${escapeHTML(meta(q,"topic"))}</div><div class="q">${escapeHTML(q.question)}</div><div class="small"><b>Senin cevabın:</b> ${escapeHTML(selectedText)}</div><div class="small"><b>Doğru cevap:</b> ${escapeHTML(correctBody)}</div><div class="small"><b>Database:</b> ${escapeHTML(q._dbFile||"")}</div>`;
+        els.review.appendChild(item);
       });
-      els.clearCourseSearch.addEventListener("click", () => {els.courseSearch.value=""; renderLanding(); els.courseSearch.focus();});
+    }
+
+    function renderResults(){
+      const st=stats(), score=st.total?Math.round((st.correct/st.total)*100):0, deg=Math.round((score/100)*360);
+      els.scoreText.textContent=score+"%";
+      els.scoreCircle.style.background=`conic-gradient(var(--primary) 0deg, var(--primary) ${deg}deg, #e8edf5 ${deg}deg)`;
+      els.resultSubtitle.textContent=`${st.total} soru üzerinden ${st.correct} doğru, ${st.wrong} yanlış, ${st.neutral} manuel/indekslenemeyen cevaplı, ${st.empty} boş.`;
+      els.results.style.display="block"; renderReview();
+    }
+
+    function render(){renderFilters(); renderQuestion(); renderJumpGrid(); renderReview(); saveState();}
+
+    function bindEvents(){
+      els.courseSearch.addEventListener("input", renderLanding);
+      els.clearCourseSearch.addEventListener("click",()=>{els.courseSearch.value=""; renderLanding(); els.courseSearch.focus();});
+      els.manualDbInput.addEventListener("change",async()=>{try{await loadManualDbFiles(els.manualDbInput.files);}catch(e){els.status.className="panel status warn"; els.status.innerHTML=`<b>Manuel database yüklenemedi:</b> ${escapeHTML(e.message)}`;}});
       els.continueBtn.addEventListener("click", continueLast);
-      els.startAllBtn.addEventListener("click", () => startCourse("all"));
+      els.startAllBtn.addEventListener("click",()=>startCourse("all"));
       els.backHomeBtn.addEventListener("click", showLanding);
       els.changeCourseBtn.addEventListener("click", showLanding);
-
-      els.subjectSelect.addEventListener("change", () => {filters.subject=els.subjectSelect.value; ensureCurrent(); render();});
-      els.examSelect.addEventListener("change", () => {filters.exam=els.examSelect.value; ensureCurrent(); render();});
-      els.yearSelect.addEventListener("change", () => {filters.year=els.yearSelect.value; ensureCurrent(); render();});
-      els.teacherSelect.addEventListener("change", () => {filters.teacher=els.teacherSelect.value; ensureCurrent(); render();});
-      els.sourceGroupSelect.addEventListener("change", () => {filters.sourceGroup=els.sourceGroupSelect.value; ensureCurrent(); render();});
-      els.searchInput.addEventListener("input", () => {filters.search=els.searchInput.value; ensureCurrent(); render();});
-      els.clearFiltersBtn.addEventListener("click", () => {filters={subject:filters.subject,exam:"all",year:"all",teacher:"all",sourceGroup:"all",search:""}; ensureCurrent(); render();});
-      els.goFirstFilteredBtn.addEventListener("click", () => {const idxs=filteredIndexes(); if(idxs.length){current=idxs[0]; render();}});
-      els.prevBtn.addEventListener("click", () => {const idxs=filteredIndexes(); const pos=idxs.indexOf(current); if(pos>0){current=idxs[pos-1]; render();}});
-      els.nextBtn.addEventListener("click", () => {const idxs=filteredIndexes(); const pos=idxs.indexOf(current); if(pos<idxs.length-1){current=idxs[pos+1]; render();} else renderResults();});
-      els.showInfoBtn.addEventListener("click", () => {infoOpen=!infoOpen; render();});
-      els.clearCacheBtn.addEventListener("click", () => {
+      els.subjectSelect.addEventListener("change",()=>{filters.subject=els.subjectSelect.value; ensureCurrent(); render();});
+      els.examSelect.addEventListener("change",()=>{filters.exam=els.examSelect.value; ensureCurrent(); render();});
+      els.yearSelect.addEventListener("change",()=>{filters.year=els.yearSelect.value; ensureCurrent(); render();});
+      els.teacherSelect.addEventListener("change",()=>{filters.teacher=els.teacherSelect.value; ensureCurrent(); render();});
+      els.sourceGroupSelect.addEventListener("change",()=>{filters.sourceGroup=els.sourceGroupSelect.value; ensureCurrent(); render();});
+      els.searchInput.addEventListener("input",()=>{filters.search=els.searchInput.value; ensureCurrent(); render();});
+      els.clearFiltersBtn.addEventListener("click",()=>{filters={subject:filters.subject,exam:"all",year:"all",teacher:"all",sourceGroup:"all",search:""}; ensureCurrent(); render();});
+      els.goFirstFilteredBtn.addEventListener("click",()=>{const idxs=filteredIndexes(); if(idxs.length){current=idxs[0]; render();}});
+      els.prevBtn.addEventListener("click",()=>{const idxs=filteredIndexes(); const pos=idxs.indexOf(current); if(pos>0){current=idxs[pos-1]; render();}});
+      els.nextBtn.addEventListener("click",()=>{const idxs=filteredIndexes(); const pos=idxs.indexOf(current); if(pos<idxs.length-1){current=idxs[pos+1]; render();}else renderResults();});
+      els.showInfoBtn.addEventListener("click",()=>{infoOpen=!infoOpen; render();});
+      els.clearCacheBtn.addEventListener("click",()=>{
         if(!confirm("Tüm cevaplar, filtreler ve kaldığın yer silinsin mi?")) return;
         answers={}; current=0; filters={subject:"all",exam:"all",year:"all",teacher:"all",sourceGroup:"all",search:""}; infoOpen=false;
         try{localStorage.removeItem(STORAGE_KEY);}catch(e){}
         els.results.style.display="none"; showLanding();
       });
-      els.resetVisibleBtn.addEventListener("click", () => {
+      els.resetVisibleBtn.addEventListener("click",()=>{
         if(!confirm("Sadece şu anki filtrede görünen soruların cevapları silinsin mi?")) return;
-        filteredIndexes().forEach(i => delete answers[answerKey(questions[i])]);
+        filteredIndexes().forEach(i=>delete answers[answerKey(questions[i])]);
         els.results.style.display="none"; render();
       });
-      els.hideResultBtn.addEventListener("click", () => {els.results.style.display="none";});
-      els.reviewToggleBtn.addEventListener("click", () => {
+      els.hideResultBtn.addEventListener("click",()=>{els.results.style.display="none";});
+      els.reviewToggleBtn.addEventListener("click",()=>{
         els.review.classList.toggle("hidden");
-        els.reviewToggleBtn.textContent = els.review.classList.contains("hidden") ? "Cevap dökümünü göster" : "Cevap dökümünü gizle";
+        els.reviewToggleBtn.textContent=els.review.classList.contains("hidden")?"Cevap dökümünü göster":"Cevap dökümünü gizle";
       });
     }
 
@@ -774,18 +716,18 @@
       bindEvents();
       loadState();
       try{
-        dbFiles = await discoverDbFiles();
-        const all = [];
-        for (const file of dbFiles) all.push(...await loadDbFile(file));
-        const duplicates = dedupeAndSetQuestions(all);
-        els.status.className = "panel status";
-        els.status.innerHTML = `<b>${dbFiles.length}</b> database dosyası yüklendi: ${dbFiles.map(f=>escapeHTML(f.name)).join(", ")}. <b>${questions.length}</b> benzersiz soru kullanılıyor${duplicates ? `; ${duplicates} tekrar otomatik ayıklandı` : ""}. Filtre seçenekleri seçili ders/kurul/yıl/hoca bilgisine göre canlı güncellenir. Database dosyaları kök dizinden ve db/ klasöründen okunabilir.`;
+        dbFiles=await discoverDbFiles();
+        const all=[];
+        for(const file of dbFiles) all.push(...await loadDbFile(file));
+        const duplicates=dedupeAndSetQuestions(all);
+        sanitizeFilters();
+        els.status.className="panel status";
+        els.status.innerHTML=`<b>${dbFiles.length}</b> database dosyası yüklendi: ${dbFiles.map(f=>escapeHTML(f.name)).join(", ")}. <b>${questions.length}</b> benzersiz soru kullanılıyor${duplicates?`; ${duplicates} tekrar otomatik ayıklandı`:""}.`;
+        els.manualDbBox.classList.add("hidden");
         renderLanding();
       }catch(e){
-        els.status.className = "panel status warn";
-        els.status.innerHTML = `<b>Database yüklenemedi:</b> ${escapeHTML(e.message)}<br><br>
-        Dosyaları <b>db/soru1.db</b>, <b>db/soru2.db</b> şeklinde veya doğrudan kök dizinde <b>soru1.db</b>, <b>soru2.db</b> şeklinde tutabilirsin.
-        GitHub Pages dışında dosyayı çift tıklayarak açarsan tarayıcı fetch erişimini engelleyebilir; bu durumda aşağıdan .db/.sdb dosyalarını manuel seçebilir veya GitHub Pages üzerinden açabilirsin.`;
+        els.status.className="panel status warn";
+        els.status.innerHTML=`<b>Database yüklenemedi:</b> ${escapeHTML(e.message)}<br><br>Dosyaları <b>db/soru1.db</b>, <b>db/soru2.db</b> şeklinde veya doğrudan kök dizinde <b>soru1.db</b>, <b>soru2.db</b> şeklinde tutabilirsin. GitHub Pages dışında dosyayı çift tıklayarak açarsan tarayıcı fetch erişimini engelleyebilir; bu durumda aşağıdan .db/.sdb dosyalarını manuel seçebilirsin.`;
         els.manualDbBox.classList.remove("hidden");
         renderLanding();
       }
