@@ -2080,17 +2080,18 @@
       return out;
     }
 
-    async function listDbFilesBySequentialProbe(){
+    async function listDbFilesBySequentialProbe(maxScan=SEQUENTIAL_SCAN_MAX){
       const found = [];
       const candidates = [];
-      for (let i=1;i<=SEQUENTIAL_SCAN_MAX;i++){
+      const limit = Math.max(1, Math.min(Number(maxScan) || SEQUENTIAL_SCAN_MAX, SEQUENTIAL_SCAN_MAX));
+      for (let i=1;i<=limit;i++){
         candidates.push(`soru${i}.db`);
         candidates.push(`soru${i}.sdb`);
       }
 
       const already = new Set();
       for (const dir of DB_DIRS){
-        const batchSize = 32;
+        const batchSize = 24;
         for (let start=0; start<candidates.length; start+=batchSize){
           const batch = candidates.slice(start,start+batchSize);
           await Promise.all(batch.map(async name => {
@@ -2098,11 +2099,12 @@
             const key = `${dir}/${name}`;
             if(already.has(key)) return;
             try{
-              let res = await fetchWithTimeout(url, {cache:"no-store", method:"HEAD"}, 2500);
-              if(!res.ok && (res.status === 403 || res.status === 405 || res.status === 0)){
-                res = await fetchWithTimeout(url, {cache:"no-store", headers: {"Range":"bytes=0-0"}}, 3000);
+              // Bazı GitHub/CDN ortamlarında HEAD güvenilir olmayabiliyor. Önce küçük GET deniyoruz.
+              let res = await fetchWithTimeout(url, {cache:"no-store", headers: {"Range":"bytes=0-0"}}, 3500);
+              if(!res.ok){
+                res = await fetchWithTimeout(url, {cache:"no-store", method:"HEAD"}, 2500);
               }
-              if (res.ok) {
+              if (res.ok || res.status === 206) {
                 already.add(key);
                 found.push({name:dir?`${dir}/${name}`:name, url, source:"sequential"});
               }
@@ -2110,51 +2112,72 @@
           }));
         }
       }
-      if (!found.length) throw new Error("soru1.db/soru2.db/... taramasında dosya bulunamadı.");
+      if (!found.length) throw new Error(`soru1.db-soru${limit}.db taramasında dosya bulunamadı.`);
       return found;
     }
 
     async function discoverDbFiles(){
-      const cachedList = dbFileListCacheRead();
-      if(cachedList && cachedList.length){
-        els.status.classList.remove("hidden");
-        els.status.innerHTML = "Soru dosyası listesi önbellekten yükleniyor...";
-        return cachedList;
-      }
-
       const candidates = [];
       const errors = [];
+
+      function addList(list, label){
+        (list || []).forEach(file => {
+          if(!file || !file.name || !file.url) return;
+          candidates.push({...file, source:file.source || label, canonicalName: dbCanonicalName(file.name)});
+        });
+      }
+
+      const cachedList = dbFileListCacheRead();
+      if(cachedList && cachedList.length){
+        addList(cachedList, "cache");
+      }
 
       async function addFrom(fn,label){
         try{
           const list = await fn();
-          list.forEach(file => candidates.push({...file, canonicalName: dbCanonicalName(file.name)}));
+          addList(list, label);
         }catch(e){
           errors.push(label+": "+e.message);
         }
       }
 
       els.status.classList.remove("hidden");
-      els.status.innerHTML = "Soru dosyaları aranıyor...";
+      els.status.innerHTML = cachedList && cachedList.length
+        ? "Soru dosyası listesi önbellekten alındı; yeni soru3.db-soru6.db dosyaları ayrıca taranıyor..."
+        : "Soru dosyaları aranıyor...";
+
+      // Manifest ve GitHub API her açılışta tekrar denenir; böylece yeni eklenen db dosyaları görünür.
       await addFrom(listDbFilesFromManifest,"manifest");
+      await addFrom(listDbFilesFromGithubApi,"github-api");
 
-      if(!candidates.length){
-        await addFrom(listDbFilesFromGithubApi,"github-api");
-      }
+      // Cache/manifest eski kalırsa özellikle soru3.db, soru4.db, soru5.db, soru6.db gibi yeni dosyalar kaçmasın.
+      await addFrom(()=>listDbFilesBySequentialProbe(50),"sequential-fast");
 
+      // Hiçbir şey bulunamazsa geniş tarama yap.
       if(!candidates.length){
-        els.status.innerHTML = "Soru dosyaları doğrudan taranıyor. Bu işlem ilk açılışta biraz sürebilir...";
-        await addFrom(listDbFilesBySequentialProbe,"sequential");
+        els.status.innerHTML = "Soru dosyaları geniş tarama ile aranıyor...";
+        await addFrom(()=>listDbFilesBySequentialProbe(SEQUENTIAL_SCAN_MAX),"sequential-full");
       }
 
       if(!candidates.length) throw new Error(errors.join(" | "));
-      const files = [...new Map(candidates.map(f=>[dbCanonicalName(f.name), f])).values()].sort((a,b)=>a.name.localeCompare(b.name,"tr"));
+
+      const priority = {"manifest":0, "github-api":1, "sequential-fast":2, "sequential":2, "sequential-full":3, "cache":4};
+      const best = new Map();
+      candidates.forEach(file=>{
+        const key = dbCanonicalName(file.name);
+        const prev = best.get(key);
+        if(!prev || (priority[file.source] ?? 9) < (priority[prev.source] ?? 9)){
+          best.set(key, file);
+        }
+      });
+
+      const files = [...best.values()].sort((a,b)=>dbBaseName(a.name).localeCompare(dbBaseName(b.name),"tr", {numeric:true}));
       dbFileListCacheWrite(files);
       return files;
     }
 
     async function loadDbFile(file){
-      const cacheKey = `${dbCanonicalName(file.name)}::${file.url || ""}`;
+      const cacheKey = `v3::${dbCanonicalName(file.name)}::${file.url || ""}`;
       const cached = await getCachedDbPayload(cacheKey);
       if(cached && cached.payload && Array.isArray(cached.payload.questions)){
         return cached.payload.questions.map((q,idx) => {
