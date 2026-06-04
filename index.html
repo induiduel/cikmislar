@@ -472,6 +472,13 @@
       text-align:center;
     }
 
+  
+    #pdfListBtn{
+      white-space:nowrap;
+    }
+    body.list-wide-mode #pdfListBtn{
+      display:inline-flex!important;
+    }
   </style>
 </head>
 <body class="font-normal">
@@ -659,6 +666,7 @@
           <div style="display:flex;gap:8px;flex-wrap:wrap;">
             <button class="secondary" id="backToQuizBtn" type="button">Tek soru moduna dön</button>
             <button class="secondary" id="wideListBtn" type="button" title="Tüm sorular ekranını genişlet/daralt">⛶ Listeyi genişlet</button>
+            <button class="secondary" id="pdfListBtn" type="button">PDF oluştur</button>
             <button class="secondary" id="restoreHiddenBtn" type="button">Gizlenenleri geri yükle</button>
             <button class="primary" id="refreshListBtn" type="button">Listeyi güncelle</button>
           </div>
@@ -701,7 +709,7 @@
       courseGrid:$("courseGrid"), courseEmpty:$("courseEmpty"), courseSearch:$("courseSearch"),
       clearCourseSearch:$("clearCourseSearch"), continueBtn:$("continueBtn"), wrongHomeBtn:$("wrongHomeBtn"), hiddenHomeBtn:$("hiddenHomeBtn"), quizAllBtn:$("quizAllBtn"), startAllBtn:$("startAllBtn"),
       backHomeBtn:$("backHomeBtn"), changeCourseBtn:$("changeCourseBtn"), activeTitle:$("activeTitle"),
-      wideQuestionBtn:$("wideQuestionBtn"), showAllBtn:$("showAllBtn"), compactHomeBtn:$("compactHomeBtn"), compactShowAllBtn:$("compactShowAllBtn"), backToQuizBtn:$("backToQuizBtn"), wideListBtn:$("wideListBtn"), restoreHiddenBtn:$("restoreHiddenBtn"), refreshListBtn:$("refreshListBtn"),
+      wideQuestionBtn:$("wideQuestionBtn"), showAllBtn:$("showAllBtn"), compactHomeBtn:$("compactHomeBtn"), compactShowAllBtn:$("compactShowAllBtn"), backToQuizBtn:$("backToQuizBtn"), wideListBtn:$("wideListBtn"), pdfListBtn:$("pdfListBtn"), restoreHiddenBtn:$("restoreHiddenBtn"), refreshListBtn:$("refreshListBtn"),
       listTitle:$("listTitle"), listSubtitle:$("listSubtitle"), allList:$("allList"),
       totalQuestionsHero:$("totalQuestionsHero"), totalSubjectsHero:$("totalSubjectsHero"), status:$("statusBox"),
       manualDbBox:$("manualDbBox"), manualDbInput:$("manualDbInput"), dbList:$("dbList"),
