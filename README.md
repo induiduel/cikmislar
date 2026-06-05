@@ -1,48 +1,25 @@
-# Tıp Dersleri Soru Bankası — Database Tabanlı GitHub Pages
+# Soru Bankası — Modüler Dosya Yapısı
 
-Bu paket, soruları `index.html` içine gömmez. Sorular `db/` klasöründeki `.db` veya `.sdb` uzantılı JSON database dosyalarından okunur.
+Bu paket, tek büyük HTML dosyası yerine sayfa ve JavaScript dosyalarını ayırmak için hazırlandı.
 
-## Dosya yapısı
+## Ana dosyalar
+- `index.html`: Açılış / yükleniyor ekranı. Kısa süre sonra `main.html` dosyasına yönlendirir.
+- `main.html`: Ana sayfa / ders seçimi.
+- `question.html`: Soru çözüm ekranı.
+- `partials/app-shell.html`: Ortak uygulama HTML kabuğu.
+- `assets/css/app.css`: Tüm stil kuralları.
+- `assets/js/app.js`: Ana soru bankası mantığı.
+- `assets/js/app-shell-loader.js`: Ortak kabuğu yükler ve `app.js` dosyasını başlatır.
+- `assets/js/page-router.js`: Ana sayfadan soru sayfasına geçiş rotasını yönetir.
+- `db/`: Soru database dosyaları.
 
-```text
-/
-├─ index.html
-└─ db/
-   ├─ soru1.db
-   └─ manifest.json
-```
+## Gelecekte düzenleme yaparken
+- Açılış animasyonu: `index.html` ve gerekirse `assets/css/app.css`
+- Ana sayfa/ders kartları: `main.html`, `partials/app-shell.html`, `assets/js/app.js`
+- Soru çözme ekranı: `question.html`, `partials/app-shell.html`, `assets/js/app.js`
+- Sadece stiller: `assets/css/app.css`
+- Sayfalar arası geçiş: `assets/js/page-router.js`
+- Database yükleme mantığı: `assets/js/app.js` içinde `discoverDbFiles`, `loadDbFile`, `loadCandidateGroups` bölümleri
 
-## Yeni soru ekleme mantığı
-
-Yeni soru eklediğinde önceki database dosyasını silme. Aynı şemada yeni dosya ekle:
-
-```text
-db/soru2.db
-db/soru3.sdb
-db/soru4.db
-```
-
-`index.html` GitHub Pages üzerinde `db/` klasöründeki `.db` ve `.sdb` dosyalarını otomatik bulur. Ayrıca `soru1.db`, `soru2.db`, `soru3.sdb` gibi sıralı dosyaları da tarar. Aynı soru tekrar gelirse `id` alanına göre tekilleştirir.
-
-## GitHub Pages yayını
-
-1. Bu klasördeki `index.html` ve `db/` klasörünü repository kök dizinine yükle.
-2. GitHub’da `Settings > Pages` bölümüne gir.
-3. `Deploy from a branch` seç.
-4. Branch: `main`, Folder: `/root` seç.
-5. Oluşan linkten soru bankasını aç.
-
-## Database şeması
-
-Her `.db` veya `.sdb` dosyası JSON formatındadır. Ana yapı:
-
-```json
-{
-  "schemaVersion": "1.0",
-  "type": "question-bank-db",
-  "dbId": "soru1",
-  "questions": []
-}
-```
-
-Her soru kaydında `id`, `subject`, `question`, `options`, `answer`, `explanation`, `spot`, `metadata` alanları bulunur.
+## Not
+Bu yapı, önceki özelliklerin yanlışlıkla silinmesini azaltmak için oluşturuldu. Yeni özellik eklerken mümkünse ilgili dosya üzerinde değişiklik yapılmalı.
