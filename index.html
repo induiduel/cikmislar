@@ -3375,6 +3375,164 @@
       }
     }
 
+  
+    /* Seçilebilir tasarım modelleri - classic mevcut tasarımı korur */
+    body.design-modern .course-grid{
+      gap:14px!important;
+    }
+    body.design-modern .course-card,
+    body.design-modern .panel,
+    body.design-modern .question-card,
+    body.design-modern .all-q-card{
+      border-radius:22px!important;
+      border:1px solid rgba(23,58,138,.10)!important;
+      box-shadow:0 14px 32px rgba(15,23,42,.08)!important;
+    }
+    body.design-modern .course-card{
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.98), rgba(255,255,255,.90)),
+        radial-gradient(circle at 92% 0%, var(--soft), transparent 42%)!important;
+      min-height:124px!important;
+    }
+    body.design-modern .course-icon{
+      border-radius:16px!important;
+      box-shadow:0 10px 22px rgba(23,58,138,.12)!important;
+    }
+    body.design-modern button{
+      border-radius:14px!important;
+    }
+
+    body.design-glass .panel,
+    body.design-glass .course-card,
+    body.design-glass .question-card,
+    body.design-glass .all-q-card{
+      background:rgba(255,255,255,.72)!important;
+      backdrop-filter:blur(14px)!important;
+      -webkit-backdrop-filter:blur(14px)!important;
+      border:1px solid rgba(255,255,255,.58)!important;
+      box-shadow:0 18px 42px rgba(15,23,42,.10)!important;
+    }
+    body.design-glass .question,
+    body.design-glass .option,
+    body.design-glass .all-q-question,
+    body.design-glass .all-q-option{
+      background:rgba(255,255,255,.70)!important;
+      backdrop-filter:blur(8px)!important;
+    }
+    body.design-glass .top-menu{
+      background:rgba(255,255,255,.70)!important;
+      backdrop-filter:blur(14px)!important;
+    }
+
+    body.design-academic{
+      --radius:12px;
+    }
+    body.design-academic .panel,
+    body.design-academic .course-card,
+    body.design-academic .question-card,
+    body.design-academic .all-q-card{
+      border-radius:10px!important;
+      box-shadow:none!important;
+      border:1px solid #cbd5e1!important;
+      background:#fff!important;
+    }
+    body.design-academic .course-card h2,
+    body.design-academic .side-title,
+    body.design-academic .top-menu-summary span{
+      letter-spacing:0!important;
+    }
+    body.design-academic .question,
+    body.design-academic .all-q-question{
+      border-radius:8px!important;
+      border-left-width:3px!important;
+      background:#f8fafc!important;
+      font-weight:650!important;
+    }
+    body.design-academic .option,
+    body.design-academic .all-q-option{
+      border-radius:8px!important;
+      background:#fff!important;
+    }
+    body.design-academic button,
+    body.design-academic select,
+    body.design-academic input{
+      border-radius:8px!important;
+    }
+
+    body.design-dense .wrap{
+      width:min(1180px, calc(100% - 12px))!important;
+      margin-top:8px!important;
+    }
+    body.design-dense .landing{
+      gap:10px!important;
+    }
+    body.design-dense .course-grid{
+      gap:8px!important;
+    }
+    body.design-dense .course-card{
+      min-height:88px!important;
+      padding:8px!important;
+      border-radius:12px!important;
+    }
+    body.design-dense .course-icon{
+      width:26px!important;
+      height:26px!important;
+      margin-bottom:5px!important;
+    }
+    body.design-dense .course-card h2{
+      font-size:14px!important;
+      margin-bottom:2px!important;
+    }
+    body.design-dense .course-card p,
+    body.design-dense .course-study-time{
+      font-size:9.5px!important;
+    }
+    body.design-dense .course-meta button,
+    body.design-dense .continue-card-btn,
+    body.design-dense .quiz-card-btn,
+    body.design-dense .exam-card-btn{
+      min-height:21px!important;
+      padding:3px 6px!important;
+      font-size:9.5px!important;
+    }
+    body.design-dense .panel,
+    body.design-dense .question-card{
+      padding:9px!important;
+      border-radius:12px!important;
+    }
+    body.design-dense .question{
+      padding:8px 9px!important;
+      font-size:13px!important;
+      line-height:1.32!important;
+      margin-bottom:6px!important;
+    }
+    body.design-dense .option{
+      padding:7px 8px!important;
+      gap:7px!important;
+    }
+    body.design-dense .option-text{
+      font-size:11.5px!important;
+      line-height:1.30!important;
+    }
+    body.design-dense .feedback,
+    body.design-dense .info-box,
+    body.design-dense .ai-warning-box.show{
+      font-size:11px!important;
+      padding:7px 8px!important;
+    }
+
+    body.theme-dark.design-glass .panel,
+    body.theme-dark.design-glass .course-card,
+    body.theme-dark.design-glass .question-card,
+    body.theme-dark.design-glass .all-q-card,
+    body.theme-midnight.design-glass .panel,
+    body.theme-midnight.design-glass .course-card,
+    body.theme-midnight.design-glass .question-card,
+    body.theme-midnight.design-glass .all-q-card{
+      background:rgba(15,23,42,.72)!important;
+      border-color:rgba(148,163,184,.22)!important;
+    }
+
   </style>
 </head>
 <body class="font-normal is-loading">
@@ -3471,6 +3629,16 @@
               <select id="designModeSelect">
                 <option value="standard">Standart görünüm</option>
                 <option value="compact">Sade çözüm modu</option>
+              </select>
+            </div>
+            <div class="select-row">
+              <label for="designPresetSelect">Tasarım modeli</label>
+              <select id="designPresetSelect">
+                <option value="classic">Klasik - mevcut tasarım</option>
+                <option value="modern">Modern kartlı</option>
+                <option value="glass">Cam / yumuşak</option>
+                <option value="academic">Akademik sade</option>
+                <option value="dense">Kompakt çalışma</option>
               </select>
             </div>
             <div class="select-row">
@@ -3768,6 +3936,7 @@
     let selectedDbFiles = [];
     let fontSize = "normal";
     let designMode = "standard";
+    let designPreset = "classic";
     let themeColor = "blue";
     let duplicateMode = "all";
     let duplicateFilterEnabled = true; // eski kayıtlarla uyumluluk için tutulur
@@ -3815,7 +3984,7 @@
       listTitle:$("listTitle"), listSubtitle:$("listSubtitle"), allList:$("allList"),
       totalQuestionsHero:$("totalQuestionsHero"), totalSubjectsHero:$("totalSubjectsHero"), status:$("statusBox"),
       manualDbBox:$("manualDbBox"), manualDbInput:$("manualDbInput"), dbList:$("dbList"),
-      selectAllDbBtn:$("selectAllDbBtn"), clearDbBtn:$("clearDbBtn"), fontSizeSelect:$("fontSizeSelect"), designModeSelect:$("designModeSelect"), themeSelect:$("themeSelect"), duplicateFilterSelect:$("duplicateFilterSelect"), questionOrderSelect:$("questionOrderSelect"), reshuffleBtn:$("reshuffleBtn"),
+      selectAllDbBtn:$("selectAllDbBtn"), clearDbBtn:$("clearDbBtn"), fontSizeSelect:$("fontSizeSelect"), designModeSelect:$("designModeSelect"), designPresetSelect:$("designPresetSelect"), themeSelect:$("themeSelect"), duplicateFilterSelect:$("duplicateFilterSelect"), questionOrderSelect:$("questionOrderSelect"), reshuffleBtn:$("reshuffleBtn"),
       examTopbar:$("examTopbar"), examModeTitle:$("examModeTitle"), examTimerText:$("examTimerText"), cancelExamBtn:$("cancelExamBtn"),
       questionFullscreenBtn:$("questionFullscreenBtn"), questionInfoToggleBtn:$("questionInfoToggleBtn"), questionChatGPTBtn:$("questionChatGPTBtn"), questionStarBtn:$("questionStarBtn"), questionStudyTimeBadge:$("questionStudyTimeBadge"), questionHistoryDetails:$("questionHistoryDetails"), questionHistoryPanel:$("questionHistoryPanel"), questionJumpMenuDetails:$("questionJumpMenuDetails"), questionJumpMenuGrid:$("questionJumpMenuGrid"),
       chatgptWebviewModal:$("chatgptWebviewModal"), chatgptWebviewFrame:$("chatgptWebviewFrame"), chatgptWebviewCloseBtn:$("chatgptWebviewCloseBtn"), chatgptOpenNewTabBtn:$("chatgptOpenNewTabBtn"), chatgptCopyPromptBtn:$("chatgptCopyPromptBtn"), chatgptWebviewNote:$("chatgptWebviewNote"),
@@ -5127,7 +5296,7 @@
     }
 
     function saveState(){
-      try{localStorage.setItem(STORAGE_KEY, JSON.stringify({answers,current,filters,infoOpen,selectedDbFiles,fontSize,designMode,themeColor,duplicateMode,duplicateFilterEnabled,questionWideMode,listWideMode,shuffleQuestions,shuffleSeed,hiddenQuestionIds,starredQuestionIds,quizActive,quizIds,quizTitle}));}catch(e){}
+      try{localStorage.setItem(STORAGE_KEY, JSON.stringify({answers,current,filters,infoOpen,selectedDbFiles,fontSize,designMode,designPreset,themeColor,duplicateMode,duplicateFilterEnabled,questionWideMode,listWideMode,shuffleQuestions,shuffleSeed,hiddenQuestionIds,starredQuestionIds,quizActive,quizIds,quizTitle}));}catch(e){}
     }
     function loadState(){
       loadLastPositions();
@@ -5144,6 +5313,7 @@
         if(Array.isArray(data.selectedDbFiles)) selectedDbFiles=data.selectedDbFiles;
         if(["xsmall","small","normal","large"].includes(data.fontSize)) fontSize=data.fontSize;
         if(["standard","compact"].includes(data.designMode)) designMode=data.designMode;
+        if(["classic","modern","glass","academic","dense"].includes(data.designPreset)) designPreset=data.designPreset;
         if(["blue","green","purple","rose","teal","amber","slate","dark","indigo","cyan","lime","orange","pink","brown","midnight"].includes(data.themeColor)) themeColor=data.themeColor;
         if(typeof data.duplicateFilterEnabled === "boolean") duplicateFilterEnabled=data.duplicateFilterEnabled;
         if(["smart","all"].includes(data.duplicateMode)) duplicateMode=data.duplicateMode;
@@ -5161,10 +5331,17 @@
       }catch(e){return false;}
     }
 
+    function applyDesignPreset(){
+      document.body.classList.remove("design-classic","design-modern","design-glass","design-academic","design-dense");
+      document.body.classList.add("design-" + designPreset);
+      if(els.designPresetSelect) els.designPresetSelect.value = designPreset;
+    }
+
     function applyThemeColor(){
       document.body.classList.remove("theme-blue","theme-green","theme-purple","theme-rose","theme-teal","theme-amber","theme-slate","theme-dark","theme-indigo","theme-cyan","theme-lime","theme-orange","theme-pink","theme-brown","theme-midnight");
       document.body.classList.add("theme-" + themeColor);
       if(els.themeSelect) els.themeSelect.value = themeColor;
+      applyDesignPreset();
     }
 
     function applyFontSize(){
@@ -6729,6 +6906,7 @@ ${body}
       els.clearDbBtn.addEventListener("click",()=>{selectedDbFiles=[]; rebuildQuestionsFromActiveFiles(true); saveState(); renderLanding(); if(els.appView.classList.contains("active")) render();});
       els.fontSizeSelect.addEventListener("change",()=>{fontSize=els.fontSizeSelect.value; applyFontSize(); saveState(); renderLanding(); if(els.appView.classList.contains("active")) render();});
       els.designModeSelect.addEventListener("change",()=>{designMode=els.designModeSelect.value; applyDesignMode(); saveState(); renderLanding(); if(els.appView.classList.contains("active")) render();});
+      if(els.designPresetSelect) els.designPresetSelect.addEventListener("change",()=>{designPreset=els.designPresetSelect.value; applyDesignPreset(); saveState(); renderLanding(); if(els.appView.classList.contains("active")) render();});
       if(els.themeSelect) els.themeSelect.addEventListener("change",()=>{themeColor=els.themeSelect.value; applyThemeColor(); saveState();});
       els.duplicateFilterSelect.addEventListener("change",()=>{
         duplicateMode = els.duplicateFilterSelect.value === "all" ? "all" : "smart";
