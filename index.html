@@ -3191,6 +3191,89 @@
       }
     }
 
+  
+    /* Mola ikonunun tam ekran / geniş ekran görünürlüğünü kesinleştir */
+    .question-mini-header .question-break-btn{
+      display:none!important;
+      align-items:center!important;
+      justify-content:center!important;
+      width:24px!important;
+      height:24px!important;
+      min-width:24px!important;
+      flex:0 0 24px!important;
+      border-radius:999px!important;
+      border:1px solid rgba(122,79,8,.22)!important;
+      background:#fff7df!important;
+      color:#7a4f08!important;
+      font-size:13px!important;
+      font-weight:950!important;
+      line-height:1!important;
+      padding:0!important;
+      box-shadow:0 2px 6px rgba(15,23,42,.08)!important;
+      cursor:pointer!important;
+    }
+    body.question-card-fullscreen .question-mini-header .question-break-btn,
+    body.question-wide-mode .question-mini-header .question-break-btn,
+    .question-card:fullscreen .question-break-btn,
+    .question-mini-header .question-break-btn.break-visible{
+      display:inline-flex!important;
+      visibility:visible!important;
+      opacity:1!important;
+    }
+    body.break-active .question-mini-header .question-break-btn{
+      background:var(--primary)!important;
+      color:#fff!important;
+      border-color:var(--primary)!important;
+    }
+
+  
+    /* Kullanıcı tarafından düzenlenen soru göstergeleri */
+    .question-edited-badge{
+      flex:0 0 auto;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-width:max-content;
+      height:22px;
+      padding:0 7px;
+      border-radius:999px;
+      border:1px solid rgba(122,79,8,.24);
+      background:#fff7df;
+      color:#7a4f08;
+      font-size:10px;
+      font-weight:950;
+      line-height:1;
+      white-space:nowrap;
+      box-shadow:0 2px 6px rgba(15,23,42,.05);
+    }
+    .question-edited-badge.hidden{
+      display:none!important;
+    }
+    .edited-chip{
+      background:#fff7df!important;
+      color:#7a4f08!important;
+      border-color:rgba(122,79,8,.24)!important;
+      font-weight:950!important;
+    }
+    body.theme-dark .question-edited-badge,
+    body.theme-midnight .question-edited-badge,
+    body.theme-dark .edited-chip,
+    body.theme-midnight .edited-chip{
+      background:rgba(245,158,11,.18)!important;
+      color:#facc15!important;
+      border-color:rgba(250,204,21,.25)!important;
+    }
+    @media (max-width:560px){
+      .question-edited-badge{
+        height:20px;
+        padding:0 5px;
+        font-size:9px;
+        max-width:92px;
+        overflow:hidden;
+        text-overflow:ellipsis;
+      }
+    }
+
   </style>
 </head>
 <body class="font-normal is-loading">
@@ -3345,6 +3428,7 @@
           <article class="panel question-card">
             <div class="question-mini-header">
               <div class="section" id="section"></div>
+              <span class="question-edited-badge hidden" id="questionEditedBadge" title="Bu soru kullanıcı tarafından düzenlendi">Düzenlendi</span>
               <span class="question-study-time-badge" id="questionStudyTimeBadge" title="Bu soru ve toplam çalışma süresi">00:00</span>
               <details class="question-history-menu" id="questionHistoryDetails">
                 <summary title="Bu sorunun çalışma geçmişi" aria-label="Bu sorunun çalışma geçmişi">◷</summary>
@@ -3634,7 +3718,7 @@
       manualDbBox:$("manualDbBox"), manualDbInput:$("manualDbInput"), dbList:$("dbList"),
       selectAllDbBtn:$("selectAllDbBtn"), clearDbBtn:$("clearDbBtn"), fontSizeSelect:$("fontSizeSelect"), designModeSelect:$("designModeSelect"), themeSelect:$("themeSelect"), duplicateFilterSelect:$("duplicateFilterSelect"), questionOrderSelect:$("questionOrderSelect"), reshuffleBtn:$("reshuffleBtn"),
       examTopbar:$("examTopbar"), examModeTitle:$("examModeTitle"), examTimerText:$("examTimerText"), cancelExamBtn:$("cancelExamBtn"),
-      questionFullscreenBtn:$("questionFullscreenBtn"), questionBreakBtn:$("questionBreakBtn"), questionChatGPTBtn:$("questionChatGPTBtn"), questionStarBtn:$("questionStarBtn"), questionStudyTimeBadge:$("questionStudyTimeBadge"), questionHistoryDetails:$("questionHistoryDetails"), questionHistoryPanel:$("questionHistoryPanel"), questionJumpMenuDetails:$("questionJumpMenuDetails"), questionJumpMenuGrid:$("questionJumpMenuGrid"),
+      questionFullscreenBtn:$("questionFullscreenBtn"), questionBreakBtn:$("questionBreakBtn"), questionChatGPTBtn:$("questionChatGPTBtn"), questionStarBtn:$("questionStarBtn"), questionEditedBadge:$("questionEditedBadge"), questionStudyTimeBadge:$("questionStudyTimeBadge"), questionHistoryDetails:$("questionHistoryDetails"), questionHistoryPanel:$("questionHistoryPanel"), questionJumpMenuDetails:$("questionJumpMenuDetails"), questionJumpMenuGrid:$("questionJumpMenuGrid"),
       chatgptWebviewModal:$("chatgptWebviewModal"), chatgptWebviewFrame:$("chatgptWebviewFrame"), chatgptWebviewCloseBtn:$("chatgptWebviewCloseBtn"), chatgptOpenNewTabBtn:$("chatgptOpenNewTabBtn"), chatgptCopyPromptBtn:$("chatgptCopyPromptBtn"), chatgptWebviewNote:$("chatgptWebviewNote"),
       progress:$("progress"), counter:$("counter"), section:$("section"), meta:$("meta"), question:$("question"), options:$("options"),
       feedback:$("feedback"), aiWarningBox:$("aiWarningBox"), infoBox:$("infoBox"), showInfoBtn:$("showInfoBtn"), cardShowAllBtn:$("cardShowAllBtn"), hideQuestionBtn:$("hideQuestionBtn"), wideExitBtn:$("wideExitBtn"), prevBtn:$("prevBtn"), nextBtn:$("nextBtn"),
@@ -5072,6 +5156,7 @@
         els.wideListBtn.textContent = listWideMode ? "↔ Listeyi daralt" : "⛶ Listeyi genişlet";
         els.wideListBtn.title = listWideMode ? "Tüm sorular ekranını normal genişliğe döndür" : "Tüm sorular ekranını genişlet";
       }
+      updateBreakButtonVisibility();
     }
 
     function ensureSelectedDbFiles(){
@@ -5650,6 +5735,21 @@ async function openCurrentQuestionInChatGPT(){
       return document.querySelector(".question-card");
     }
 
+    
+    function updateBreakButtonVisibility(){
+      if(!els.questionBreakBtn) return;
+      const activeFullscreen =
+        document.body.classList.contains("question-card-fullscreen") ||
+        document.body.classList.contains("question-wide-mode") ||
+        !!(document.fullscreenElement && (
+          document.fullscreenElement.classList?.contains("question-card") ||
+          document.fullscreenElement.querySelector?.("#questionBreakBtn")
+        ));
+
+      els.questionBreakBtn.classList.toggle("break-visible", activeFullscreen);
+      els.questionBreakBtn.style.display = activeFullscreen ? "inline-flex" : "none";
+    }
+
     function updateQuestionFullscreenIcon(){
       const btn = els.questionFullscreenBtn;
       if(!btn) return;
@@ -5660,6 +5760,7 @@ async function openCurrentQuestionInChatGPT(){
       btn.innerHTML = active
         ? `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`
         : `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+      updateBreakButtonVisibility();
     }
 
     async function toggleQuestionFullscreen(){
@@ -5955,7 +6056,12 @@ async function openCurrentQuestionInChatGPT(){
       els.activeTitle.textContent=quizActive ? quizTitle : (filters.subject!=="all"?filters.subject+" soru bankası":"Tüm dersler soru bankası");
       els.section.textContent=`${q.subject || "Ders yok"} · Soru ${pos+1}/${idxs.length} · ${meta(q,"examGroup")||"Kurul yok"} · ${meta(q,"teacher")||"Hoca yok"}`;
       renderHeaderJumpMenu(idxs);
-      const rows=[["Ders",q.subject],["Dosya",q._dbFile||""],["Kurul / sınav grubu",meta(q,"examGroup")],["Yıl / sene",meta(q,"year")],["Hoca",meta(q,"teacher")],["Konu",meta(q,"topic")],["Hedef / kazanım",meta(q,"target")],["Kaynak türü",meta(q,"sourceGroup")],["Kaynak",meta(q,"source")],["Kaynak soru no",meta(q,"sourceNo")],["Durum / güven",meta(q,"status")]];
+      if(els.questionEditedBadge){
+        els.questionEditedBadge.classList.toggle("hidden", !q._editedByUser);
+        els.questionEditedBadge.textContent = q._editedByUser ? "Kullanıcı düzenledi" : "";
+        els.questionEditedBadge.title = q._editedByUser ? "Bu soru metni/şıkları/gerçek doğru cevabı kullanıcı tarafından düzenlendi." : "";
+      }
+      const rows=[["Ders",q.subject],["Dosya",q._dbFile||""],["Kurul / sınav grubu",meta(q,"examGroup")],["Yıl / sene",meta(q,"year")],["Hoca",meta(q,"teacher")],["Konu",meta(q,"topic")],["Hedef / kazanım",meta(q,"target")],["Kaynak türü",meta(q,"sourceGroup")],["Kaynak",meta(q,"source")],["Kaynak soru no",meta(q,"sourceNo")],["Durum / güven",meta(q,"status")],["Kullanıcı düzenlemesi",q._editedByUser ? "Bu soru kullanıcı tarafından düzenlendi." : ""]];
       els.meta.innerHTML=rows.filter(([,v])=>String(v??"").trim()).map(([k,v])=>`<div><b>${escapeHTML(k)}:</b> ${escapeHTML(v)}</div>`).join("");
       els.question.innerHTML=formatQuestionHTML(q.question||"", q, selected);
       els.options.innerHTML="";
@@ -5991,6 +6097,7 @@ async function openCurrentQuestionInChatGPT(){
         els.aiWarningBox.className = aiWarning ? "ai-warning-box show" : "ai-warning-box";
       }
       const infoParts=[];
+      if(q._editedByUser) infoParts.push("<b>Kullanıcı düzenlemesi:</b> Bu soru metni, şıkları veya gerçek doğru cevabı kullanıcı tarafından düzenlendi.");
       if(q.explanation) infoParts.push("<b>Açıklama:</b> "+escapeHTML(q.explanation));
       if(q.spot) infoParts.push("<b>Spot bilgi:</b> "+escapeHTML(q.spot));
       if(q.sourceNote) infoParts.push("<b>Kaynak notu:</b> "+escapeHTML(q.sourceNote));
@@ -6151,6 +6258,7 @@ async function openCurrentQuestionInChatGPT(){
             <span class="chip">${escapeHTML(meta(q,"examGroup") || "")}</span>
             <span class="chip">${escapeHTML(meta(q,"topic") || "")}</span>
             <span class="chip">${escapeHTML(q._dbFile || "")}</span>
+            ${q._editedByUser ? `<span class="chip edited-chip">Kullanıcı düzenledi</span>` : ""}
           </div>
           <div class="all-q-question">${escapeHTML(q.question || "")}</div>
           <div class="all-q-options">${optHtml}</div>
@@ -6159,7 +6267,7 @@ async function openCurrentQuestionInChatGPT(){
           ${cardActions}
           ${listMode === "hidden" ? `<div class="hidden-manager-note">Bu soru gizlendiği için normal soru akışında ve quizlerde görünmez.</div>` : ""}
           ${listMode === "starred" ? `<div class="hidden-manager-note">Bu soru yıldızlı listendedir.</div>` : ""}
-          ${q._editedByUser ? `<div class="hidden-manager-note edited-note">Bu sorunun metni/şıkları/gerçek cevabı kullanıcı tarafından düzenlendi.</div>` : ""}
+          ${q._editedByUser ? `<div class="hidden-manager-note edited-note">Bu soru kullanıcı tarafından düzenlendi. Metin, şıklar veya gerçek doğru cevap kullanıcı düzeltmesine göre gösteriliyor.</div>` : ""}
           ${info ? `<div class="all-q-info">${escapeHTML(info)}</div>` : ""}
         </article>
       `;
@@ -6394,6 +6502,7 @@ ${body}
 
       renderQuestion();
       updateQuestionFullscreenIcon();
+      updateBreakButtonVisibility();
       renderJumpGrid(renderStructureDirty);
       renderStructureDirty = false;
 
@@ -6484,6 +6593,7 @@ ${body}
         const active = !!(document.fullscreenElement && document.fullscreenElement.classList && document.fullscreenElement.classList.contains("question-card"));
         document.body.classList.toggle("question-card-fullscreen", active);
         updateQuestionFullscreenIcon();
+        updateBreakButtonVisibility();
       });
       els.menuHomeBtn.addEventListener("click",()=>{ showLanding(); if(els.topMenu) els.topMenu.open=false; });
       els.menuSourceBtn.addEventListener("click",()=>openHomeSettingsPanel("dbSettingsDetails"));
