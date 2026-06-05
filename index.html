@@ -3551,6 +3551,15 @@
     .break-card{width:min(380px, calc(100% - 24px));display:grid;justify-items:center;gap:10px;text-align:center;padding:24px 18px 18px;border-radius:26px;background:rgba(255,255,255,.96);border:1px solid rgba(255,255,255,.65);box-shadow:0 28px 80px rgba(15,23,42,.30)}
     @media (max-width:560px){.floating-question-nav{grid-template-columns:.85fr 1.06fr 1fr .85fr!important;gap:3px!important}.floating-question-nav button{font-size:9.2px!important;padding:4px 2px!important;min-height:31px!important}.fullscreen-results-score{grid-template-columns:1fr;justify-items:center}.fullscreen-results-actions{justify-content:center}.fullscreen-results-card{border-radius:18px}}
 
+  
+    /* OPTIMIZE-FIX: loader yalnız gerçek ilk yüklemede görünür */
+    body:not(.is-loading) .initial-loading-overlay{
+      display:none!important;
+    }
+    body.is-loading .initial-loading-overlay{
+      display:flex!important;
+    }
+
   </style>
 </head>
 <body class="font-normal is-loading">
@@ -3619,7 +3628,7 @@
             <small>Seçmek için aç</small>
           </summary>
           <div class="settings-content">
-            <p class="subtitle" style="margin-bottom:8px;">Sadece seçili soru dosyalarındaki sorular kullanılır. Birden fazla dosyada benzer soru varsa tek kez gösterilir.</p>
+            <p class="subtitle" style="margin-bottom:8px;">Sadece seçili soru dosyalarındaki sorular kullanılır. Dosyalar önbellekten hızlı açılır; yeni .db eklersen “Önbelleği temizle” ile yeniden taratabilirsin.</p>
             <div class="db-list" id="dbList"></div>
             <div class="db-actions">
               <button class="secondary" id="selectAllDbBtn" type="button">Tümünü seç</button>
@@ -4037,6 +4046,7 @@
     let suppressHistoryAction = false;
     let questionEditOverrides = {};
     let pendingUnwantedConfirmResolve = null;
+    let fastCacheMode = false;
     let initialLoadingStartedAt = Date.now();
     const INITIAL_LOADING_MIN_MS = 1800;
     const LIST_BATCH_SIZE = 60;
@@ -4658,13 +4668,10 @@
     }
 
     function cachedListHasCoreDbs(files){
-      if(!Array.isArray(files)) return false;
-      const names = new Set(files.map(f => dbCanonicalName(f.name)));
-      // Bu uygulamada soru3-soru10 dosyaları özellikle bekleniyor; varsa cache doğrudan kullanılır.
-      for(let i=1;i<=10;i++){
-        if(!names.has(`soru${i}.db`) && !names.has(`soru${i}.sdb`)) return false;
-      }
-      return true;
+      // Önceki sürüm soru1-soru10 dosyalarının hepsini beklediği için,
+      // eksik numara olduğunda her açılışta repository taraması yapıyordu.
+      // Artık bulunan ve önbelleğe alınan dosya listesi yeterlidir.
+      return Array.isArray(files) && files.length > 0;
     }
 
     function dbFileListCacheWrite(files){
@@ -4723,7 +4730,7 @@
     }
 
     async function clearDatabaseCacheAndReload(){
-      if(!confirm("Soru dosyası önbelleği temizlenip sayfa yeniden yüklensin mi?")) return;
+      if(!confirm("Soru dosyası önbelleği temizlenip database dosyaları yeniden taransın mı? Yeni eklediğin .db dosyalarını görmek için bunu kullanmalısın.")) return;
       try{localStorage.removeItem(DB_FILE_LIST_CACHE_KEY);}catch(e){}
       await deleteIndexedDbCache();
       location.reload();
@@ -5239,15 +5246,15 @@ function closeUnwantedQuestionConfirm(result=false){
         });
       }
 
-      // Eğer daha önce soru1-soru10 dahil tüm temel dosyalar bulunmuşsa tekrar tarama yapma.
-      if(cachedList && cachedList.length && cachedListHasCoreDbs(cachedList)){
-        els.status.classList.remove("hidden");
-        els.status.innerHTML = "Soru dosyası listesi önbellekten yükleniyor...";
-        return cachedList.map(file => ({...file, source:file.source || "cache"}));
-      }
-
+      // Hızlı mod: dosya listesi önbellekte varsa hiçbir repository/manifest/sequential tarama yapma.
+      // Yeni .db dosyası eklenirse kullanıcı "Önbelleği temizle" ile yeniden tarama başlatabilir.
       if(cachedList && cachedList.length){
-        addList(cachedList, "cache");
+        fastCacheMode = true;
+        if(els.status){
+          els.status.classList.add("hidden");
+          els.status.innerHTML = "Soru dosyası listesi önbellekten yüklendi.";
+        }
+        return cachedList.map(file => ({...file, source:file.source || "cache"}));
       }
 
       async function addFrom(fn,label){
@@ -5260,9 +5267,7 @@ function closeUnwantedQuestionConfirm(result=false){
       }
 
       els.status.classList.remove("hidden");
-      els.status.innerHTML = cachedList && cachedList.length
-        ? "Eksik soru3-soru10 dosyaları için hızlı tarama yapılıyor..."
-        : "Soru dosyaları ilk kez aranıyor...";
+      els.status.innerHTML = "Soru dosyaları ilk kez aranıyor...";
 
       // Küçük manifest hızlıdır; önce bunu dene.
       await addFrom(listDbFilesFromManifest,"manifest");
@@ -5301,6 +5306,7 @@ function closeUnwantedQuestionConfirm(result=false){
       const cacheKey = `v3::${dbCanonicalName(file.name)}::${file.url || ""}`;
       const cached = await getCachedDbPayload(cacheKey);
       if(cached && cached.payload && Array.isArray(cached.payload.questions)){
+        fastCacheMode = true;
         return cached.payload.questions.map((q,idx) => {
           const qq = {...q, _dbFile:dbBaseName(file.name), _dbSource:file.source || "cache"};
           if(!qq.id) qq.id = fallbackId(qq);
@@ -7128,7 +7134,7 @@ ${body}
         updateScrollTopFab();
       };
       const elapsed = Date.now() - initialLoadingStartedAt;
-      const delay = Math.max(0, INITIAL_LOADING_MIN_MS - elapsed);
+      const delay = fastCacheMode ? 0 : Math.max(0, INITIAL_LOADING_MIN_MS - elapsed);
       setTimeout(finish, delay);
     }
 
@@ -7447,9 +7453,9 @@ async function init(){
       applyFontSize();
       applyDesignMode();
       try{
-        setInitialLoading("Soru dosyaları aranıyor...");
+        setInitialLoading("Soru dosyaları kontrol ediliyor...");
         const candidates = await discoverDbFiles();
-        setInitialLoading("Sorular database/önbellekten alınıyor...");
+        setInitialLoading(fastCacheMode ? "Sorular önbellekten hızlıca hazırlanıyor..." : "Sorular database dosyalarından alınıyor...");
         const loaded = await loadCandidateGroups(candidates);
 
         if(!loaded.loadedFiles.length){
@@ -7467,7 +7473,7 @@ async function init(){
         const duplicates = rebuildQuestionsFromActiveFiles(false);
 
         els.status.className="panel status";
-        els.status.innerHTML=`<b>${dbFiles.length}</b> soru dosyası yüklendi: ${[...new Set(dbFiles.map(f=>dbBaseName(f.name)))].map(escapeHTML).join(", ")}. <b>${questions.length}</b> benzersiz soru bulundu${duplicateMode === "smart" && duplicates?`; ${duplicates} aynı/benzer soru tekilleştirildi`: (duplicateMode === "all" ? `; tekrarlar açık` : "")}.`;
+        els.status.innerHTML=`<b>${dbFiles.length}</b> soru dosyası ${fastCacheMode ? "önbellekten" : "database dosyalarından"} yüklendi: ${[...new Set(dbFiles.map(f=>dbBaseName(f.name)))].map(escapeHTML).join(", ")}. <b>${questions.length}</b> benzersiz soru bulundu${duplicateMode === "smart" && duplicates?`; ${duplicates} aynı/benzer soru tekilleştirildi`: (duplicateMode === "all" ? `; tekrarlar açık` : "")}.`;
         els.status.classList.add("hidden");
         els.manualDbBox.classList.add("hidden");
         renderLanding();
