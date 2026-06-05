@@ -2873,9 +2873,106 @@
       }
     }
 
+  
+    /* GÜÇLÜ DÜZELTME: açılışta yalnızca yükleme ekranı görünsün */
+    body.is-loading .wrap{
+      opacity:0!important;
+      visibility:hidden!important;
+      pointer-events:none!important;
+    }
+    .initial-loading-overlay{
+      position:fixed!important;
+      inset:0!important;
+      z-index:99999!important;
+      display:flex!important;
+      align-items:center!important;
+      justify-content:center!important;
+      background:
+        radial-gradient(circle at 18% 12%, rgba(23,58,138,.18), transparent 24rem),
+        radial-gradient(circle at 84% 2%, rgba(47,91,189,.13), transparent 28rem),
+        linear-gradient(180deg,#fff 0%,var(--bg) 100%)!important;
+      color:var(--text)!important;
+    }
+    .initial-loading-overlay.hidden{
+      display:none!important;
+    }
+    .initial-loading-card{
+      width:min(370px,calc(100% - 28px))!important;
+      display:grid!important;
+      justify-items:center!important;
+      gap:12px!important;
+      padding:28px 18px!important;
+      border-radius:24px!important;
+      background:rgba(255,255,255,.96)!important;
+      border:1px solid var(--line)!important;
+      box-shadow:0 26px 80px rgba(15,23,42,.20)!important;
+      text-align:center!important;
+    }
+    .loader-ring{
+      width:52px!important;
+      height:52px!important;
+      border-radius:50%!important;
+      border:5px solid var(--soft)!important;
+      border-top-color:var(--primary)!important;
+      border-right-color:var(--primary2)!important;
+      animation:loaderSpinFinal .62s linear infinite!important;
+    }
+    @keyframes loaderSpinFinal{to{transform:rotate(360deg)}}
+
+    /* GÜÇLÜ DÜZELTME: menüler sayfayla birlikte kaysın, sticky/floating olmasın */
+    body.app-screen-active .top-menu,
+    body.compact-mode .compact-actionbar,
+    .all-list-header,
+    .side-panel{
+      position:static!important;
+      top:auto!important;
+      bottom:auto!important;
+      z-index:auto!important;
+      transform:none!important;
+      max-height:none!important;
+    }
+    .all-list{
+      max-height:none!important;
+      overflow:visible!important;
+      padding-right:0!important;
+    }
+
+    /* Tek yukarı çıkma butonu */
+    .scroll-top-fab{
+      position:fixed!important;
+      right:16px!important;
+      bottom:calc(18px + env(safe-area-inset-bottom))!important;
+      z-index:9998!important;
+      width:48px!important;
+      height:48px!important;
+      border-radius:999px!important;
+      display:inline-flex!important;
+      align-items:center!important;
+      justify-content:center!important;
+      background:var(--primary)!important;
+      color:#fff!important;
+      box-shadow:0 18px 44px rgba(15,23,42,.32)!important;
+      border:1px solid rgba(255,255,255,.36)!important;
+      font-size:25px!important;
+      font-weight:950!important;
+      padding:0!important;
+      line-height:1!important;
+    }
+    .scroll-top-fab.hidden{
+      display:none!important;
+    }
+
   </style>
 </head>
-<body class="font-normal">
+<body class="font-normal is-loading">
+  <section class="initial-loading-overlay" id="initialLoadingOverlay" aria-live="polite" aria-busy="true">
+    <div class="initial-loading-card">
+      <div class="loader-ring" aria-hidden="true"></div>
+      <b>Soru bankası hazırlanıyor</b>
+      <span id="initialLoadingText">Database dosyaları kontrol ediliyor...</span>
+    </div>
+  </section>
+  
   <main class="wrap">
 
     <details class="top-menu panel" id="topMenu">
@@ -3181,6 +3278,7 @@
       </div>
     </section>
 
+  <button class="scroll-top-fab hidden" id="scrollTopFab" type="button" title="Sayfanın başına çık" aria-label="Sayfanın başına çık">↑</button>
   </main>
 
   <script>
@@ -3246,6 +3344,8 @@
     let lastStudySave = 0;
     let studyTimerHandle = null;
     let suppressHistoryAction = false;
+    let initialLoadingStartedAt = Date.now();
+    const INITIAL_LOADING_MIN_MS = 1800;
     const LIST_BATCH_SIZE = 60;
 
     const $ = id => document.getElementById(id);
@@ -3272,7 +3372,8 @@
       sourceGroupSelect:$("sourceGroupSelect"), searchInput:$("searchInput"), activeFilterSummary:$("activeFilterSummary"),
       clearFiltersBtn:$("clearFiltersBtn"), goFirstFilteredBtn:$("goFirstFilteredBtn"), subjectButtons:$("subjectButtons"),
       results:$("results"), scoreCircle:$("scoreCircle"), scoreText:$("scoreText"), resultSubtitle:$("resultSubtitle"),
-      review:$("review"), reviewToggleBtn:$("reviewToggleBtn"), hideResultBtn:$("hideResultBtn")
+      review:$("review"), reviewToggleBtn:$("reviewToggleBtn"), hideResultBtn:$("hideResultBtn"),
+      initialLoadingOverlay:$("initialLoadingOverlay"), initialLoadingText:$("initialLoadingText"), scrollTopFab:$("scrollTopFab")
     };
 
     function escapeHTML(str){return String(str ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");}
@@ -5812,11 +5913,63 @@ ${body}
 
       if(els.results && els.results.style.display === "block" && !els.review.classList.contains("hidden")) renderReview();
       saveState();
+      requestAnimationFrame(updateScrollTopFab);
       // Liste ekranı açıkken ağır yeniden çizim yalnızca liste komutlarıyla yapılır.
+    }
+
+    
+    function setInitialLoading(text){
+      if(!initialLoadingStartedAt) initialLoadingStartedAt = Date.now();
+      document.body.classList.add("is-loading");
+      if(els.initialLoadingText && text) els.initialLoadingText.textContent = text;
+      if(els.initialLoadingOverlay) els.initialLoadingOverlay.classList.remove("hidden");
+    }
+
+    function hideInitialLoading(){
+      const finish = () => {
+        if(els.initialLoadingOverlay) els.initialLoadingOverlay.classList.add("hidden");
+        document.body.classList.remove("is-loading");
+        updateScrollTopFab();
+      };
+      const elapsed = Date.now() - initialLoadingStartedAt;
+      const delay = Math.max(0, INITIAL_LOADING_MIN_MS - elapsed);
+      setTimeout(finish, delay);
+    }
+
+    function forceMenusStatic(){
+      const elsToFix = [
+        els.topMenu,
+        els.compactActionbar,
+        document.querySelector(".all-list-header"),
+        document.querySelector(".side-panel")
+      ];
+      elsToFix.forEach(el=>{
+        if(!el) return;
+        el.style.position = "static";
+        el.style.top = "auto";
+        el.style.bottom = "auto";
+        el.style.zIndex = "auto";
+        el.style.transform = "none";
+      });
+      const allList = document.getElementById("allList");
+      if(allList){
+        allList.style.maxHeight = "none";
+        allList.style.overflow = "visible";
+      }
+    }
+
+    function updateScrollTopFab(){
+      forceMenusStatic();
+      if(!els.scrollTopFab) return;
+      const show = document.body.classList.contains("app-screen-active") && window.scrollY > 260;
+      els.scrollTopFab.classList.toggle("hidden", !show);
     }
 
     function bindEvents(){
       startStudyTimer();
+      window.addEventListener("scroll",()=>requestAnimationFrame(updateScrollTopFab), {passive:true});
+      window.addEventListener("resize",()=>requestAnimationFrame(updateScrollTopFab), {passive:true});
+      if(els.scrollTopFab) els.scrollTopFab.addEventListener("click",()=>window.scrollTo({top:0, behavior:"smooth"}));
       document.addEventListener("visibilitychange",()=>{ if(document.hidden){ commitStudyTime(true); saveStudyTimes(true); } else lastStudyTick = Date.now(); });
       window.addEventListener("beforeunload",()=>{ commitStudyTime(true); finalizeStudySession(); saveStudyTimes(true); });
       window.addEventListener("popstate",()=>handleBrowserBack());
@@ -6037,6 +6190,7 @@ ${body}
     }
 
 async function init(){
+      setInitialLoading("Database dosyaları kontrol ediliyor...");
       replaceAppHistoryState("home");
       document.body.classList.remove("app-screen-active");
       bindEvents();
@@ -6044,7 +6198,9 @@ async function init(){
       applyFontSize();
       applyDesignMode();
       try{
+        setInitialLoading("Soru dosyaları aranıyor...");
         const candidates = await discoverDbFiles();
+        setInitialLoading("Sorular database/önbellekten alınıyor...");
         const loaded = await loadCandidateGroups(candidates);
 
         if(!loaded.loadedFiles.length){
@@ -6054,6 +6210,7 @@ async function init(){
         dbFiles=[...new Map(loaded.loadedFiles.map(f=>[dbCanonicalName(f.name), {...f, name:dbBaseName(f.name)}])).values()];
         const all = loaded.all;
 
+        setInitialLoading("Sorular hazırlanıyor...");
         els.status.innerHTML = "Sorular hazırlanıyor; önbellek ve indeksler kuruluyor...";
         allLoadedQuestions = all;
         ensureSelectedDbFiles();
@@ -6064,6 +6221,7 @@ async function init(){
         els.status.classList.add("hidden");
         els.manualDbBox.classList.add("hidden");
         renderLanding();
+        hideInitialLoading();
       }catch(e){
         els.status.className="panel status warn";
         els.status.classList.remove("hidden");
@@ -6073,6 +6231,7 @@ async function init(){
         Gerekirse aşağıdaki manuel yükleme alanından .db dosyalarını seçebilirsin.`;
         els.manualDbBox.classList.remove("hidden");
         renderLanding();
+        hideInitialLoading();
       }
     }
     init();
