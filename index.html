@@ -2962,6 +2962,235 @@
       display:none!important;
     }
 
+  
+    /* İstenmeyen/gizlenen soru düzenleme penceresi */
+    .question-edit-modal{
+      position:fixed;
+      inset:0;
+      z-index:420;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:12px;
+      background:rgba(15,23,42,.48);
+      backdrop-filter:blur(6px);
+    }
+    .question-edit-modal.hidden{
+      display:none!important;
+    }
+    .question-edit-panel{
+      width:min(780px,100%);
+      max-height:min(92vh,860px);
+      overflow:auto;
+      border-radius:18px;
+      border:1px solid var(--line);
+      background:#fff;
+      box-shadow:0 24px 70px rgba(15,23,42,.34);
+    }
+    .question-edit-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      padding:11px 12px;
+      border-bottom:1px solid var(--line);
+      background:var(--soft);
+    }
+    .question-edit-header b{
+      display:block;
+      color:var(--primary);
+      font-size:14px;
+      font-weight:950;
+    }
+    .question-edit-header small{
+      display:block;
+      margin-top:2px;
+      color:var(--muted);
+      font-size:11px;
+      line-height:1.3;
+    }
+    .question-edit-body{
+      display:grid;
+      gap:8px;
+      padding:12px;
+    }
+    .question-edit-body label{
+      font-size:12px;
+      font-weight:900;
+      color:var(--primary);
+    }
+    .question-edit-body textarea,
+    .question-edit-body select{
+      width:100%;
+      border:1px solid var(--line);
+      border-radius:12px;
+      padding:9px 10px;
+      font-family:"Inter","Noto Sans",ui-sans-serif,system-ui,sans-serif;
+      font-size:12px;
+      line-height:1.38;
+      background:#fff;
+      color:#334155;
+    }
+    .edit-actions{
+      display:flex;
+      justify-content:flex-end;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-top:4px;
+    }
+    .edited-note{
+      background:#eef4ff!important;
+      border-color:rgba(23,58,138,.18)!important;
+      color:var(--primary)!important;
+    }
+    body.theme-dark .question-edit-panel,
+    body.theme-midnight .question-edit-panel{
+      background:rgba(15,23,42,.96)!important;
+      color:var(--text);
+      border-color:#334155;
+    }
+    body.theme-dark .question-edit-body textarea,
+    body.theme-dark .question-edit-body select,
+    body.theme-midnight .question-edit-body textarea,
+    body.theme-midnight .question-edit-body select{
+      background:#0f172a!important;
+      color:var(--text)!important;
+      border-color:#334155!important;
+    }
+    @media (max-width:560px){
+      .question-edit-modal{
+        padding:0;
+      }
+      .question-edit-panel{
+        width:100vw;
+        height:100vh;
+        max-height:100vh;
+        border-radius:0;
+      }
+    }
+
+  
+    /* Tam ekran mola/durdurma ikonu */
+    .question-break-btn{
+      display:none!important;
+      flex:0 0 auto;
+      width:22px;
+      height:22px;
+      min-width:22px;
+      align-items:center;
+      justify-content:center;
+      border:1px solid rgba(23,58,138,.18);
+      border-radius:999px;
+      background:#fff;
+      color:var(--primary);
+      cursor:pointer;
+      box-shadow:0 2px 6px rgba(15,23,42,.06);
+      padding:0!important;
+      font-size:12px!important;
+      line-height:1!important;
+      font-weight:950;
+    }
+    body.question-card-fullscreen .question-break-btn,
+    .question-card:fullscreen .question-break-btn{
+      display:inline-flex!important;
+    }
+    body.break-active .question-break-btn{
+      background:var(--primary)!important;
+      color:#fff!important;
+      border-color:var(--primary)!important;
+    }
+
+    /* Estetik mola ekranı */
+    .break-modal{
+      position:fixed;
+      inset:0;
+      z-index:99990;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:16px;
+      background:
+        radial-gradient(circle at 50% 30%, rgba(255,255,255,.28), transparent 18rem),
+        rgba(15,23,42,.55);
+      backdrop-filter:blur(10px);
+      -webkit-backdrop-filter:blur(10px);
+    }
+    .break-modal.hidden{
+      display:none!important;
+    }
+    .break-card{
+      width:min(380px, calc(100% - 24px));
+      display:grid;
+      justify-items:center;
+      gap:10px;
+      text-align:center;
+      padding:24px 18px 18px;
+      border-radius:26px;
+      background:rgba(255,255,255,.96);
+      border:1px solid rgba(255,255,255,.65);
+      box-shadow:0 28px 80px rgba(15,23,42,.30);
+      animation:breakPop .22s ease-out;
+    }
+    .break-icon{
+      width:64px;
+      height:64px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:22px;
+      background:var(--soft);
+      color:var(--primary);
+      font-size:32px;
+      box-shadow:inset 0 0 0 1px rgba(23,58,138,.08);
+    }
+    .break-card h2{
+      margin:2px 0 0;
+      color:var(--primary);
+      font-size:21px;
+      font-weight:950;
+      letter-spacing:-.02em;
+    }
+    .break-card p{
+      margin:0 0 6px;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.45;
+      max-width:310px;
+    }
+    .break-card button{
+      min-width:150px;
+      min-height:42px;
+      border-radius:14px!important;
+      font-weight:950;
+    }
+    @keyframes breakPop{
+      from{transform:translateY(8px) scale(.96); opacity:.0}
+      to{transform:translateY(0) scale(1); opacity:1}
+    }
+    body.theme-dark .break-card,
+    body.theme-midnight .break-card{
+      background:rgba(15,23,42,.96);
+      border-color:rgba(148,163,184,.24);
+      color:var(--text);
+    }
+    @media (max-width:560px){
+      .break-card{
+        padding:22px 16px 16px;
+        border-radius:22px;
+      }
+      .break-icon{
+        width:58px;
+        height:58px;
+        font-size:29px;
+      }
+      .break-card h2{
+        font-size:19px;
+      }
+      .break-card p{
+        font-size:12px;
+      }
+    }
+
   </style>
 </head>
 <body class="font-normal is-loading">
@@ -3135,6 +3364,7 @@
                   <path d="M12 8v5M12 17h.01" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                 </svg>
               </button>
+              <button class="question-break-btn" id="questionBreakBtn" type="button" title="Mola ver" aria-label="Mola ver">⏸</button>
               <button class="question-fullscreen-btn" id="questionFullscreenBtn" type="button" title="Tam ekran yap" aria-label="Tam ekran yap">
                 <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                   <path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -3279,6 +3509,45 @@
     </section>
 
   <button class="scroll-top-fab hidden" id="scrollTopFab" type="button" title="Sayfanın başına çık" aria-label="Sayfanın başına çık">↑</button>
+  
+    <section class="question-edit-modal hidden" id="questionEditModal" aria-hidden="true">
+      <div class="question-edit-panel" role="dialog" aria-modal="true" aria-label="İstenmeyen soruyu düzenle">
+        <div class="question-edit-header">
+          <div>
+            <b>İstenmeyen soruyu düzenle</b>
+            <small>Soru metni, şıklar ve gerçek doğru cevap bu tarayıcıda saklanır.</small>
+          </div>
+          <button class="secondary" id="editCloseBtn" type="button">Kapat</button>
+        </div>
+        <div class="question-edit-body">
+          <input id="editQuestionId" type="hidden">
+          <label for="editQuestionText">Soru metni</label>
+          <textarea id="editQuestionText" rows="7"></textarea>
+
+          <label for="editOptionsText">Şıklar</label>
+          <textarea id="editOptionsText" rows="8" placeholder="A) ...&#10;B) ...&#10;C) ...&#10;D) ...&#10;E) ..."></textarea>
+
+          <label for="editAnswerSelect">Gerçek doğru cevap</label>
+          <select id="editAnswerSelect"></select>
+
+          <div class="edit-actions">
+            <button class="danger" id="editResetBtn" type="button">Bu düzenlemeyi sıfırla</button>
+            <button class="primary" id="editSaveBtn" type="button">Kaydet</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  
+    <section class="break-modal hidden" id="breakModal" aria-hidden="true">
+      <div class="break-card" role="dialog" aria-modal="true" aria-label="Mola ekranı">
+        <div class="break-icon">☕</div>
+        <h2>Mola verildi</h2>
+        <p>Çalışma süresi durduruldu. Devam ettiğinde süre kaldığı yerden işlemeye devam eder.</p>
+        <button class="primary" id="breakContinueBtn" type="button">Devam et</button>
+      </div>
+    </section>
+
   </main>
 
   <script>
@@ -3291,6 +3560,7 @@
     const DB_CONTENT_STORE_NAME = "dbFiles";
     const LAST_POSITION_KEY = "question_bank_last_positions_v1";
     const STUDY_TIME_KEY = "question_bank_study_time_v1";
+    const QUESTION_EDIT_KEY = "question_bank_question_edits_v1";
 
     let dbFiles = [];
     let questions = [];
@@ -3343,7 +3613,9 @@
     let lastStudyTick = 0;
     let lastStudySave = 0;
     let studyTimerHandle = null;
+    let breakModeActive = false;
     let suppressHistoryAction = false;
+    let questionEditOverrides = {};
     let initialLoadingStartedAt = Date.now();
     const INITIAL_LOADING_MIN_MS = 1800;
     const LIST_BATCH_SIZE = 60;
@@ -3362,7 +3634,7 @@
       manualDbBox:$("manualDbBox"), manualDbInput:$("manualDbInput"), dbList:$("dbList"),
       selectAllDbBtn:$("selectAllDbBtn"), clearDbBtn:$("clearDbBtn"), fontSizeSelect:$("fontSizeSelect"), designModeSelect:$("designModeSelect"), themeSelect:$("themeSelect"), duplicateFilterSelect:$("duplicateFilterSelect"), questionOrderSelect:$("questionOrderSelect"), reshuffleBtn:$("reshuffleBtn"),
       examTopbar:$("examTopbar"), examModeTitle:$("examModeTitle"), examTimerText:$("examTimerText"), cancelExamBtn:$("cancelExamBtn"),
-      questionFullscreenBtn:$("questionFullscreenBtn"), questionChatGPTBtn:$("questionChatGPTBtn"), questionStarBtn:$("questionStarBtn"), questionStudyTimeBadge:$("questionStudyTimeBadge"), questionHistoryDetails:$("questionHistoryDetails"), questionHistoryPanel:$("questionHistoryPanel"), questionJumpMenuDetails:$("questionJumpMenuDetails"), questionJumpMenuGrid:$("questionJumpMenuGrid"),
+      questionFullscreenBtn:$("questionFullscreenBtn"), questionBreakBtn:$("questionBreakBtn"), questionChatGPTBtn:$("questionChatGPTBtn"), questionStarBtn:$("questionStarBtn"), questionStudyTimeBadge:$("questionStudyTimeBadge"), questionHistoryDetails:$("questionHistoryDetails"), questionHistoryPanel:$("questionHistoryPanel"), questionJumpMenuDetails:$("questionJumpMenuDetails"), questionJumpMenuGrid:$("questionJumpMenuGrid"),
       chatgptWebviewModal:$("chatgptWebviewModal"), chatgptWebviewFrame:$("chatgptWebviewFrame"), chatgptWebviewCloseBtn:$("chatgptWebviewCloseBtn"), chatgptOpenNewTabBtn:$("chatgptOpenNewTabBtn"), chatgptCopyPromptBtn:$("chatgptCopyPromptBtn"), chatgptWebviewNote:$("chatgptWebviewNote"),
       progress:$("progress"), counter:$("counter"), section:$("section"), meta:$("meta"), question:$("question"), options:$("options"),
       feedback:$("feedback"), aiWarningBox:$("aiWarningBox"), infoBox:$("infoBox"), showInfoBtn:$("showInfoBtn"), cardShowAllBtn:$("cardShowAllBtn"), hideQuestionBtn:$("hideQuestionBtn"), wideExitBtn:$("wideExitBtn"), prevBtn:$("prevBtn"), nextBtn:$("nextBtn"),
@@ -3373,6 +3645,8 @@
       clearFiltersBtn:$("clearFiltersBtn"), goFirstFilteredBtn:$("goFirstFilteredBtn"), subjectButtons:$("subjectButtons"),
       results:$("results"), scoreCircle:$("scoreCircle"), scoreText:$("scoreText"), resultSubtitle:$("resultSubtitle"),
       review:$("review"), reviewToggleBtn:$("reviewToggleBtn"), hideResultBtn:$("hideResultBtn"),
+      breakModal:$("breakModal"), breakContinueBtn:$("breakContinueBtn"),
+      questionEditModal:$("questionEditModal"), editCloseBtn:$("editCloseBtn"), editQuestionId:$("editQuestionId"), editQuestionText:$("editQuestionText"), editOptionsText:$("editOptionsText"), editAnswerSelect:$("editAnswerSelect"), editSaveBtn:$("editSaveBtn"), editResetBtn:$("editResetBtn"),
       initialLoadingOverlay:$("initialLoadingOverlay"), initialLoadingText:$("initialLoadingText"), scrollTopFab:$("scrollTopFab")
     };
 
@@ -3389,6 +3663,172 @@
     function optionList(q){return Array.isArray(q.options) ? q.options : [];}
     function meta(q,key){return (q.metadata && q.metadata[key]) || "";}
     function answerKey(q){return duplicateMode === "all" ? (q._instanceId || q.id) : q.id;}
+
+    function loadQuestionEditOverrides(){
+      try{
+        const raw = localStorage.getItem(QUESTION_EDIT_KEY);
+        questionEditOverrides = raw ? (JSON.parse(raw) || {}) : {};
+      }catch(e){
+        questionEditOverrides = {};
+      }
+    }
+
+    function saveQuestionEditOverrides(){
+      try{
+        localStorage.setItem(QUESTION_EDIT_KEY, JSON.stringify(questionEditOverrides));
+      }catch(e){}
+    }
+
+    function questionEditLookupKeys(q){
+      if(!q) return [];
+      const keys = [];
+      const ak = answerKey(q);
+      if(ak) keys.push(ak);
+      if(q._instanceId && !keys.includes(q._instanceId)) keys.push(q._instanceId);
+      if(q.id && !keys.includes(q.id)) keys.push(q.id);
+      return keys;
+    }
+
+    function getQuestionEditOverride(q){
+      const keys = questionEditLookupKeys(q);
+      for(const key of keys){
+        if(questionEditOverrides[key]) return questionEditOverrides[key];
+      }
+      return null;
+    }
+
+    function applyQuestionEditOverride(q){
+      if(!q) return q;
+      const override = getQuestionEditOverride(q);
+      if(!override) return q;
+
+      if(typeof override.question === "string" && override.question.trim()){
+        q.question = override.question.trim();
+      }
+
+      if(Array.isArray(override.options) && override.options.length >= 2){
+        q.options = override.options.map((text, idx)=>({
+          letter:String.fromCharCode(65+idx),
+          text:String(text || "")
+        }));
+      }
+
+      const opts = optionList(q);
+      let answerIndex = Number(override.answerIndex);
+      if(!Number.isFinite(answerIndex) || answerIndex < 0 || answerIndex >= opts.length) answerIndex = 0;
+
+      if(opts[answerIndex]){
+        const opt = opts[answerIndex];
+        q.answer = {
+          ...(q.answer || {}),
+          index: answerIndex,
+          letter: opt.letter || String.fromCharCode(65+answerIndex),
+          text: opt.text || "",
+          raw: `${opt.letter || String.fromCharCode(65+answerIndex)}) ${opt.text || ""}`,
+          edited: true
+        };
+      }
+
+      q._editedByUser = true;
+      return q;
+    }
+
+    function applyQuestionEditOverridesToAll(){
+      allLoadedQuestions.forEach(q => { applyQuestionEditOverride(q); prepareQuestionRecord(q); });
+      questions.forEach(q => { applyQuestionEditOverride(q); prepareQuestionRecord(q); });
+      invalidateQuestionIndexes();
+    }
+
+    function parseEditedOptions(text){
+      const lines = String(text || "").split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
+      return lines.map((line, idx)=>{
+        const stripped = line.replace(/^[A-Ha-h]\s*[\)\.\-:]\s*/, "").trim();
+        return stripped || line;
+      }).filter(Boolean);
+    }
+
+    function fillEditAnswerSelect(options, selectedIndex=0){
+      if(!els.editAnswerSelect) return;
+      els.editAnswerSelect.innerHTML = "";
+      options.forEach((text, idx)=>{
+        const opt = document.createElement("option");
+        opt.value = String(idx);
+        opt.textContent = `${String.fromCharCode(65+idx)}) ${String(text || "").slice(0,90)}`;
+        els.editAnswerSelect.appendChild(opt);
+      });
+      if(options.length){
+        els.editAnswerSelect.value = String(Math.min(Math.max(0, Number(selectedIndex)||0), options.length-1));
+      }
+    }
+
+    function syncEditAnswerChoicesFromText(){
+      const options = parseEditedOptions(els.editOptionsText ? els.editOptionsText.value : "");
+      const currentValue = Number(els.editAnswerSelect ? els.editAnswerSelect.value : 0);
+      fillEditAnswerSelect(options, Number.isFinite(currentValue) ? currentValue : 0);
+    }
+
+    function openQuestionEditModalById(id){
+      const q = questions.find(x => answerKey(x) === id || x._instanceId === id || x.id === id);
+      if(!q || !els.questionEditModal) return;
+
+      const opts = optionList(q).map(o => o.text || "");
+      const answerIndex = correctAnswerIndex(q) ?? 0;
+
+      els.editQuestionId.value = answerKey(q);
+      els.editQuestionText.value = q.question || "";
+      els.editOptionsText.value = opts.map((text, idx)=>`${String.fromCharCode(65+idx)}) ${text}`).join("\n");
+      fillEditAnswerSelect(opts, answerIndex);
+
+      els.questionEditModal.classList.remove("hidden");
+      els.questionEditModal.setAttribute("aria-hidden","false");
+    }
+
+    function closeQuestionEditModal(){
+      if(!els.questionEditModal) return;
+      els.questionEditModal.classList.add("hidden");
+      els.questionEditModal.setAttribute("aria-hidden","true");
+    }
+
+    function saveQuestionEditFromModal(){
+      const id = els.editQuestionId ? els.editQuestionId.value : "";
+      if(!id) return;
+
+      const options = parseEditedOptions(els.editOptionsText.value);
+      if(options.length < 2){
+        alert("En az iki şık olmalı.");
+        return;
+      }
+
+      let answerIndex = Number(els.editAnswerSelect.value);
+      if(!Number.isFinite(answerIndex) || answerIndex < 0 || answerIndex >= options.length) answerIndex = 0;
+
+      questionEditOverrides[id] = {
+        question: (els.editQuestionText.value || "").trim(),
+        options,
+        answerIndex,
+        updatedAt: Date.now()
+      };
+      saveQuestionEditOverrides();
+
+      applyQuestionEditOverridesToAll();
+      rebuildQuestionsFromActiveFiles(true);
+      closeQuestionEditModal();
+
+      if(els.listView && els.listView.classList.contains("active")) renderAllList(true);
+      renderLanding();
+      if(els.appView && els.appView.classList.contains("active")) render();
+    }
+
+    function resetQuestionEditFromModal(){
+      const id = els.editQuestionId ? els.editQuestionId.value : "";
+      if(!id) return;
+      if(!confirm("Bu soru için yaptığın düzenleme silinsin mi?")) return;
+      delete questionEditOverrides[id];
+      saveQuestionEditOverrides();
+      location.reload();
+    }
+
+
 
     function safeStudyNumber(value){
       const n = Number(value);
@@ -3510,6 +3950,7 @@
 
 
     function commitStudyTime(force=false){
+      if(breakModeActive) return;
       if(!activeStudyQuestionKey || !lastStudyTick) return;
       const now = Date.now();
       let delta = Math.floor((now - lastStudyTick) / 1000);
@@ -3563,6 +4004,9 @@
     function startStudyTimer(){
       if(studyTimerHandle) return;
       studyTimerHandle = setInterval(()=>{
+        if(breakModeActive){
+          return;
+        }
         if(document.hidden || !document.body.classList.contains("app-screen-active")){
           commitStudyTime(true);
           return;
@@ -3585,6 +4029,31 @@
     }
 
 
+
+    
+    function showBreakModal(){
+      if(breakModeActive) return;
+      commitStudyTime(true);
+      saveStudyTimes(true);
+      breakModeActive = true;
+      lastStudyTick = 0;
+      document.body.classList.add("break-active");
+      if(els.breakModal){
+        els.breakModal.classList.remove("hidden");
+        els.breakModal.setAttribute("aria-hidden","false");
+      }
+    }
+
+    function resumeFromBreak(){
+      breakModeActive = false;
+      lastStudyTick = Date.now();
+      document.body.classList.remove("break-active");
+      if(els.breakModal){
+        els.breakModal.classList.add("hidden");
+        els.breakModal.setAttribute("aria-hidden","true");
+      }
+      updateQuestionStudyTimeBadge();
+    }
 
     function lastPositionKey(subject="all", teacher="all"){
       return `${subject || "all"}::${teacher || "all"}::${selectedDbFiles.map(dbCanonicalName).sort().join("|") || "all-db"}`;
@@ -3971,15 +4440,18 @@
       if(!id) return;
       if(!hiddenQuestionIds.includes(id)) hiddenQuestionIds.push(id);
       if(quizActive) quizIds = quizIds.filter(qid => qid !== id);
+      invalidateQuestionIndexes();
       saveState();
     }
     function unhideQuestionById(id){
       hiddenQuestionIds = hiddenQuestionIds.filter(qid => qid !== id);
+      invalidateQuestionIndexes();
       saveState();
     }
     function restoreAllHiddenQuestions(){
       if(!confirm("Gizlenen tüm sorular yeniden gösterilsin mi?")) return;
       hiddenQuestionIds = [];
+      invalidateQuestionIndexes();
       saveState();
       renderLanding();
       // Liste ekranı açıkken ağır yeniden çizim yalnızca liste komutlarıyla yapılır.
@@ -4257,6 +4729,7 @@
           const qq = {...q, _dbFile:dbBaseName(file.name), _dbSource:file.source || "cache"};
           if(!qq.id) qq.id = fallbackId(qq);
           qq._instanceId = `${dbBaseName(file.name)}::${idx}::${qq.id}`;
+          applyQuestionEditOverride(qq);
           return prepareQuestionRecord(qq);
         });
       }
@@ -4282,7 +4755,8 @@
         const qq = {...q, _dbFile:dbBaseName(file.name), _dbSource:file.source};
         if(!qq.id) qq.id = fallbackId(qq);
         qq._instanceId = `${dbBaseName(file.name)}::${idx}::${qq.id}`;
-        return prepareQuestionRecord(qq);
+        applyQuestionEditOverride(qq);
+          return prepareQuestionRecord(qq);
       });
     }
 
@@ -4300,10 +4774,12 @@
           const qq = {...q, _dbFile:dbBaseName(file.name), _dbSource:"manual"};
           if(!qq.id) qq.id = fallbackId(qq);
           qq._instanceId = `${dbBaseName(file.name)}::${idx}::${qq.id}`;
+          applyQuestionEditOverride(qq);
           return prepareQuestionRecord(qq);
         }));
       }
       allLoadedQuestions = all;
+      applyQuestionEditOverridesToAll();
       selectedDbFiles = dbFiles.map(f => dbBaseName(f.name));
       const duplicates = rebuildQuestionsFromActiveFiles(false);
       els.status.className = "panel status";
@@ -4527,6 +5003,7 @@
     function loadState(){
       loadLastPositions();
       loadStudyTimes();
+      loadQuestionEditOverrides();
       try{
         const raw=localStorage.getItem(STORAGE_KEY);
         if(!raw) return false;
@@ -4963,6 +5440,7 @@
       updateExamTimerUI();
       examTimerHandle = setInterval(()=>{
         if(!examMode) { stopExamTimer(); return; }
+        if(breakModeActive) return;
         examRemaining -= 1;
         updateExamTimerUI();
         if(examRemaining <= 0){
@@ -5210,6 +5688,7 @@ async function openCurrentQuestionInChatGPT(){
     }
 
     function showLanding(){
+      resumeFromBreak();
       replaceAppHistoryState("home");
       pauseStudyTimer();
       closeChatGPTWebview();
@@ -5659,7 +6138,7 @@ async function openCurrentQuestionInChatGPT(){
       const aiWarning = aiDiscrepancyHTML(q);
 
       const cardActions = listMode === "hidden"
-        ? `<div class="all-q-actions"><button class="secondary unhide-question-btn" type="button" data-qid="${escapeHTML(answerKey(q))}">Bu soruyu tekrar göster</button></div>`
+        ? `<div class="all-q-actions"><button class="secondary edit-hidden-question-btn" type="button" data-qid="${escapeHTML(answerKey(q))}">Soru/şık/gerçek cevabı düzenle</button><button class="secondary unhide-question-btn" type="button" data-qid="${escapeHTML(answerKey(q))}">Bu soruyu tekrar göster</button></div>`
         : (listMode === "starred"
           ? `<div class="all-q-actions"><button class="secondary unstar-question-btn" type="button" data-qid="${escapeHTML(answerKey(q))}">Yıldızı kaldır</button><button class="secondary hide-list-question-btn" type="button" data-qid="${escapeHTML(answerKey(q))}">Bu soruyu bir daha gösterme</button></div>`
           : `<div class="all-q-actions"><button class="secondary star-list-question-btn" type="button" data-qid="${escapeHTML(answerKey(q))}">${isStarredQuestion(q) ? "Yıldızı kaldır" : "Yıldızla"}</button><button class="secondary hide-list-question-btn" type="button" data-qid="${escapeHTML(answerKey(q))}">Bu soruyu bir daha gösterme</button></div>`);
@@ -5680,12 +6159,18 @@ async function openCurrentQuestionInChatGPT(){
           ${cardActions}
           ${listMode === "hidden" ? `<div class="hidden-manager-note">Bu soru gizlendiği için normal soru akışında ve quizlerde görünmez.</div>` : ""}
           ${listMode === "starred" ? `<div class="hidden-manager-note">Bu soru yıldızlı listendedir.</div>` : ""}
+          ${q._editedByUser ? `<div class="hidden-manager-note edited-note">Bu sorunun metni/şıkları/gerçek cevabı kullanıcı tarafından düzenlendi.</div>` : ""}
           ${info ? `<div class="all-q-info">${escapeHTML(info)}</div>` : ""}
         </article>
       `;
     }
 
     function attachListActionEvents(){
+      els.allList.querySelectorAll(".edit-hidden-question-btn").forEach(btn=>{
+        if(btn.dataset.bound === "1") return;
+        btn.dataset.bound = "1";
+        btn.addEventListener("click",()=>openQuestionEditModalById(btn.getAttribute("data-qid")));
+      });
       els.allList.querySelectorAll(".hide-list-question-btn").forEach(btn=>{
         if(btn.dataset.bound === "1") return;
         btn.dataset.bound = "1";
@@ -5840,6 +6325,7 @@ ${body}
     }
 
     function showListView(mode="all"){
+      resumeFromBreak();
       pushAppHistoryState("list");
       pauseStudyTimer();
       if(examMode) return;
@@ -5967,6 +6453,11 @@ ${body}
 
     function bindEvents(){
       startStudyTimer();
+      if(els.editCloseBtn) els.editCloseBtn.addEventListener("click", closeQuestionEditModal);
+      if(els.editSaveBtn) els.editSaveBtn.addEventListener("click", saveQuestionEditFromModal);
+      if(els.editResetBtn) els.editResetBtn.addEventListener("click", resetQuestionEditFromModal);
+      if(els.editOptionsText) els.editOptionsText.addEventListener("input", syncEditAnswerChoicesFromText);
+      if(els.questionEditModal) els.questionEditModal.addEventListener("click",(ev)=>{ if(ev.target === els.questionEditModal) closeQuestionEditModal(); });
       window.addEventListener("scroll",()=>requestAnimationFrame(updateScrollTopFab), {passive:true});
       window.addEventListener("resize",()=>requestAnimationFrame(updateScrollTopFab), {passive:true});
       if(els.scrollTopFab) els.scrollTopFab.addEventListener("click",()=>window.scrollTo({top:0, behavior:"smooth"}));
@@ -5974,6 +6465,8 @@ ${body}
       window.addEventListener("beforeunload",()=>{ commitStudyTime(true); finalizeStudySession(); saveStudyTimes(true); });
       window.addEventListener("popstate",()=>handleBrowserBack());
       if(els.questionFullscreenBtn) els.questionFullscreenBtn.addEventListener("click", toggleQuestionFullscreen);
+      if(els.questionBreakBtn) els.questionBreakBtn.addEventListener("click", showBreakModal);
+      if(els.breakContinueBtn) els.breakContinueBtn.addEventListener("click", resumeFromBreak);
       if(els.questionChatGPTBtn) els.questionChatGPTBtn.addEventListener("click", openCurrentQuestionInChatGPT);
       if(els.questionStarBtn) els.questionStarBtn.addEventListener("click",()=>{
         toggleStarQuestion();
@@ -6121,10 +6614,26 @@ ${body}
         if(!idxs.length) return;
         const q=questions[current];
         if(!q) return;
+        const pos = Math.max(0, idxs.indexOf(current));
+        const nextCandidateIndex = idxs[pos+1] !== undefined ? idxs[pos+1] : (idxs[pos-1] !== undefined ? idxs[pos-1] : null);
+        const nextCandidateKey = nextCandidateIndex !== null && questions[nextCandidateIndex] ? answerKey(questions[nextCandidateIndex]) : null;
+
         const doHide = examMode ? true : confirm("Bu soruyu bundan sonra normal akışta ve quizlerde gizlemek istiyor musun?");
         if(doHide){
           hideQuestionById(answerKey(q));
-          ensureCurrent();
+          invalidateQuestionIndexes();
+
+          const freshIdxs = filteredIndexes();
+          if(nextCandidateKey){
+            const found = freshIdxs.find(i => questions[i] && answerKey(questions[i]) === nextCandidateKey);
+            if(found !== undefined) current = found;
+            else if(freshIdxs.length) current = freshIdxs[Math.min(pos, freshIdxs.length-1)];
+          }else if(freshIdxs.length){
+            current = freshIdxs[Math.min(pos, freshIdxs.length-1)];
+          }else{
+            current = 0;
+          }
+
           const beforeY = window.scrollY;
           render();
           if(!examMode) renderLanding();
@@ -6213,6 +6722,7 @@ async function init(){
         setInitialLoading("Sorular hazırlanıyor...");
         els.status.innerHTML = "Sorular hazırlanıyor; önbellek ve indeksler kuruluyor...";
         allLoadedQuestions = all;
+        applyQuestionEditOverridesToAll();
         ensureSelectedDbFiles();
         const duplicates = rebuildQuestionsFromActiveFiles(false);
 
