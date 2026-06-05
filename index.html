@@ -3560,6 +3560,121 @@
       display:flex!important;
     }
 
+  
+    /* Ana sayfa ayrımı: 2025-2026 Final / Diğer tüm çıkmışlar */
+    .final-fast-panel{
+      padding:12px;
+      margin-bottom:12px;
+      border-color:rgba(122,79,8,.18)!important;
+      background:
+        radial-gradient(circle at 95% 0%, rgba(250,204,21,.16), transparent 18rem),
+        rgba(255,255,255,.95)!important;
+    }
+    .final-fast-head{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:10px;
+    }
+    .final-fast-head h2{
+      margin:0 0 4px;
+      color:var(--primary);
+      font-size:18px;
+      font-weight:950;
+      letter-spacing:-.02em;
+    }
+    .final-fast-head button{
+      flex:0 0 auto;
+      white-space:nowrap;
+    }
+    .final-course-card{
+      border-color:rgba(122,79,8,.22)!important;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,252,242,.96))!important;
+    }
+    .final-course-card .course-icon{
+      background:linear-gradient(135deg,#7a4f08,#f59e0b)!important;
+    }
+    .final-course-card .chip{
+      background:#fff7df!important;
+      color:#7a4f08!important;
+      border-color:rgba(122,79,8,.22)!important;
+    }
+    .final-empty{
+      display:none;
+      padding:12px;
+      color:var(--muted);
+      text-align:center;
+      background:#fffaf0;
+      border-radius:12px;
+      border:1px dashed rgba(122,79,8,.22);
+    }
+    .all-courses-panel{
+      padding:0;
+      overflow:hidden;
+      margin-bottom:12px;
+    }
+    .all-courses-summary{
+      cursor:pointer;
+      list-style:none;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding:12px 14px;
+      color:var(--primary);
+      font-weight:950;
+      user-select:none;
+    }
+    .all-courses-summary::-webkit-details-marker{
+      display:none;
+    }
+    .all-courses-summary::after{
+      content:"＋";
+      font-weight:950;
+      color:var(--primary);
+      background:var(--soft);
+      border:1px solid rgba(23,58,138,.13);
+      border-radius:999px;
+      width:26px;
+      height:26px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      flex:0 0 auto;
+    }
+    .all-courses-panel[open] .all-courses-summary::after{
+      content:"−";
+    }
+    .all-courses-summary span{
+      font-size:15px;
+      letter-spacing:-.02em;
+    }
+    .all-courses-summary small{
+      color:var(--muted);
+      font-size:11.5px;
+      font-weight:800;
+      margin-left:auto;
+    }
+    .all-courses-content{
+      padding:0 12px 12px;
+    }
+    @media(max-width:560px){
+      .final-fast-head{
+        display:grid;
+      }
+      .final-fast-head button{
+        width:100%;
+      }
+      .all-courses-summary{
+        align-items:flex-start;
+      }
+      .all-courses-summary small{
+        display:none;
+      }
+    }
+
   </style>
 </head>
 <body class="font-normal is-loading">
@@ -3604,11 +3719,30 @@
 
     <section class="landing" id="landing">
 
-      <section class="course-grid" id="courseGrid"></section>
-      
-      <section class="panel course-empty" id="courseEmpty">Bu aramayla eşleşen ders bulunamadı veya aktif database seçili değil.</section>
+      <section class="panel final-fast-panel" id="finalFastPanel">
+        <div class="final-fast-head">
+          <div>
+            <h2>2025-2026 Final çıkmışları</h2>
+            <p class="subtitle">Final olarak işaretlenen 2025-2026 sorularını hızlıca aç.</p>
+          </div>
+          <button class="primary" id="finalAllBtn" type="button">Tüm final çıkmışlarını aç</button>
+        </div>
+        <section class="course-grid final-course-grid" id="finalCourseGrid"></section>
+        <section class="course-empty final-empty" id="finalEmpty">2025-2026 final olarak eşleşen soru bulunamadı.</section>
+      </section>
 
-      
+      <details class="panel all-courses-panel" id="allCoursesDetails">
+        <summary class="all-courses-summary">
+          <span>Diğer tüm çıkmışlar</span>
+          <small>Sekmeyi açarak tüm derslere eriş</small>
+        </summary>
+        <div class="all-courses-content">
+          <section class="course-grid" id="courseGrid"></section>
+          <section class="course-empty" id="courseEmpty">Bu aramayla eşleşen ders bulunamadı veya aktif database seçili değil.</section>
+        </div>
+      </details>
+
+
 <section class="course-toolbar panel">
         <input class="search" id="courseSearch" placeholder="Ders ara: anatomi, fizyoloji, histoloji, biyokimya, mikrobiyoloji, biyofizik...">
         <button class="secondary" id="clearCourseSearch" type="button">Aramayı temizle</button>
@@ -4056,7 +4190,7 @@
       landing:$("landing"), appView:$("appView"), quizView:$("quizView"), listView:$("listView"),
       topMenu:$("topMenu"), menuHomeBtn:$("menuHomeBtn"), menuSourceBtn:$("menuSourceBtn"), menuViewBtn:$("menuViewBtn"), menuDuplicateBtn:$("menuDuplicateBtn"), menuShuffleBtn:$("menuShuffleBtn"), menuCacheBtn:$("menuCacheBtn"),
       menuInfoBtn:$("menuInfoBtn"), menuShowAllBtn:$("menuShowAllBtn"), menuStarredBtn:$("menuStarredBtn"), menuExamBtn:$("menuExamBtn"), menuWideToggleBtn:$("menuWideToggleBtn"), menuResetVisibleBtn:$("menuResetVisibleBtn"), menuClearCacheBtn:$("menuClearCacheBtn"),
-      courseGrid:$("courseGrid"), courseEmpty:$("courseEmpty"), courseSearch:$("courseSearch"),
+      courseGrid:$("courseGrid"), finalCourseGrid:$("finalCourseGrid"), finalEmpty:$("finalEmpty"), finalAllBtn:$("finalAllBtn"), allCoursesDetails:$("allCoursesDetails"), courseEmpty:$("courseEmpty"), courseSearch:$("courseSearch"),
       clearCourseSearch:$("clearCourseSearch"), continueBtn:$("continueBtn"), wrongHomeBtn:$("wrongHomeBtn"), hiddenHomeBtn:$("hiddenHomeBtn"), starredHomeBtn:$("starredHomeBtn"), quizAllBtn:$("quizAllBtn"), startAllBtn:$("startAllBtn"),
       backHomeBtn:$("backHomeBtn"), changeCourseBtn:$("changeCourseBtn"), activeTitle:$("activeTitle"),
       wideQuestionBtn:$("wideQuestionBtn"), showAllBtn:$("showAllBtn"), compactHomeBtn:$("compactHomeBtn"), compactShowAllBtn:$("compactShowAllBtn"), backToQuizBtn:$("backToQuizBtn"), wideListBtn:$("wideListBtn"), pdfListBtn:$("pdfListBtn"), restoreHiddenBtn:$("restoreHiddenBtn"), refreshListBtn:$("refreshListBtn"),
@@ -4637,7 +4771,7 @@
     function filterCacheKey(){
       return JSON.stringify([
         questions.length,
-        filters.subject, filters.exam, filters.year, filters.teacher, filters.sourceGroup, filters.search,
+        filters.subject, filters.exam, filters.year, filters.teacher, filters.sourceGroup, filters.search, filters.finalOnly ? "final20252026" : "all-exams",
         selectedDbFiles.map(dbCanonicalName).sort().join("|"),
         hiddenQuestionIds.join("|"),
         duplicateMode,
@@ -4650,7 +4784,7 @@
     function filterControlsKey(){
       return JSON.stringify([
         questions.length,
-        filters.subject, filters.exam, filters.year, filters.teacher, filters.sourceGroup, filters.search,
+        filters.subject, filters.exam, filters.year, filters.teacher, filters.sourceGroup, filters.search, filters.finalOnly ? "final20252026" : "all-exams",
         selectedDbFiles.map(dbCanonicalName).sort().join("|"),
         hiddenQuestionIds.length,
         duplicateMode
@@ -5681,6 +5815,7 @@ function closeUnwantedQuestionConfirm(result=false){
       if(excludeField!=="year" && filters.year!=="all" && meta(q,"year")!==filters.year) return false;
       if(excludeField!=="teacher" && filters.teacher!=="all" && meta(q,"teacher")!==filters.teacher) return false;
       if(excludeField!=="sourceGroup" && filters.sourceGroup!=="all" && meta(q,"sourceGroup")!==filters.sourceGroup) return false;
+      if(filters.finalOnly && !isFinal20252026Question(q)) return false;
       if(term){
         const haystack = q._searchText || prepareQuestionRecord(q)._searchText || "";
         if(!haystack.includes(term)) return false;
@@ -5830,99 +5965,171 @@ function closeUnwantedQuestionConfirm(result=false){
       });
     }
 
+    
+    function isFinal20252026Question(q){
+      const combined = normalize([
+        meta(q,"year"), meta(q,"examGroup"), meta(q,"sourceGroup"), meta(q,"source"),
+        meta(q,"topic"), q && q._dbFile
+      ].join(" "));
+      const hasFinal = combined.includes("final");
+      const hasYear =
+        (combined.includes("2025") && combined.includes("2026")) ||
+        /2025\s*[-–_/ ]\s*26/.test(combined) ||
+        /25\s*[-–_/ ]\s*26/.test(combined) ||
+        (hasFinal && combined.includes("2026"));
+      return hasFinal && hasYear;
+    }
+
+    function final20252026Questions(baseQuestions = activeVisibleQuestions()){
+      return baseQuestions.filter(isFinal20252026Question);
+    }
+
+    function startFinalCourse(subject="all"){
+      pushAppHistoryState("question");
+      stopQuizMode();
+      document.body.classList.add("app-screen-active");
+      filters = {subject:subject || "all", exam:"all", year:"all", teacher:"all", sourceGroup:"all", search:"", finalOnly:true};
+      infoOpen = false;
+      invalidateQuestionIndexes();
+      const idxs = filteredIndexes();
+      current = idxs.length ? idxs[0] : 0;
+      els.landing.classList.add("hidden");
+      els.appView.classList.add("active");
+      els.quizView.classList.remove("hidden");
+      els.listView.classList.remove("active");
+      els.activeTitle.textContent = subject && subject !== "all"
+        ? `${subject} · 2025-2026 Final çıkmışları`
+        : "2025-2026 Final çıkmışları";
+      els.results.style.display = "none";
+      render();
+      scrollToQuestion("auto");
+    }
+
+    function createHomeCourseCard(item, baseQuestions, mode="all"){
+      const subjectQuestions = baseQuestions.filter(q=>q.subject===item.value);
+      const examCount = new Set(subjectQuestions.map(q=>meta(q,"examGroup")).filter(Boolean)).size;
+      const teacherCount = new Set(subjectQuestions.map(q=>meta(q,"teacher")).filter(Boolean)).size;
+      const card = document.createElement("article");
+      card.className = mode === "final" ? "course-card panel final-course-card" : "course-card panel";
+      card.tabIndex = 0;
+
+      const teachers = [...new Set(subjectQuestions.map(q=>meta(q,"teacher")).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"tr"));
+      const teacherOptions = [`<option value="all">Tüm hocalar</option>`].concat(teachers.map(t=>`<option value="${escapeHTML(t)}">${escapeHTML(t)}</option>`)).join("");
+      const titleSuffix = mode === "final" ? "Finali aç" : "Dersi aç";
+
+      card.innerHTML=`
+        <div>
+          <div class="course-icon">${escapeHTML(initials(item.value))}</div>
+          <h2>${escapeHTML(item.value)}</h2>
+          <p>${item.count} soru · ${examCount} grup · ${teacherCount} hoca</p>
+          <div class="course-study-time">Çalışma: ${formatStudyTime(subjectStudySeconds(item.value))}</div>
+          ${mode === "final" ? "" : `<select class="teacher-select-mini" aria-label="${escapeHTML(item.value)} hoca seçimi">${teacherOptions}</select>`}
+        </div>
+        <div class="course-meta">
+          <span class="chip">${item.count} soru</span>
+          <span class="chip">${titleSuffix}</span>
+          ${mode === "final" ? `<button class="quiz-card-btn" type="button" data-subject="${escapeHTML(item.value)}">Finali aç</button>` : `
+            <button class="quiz-card-btn" type="button" data-subject="${escapeHTML(item.value)}">Quiz (${Math.min(30, item.count)})</button>
+            <button class="exam-card-btn" type="button" data-subject="${escapeHTML(item.value)}">Sınav modu</button>
+            <button class="continue-card-btn" type="button" data-subject="${escapeHTML(item.value)}">Kaldığım yerden devam</button>
+          `}
+        </div>
+      `;
+
+      if(mode === "final"){
+        const openBtn = card.querySelector(".quiz-card-btn");
+        if(openBtn) openBtn.addEventListener("click",(ev)=>{ev.stopPropagation(); startFinalCourse(item.value);});
+        card.addEventListener("click",()=>startFinalCourse(item.value));
+        card.addEventListener("keydown",ev=>{if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();startFinalCourse(item.value);}});
+        return card;
+      }
+
+      const quizBtn = card.querySelector(".quiz-card-btn");
+      const examBtn = card.querySelector(".exam-card-btn");
+      const continueCourseBtn = card.querySelector(".continue-card-btn");
+      const teacherSelect = card.querySelector(".teacher-select-mini");
+      teacherSelect.addEventListener("click", ev => ev.stopPropagation());
+      teacherSelect.addEventListener("change", ev => ev.stopPropagation());
+      if(examBtn) examBtn.addEventListener("click",(ev)=>{
+        ev.stopPropagation();
+        startExamMode(item.value, teacherSelect ? teacherSelect.value : "all");
+      });
+      if(continueCourseBtn) {
+        const updateContinueButton = () => {
+          const teacher = teacherSelect ? teacherSelect.value : "all";
+          const available = hasLastPosition(item.value, teacher);
+          continueCourseBtn.disabled = !available;
+          continueCourseBtn.textContent = available ? "Kaldığım yerden devam" : "Kayıt yok";
+        };
+        updateContinueButton();
+        teacherSelect.addEventListener("change", updateContinueButton);
+        continueCourseBtn.addEventListener("click",(ev)=>{
+          ev.stopPropagation();
+          const teacher = teacherSelect ? teacherSelect.value : "all";
+          continueCourse(item.value, teacher);
+        });
+      }
+      quizBtn.addEventListener("click",(ev)=>{
+        ev.stopPropagation();
+        const teacher = teacherSelect ? teacherSelect.value : "all";
+        if(teacher && teacher !== "all"){
+          const pool = activeVisibleQuestions().filter(q => q.subject === item.value && meta(q,"teacher") === teacher);
+          if(!pool.length){ alert("Bu hoca için quiz sorusu bulunamadı."); return; }
+          const chosen = shuffleArray(pool).slice(0, Math.min(30, pool.length));
+          quizActive = true;
+          quizIds = chosen.map(q => answerKey(q));
+          quizTitle = `${item.value} · ${teacher} quiz modu · ${chosen.length} soru`;
+          document.body.classList.add("app-screen-active");
+          filters = {subject:item.value, exam:"all", year:"all", teacher:teacher, sourceGroup:"all", search:"", finalOnly:false};
+          const firstIndex = questions.findIndex(q => answerKey(q) === quizIds[0]);
+          if(firstIndex >= 0) current = firstIndex;
+          els.landing.classList.add("hidden");
+          els.appView.classList.add("active");
+          els.quizView.classList.remove("hidden");
+          els.listView.classList.remove("active");
+          els.activeTitle.textContent = quizTitle;
+          els.results.style.display = "none";
+          render();
+          scrollToQuestion("auto");
+          return;
+        }
+        startQuiz(item.value, 30);
+      });
+      card.addEventListener("click",()=>startCourseWithTeacher(item.value, teacherSelect ? teacherSelect.value : "all"));
+      card.addEventListener("keydown",ev=>{if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();startCourseWithTeacher(item.value, teacherSelect ? teacherSelect.value : "all");}});
+      return card;
+    }
+
     function renderLanding(){
       ensureSelectedDbFiles();
       sanitizeFilters();
       const aq = activeVisibleQuestions();
+      const finalQ = final20252026Questions(aq);
       els.totalQuestionsHero.textContent=aq.length;
       els.totalSubjectsHero.textContent=countValues(q=>q.subject, aq).length;
       renderDbSelector();
       applyFontSize();
 
       const term=normalize(els.courseSearch.value.trim());
+
+      if(els.finalCourseGrid){
+        els.finalCourseGrid.innerHTML = "";
+        const finalCounts = countValues(q=>q.subject, finalQ).filter(item=>!term || normalize(item.value).includes(term));
+        finalCounts.forEach(item=>els.finalCourseGrid.appendChild(createHomeCourseCard(item, finalQ, "final")));
+        if(els.finalEmpty) els.finalEmpty.style.display = finalCounts.length ? "none" : "block";
+      }
+      if(els.finalAllBtn){
+        els.finalAllBtn.disabled = finalQ.length === 0;
+        els.finalAllBtn.textContent = finalQ.length ? `Tüm final çıkmışlarını aç (${finalQ.length})` : "Final çıkmışı yok";
+        els.finalAllBtn.onclick = () => startFinalCourse("all");
+      }
+
       els.courseGrid.innerHTML="";
       const courseCounts=countValues(q=>q.subject, aq);
       const filtered=courseCounts.filter(item=>!term || normalize(item.value).includes(term));
-      filtered.forEach(item=>{
-        const subjectQuestions=aq.filter(q=>q.subject===item.value);
-        const examCount=new Set(subjectQuestions.map(q=>meta(q,"examGroup")).filter(Boolean)).size;
-        const teacherCount=new Set(subjectQuestions.map(q=>meta(q,"teacher")).filter(Boolean)).size;
-        const card=document.createElement("article");
-        card.className="course-card panel"; card.tabIndex=0;
-        const teachers = [...new Set(subjectQuestions.map(q=>meta(q,"teacher")).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"tr"));
-        const teacherOptions = [`<option value="all">Tüm hocalar</option>`].concat(teachers.map(t=>`<option value="${escapeHTML(t)}">${escapeHTML(t)}</option>`)).join("");
-        card.innerHTML=`
-          <div>
-            <div class="course-icon">${escapeHTML(initials(item.value))}</div>
-            <h2>${escapeHTML(item.value)}</h2>
-            <p>${item.count} soru · ${examCount} grup · ${teacherCount} hoca</p>
-            <div class="course-study-time">Çalışma: ${formatStudyTime(subjectStudySeconds(item.value))}</div>
-            <select class="teacher-select-mini" aria-label="${escapeHTML(item.value)} hoca seçimi">${teacherOptions}</select>
-          </div>
-          <div class="course-meta">
-            <span class="chip">${item.count} soru</span>
-            <span class="chip">Dersi aç</span>
-            <button class="quiz-card-btn" type="button" data-subject="${escapeHTML(item.value)}">Quiz (${Math.min(30, item.count)})</button>
-            <button class="exam-card-btn" type="button" data-subject="${escapeHTML(item.value)}">Sınav modu</button>
-            <button class="continue-card-btn" type="button" data-subject="${escapeHTML(item.value)}">Kaldığım yerden devam</button>
-          </div>
-        `;
-        const quizBtn = card.querySelector(".quiz-card-btn");
-        const examBtn = card.querySelector(".exam-card-btn");
-        const continueCourseBtn = card.querySelector(".continue-card-btn");
-        const teacherSelect = card.querySelector(".teacher-select-mini");
-        teacherSelect.addEventListener("click", ev => ev.stopPropagation());
-        teacherSelect.addEventListener("change", ev => ev.stopPropagation());
-        if(examBtn) examBtn.addEventListener("click",(ev)=>{
-          ev.stopPropagation();
-          startExamMode(item.value, teacherSelect ? teacherSelect.value : "all");
-        });
-        if(continueCourseBtn) {
-          const updateContinueButton = () => {
-            const teacher = teacherSelect ? teacherSelect.value : "all";
-            const available = hasLastPosition(item.value, teacher);
-            continueCourseBtn.disabled = !available;
-            continueCourseBtn.textContent = available ? "Kaldığım yerden devam" : "Kayıt yok";
-          };
-          updateContinueButton();
-          teacherSelect.addEventListener("change", updateContinueButton);
-          continueCourseBtn.addEventListener("click",(ev)=>{
-            ev.stopPropagation();
-            const teacher = teacherSelect ? teacherSelect.value : "all";
-            continueCourse(item.value, teacher);
-          });
-        }
-        quizBtn.addEventListener("click",(ev)=>{
-          ev.stopPropagation();
-          const teacher = teacherSelect ? teacherSelect.value : "all";
-          if(teacher && teacher !== "all"){
-            const pool = activeVisibleQuestions().filter(q => q.subject === item.value && meta(q,"teacher") === teacher);
-            if(!pool.length){ alert("Bu hoca için quiz sorusu bulunamadı."); return; }
-            const chosen = shuffleArray(pool).slice(0, Math.min(30, pool.length));
-            quizActive = true;
-            quizIds = chosen.map(q => answerKey(q));
-            quizTitle = `${item.value} · ${teacher} quiz modu · ${chosen.length} soru`;
-            document.body.classList.add("app-screen-active");
-            filters = {subject:item.value, exam:"all", year:"all", teacher:teacher, sourceGroup:"all", search:""};
-            const firstIndex = questions.findIndex(q => answerKey(q) === quizIds[0]);
-            if(firstIndex >= 0) current = firstIndex;
-            els.landing.classList.add("hidden");
-            els.appView.classList.add("active");
-            els.quizView.classList.remove("hidden");
-            els.listView.classList.remove("active");
-            els.activeTitle.textContent = quizTitle;
-            els.results.style.display = "none";
-            render();
-            scrollToQuestion("auto");
-            return;
-          }
-          startQuiz(item.value, 30);
-        });
-        card.addEventListener("click",()=>startCourseWithTeacher(item.value, teacherSelect ? teacherSelect.value : "all"));
-        card.addEventListener("keydown",ev=>{if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();startCourseWithTeacher(item.value, teacherSelect ? teacherSelect.value : "all");}});
-        els.courseGrid.appendChild(card);
-      });
+      filtered.forEach(item=>els.courseGrid.appendChild(createHomeCourseCard(item, aq, "all")));
       els.courseEmpty.style.display=filtered.length?"none":"block";
+
       els.continueBtn.disabled=!aq.length || !hasLastPosition("all","all");
       const wrongCount = activeWrongCount();
       els.wrongHomeBtn.disabled = wrongCount === 0;
@@ -6341,6 +6548,9 @@ async function openCurrentQuestionInChatGPT(){
       infoOpen=false;
       invalidateQuestionIndexes();
       restoreLastPosition(subject||"all", teacher||"all");
+      filters.finalOnly = false;
+      invalidateQuestionIndexes();
+      ensureCurrent();
       els.landing.classList.add("hidden");
       els.appView.classList.add("active");
       els.quizView.classList.remove("hidden");
@@ -6361,7 +6571,7 @@ async function openCurrentQuestionInChatGPT(){
       filters={subject:subject||"all", exam:"all", year:"all", teacher:"all", sourceGroup:"all", search:""};
       infoOpen=false;
       invalidateQuestionIndexes();
-      restoreLastPosition(subject||"all","all"); els.landing.classList.add("hidden"); els.appView.classList.add("active");
+      restoreLastPosition(subject||"all","all"); filters.finalOnly = false; invalidateQuestionIndexes(); ensureCurrent(); els.landing.classList.add("hidden"); els.appView.classList.add("active");
       els.quizView.classList.remove("hidden"); els.listView.classList.remove("active");
       els.activeTitle.textContent=subject&&subject!=="all"?subject+" soru bankası":"Tüm dersler soru bankası";
       els.results.style.display="none"; render(); scrollToQuestion("auto");
@@ -6673,7 +6883,7 @@ async function openCurrentQuestionInChatGPT(){
       const idxsForCounter = filteredIndexes();
       els.counter.textContent=st.total?`Soru ${idxsForCounter.indexOf(current)+1} / ${st.total} · Genel no: ${current+1}`:"0 soru";
       els.answeredCount.textContent=st.answered; els.correctCount.textContent=st.correct; els.wrongCount.textContent=st.wrong+(st.neutral?` (+${st.neutral} manuel)`:""); els.emptyCount.textContent=st.empty;
-      els.activeFilterSummary.textContent=[filters.subject==="all"?"Tüm dersler":filters.subject,filters.exam==="all"?"Tüm gruplar":filters.exam,filters.year==="all"?"Tüm yıllar":filters.year,filters.teacher==="all"?"Tüm hocalar":filters.teacher,filters.sourceGroup==="all"?"Tüm kaynak türleri":filters.sourceGroup,filters.search.trim()?`Arama: “${filters.search.trim()}”`:"Arama yok"].join(" + ")+` → ${st.total} soru`;
+      els.activeFilterSummary.textContent=[filters.finalOnly?"2025-2026 Final çıkmışları":"Tüm çıkmışlar",filters.subject==="all"?"Tüm dersler":filters.subject,filters.exam==="all"?"Tüm gruplar":filters.exam,filters.year==="all"?"Tüm yıllar":filters.year,filters.teacher==="all"?"Tüm hocalar":filters.teacher,filters.sourceGroup==="all"?"Tüm kaynak türleri":filters.sourceGroup,filters.search.trim()?`Arama: “${filters.search.trim()}”`:"Arama yok"].join(" + ")+` → ${st.total} soru`;
     }
 
     function updateJumpGridState(){
@@ -7331,7 +7541,7 @@ ${body}
       els.teacherSelect.addEventListener("change",()=>{filters.teacher=els.teacherSelect.value; ensureCurrent(); render();});
       els.sourceGroupSelect.addEventListener("change",()=>{filters.sourceGroup=els.sourceGroupSelect.value; ensureCurrent(); render();});
       els.searchInput.addEventListener("input", debounce(()=>{filters.search=els.searchInput.value; ensureCurrent(); render();}, 180));
-      els.clearFiltersBtn.addEventListener("click",()=>{filters={subject:filters.subject,exam:"all",year:"all",teacher:"all",sourceGroup:"all",search:""}; ensureCurrent(); render();});
+      els.clearFiltersBtn.addEventListener("click",()=>{filters={subject:filters.subject,exam:"all",year:"all",teacher:"all",sourceGroup:"all",search:"",finalOnly:!!filters.finalOnly}; ensureCurrent(); render();});
       els.goFirstFilteredBtn.addEventListener("click",()=>{const idxs=filteredIndexes(); if(idxs.length){current=idxs[0]; render();}});
       els.prevBtn.addEventListener("click",()=>{const idxs=filteredIndexes(); const pos=idxs.indexOf(current); if(pos>0){current=idxs[pos-1]; render(); requestAnimationFrame(()=>scrollToQuestion("auto"));}});
       els.nextBtn.addEventListener("click",()=>{const idxs=filteredIndexes(); const pos=idxs.indexOf(current); if(pos<idxs.length-1){current=idxs[pos+1]; render(); requestAnimationFrame(()=>scrollToQuestion("auto"));}else{ if(examMode) stopExamTimer(); renderResults(); }});
