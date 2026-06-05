@@ -1,0 +1,348 @@
+<section class="initial-loading-overlay" id="initialLoadingOverlay" aria-live="polite" aria-busy="true">
+    <div class="initial-loading-card">
+      <div class="loader-ring" aria-hidden="true"></div>
+      <b>Soru bankası hazırlanıyor</b>
+      <span id="initialLoadingText">Database dosyaları kontrol ediliyor...</span>
+    </div>
+  </section>
+
+  <main class="wrap">
+
+    <details class="top-menu panel" id="topMenu">
+      <summary class="top-menu-summary">
+        <span>☰ Menü</span>
+        <small>Sayfa ve kaynak seçenekleri</small>
+      </summary>
+      <div class="top-menu-content">
+        <button class="secondary" id="menuHomeBtn" type="button">Ana sayfaya dön</button>
+        <button class="secondary" id="menuSourceBtn" type="button">Ders kaynağını değiştir</button>
+        <button class="secondary" id="menuViewBtn" type="button">Görünüm ayarları</button>
+        <button class="secondary" id="menuDuplicateBtn" type="button">Tekrarları kapat</button>
+        <button class="secondary" id="menuShuffleBtn" type="button">Karışık sırayı aç</button>
+        <button class="secondary" id="menuCacheBtn" type="button">Önbelleği yenile</button>
+        <button class="secondary" id="menuInfoBtn" type="button">Açıklama/spot</button>
+        <button class="secondary" id="menuShowAllBtn" type="button">Tüm soruları görüntüle</button>
+        <button class="secondary" id="menuStarredBtn" type="button">Yıldızlı sorular</button>
+        <button class="secondary" id="menuExamBtn" type="button">Sınav modu</button>
+        <button class="secondary" id="menuWideToggleBtn" type="button">Tekli ekranı aç/kapat</button>
+        <button class="secondary" id="menuResetVisibleBtn" type="button">Filtre cevaplarını sıfırla</button>
+        <button class="danger" id="menuClearCacheBtn" type="button">Önbelleği temizle</button>
+      </div>
+    </details>
+
+    <div class="hidden" aria-hidden="true"><span id="totalQuestionsHero">0</span><span id="totalSubjectsHero">0</span></div>
+<section class="panel status warn hidden" id="statusBox">Soru dosyaları yükleniyor...</section>
+    <section class="panel status warn hidden" id="manualDbBox">
+      <b>Manuel database yükleme:</b> GitHub Pages dışında veya tarayıcı dosya erişimini engellediğinde .db/.sdb dosyalarını buradan seçebilirsin.
+      <div style="margin-top:8px;"><input id="manualDbInput" type="file" accept=".db,.sdb,application/json" multiple></div>
+    </section>
+
+    <section class="landing" id="landing">
+
+      <section class="course-grid" id="courseGrid"></section>
+      
+      <section class="panel course-empty" id="courseEmpty">Bu aramayla eşleşen ders bulunamadı veya aktif database seçili değil.</section>
+
+      
+<section class="course-toolbar panel">
+        <input class="search" id="courseSearch" placeholder="Ders ara: anatomi, fizyoloji, histoloji, biyokimya, mikrobiyoloji, biyofizik...">
+        <button class="secondary" id="clearCourseSearch" type="button">Aramayı temizle</button>
+        <button class="secondary" id="continueBtn" type="button">Kaldığım yerden devam et</button>
+        <button class="secondary" id="wrongHomeBtn" type="button">Yanlışlarımı aç</button>
+        <button class="secondary" id="hiddenHomeBtn" type="button">Gizlenen soruları yönet</button>
+        <button class="secondary" id="starredHomeBtn" type="button">Yıldızlı sorular</button>
+        <button class="secondary" id="quizAllBtn" type="button">Tüm dersler quiz modu</button>
+        <button class="primary" id="startAllBtn" type="button">Tüm derslerle başla</button>
+      </section>
+      
+
+      <section class="settings-grid compact-settings-grid">
+        <details class="panel settings-box collapsible-settings" id="dbSettingsDetails">
+          <summary class="settings-summary">
+            <span>Aktif soru dosyaları</span>
+            <small>Seçmek için aç</small>
+          </summary>
+          <div class="settings-content">
+            <p class="subtitle" style="margin-bottom:8px;">Sadece seçili soru dosyalarındaki sorular kullanılır. Birden fazla dosyada benzer soru varsa tek kez gösterilir.</p>
+            <div class="db-list" id="dbList"></div>
+            <div class="db-actions">
+              <button class="secondary" id="selectAllDbBtn" type="button">Tümünü seç</button>
+              <button class="secondary" id="clearDbBtn" type="button">Seçimi temizle</button>
+            </div>
+          </div>
+        </details>
+        <details class="panel settings-box collapsible-settings" id="viewSettingsDetails">
+          <summary class="settings-summary">
+            <span>Görünüm</span>
+            <small>Yazı ve tasarım ayarları</small>
+          </summary>
+          <div class="settings-content font-controls">
+            <div class="select-row">
+              <label for="fontSizeSelect">Font boyutu</label>
+              <select id="fontSizeSelect">
+                <option value="xsmall">Çok küçük</option>
+                <option value="small">Küçük</option>
+                <option value="normal">Normal</option>
+                <option value="large">Büyük</option>
+              </select>
+            </div>
+            <div class="select-row">
+              <label for="designModeSelect">Tasarım modu</label>
+              <select id="designModeSelect">
+                <option value="standard">Standart görünüm</option>
+                <option value="compact">Sade çözüm modu</option>
+              </select>
+            </div>
+            <div class="select-row">
+              <label for="themeSelect">Tema rengi</label>
+              <select id="themeSelect">
+                <option value="blue">Mavi</option>
+                <option value="green">Yeşil</option>
+                <option value="purple">Mor</option>
+                <option value="rose">Kırmızı</option>
+              </select>
+            </div>
+            <div class="select-row">
+              <label for="duplicateFilterSelect">Tekrarlayan sorular</label>
+              <select id="duplicateFilterSelect">
+                <option value="all">Açık - Tüm tekrarları göster</option>
+                <option value="smart">Kapalı - Tekilleştir, AI cevaplı sürümü tercih et</option>
+              </select>
+            </div>
+            <div class="select-row">
+              <label for="questionOrderSelect">Soru sırası</label>
+              <select id="questionOrderSelect">
+                <option value="normal">Normal sıra</option>
+                <option value="shuffle">Karışık sıra</option>
+              </select>
+            </div>
+            <div class="db-actions">
+              <button class="secondary" id="reshuffleBtn" type="button">Yeni karışık sıra oluştur</button>
+            </div>
+            <p class="subtitle">Sade çözüm modu, soru çözerken yalnızca gerekli alanları gösterir. Tekrarları açık bırakırsan soru1.db, soru6.db ve soru7.db içindeki aynı/benzer kayıtlar ayrı ayrı görünür. Kapatırsan tekilleştirilir; AI cevabı olan sürüm tercih edilir. Karışık sıra seçildiğinde filtreye uygun sorular rastgele sırayla gösterilir.</p>
+          </div>
+        </details>
+      </section>
+
+      
+    
+    </section>
+
+    <section class="app-view" id="appView">
+      <section class="exam-topbar" id="examTopbar">
+        <div class="exam-topbar-title" id="examModeTitle">Sınav modu</div>
+        <div class="exam-topbar-timer" id="examTimerText">20 sn</div>
+        <button class="danger" id="cancelExamBtn" type="button">Sınavı iptal et</button>
+      </section>
+<section class="panel compact-actionbar" id="compactActionbar">
+        <button class="secondary" id="compactHomeBtn" type="button">← Ana ekrana dön</button>
+        <button class="primary" id="compactShowAllBtn" type="button">Tüm soruları gör</button>
+      </section>
+
+      <section class="quiz-view" id="quizView">
+        <section class="panel toolbar">
+          <div class="progress-shell"><div class="progress" id="progress"></div></div>
+          <div class="counter" id="counter">0 soru</div>
+        </section>
+
+        <section class="layout" id="testArea">
+          <article class="panel question-card">
+            <div class="question-mini-header">
+              <div class="section" id="section"></div>
+              <span class="question-study-time-badge" id="questionStudyTimeBadge" title="Bu soru ve toplam çalışma süresi">00:00</span>
+              <details class="question-history-menu" id="questionHistoryDetails">
+                <summary title="Bu sorunun çalışma geçmişi" aria-label="Bu sorunun çalışma geçmişi">◷</summary>
+                <div class="question-history-panel" id="questionHistoryPanel"></div>
+              </details>
+              <details class="question-jump-menu" id="questionJumpMenuDetails">
+                <summary title="Soru seç" aria-label="Soru seç">☷</summary>
+                <div class="question-jump-menu-panel">
+                  <div class="question-jump-menu-title">Soru seç</div>
+                  <div class="question-jump-menu-grid" id="questionJumpMenuGrid"></div>
+                </div>
+              </details>
+              <button class="question-star-btn" id="questionStarBtn" type="button" title="Soruyu yıldızla" aria-label="Soruyu yıldızla">☆</button>
+              <button class="question-chatgpt-btn" id="questionChatGPTBtn" type="button" title="Bu soruyu ChatGPT'ye çözdür" aria-label="Bu soruyu ChatGPT'ye çözdür">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M12 3 2.8 20h18.4L12 3Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                  <path d="M12 8v5M12 17h.01" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </button>
+              <button class="question-break-btn" id="questionBreakBtn" type="button" title="Mola ver" aria-label="Mola ver">⏸</button>
+              <button class="question-info-toggle-btn" id="questionInfoToggleBtn" type="button" title="Açıklama/spot göster" aria-label="Açıklama/spot göster">💬</button>
+              <button class="question-fullscreen-btn" id="questionFullscreenBtn" type="button" title="Tam ekran yap" aria-label="Tam ekran yap">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <details class="meta-box meta-icon-box" id="metaDetails">
+                <summary title="Soru bilgilerini göster" aria-label="Soru bilgilerini göster">ⓘ</summary>
+                <div class="meta" id="meta"></div>
+              </details>
+            </div>
+
+            <h2 class="question" id="question"></h2>
+            <div class="options" id="options"></div>
+            <div class="feedback" id="feedback"></div>
+            <div class="ai-warning-box" id="aiWarningBox"></div>
+            <div class="info-box" id="infoBox"></div>
+
+            <div class="question-top-actions">
+              <button class="secondary" id="showInfoBtn">Açıklama/spot göster</button>
+              <button class="secondary" id="cardShowAllBtn" type="button">Tüm soruları görüntüle</button>
+              <details class="question-tools">
+                <summary>Diğer işlemler</summary>
+                <div class="question-tools-content">
+                  <button class="secondary wide-exit-btn" id="wideExitBtn">Tekli ekranı daralt</button>
+                  <button class="secondary" id="resetVisibleBtn">Filtre cevaplarını sıfırla</button>
+                  <button class="danger" id="clearCacheBtn">Önbelleği temizle</button>
+                </div>
+              </details>
+            </div>
+
+            <div class="nav floating-question-nav" aria-label="Soru geçişleri">
+              <button class="secondary" id="prevBtn">Önceki</button>
+              <button class="secondary unwanted-btn" id="hideQuestionBtn">İstenmeyen</button>
+              <button class="secondary unknown-btn" id="unknownQuestionBtn">Bilmiyorum</button>
+              <button class="primary" id="nextBtn">Sonraki</button>
+            </div>
+
+            
+            <section class="break-modal hidden" id="breakModal" aria-hidden="true">
+              <div class="break-card" role="dialog" aria-modal="true" aria-label="Mola ekranı">
+                <div class="break-icon">☕</div>
+                <h2>Mola verildi</h2>
+                <p>Çalışma süresi durduruldu. Devam ettiğinde süre kaldığı yerden işlemeye devam eder.</p>
+                <button class="primary" id="breakContinueBtn" type="button">Devam et</button>
+              </div>
+            </section>
+<section class="fullscreen-results-modal hidden" id="fullscreenResultsModal" aria-hidden="true">
+              <div class="fullscreen-results-card" role="dialog" aria-modal="true" aria-label="Test sonucu">
+                <div class="fullscreen-results-header">
+                  <div>
+                    <b>Test Sonucu</b>
+                    <small id="fullscreenResultSubtitle"></small>
+                  </div>
+                  <button class="secondary" id="fullscreenResultCloseBtn" type="button">Kapat</button>
+                </div>
+                <div class="fullscreen-results-score">
+                  <div class="score-circle mini-score-circle" id="fullscreenScoreCircle"><div class="score-text" id="fullscreenScoreText">0%</div></div>
+                  <div class="fullscreen-results-actions">
+                    <button class="secondary" id="fullscreenAskReviewChatGPTBtn" type="button">Yanlış + bilmiyorum sorularını ChatGPT'ye sor</button>
+                    <button class="primary" id="fullscreenReviewToggleBtn" type="button">Gözden geçirilecekleri göster</button>
+                  </div>
+                </div>
+                <div class="review fullscreen-review hidden" id="fullscreenReview"></div>
+              </div>
+            </section>
+
+          </article>
+
+          <aside class="panel side-panel">
+            <h3 class="side-title">Durum</h3>
+            <div class="mini-stats">
+              <div class="mini"><span>Cevaplanan</span><b id="answeredCount">0</b></div>
+              <div class="mini"><span>Doğru</span><b id="correctCount">0</b></div>
+              <div class="mini"><span>Yanlış</span><b id="wrongCount">0</b></div>
+              <div class="mini"><span>Boş</span><b id="emptyCount">0</b></div>
+            </div>
+
+            <details class="combo-panel compact-filter-panel" id="filterPanelDetails">
+              <summary class="side-title compact-filter-summary">Filtreler</summary>
+              <div class="compact-filter-content">
+                <div class="combo-grid">
+                  <div class="select-row"><label for="subjectSelect">Ders</label><select id="subjectSelect"></select></div>
+                  <div class="select-row"><label for="examSelect">Kurul / sınav grubu</label><select id="examSelect"></select></div>
+                  <div class="select-row"><label for="yearSelect">Yıl / sene</label><select id="yearSelect"></select></div>
+                  <div class="select-row"><label for="teacherSelect">Hoca</label><select id="teacherSelect"></select></div>
+                  <div class="select-row"><label for="sourceGroupSelect">Kaynak türü</label><select id="sourceGroupSelect"></select></div>
+                  <div class="select-row">
+                    <label for="searchInput">Soru / konu / hedef / kaynak araması</label>
+                    <input class="search" id="searchInput" placeholder="Örn: HPV, EKG, a. subclavia, keton, Sertoli...">
+                  </div>
+                </div>
+                <div class="active-filter-summary" id="activeFilterSummary"></div>
+                <div class="filter-actions">
+                  <button class="secondary" id="clearFiltersBtn">Filtreleri temizle</button>
+                  <button class="primary" id="goFirstFilteredBtn">İlk soruya git</button>
+                </div>
+              </div>
+            </details>
+
+            <details class="quick-block">
+              <summary class="side-title" style="cursor:pointer;">Hızlı ders tuşları</summary>
+              <div style="height:8px;"></div>
+              <div class="button-grid" id="subjectButtons"></div>
+            </details>
+
+            <h3 class="side-title">Sorular</h3>
+            <div class="jump-grid" id="jumpGrid"></div>
+          </aside>
+        </section>
+
+        <section class="panel results" id="results">
+          <div class="result-head">
+            <div class="score-circle" id="scoreCircle"><div class="score-text" id="scoreText">0%</div></div>
+            <div class="result-summary">
+              <h2>Test Sonucu</h2>
+              <p class="subtitle" id="resultSubtitle"></p>
+              <div class="nav" style="border-top:0;padding-top:8px;margin-top:8px;">
+                <button class="secondary" id="hideResultBtn">Sonucu gizle</button>
+                <button class="secondary" id="askReviewChatGPTBtn">Yanlış + bilmiyorum sorularını ChatGPT'ye sor</button>
+                <button class="primary" id="reviewToggleBtn">Gözden geçirilecekleri göster</button>
+              </div>
+            </div>
+          </div>
+          <div class="review hidden" id="review"></div>
+        </section>
+      </section>
+
+      <section class="panel top-nav">
+        <button class="secondary" id="backHomeBtn" type="button">← Ders seçimine dön</button>
+        <div class="top-nav-title" id="activeTitle">Ders</div>
+        <button class="secondary" id="wideQuestionBtn" type="button" title="Tekli soru ekranını genişlet/daralt">⛶ Tekli çözüm ekranı</button>
+        <button class="secondary" id="showAllBtn" type="button">Tüm soruları listele</button>
+        <button class="primary" id="changeCourseBtn" type="button">Dersi değiştir</button>
+      </section>
+
+      
+      
+      <section class="list-view" id="listView">
+        <section class="panel all-list-header">
+          <div>
+            <b id="listTitle" style="color:var(--primary);font-size:16px;">Tüm sorular</b>
+            <div class="small" id="listSubtitle"></div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="secondary" id="backToQuizBtn" type="button">Tek soru moduna dön</button>
+            <button class="secondary" id="wideListBtn" type="button" title="Tüm sorular ekranını genişlet/daralt">⛶ Listeyi genişlet</button>
+            <button class="secondary" id="pdfListBtn" type="button">PDF oluştur</button>
+            <button class="secondary" id="restoreHiddenBtn" type="button">Gizlenenleri geri yükle</button>
+            <button class="primary" id="refreshListBtn" type="button">Listeyi güncelle</button>
+          </div>
+        </section>
+        <section class="all-list" id="allList"></section>
+      </section>
+    </section>
+  
+    <section class="chatgpt-webview-modal hidden" id="chatgptWebviewModal" aria-hidden="true">
+      <div class="chatgpt-webview-panel" role="dialog" aria-modal="true" aria-label="ChatGPT soru çözüm penceresi">
+        <div class="chatgpt-webview-header">
+          <div>
+            <b>ChatGPT ile çöz</b>
+            <small>Webview açılmazsa yeni sekme veya kopyalama seçeneklerini kullan.</small>
+          </div>
+          <button class="secondary" id="chatgptWebviewCloseBtn" type="button">Kapat</button>
+        </div>
+        <div class="chatgpt-webview-actions">
+          <button class="primary" id="chatgptOpenNewTabBtn" type="button">Yeni sekmede aç</button>
+          <button class="secondary" id="chatgptCopyPromptBtn" type="button">Promptu kopyala</button>
+        </div>
+        <div class="chatgpt-webview-note" id="chatgptWebviewNote">
+          ChatGPT bazı tarayıcılarda güvenlik nedeniyle sayfa içinde açılmayabilir. Bu durumda “Yeni sekmede aç” butonunu kullan.
+        </div>
+        <iframe id="chatgptWebviewFrame" title="ChatGPT webview" loading="lazy" referrerpolicy="no-referrer"></iframe>
+      </div>
+    </section>
+
+  </main>
