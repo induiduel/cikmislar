@@ -2074,16 +2074,29 @@ async function openCurrentQuestionInChatGPT(){
       return document.body && document.body.dataset ? (document.body.dataset.page || "main") : "main";
     }
 
+    function qbIsFastNavigation(){
+      try{return sessionStorage.getItem("QB_FAST_NAV") === "1";}catch(e){return false;}
+    }
+
+    function qbSetFastNavigation(){
+      try{sessionStorage.setItem("QB_FAST_NAV","1");}catch(e){}
+    }
+
+    function qbClearFastNavigation(){
+      try{sessionStorage.removeItem("QB_FAST_NAV");}catch(e){}
+    }
+
     function qbGoQuestionPage(payload){
       try{
         sessionStorage.setItem("QB_ROUTE_REQUEST", JSON.stringify(payload || {}));
+        sessionStorage.setItem("QB_FAST_NAV","1");
       }catch(e){}
       window.location.href = "question.html";
     }
 
 
     function showLanding(){
-      if(qbCurrentPage() === "question" && !window.QB_ALLOW_LOCAL_LANDING){ window.location.href = "main.html"; return; }
+      if(qbCurrentPage() === "question" && !window.QB_ALLOW_LOCAL_LANDING){ qbSetFastNavigation(); window.location.href = "main.html"; return; }
       resumeFromBreak();
       replaceAppHistoryState("home");
       pauseStudyTimer();
@@ -2807,6 +2820,16 @@ ${body}
 
     
     function setInitialLoading(text){
+      // FAST-NAV: suppress visible loader when moving between already-loaded pages.
+      if(qbIsFastNavigation()){
+        document.body.classList.remove("is-loading");
+        if(els.initialLoadingOverlay){
+          els.initialLoadingOverlay.classList.add("hidden");
+          els.initialLoadingOverlay.setAttribute("aria-busy","false");
+        }
+        if(els.status && text) els.status.textContent = text;
+        return;
+      }
       if(!initialLoadingStartedAt) initialLoadingStartedAt = Date.now();
       document.body.classList.add("is-loading");
       if(els.initialLoadingText && text) els.initialLoadingText.textContent = text;
@@ -2825,7 +2848,7 @@ ${body}
         document.body.classList.remove("is-loading");
       };
       const elapsed = Date.now() - initialLoadingStartedAt;
-      const delay = Math.max(0, INITIAL_LOADING_MIN_MS - elapsed);
+      const delay = qbIsFastNavigation() ? 0 : Math.max(0, INITIAL_LOADING_MIN_MS - elapsed);
       setTimeout(finish, delay);
     }
 
@@ -3114,5 +3137,6 @@ async function init(){
       startCourse: (...args)=>startCourse(...args),
       startCourseWithTeacher: (...args)=>startCourseWithTeacher(...args),
       continueCourse: (...args)=>continueCourse(...args),
-      showLanding: (...args)=>showLanding(...args)
+      showLanding: (...args)=>showLanding(...args),
+      clearFastNavigation: ()=>qbClearFastNavigation()
     };

@@ -23,3 +23,15 @@ Bu paket, tek büyük HTML dosyası yerine sayfa ve JavaScript dosyalarını ay�
 
 ## Not
 Bu yapı, önceki özelliklerin yanlışlıkla silinmesini azaltmak için oluşturuldu. Yeni özellik eklerken mümkünse ilgili dosya üzerinde değişiklik yapılmalı.
+
+
+## Hızlı sayfa geçişi düzeltmesi
+- `main.html` ve `question.html` arasında geçişte artık tam yükleme ekranı gösterilmez.
+- `QB_FAST_NAV` adlı sessionStorage bayrağı ile iç geçişlerde loader bastırılır.
+- `partials/app-shell.html` localStorage içinde önbelleğe alınır.
+- `main.html` ve `question.html` gerekli JS/HTML dosyalarını prefetch eder.
+
+## GitHub yükleme notu
+ChatGPT bu ortamda GitHub deposuna doğrudan otomatik push atamaz. Bunun için:
+- `deploy.sh` dosyası eklendi. Yerel bilgisayarında `./deploy.sh "mesaj"` komutuyla commit/push yapabilirsin.
+- `.github/workflows/pages.yml` eklendi. GitHub Pages yayını için Actions üzerinden otomatik deploy yapar.

@@ -9,9 +9,22 @@
     }
   }
 
+  function clearFastNavSoon(){
+    setTimeout(()=>{
+      try{sessionStorage.removeItem("QB_FAST_NAV");}catch(e){}
+      if(window.QuestionBankPublicAPI && window.QuestionBankPublicAPI.clearFastNavigation){
+        window.QuestionBankPublicAPI.clearFastNavigation();
+      }
+    }, 250);
+  }
+
   function openQuestionRoute(){
     const page = document.body.dataset.page || "main";
-    if(page !== "question") return;
+
+    if(page !== "question"){
+      clearFastNavSoon();
+      return;
+    }
 
     const route = readRoute() || {action:"continueCourse", subject:"all", teacher:"all"};
     window.QB_ALLOW_LOCAL_LANDING = true;
@@ -27,6 +40,7 @@
         }
       }finally{
         window.QB_ALLOW_LOCAL_LANDING = false;
+        clearFastNavSoon();
       }
     }, 0);
   }
