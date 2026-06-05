@@ -2675,6 +2675,145 @@
       }
     }
 
+  
+    /* Tema renkleri */
+    body.theme-blue{
+      --primary:#173a8a;--primary2:#2f5bbd;--soft:#edf4ff;
+      background:radial-gradient(circle at 8% 0%,rgba(23,58,138,.12),transparent 28rem),
+                 radial-gradient(circle at 92% 4%,rgba(47,91,189,.09),transparent 30rem),
+                 linear-gradient(180deg,#fff 0%,var(--bg) 56%,#edf3f9 100%);
+    }
+    body.theme-green{
+      --primary:#17654a;--primary2:#2d9b73;--soft:#eaf8f1;
+      background:radial-gradient(circle at 8% 0%,rgba(23,101,74,.12),transparent 28rem),
+                 radial-gradient(circle at 92% 4%,rgba(45,155,115,.10),transparent 30rem),
+                 linear-gradient(180deg,#fff 0%,#f4fbf7 56%,#e8f5ee 100%);
+    }
+    body.theme-purple{
+      --primary:#5b2f91;--primary2:#8159c8;--soft:#f2ecff;
+      background:radial-gradient(circle at 8% 0%,rgba(91,47,145,.12),transparent 28rem),
+                 radial-gradient(circle at 92% 4%,rgba(129,89,200,.10),transparent 30rem),
+                 linear-gradient(180deg,#fff 0%,#f8f5ff 56%,#efe8fb 100%);
+    }
+    body.theme-rose{
+      --primary:#9f2942;--primary2:#d5526b;--soft:#fff0f3;
+      background:radial-gradient(circle at 8% 0%,rgba(159,41,66,.11),transparent 28rem),
+                 radial-gradient(circle at 92% 4%,rgba(213,82,107,.10),transparent 30rem),
+                 linear-gradient(180deg,#fff 0%,#fff7f8 56%,#fdecef 100%);
+    }
+
+    /* Çalışma geçmişi açılır menüsü */
+    .question-history-menu{
+      flex:0 0 auto;
+      position:relative;
+      margin:0!important;
+      padding:0!important;
+    }
+    .question-history-menu summary{
+      width:22px;
+      height:22px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      list-style:none;
+      border-radius:999px;
+      border:1px solid rgba(23,58,138,.18);
+      background:#fff;
+      color:var(--primary);
+      font-size:13px;
+      font-weight:950;
+      box-shadow:0 2px 6px rgba(15,23,42,.06);
+      user-select:none;
+    }
+    .question-history-menu summary::-webkit-details-marker{
+      display:none;
+    }
+    .question-history-menu[open] summary{
+      background:var(--primary);
+      color:#fff;
+      border-color:var(--primary);
+    }
+    .question-history-panel{
+      position:absolute;
+      top:calc(100% + 7px);
+      right:0;
+      z-index:175;
+      width:min(300px, calc(100vw - 18px));
+      max-height:min(56vh, 420px);
+      overflow:auto;
+      padding:9px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:#fff;
+      box-shadow:0 18px 42px rgba(15,23,42,.20);
+      color:#334155;
+      font-size:11px;
+      line-height:1.35;
+    }
+    .history-title{
+      color:var(--primary);
+      font-weight:950;
+      margin-bottom:6px;
+    }
+    .history-total{
+      display:flex;
+      justify-content:space-between;
+      gap:8px;
+      padding:5px 6px;
+      border-radius:9px;
+      background:var(--soft);
+      color:var(--primary);
+      margin-bottom:5px;
+    }
+    .history-list{
+      display:grid;
+      gap:4px;
+      margin-top:7px;
+    }
+    .history-row{
+      display:flex;
+      justify-content:space-between;
+      gap:8px;
+      padding:5px 6px;
+      border:1px solid var(--line);
+      border-radius:8px;
+      background:#fbfdff;
+    }
+    .history-row b{
+      font-family:"Roboto Mono","Inter",monospace;
+      color:var(--primary);
+    }
+    .history-empty{
+      color:var(--muted);
+      padding:6px;
+      border:1px dashed var(--line);
+      border-radius:9px;
+      background:#fbfdff;
+    }
+
+    /* Açılış ve geçiş performansı */
+    .course-grid,
+    .all-list,
+    .question-jump-menu-grid{
+      content-visibility:auto;
+      contain-intrinsic-size:800px;
+    }
+    .question-card{
+      will-change:auto;
+    }
+
+    @media (max-width:560px){
+      .question-history-panel{
+        position:fixed;
+        left:8px;
+        right:8px;
+        top:48px;
+        width:auto;
+        max-height:58vh;
+      }
+    }
+
   </style>
 </head>
 <body class="font-normal">
@@ -2766,6 +2905,15 @@
               </select>
             </div>
             <div class="select-row">
+              <label for="themeSelect">Tema rengi</label>
+              <select id="themeSelect">
+                <option value="blue">Mavi</option>
+                <option value="green">Yeşil</option>
+                <option value="purple">Mor</option>
+                <option value="rose">Kırmızı</option>
+              </select>
+            </div>
+            <div class="select-row">
               <label for="duplicateFilterSelect">Tekrarlayan sorular</label>
               <select id="duplicateFilterSelect">
                 <option value="all">Açık - Tüm tekrarları göster</option>
@@ -2813,6 +2961,10 @@
             <div class="question-mini-header">
               <div class="section" id="section"></div>
               <span class="question-study-time-badge" id="questionStudyTimeBadge" title="Bu soru ve toplam çalışma süresi">00:00</span>
+              <details class="question-history-menu" id="questionHistoryDetails">
+                <summary title="Bu sorunun çalışma geçmişi" aria-label="Bu sorunun çalışma geçmişi">◷</summary>
+                <div class="question-history-panel" id="questionHistoryPanel"></div>
+              </details>
               <details class="question-jump-menu" id="questionJumpMenuDetails">
                 <summary title="Soru seç" aria-label="Soru seç">☷</summary>
                 <div class="question-jump-menu-panel">
@@ -3005,6 +3157,7 @@
     let selectedDbFiles = [];
     let fontSize = "normal";
     let designMode = "standard";
+    let themeColor = "blue";
     let duplicateMode = "all";
     let duplicateFilterEnabled = true; // eski kayıtlarla uyumluluk için tutulur
     let allLoadedQuestions = [];
@@ -3025,10 +3178,13 @@
     let lastPositions = {};
     let currentChatGPTPrompt = "";
     let currentChatGPTUrl = "";
-    let studyTimes = {questions:{}, subjects:{}, total:0};
+    let studyTimes = {questions:{}, subjects:{}, sessions:{}, total:0};
     let activeStudyQuestionKey = "";
     let activeStudySubject = "";
+    let activeStudySessionStart = 0;
+    let activeStudySessionSeconds = 0;
     let lastStudyTick = 0;
+    let lastStudySave = 0;
     let studyTimerHandle = null;
     const LIST_BATCH_SIZE = 60;
 
@@ -3044,9 +3200,9 @@
       listTitle:$("listTitle"), listSubtitle:$("listSubtitle"), allList:$("allList"),
       totalQuestionsHero:$("totalQuestionsHero"), totalSubjectsHero:$("totalSubjectsHero"), status:$("statusBox"),
       manualDbBox:$("manualDbBox"), manualDbInput:$("manualDbInput"), dbList:$("dbList"),
-      selectAllDbBtn:$("selectAllDbBtn"), clearDbBtn:$("clearDbBtn"), fontSizeSelect:$("fontSizeSelect"), designModeSelect:$("designModeSelect"), duplicateFilterSelect:$("duplicateFilterSelect"), questionOrderSelect:$("questionOrderSelect"), reshuffleBtn:$("reshuffleBtn"),
+      selectAllDbBtn:$("selectAllDbBtn"), clearDbBtn:$("clearDbBtn"), fontSizeSelect:$("fontSizeSelect"), designModeSelect:$("designModeSelect"), themeSelect:$("themeSelect"), duplicateFilterSelect:$("duplicateFilterSelect"), questionOrderSelect:$("questionOrderSelect"), reshuffleBtn:$("reshuffleBtn"),
       examTopbar:$("examTopbar"), examModeTitle:$("examModeTitle"), examTimerText:$("examTimerText"), cancelExamBtn:$("cancelExamBtn"),
-      questionFullscreenBtn:$("questionFullscreenBtn"), questionChatGPTBtn:$("questionChatGPTBtn"), questionStarBtn:$("questionStarBtn"), questionStudyTimeBadge:$("questionStudyTimeBadge"), questionJumpMenuDetails:$("questionJumpMenuDetails"), questionJumpMenuGrid:$("questionJumpMenuGrid"),
+      questionFullscreenBtn:$("questionFullscreenBtn"), questionChatGPTBtn:$("questionChatGPTBtn"), questionStarBtn:$("questionStarBtn"), questionStudyTimeBadge:$("questionStudyTimeBadge"), questionHistoryDetails:$("questionHistoryDetails"), questionHistoryPanel:$("questionHistoryPanel"), questionJumpMenuDetails:$("questionJumpMenuDetails"), questionJumpMenuGrid:$("questionJumpMenuGrid"),
       chatgptWebviewModal:$("chatgptWebviewModal"), chatgptWebviewFrame:$("chatgptWebviewFrame"), chatgptWebviewCloseBtn:$("chatgptWebviewCloseBtn"), chatgptOpenNewTabBtn:$("chatgptOpenNewTabBtn"), chatgptCopyPromptBtn:$("chatgptCopyPromptBtn"), chatgptWebviewNote:$("chatgptWebviewNote"),
       progress:$("progress"), counter:$("counter"), section:$("section"), meta:$("meta"), question:$("question"), options:$("options"),
       feedback:$("feedback"), aiWarningBox:$("aiWarningBox"), infoBox:$("infoBox"), showInfoBtn:$("showInfoBtn"), cardShowAllBtn:$("cardShowAllBtn"), hideQuestionBtn:$("hideQuestionBtn"), wideExitBtn:$("wideExitBtn"), prevBtn:$("prevBtn"), nextBtn:$("nextBtn"),
@@ -3086,18 +3242,43 @@
           studyTimes = {
             questions: parsed.questions && typeof parsed.questions === "object" ? parsed.questions : {},
             subjects: parsed.subjects && typeof parsed.subjects === "object" ? parsed.subjects : {},
+            sessions: parsed.sessions && typeof parsed.sessions === "object" ? parsed.sessions : {},
             total: safeStudyNumber(parsed.total)
           };
         }
       }catch(e){
-        studyTimes = {questions:{}, subjects:{}, total:0};
+        studyTimes = {questions:{}, subjects:{}, sessions:{}, total:0};
       }
     }
 
-    function saveStudyTimes(){
+    function saveStudyTimes(force=false){
+      const now = Date.now();
+      if(!force && now - lastStudySave < 10000) return;
+      lastStudySave = now;
       try{
         localStorage.setItem(STUDY_TIME_KEY, JSON.stringify(studyTimes));
       }catch(e){}
+    }
+
+    function finalizeStudySession(){
+      if(!activeStudyQuestionKey || activeStudySessionSeconds <= 0 || !activeStudySessionStart) return;
+      if(!studyTimes.sessions || typeof studyTimes.sessions !== "object") studyTimes.sessions = {};
+      if(!Array.isArray(studyTimes.sessions[activeStudyQuestionKey])) studyTimes.sessions[activeStudyQuestionKey] = [];
+
+      studyTimes.sessions[activeStudyQuestionKey].push({
+        startedAt: activeStudySessionStart,
+        endedAt: Date.now(),
+        duration: Math.max(1, Math.floor(activeStudySessionSeconds)),
+        subject: activeStudySubject || "Ders yok"
+      });
+
+      if(studyTimes.sessions[activeStudyQuestionKey].length > 80){
+        studyTimes.sessions[activeStudyQuestionKey] = studyTimes.sessions[activeStudyQuestionKey].slice(-80);
+      }
+
+      activeStudySessionSeconds = 0;
+      activeStudySessionStart = Date.now();
+      saveStudyTimes(true);
     }
 
     function formatStudyTime(seconds){
@@ -3132,6 +3313,43 @@
       els.questionStudyTimeBadge.title = `Bu soru: ${formatStudyTime(qSec)} · ${q.subject || "Ders"} toplam: ${formatStudyTime(subjectSec)} · Genel toplam: ${formatStudyTime(studyTimes.total)}`;
     }
 
+    function formatStudyDate(ts){
+      try{
+        return new Date(ts).toLocaleString("tr-TR", {day:"2-digit", month:"2-digit", hour:"2-digit", minute:"2-digit"});
+      }catch(e){
+        return "";
+      }
+    }
+
+    function renderQuestionHistoryPanel(q=null){
+      if(!els.questionHistoryPanel) return;
+      if(!q) q = questions[current];
+      if(!q){
+        els.questionHistoryPanel.innerHTML = `<div class="history-empty">Geçmiş yok.</div>`;
+        return;
+      }
+
+      const key = answerKey(q);
+      const sessions = (studyTimes.sessions && Array.isArray(studyTimes.sessions[key])) ? studyTimes.sessions[key].slice().reverse() : [];
+      const qTotal = questionStudySeconds(q);
+      const subjectTotal = subjectStudySeconds(q.subject || "Ders yok");
+
+      const rows = sessions.slice(0, 12).map(s => `
+        <div class="history-row">
+          <span>${escapeHTML(formatStudyDate(s.startedAt))}</span>
+          <b>${escapeHTML(formatStudyTime(s.duration))}</b>
+        </div>
+      `).join("");
+
+      els.questionHistoryPanel.innerHTML = `
+        <div class="history-title">Çalışma geçmişi</div>
+        <div class="history-total">Bu soru: <b>${escapeHTML(formatStudyTime(qTotal))}</b></div>
+        <div class="history-total">Ders toplamı: <b>${escapeHTML(formatStudyTime(subjectTotal))}</b></div>
+        <div class="history-list">${rows || `<div class="history-empty">Bu soru için kayıtlı oturum yok.</div>`}</div>
+      `;
+    }
+
+
     function commitStudyTime(force=false){
       if(!activeStudyQuestionKey || !lastStudyTick) return;
       const now = Date.now();
@@ -3146,23 +3364,41 @@
         studyTimes.questions[activeStudyQuestionKey] = safeStudyNumber(studyTimes.questions[activeStudyQuestionKey]) + delta;
         studyTimes.subjects[activeStudySubject || "Ders yok"] = safeStudyNumber(studyTimes.subjects[activeStudySubject || "Ders yok"]) + delta;
         studyTimes.total = safeStudyNumber(studyTimes.total) + delta;
-        saveStudyTimes();
+        activeStudySessionSeconds += delta;
+        saveStudyTimes(false);
       }
       lastStudyTick = now;
     }
 
     function setActiveStudyQuestion(q){
-      commitStudyTime(true);
+      const nextKey = q && answerKey(q) ? answerKey(q) : "";
+      if(activeStudyQuestionKey && activeStudyQuestionKey !== nextKey){
+        commitStudyTime(true);
+        finalizeStudySession();
+      }else{
+        commitStudyTime(true);
+      }
+
       if(!q || !answerKey(q)){
+        finalizeStudySession();
         activeStudyQuestionKey = "";
         activeStudySubject = "";
+        activeStudySessionStart = 0;
+        activeStudySessionSeconds = 0;
         lastStudyTick = 0;
         return;
       }
-      activeStudyQuestionKey = answerKey(q);
+
+      if(activeStudyQuestionKey !== nextKey){
+        activeStudySessionStart = Date.now();
+        activeStudySessionSeconds = 0;
+      }
+
+      activeStudyQuestionKey = nextKey;
       activeStudySubject = q.subject || "Ders yok";
       lastStudyTick = Date.now();
       updateQuestionStudyTimeBadge(q);
+      renderQuestionHistoryPanel(q);
     }
 
     function startStudyTimer(){
@@ -3174,14 +3410,19 @@
         }
         commitStudyTime(false);
         updateQuestionStudyTimeBadge();
+        if(els.questionHistoryDetails && els.questionHistoryDetails.open) renderQuestionHistoryPanel();
       }, 1000);
     }
 
     function pauseStudyTimer(){
       commitStudyTime(true);
+      finalizeStudySession();
       activeStudyQuestionKey = "";
       activeStudySubject = "";
+      activeStudySessionStart = 0;
+      activeStudySessionSeconds = 0;
       lastStudyTick = 0;
+      saveStudyTimes(true);
     }
 
 
@@ -3769,6 +4010,13 @@
     }
 
     async function discoverDbFiles(){
+      const cachedList = dbFileListCacheRead();
+      if(cachedList && cachedList.length){
+        els.status.classList.remove("hidden");
+        els.status.innerHTML = "Soru dosyası listesi önbellekten yükleniyor...";
+        return cachedList.map(file => ({...file, source:file.source || "cache"}));
+      }
+
       const candidates = [];
       const errors = [];
 
@@ -3777,11 +4025,6 @@
           if(!file || !file.name || !file.url) return;
           candidates.push({...file, source:file.source || label, canonicalName: dbCanonicalName(file.name)});
         });
-      }
-
-      const cachedList = dbFileListCacheRead();
-      if(cachedList && cachedList.length){
-        addList(cachedList, "cache");
       }
 
       async function addFrom(fn,label){
@@ -3794,18 +4037,18 @@
       }
 
       els.status.classList.remove("hidden");
-      els.status.innerHTML = cachedList && cachedList.length
-        ? "Soru dosyası listesi önbellekten alındı; yeni soru3.db-soru6.db dosyaları ayrıca taranıyor..."
-        : "Soru dosyaları aranıyor...";
+      els.status.innerHTML = "Soru dosyaları ilk kez aranıyor...";
 
-      // Manifest ve GitHub API her açılışta tekrar denenir; böylece yeni eklenen db dosyaları görünür.
       await addFrom(listDbFilesFromManifest,"manifest");
-      await addFrom(listDbFilesFromGithubApi,"github-api");
 
-      // Cache/manifest eski kalırsa özellikle soru3.db, soru4.db, soru5.db, soru6.db gibi yeni dosyalar kaçmasın.
-      await addFrom(()=>listDbFilesBySequentialProbe(50),"sequential-fast");
+      if(!candidates.length){
+        await addFrom(listDbFilesFromGithubApi,"github-api");
+      }
 
-      // Hiçbir şey bulunamazsa geniş tarama yap.
+      if(!candidates.length){
+        await addFrom(()=>listDbFilesBySequentialProbe(50),"sequential-fast");
+      }
+
       if(!candidates.length){
         els.status.innerHTML = "Soru dosyaları geniş tarama ile aranıyor...";
         await addFrom(()=>listDbFilesBySequentialProbe(SEQUENTIAL_SCAN_MAX),"sequential-full");
@@ -4101,7 +4344,7 @@
     }
 
     function saveState(){
-      try{localStorage.setItem(STORAGE_KEY, JSON.stringify({answers,current,filters,infoOpen,selectedDbFiles,fontSize,designMode,duplicateMode,duplicateFilterEnabled,questionWideMode,listWideMode,shuffleQuestions,shuffleSeed,hiddenQuestionIds,starredQuestionIds,quizActive,quizIds,quizTitle}));}catch(e){}
+      try{localStorage.setItem(STORAGE_KEY, JSON.stringify({answers,current,filters,infoOpen,selectedDbFiles,fontSize,designMode,themeColor,duplicateMode,duplicateFilterEnabled,questionWideMode,listWideMode,shuffleQuestions,shuffleSeed,hiddenQuestionIds,starredQuestionIds,quizActive,quizIds,quizTitle}));}catch(e){}
     }
     function loadState(){
       loadLastPositions();
@@ -4117,6 +4360,7 @@
         if(Array.isArray(data.selectedDbFiles)) selectedDbFiles=data.selectedDbFiles;
         if(["xsmall","small","normal","large"].includes(data.fontSize)) fontSize=data.fontSize;
         if(["standard","compact"].includes(data.designMode)) designMode=data.designMode;
+        if(["blue","green","purple","rose"].includes(data.themeColor)) themeColor=data.themeColor;
         if(typeof data.duplicateFilterEnabled === "boolean") duplicateFilterEnabled=data.duplicateFilterEnabled;
         if(["smart","all"].includes(data.duplicateMode)) duplicateMode=data.duplicateMode;
         else duplicateMode = "all";
@@ -4133,7 +4377,14 @@
       }catch(e){return false;}
     }
 
+    function applyThemeColor(){
+      document.body.classList.remove("theme-blue","theme-green","theme-purple","theme-rose");
+      document.body.classList.add("theme-" + themeColor);
+      if(els.themeSelect) els.themeSelect.value = themeColor;
+    }
+
     function applyFontSize(){
+      applyThemeColor();
       document.body.classList.remove("font-xsmall","font-small","font-normal","font-large");
       document.body.classList.add("font-"+fontSize);
       if (els.fontSizeSelect) els.fontSizeSelect.value = fontSize;
@@ -5371,8 +5622,8 @@ ${body}
 
     function bindEvents(){
       startStudyTimer();
-      document.addEventListener("visibilitychange",()=>{ if(document.hidden) commitStudyTime(true); else lastStudyTick = Date.now(); });
-      window.addEventListener("beforeunload",()=>commitStudyTime(true));
+      document.addEventListener("visibilitychange",()=>{ if(document.hidden){ commitStudyTime(true); saveStudyTimes(true); } else lastStudyTick = Date.now(); });
+      window.addEventListener("beforeunload",()=>{ commitStudyTime(true); finalizeStudySession(); saveStudyTimes(true); });
       if(els.questionFullscreenBtn) els.questionFullscreenBtn.addEventListener("click", toggleQuestionFullscreen);
       if(els.questionChatGPTBtn) els.questionChatGPTBtn.addEventListener("click", openCurrentQuestionInChatGPT);
       if(els.questionStarBtn) els.questionStarBtn.addEventListener("click",()=>{
@@ -5484,6 +5735,7 @@ ${body}
       els.clearDbBtn.addEventListener("click",()=>{selectedDbFiles=[]; rebuildQuestionsFromActiveFiles(true); saveState(); renderLanding(); if(els.appView.classList.contains("active")) render();});
       els.fontSizeSelect.addEventListener("change",()=>{fontSize=els.fontSizeSelect.value; applyFontSize(); saveState(); renderLanding(); if(els.appView.classList.contains("active")) render();});
       els.designModeSelect.addEventListener("change",()=>{designMode=els.designModeSelect.value; applyDesignMode(); saveState(); renderLanding(); if(els.appView.classList.contains("active")) render();});
+      if(els.themeSelect) els.themeSelect.addEventListener("change",()=>{themeColor=els.themeSelect.value; applyThemeColor(); saveState();});
       els.duplicateFilterSelect.addEventListener("change",()=>{
         duplicateMode = els.duplicateFilterSelect.value === "all" ? "all" : "smart";
         duplicateFilterEnabled = duplicateMode === "smart";
@@ -5557,28 +5809,36 @@ ${body}
         groups.get(key).push(file);
       });
 
+      const priority = {"manifest":0, "github-api":1, "sequential-fast":2, "sequential":2, "sequential-full":3, "cache":4, "manual":5};
+      const groupEntries = [...groups.entries()];
+
+      const results = await Promise.all(groupEntries.map(async ([key, files])=>{
+        files.sort((a,b)=>(priority[a.source] ?? 9) - (priority[b.source] ?? 9));
+        const errors = [];
+        for(const file of files){
+          try{
+            const qs = await loadDbFile(file);
+            return {ok:true, file:{name:dbBaseName(file.name), url:file.url, source:file.source}, qs};
+          }catch(e){
+            errors.push(`${file.name}: ${e.message}`);
+          }
+        }
+        console.warn("Bu soru dosyası okunamadı:", key, files);
+        return {ok:false, errors};
+      }));
+
       const loadedFiles = [];
       const all = [];
       const loadErrors = [];
-      const priority = {"manifest":0, "github-api":1, "sequential":2, "manual":3};
 
-      for (const [key, files] of groups.entries()){
-        files.sort((a,b)=>(priority[a.source] ?? 9) - (priority[b.source] ?? 9));
-
-        let ok = false;
-        for (const file of files){
-          try{
-            const qs = await loadDbFile(file);
-            loadedFiles.push({name:dbBaseName(file.name), url:file.url, source:file.source});
-            all.push(...qs);
-            ok = true;
-            break;
-          }catch(e){
-            loadErrors.push(`${file.name}: ${e.message}`);
-          }
+      results.forEach(result=>{
+        if(result.ok){
+          loadedFiles.push(result.file);
+          all.push(...result.qs);
+        }else{
+          loadErrors.push(...(result.errors || []));
         }
-        if(!ok) console.warn("Bu soru dosyası okunamadı:", key, files);
-      }
+      });
 
       return {loadedFiles, all, loadErrors};
     }
