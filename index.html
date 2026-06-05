@@ -3161,9 +3161,181 @@
       .fullscreen-results-card{border-radius:18px;}
     }
 
+  
+    /* RESTORE-FIX: loading screen and fullscreen break button */
+    body.is-loading .wrap{
+      opacity:0!important;
+      visibility:hidden!important;
+      pointer-events:none!important;
+    }
+    .initial-loading-overlay{
+      position:fixed!important;
+      inset:0!important;
+      z-index:99999!important;
+      display:flex!important;
+      align-items:center!important;
+      justify-content:center!important;
+      background:
+        radial-gradient(circle at 18% 12%, rgba(23,58,138,.18), transparent 24rem),
+        radial-gradient(circle at 84% 2%, rgba(47,91,189,.13), transparent 28rem),
+        linear-gradient(180deg,#fff 0%,var(--bg) 100%)!important;
+      color:var(--text)!important;
+    }
+    .initial-loading-overlay.hidden{display:none!important;}
+    .initial-loading-card{
+      width:min(370px,calc(100% - 28px))!important;
+      display:grid!important;
+      justify-items:center!important;
+      gap:12px!important;
+      padding:28px 18px!important;
+      border-radius:24px!important;
+      background:rgba(255,255,255,.96)!important;
+      border:1px solid var(--line)!important;
+      box-shadow:0 26px 80px rgba(15,23,42,.20)!important;
+      text-align:center!important;
+    }
+    .initial-loading-card b{
+      color:var(--primary)!important;
+      font-size:15.5px!important;
+      font-weight:950!important;
+    }
+    .initial-loading-card span{
+      color:var(--muted)!important;
+      font-size:12px!important;
+      line-height:1.35!important;
+    }
+    .loader-ring{
+      width:52px!important;
+      height:52px!important;
+      border-radius:50%!important;
+      border:5px solid var(--soft)!important;
+      border-top-color:var(--primary)!important;
+      border-right-color:var(--primary2)!important;
+      animation:loaderSpinRestore .62s linear infinite!important;
+    }
+    @keyframes loaderSpinRestore{to{transform:rotate(360deg)}}
+
+    .question-mini-header .question-break-btn{
+      display:none!important;
+      align-items:center!important;
+      justify-content:center!important;
+      width:24px!important;
+      height:24px!important;
+      min-width:24px!important;
+      flex:0 0 24px!important;
+      border-radius:999px!important;
+      border:1px solid rgba(122,79,8,.22)!important;
+      background:#fff7df!important;
+      color:#7a4f08!important;
+      font-size:13px!important;
+      font-weight:950!important;
+      line-height:1!important;
+      padding:0!important;
+      box-shadow:0 2px 6px rgba(15,23,42,.08)!important;
+      cursor:pointer!important;
+    }
+    body.question-card-fullscreen .question-mini-header .question-break-btn,
+    body.question-wide-mode .question-mini-header .question-break-btn,
+    .question-card:fullscreen .question-break-btn,
+    .question-mini-header .question-break-btn.break-visible{
+      display:inline-flex!important;
+      visibility:visible!important;
+      opacity:1!important;
+    }
+    body.break-active .question-mini-header .question-break-btn{
+      background:var(--primary)!important;
+      color:#fff!important;
+      border-color:var(--primary)!important;
+    }
+
+    .question-card .break-modal,
+    .question-card:fullscreen .break-modal,
+    body.question-card-fullscreen .question-card .break-modal{
+      position:fixed!important;
+      inset:0!important;
+      z-index:2147483000!important;
+      width:100vw!important;
+      height:100vh!important;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:16px;
+      background:
+        radial-gradient(circle at 50% 30%, rgba(255,255,255,.28), transparent 18rem),
+        rgba(15,23,42,.55);
+      backdrop-filter:blur(10px);
+      -webkit-backdrop-filter:blur(10px);
+      border-radius:0!important;
+    }
+    .break-modal.hidden{display:none!important;}
+    .break-card{
+      width:min(380px, calc(100% - 24px));
+      display:grid;
+      justify-items:center;
+      gap:10px;
+      text-align:center;
+      padding:24px 18px 18px;
+      border-radius:26px;
+      background:rgba(255,255,255,.96);
+      border:1px solid rgba(255,255,255,.65);
+      box-shadow:0 28px 80px rgba(15,23,42,.30);
+      animation:breakPopRestore .22s ease-out;
+    }
+    .break-icon{
+      width:64px;
+      height:64px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:22px;
+      background:var(--soft);
+      color:var(--primary);
+      font-size:32px;
+      box-shadow:inset 0 0 0 1px rgba(23,58,138,.08);
+    }
+    .break-card h2{
+      margin:2px 0 0;
+      color:var(--primary);
+      font-size:21px;
+      font-weight:950;
+      letter-spacing:-.02em;
+    }
+    .break-card p{
+      margin:0 0 6px;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.45;
+      max-width:310px;
+    }
+    .break-card button{
+      min-width:150px;
+      min-height:42px;
+      border-radius:14px!important;
+      font-weight:950;
+    }
+    @keyframes breakPopRestore{
+      from{transform:translateY(8px) scale(.96); opacity:0}
+      to{transform:translateY(0) scale(1); opacity:1}
+    }
+    body.theme-dark .break-card,
+    body.theme-midnight .break-card{
+      background:rgba(15,23,42,.96);
+      border-color:rgba(148,163,184,.24);
+      color:var(--text);
+    }
+
   </style>
 </head>
-<body class="font-normal">
+<body class="font-normal is-loading">
+
+  <section class="initial-loading-overlay" id="initialLoadingOverlay" aria-live="polite" aria-busy="true">
+    <div class="initial-loading-card">
+      <div class="loader-ring" aria-hidden="true"></div>
+      <b>Soru bankası hazırlanıyor</b>
+      <span id="initialLoadingText">Database dosyaları kontrol ediliyor...</span>
+    </div>
+  </section>
+
   <main class="wrap">
 
     <details class="top-menu panel" id="topMenu">
@@ -3326,6 +3498,7 @@
                   <path d="M12 8v5M12 17h.01" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                 </svg>
               </button>
+              <button class="question-break-btn" id="questionBreakBtn" type="button" title="Mola ver" aria-label="Mola ver">⏸</button>
               <button class="question-info-toggle-btn" id="questionInfoToggleBtn" type="button" title="Açıklama/spot göster" aria-label="Açıklama/spot göster">💬</button>
               <button class="question-fullscreen-btn" id="questionFullscreenBtn" type="button" title="Tam ekran yap" aria-label="Tam ekran yap">
                 <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -3364,7 +3537,16 @@
               <button class="primary" id="nextBtn">Sonraki</button>
             </div>
 
-            <section class="fullscreen-results-modal hidden" id="fullscreenResultsModal" aria-hidden="true">
+            
+            <section class="break-modal hidden" id="breakModal" aria-hidden="true">
+              <div class="break-card" role="dialog" aria-modal="true" aria-label="Mola ekranı">
+                <div class="break-icon">☕</div>
+                <h2>Mola verildi</h2>
+                <p>Çalışma süresi durduruldu. Devam ettiğinde süre kaldığı yerden işlemeye devam eder.</p>
+                <button class="primary" id="breakContinueBtn" type="button">Devam et</button>
+              </div>
+            </section>
+<section class="fullscreen-results-modal hidden" id="fullscreenResultsModal" aria-hidden="true">
               <div class="fullscreen-results-card" role="dialog" aria-modal="true" aria-label="Test sonucu">
                 <div class="fullscreen-results-header">
                   <div>
@@ -3558,6 +3740,9 @@
     let lastStudyTick = 0;
     let lastStudySave = 0;
     let studyTimerHandle = null;
+    let breakModeActive = false;
+    let initialLoadingStartedAt = Date.now();
+    const INITIAL_LOADING_MIN_MS = 1200;
     let suppressHistoryAction = false;
     const LIST_BATCH_SIZE = 60;
 
@@ -3575,7 +3760,7 @@
       manualDbBox:$("manualDbBox"), manualDbInput:$("manualDbInput"), dbList:$("dbList"),
       selectAllDbBtn:$("selectAllDbBtn"), clearDbBtn:$("clearDbBtn"), fontSizeSelect:$("fontSizeSelect"), designModeSelect:$("designModeSelect"), themeSelect:$("themeSelect"), duplicateFilterSelect:$("duplicateFilterSelect"), questionOrderSelect:$("questionOrderSelect"), reshuffleBtn:$("reshuffleBtn"),
       examTopbar:$("examTopbar"), examModeTitle:$("examModeTitle"), examTimerText:$("examTimerText"), cancelExamBtn:$("cancelExamBtn"),
-      questionFullscreenBtn:$("questionFullscreenBtn"), questionInfoToggleBtn:$("questionInfoToggleBtn"), questionChatGPTBtn:$("questionChatGPTBtn"), questionStarBtn:$("questionStarBtn"), questionStudyTimeBadge:$("questionStudyTimeBadge"), questionHistoryDetails:$("questionHistoryDetails"), questionHistoryPanel:$("questionHistoryPanel"), questionJumpMenuDetails:$("questionJumpMenuDetails"), questionJumpMenuGrid:$("questionJumpMenuGrid"),
+      questionFullscreenBtn:$("questionFullscreenBtn"), questionBreakBtn:$("questionBreakBtn"), questionInfoToggleBtn:$("questionInfoToggleBtn"), questionChatGPTBtn:$("questionChatGPTBtn"), questionStarBtn:$("questionStarBtn"), questionStudyTimeBadge:$("questionStudyTimeBadge"), questionHistoryDetails:$("questionHistoryDetails"), questionHistoryPanel:$("questionHistoryPanel"), questionJumpMenuDetails:$("questionJumpMenuDetails"), questionJumpMenuGrid:$("questionJumpMenuGrid"),
       chatgptWebviewModal:$("chatgptWebviewModal"), chatgptWebviewFrame:$("chatgptWebviewFrame"), chatgptWebviewCloseBtn:$("chatgptWebviewCloseBtn"), chatgptOpenNewTabBtn:$("chatgptOpenNewTabBtn"), chatgptCopyPromptBtn:$("chatgptCopyPromptBtn"), chatgptWebviewNote:$("chatgptWebviewNote"),
       progress:$("progress"), counter:$("counter"), section:$("section"), meta:$("meta"), question:$("question"), options:$("options"),
       feedback:$("feedback"), aiWarningBox:$("aiWarningBox"), infoBox:$("infoBox"), showInfoBtn:$("showInfoBtn"), cardShowAllBtn:$("cardShowAllBtn"), hideQuestionBtn:$("hideQuestionBtn"), unknownQuestionBtn:$("unknownQuestionBtn"), wideExitBtn:$("wideExitBtn"), prevBtn:$("prevBtn"), nextBtn:$("nextBtn"),
@@ -3585,7 +3770,7 @@
       sourceGroupSelect:$("sourceGroupSelect"), searchInput:$("searchInput"), activeFilterSummary:$("activeFilterSummary"),
       clearFiltersBtn:$("clearFiltersBtn"), goFirstFilteredBtn:$("goFirstFilteredBtn"), subjectButtons:$("subjectButtons"),
       results:$("results"), scoreCircle:$("scoreCircle"), scoreText:$("scoreText"), resultSubtitle:$("resultSubtitle"),
-      review:$("review"), reviewToggleBtn:$("reviewToggleBtn"), hideResultBtn:$("hideResultBtn"), askReviewChatGPTBtn:$("askReviewChatGPTBtn"), fullscreenResultsModal:$("fullscreenResultsModal"), fullscreenResultSubtitle:$("fullscreenResultSubtitle"), fullscreenScoreCircle:$("fullscreenScoreCircle"), fullscreenScoreText:$("fullscreenScoreText"), fullscreenResultCloseBtn:$("fullscreenResultCloseBtn"), fullscreenAskReviewChatGPTBtn:$("fullscreenAskReviewChatGPTBtn"), fullscreenReviewToggleBtn:$("fullscreenReviewToggleBtn"), fullscreenReview:$("fullscreenReview")
+      review:$("review"), reviewToggleBtn:$("reviewToggleBtn"), hideResultBtn:$("hideResultBtn"), askReviewChatGPTBtn:$("askReviewChatGPTBtn"), breakModal:$("breakModal"), breakContinueBtn:$("breakContinueBtn"), initialLoadingOverlay:$("initialLoadingOverlay"), initialLoadingText:$("initialLoadingText"), fullscreenResultsModal:$("fullscreenResultsModal"), fullscreenResultSubtitle:$("fullscreenResultSubtitle"), fullscreenScoreCircle:$("fullscreenScoreCircle"), fullscreenScoreText:$("fullscreenScoreText"), fullscreenResultCloseBtn:$("fullscreenResultCloseBtn"), fullscreenAskReviewChatGPTBtn:$("fullscreenAskReviewChatGPTBtn"), fullscreenReviewToggleBtn:$("fullscreenReviewToggleBtn"), fullscreenReview:$("fullscreenReview")
     };
 
     function escapeHTML(str){return String(str ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");}
@@ -3722,6 +3907,7 @@
 
 
     function commitStudyTime(force=false){
+      if(breakModeActive) return;
       if(!activeStudyQuestionKey || !lastStudyTick) return;
       const now = Date.now();
       let delta = Math.floor((now - lastStudyTick) / 1000);
@@ -3775,6 +3961,7 @@
     function startStudyTimer(){
       if(studyTimerHandle) return;
       studyTimerHandle = setInterval(()=>{
+        if(breakModeActive) return;
         if(document.hidden || !document.body.classList.contains("app-screen-active")){
           commitStudyTime(true);
           return;
@@ -4901,6 +5088,7 @@
         els.wideListBtn.textContent = listWideMode ? "↔ Listeyi daralt" : "⛶ Listeyi genişlet";
         els.wideListBtn.title = listWideMode ? "Tüm sorular ekranını normal genişliğe döndür" : "Tüm sorular ekranını genişlet";
       }
+      updateBreakButtonVisibility();
     }
 
     function ensureSelectedDbFiles(){
@@ -5271,6 +5459,7 @@
       updateExamTimerUI();
       examTimerHandle = setInterval(()=>{
         if(!examMode) { stopExamTimer(); return; }
+        if(breakModeActive) return;
         examRemaining -= 1;
         updateExamTimerUI();
         if(examRemaining <= 0){
@@ -5480,6 +5669,48 @@ async function openCurrentQuestionInChatGPT(){
       return document.querySelector(".question-card");
     }
 
+    
+    function showBreakModal(){
+      if(breakModeActive) return;
+      commitStudyTime(true);
+      saveStudyTimes(true);
+      breakModeActive = true;
+      lastStudyTick = 0;
+      document.body.classList.add("break-active");
+      if(els.breakModal){
+        attachModalToFullscreenHost(els.breakModal);
+        els.breakModal.classList.remove("hidden");
+        els.breakModal.style.display = "flex";
+        els.breakModal.setAttribute("aria-hidden","false");
+        requestAnimationFrame(()=>els.breakContinueBtn && els.breakContinueBtn.focus());
+      }
+    }
+
+    function resumeFromBreak(){
+      breakModeActive = false;
+      lastStudyTick = Date.now();
+      document.body.classList.remove("break-active");
+      if(els.breakModal){
+        els.breakModal.classList.add("hidden");
+        els.breakModal.style.display = "";
+        els.breakModal.setAttribute("aria-hidden","true");
+      }
+      updateQuestionStudyTimeBadge();
+    }
+
+    function updateBreakButtonVisibility(){
+      if(!els.questionBreakBtn) return;
+      const activeFullscreen =
+        document.body.classList.contains("question-card-fullscreen") ||
+        document.body.classList.contains("question-wide-mode") ||
+        !!(document.fullscreenElement && (
+          document.fullscreenElement.classList?.contains("question-card") ||
+          document.fullscreenElement.querySelector?.("#questionBreakBtn")
+        ));
+      els.questionBreakBtn.classList.toggle("break-visible", activeFullscreen);
+      els.questionBreakBtn.style.display = activeFullscreen ? "inline-flex" : "none";
+    }
+
     function updateQuestionFullscreenIcon(){
       const btn = els.questionFullscreenBtn;
       if(!btn) return;
@@ -5490,6 +5721,7 @@ async function openCurrentQuestionInChatGPT(){
       btn.innerHTML = active
         ? `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`
         : `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+      updateBreakButtonVisibility();
     }
 
     async function toggleQuestionFullscreen(){
@@ -5518,6 +5750,7 @@ async function openCurrentQuestionInChatGPT(){
     }
 
     function showLanding(){
+      resumeFromBreak();
       replaceAppHistoryState("home");
       pauseStudyTimer();
       closeChatGPTWebview();
@@ -6157,6 +6390,7 @@ ${body}
     }
 
     function showListView(mode="all"){
+      resumeFromBreak();
       pushAppHistoryState("list");
       pauseStudyTimer();
       if(examMode) return;
@@ -6225,6 +6459,7 @@ ${body}
 
       renderQuestion();
       updateQuestionFullscreenIcon();
+      updateBreakButtonVisibility();
       renderJumpGrid(renderStructureDirty);
       renderStructureDirty = false;
 
@@ -6233,12 +6468,38 @@ ${body}
       // Liste ekranı açıkken ağır yeniden çizim yalnızca liste komutlarıyla yapılır.
     }
 
+    
+    function setInitialLoading(text){
+      if(!initialLoadingStartedAt) initialLoadingStartedAt = Date.now();
+      document.body.classList.add("is-loading");
+      if(els.initialLoadingText && text) els.initialLoadingText.textContent = text;
+      if(els.initialLoadingOverlay){
+        els.initialLoadingOverlay.classList.remove("hidden");
+        els.initialLoadingOverlay.setAttribute("aria-busy","true");
+      }
+    }
+
+    function hideInitialLoading(){
+      const finish = () => {
+        if(els.initialLoadingOverlay){
+          els.initialLoadingOverlay.classList.add("hidden");
+          els.initialLoadingOverlay.setAttribute("aria-busy","false");
+        }
+        document.body.classList.remove("is-loading");
+      };
+      const elapsed = Date.now() - initialLoadingStartedAt;
+      const delay = Math.max(0, INITIAL_LOADING_MIN_MS - elapsed);
+      setTimeout(finish, delay);
+    }
+
     function bindEvents(){
       startStudyTimer();
       document.addEventListener("visibilitychange",()=>{ if(document.hidden){ commitStudyTime(true); saveStudyTimes(true); } else lastStudyTick = Date.now(); });
       window.addEventListener("beforeunload",()=>{ commitStudyTime(true); finalizeStudySession(); saveStudyTimes(true); });
       window.addEventListener("popstate",()=>handleBrowserBack());
       if(els.questionFullscreenBtn) els.questionFullscreenBtn.addEventListener("click", toggleQuestionFullscreen);
+      if(els.questionBreakBtn) els.questionBreakBtn.addEventListener("click", showBreakModal);
+      if(els.breakContinueBtn) els.breakContinueBtn.addEventListener("click", resumeFromBreak);
       if(els.questionInfoToggleBtn) els.questionInfoToggleBtn.addEventListener("click",()=>{infoOpen=!infoOpen; renderPreserveScroll(); saveState();});
       if(els.questionChatGPTBtn) els.questionChatGPTBtn.addEventListener("click", openCurrentQuestionInChatGPT);
       if(els.questionStarBtn) els.questionStarBtn.addEventListener("click",()=>{
@@ -6257,6 +6518,7 @@ ${body}
         const active = !!(document.fullscreenElement && document.fullscreenElement.classList && document.fullscreenElement.classList.contains("question-card"));
         document.body.classList.toggle("question-card-fullscreen", active);
         updateQuestionFullscreenIcon();
+        updateBreakButtonVisibility();
       });
       els.menuHomeBtn.addEventListener("click",()=>{ showLanding(); if(els.topMenu) els.topMenu.open=false; });
       els.menuSourceBtn.addEventListener("click",()=>openHomeSettingsPanel("dbSettingsDetails"));
@@ -6465,6 +6727,7 @@ ${body}
     }
 
 async function init(){
+      setInitialLoading("Database dosyaları kontrol ediliyor...");
       replaceAppHistoryState("home");
       document.body.classList.remove("app-screen-active");
       bindEvents();
@@ -6472,7 +6735,9 @@ async function init(){
       applyFontSize();
       applyDesignMode();
       try{
+        setInitialLoading("Soru dosyaları aranıyor...");
         const candidates = await discoverDbFiles();
+        setInitialLoading("Sorular database/önbellekten alınıyor...");
         const loaded = await loadCandidateGroups(candidates);
 
         if(!loaded.loadedFiles.length){
@@ -6482,6 +6747,7 @@ async function init(){
         dbFiles=[...new Map(loaded.loadedFiles.map(f=>[dbCanonicalName(f.name), {...f, name:dbBaseName(f.name)}])).values()];
         const all = loaded.all;
 
+        setInitialLoading("Sorular hazırlanıyor...");
         els.status.innerHTML = "Sorular hazırlanıyor; önbellek ve indeksler kuruluyor...";
         allLoadedQuestions = all;
         ensureSelectedDbFiles();
@@ -6492,6 +6758,7 @@ async function init(){
         els.status.classList.add("hidden");
         els.manualDbBox.classList.add("hidden");
         renderLanding();
+        hideInitialLoading();
       }catch(e){
         els.status.className="panel status warn";
         els.status.classList.remove("hidden");
@@ -6501,6 +6768,7 @@ async function init(){
         Gerekirse aşağıdaki manuel yükleme alanından .db dosyalarını seçebilirsin.`;
         els.manualDbBox.classList.remove("hidden");
         renderLanding();
+        hideInitialLoading();
       }
     }
     init();
