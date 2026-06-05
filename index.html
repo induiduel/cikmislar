@@ -2792,7 +2792,7 @@
       background:#fbfdff;
     }
 
-    /* Açılış ve geçiş performansı */
+    /* Performans ve açılış optimizasyonu */
     .course-grid,
     .all-list,
     .question-jump-menu-grid{
@@ -2802,7 +2802,6 @@
     .question-card{
       will-change:auto;
     }
-
     @media (max-width:560px){
       .question-history-panel{
         position:fixed;
@@ -3186,6 +3185,7 @@
     let lastStudyTick = 0;
     let lastStudySave = 0;
     let studyTimerHandle = null;
+    let suppressHistoryAction = false;
     const LIST_BATCH_SIZE = 60;
 
     const $ = id => document.getElementById(id);
@@ -3316,9 +3316,7 @@
     function formatStudyDate(ts){
       try{
         return new Date(ts).toLocaleString("tr-TR", {day:"2-digit", month:"2-digit", hour:"2-digit", minute:"2-digit"});
-      }catch(e){
-        return "";
-      }
+      }catch(e){return "";}
     }
 
     function renderQuestionHistoryPanel(q=null){
@@ -3518,6 +3516,7 @@
     }
 
     function continueCourse(subject="all", teacher="all"){
+      pushAppHistoryState("question");
       stopQuizMode();
       document.body.classList.add("app-screen-active");
       if(subject && subject !== "all"){
@@ -3588,6 +3587,16 @@
         if(!parsed || !Array.isArray(parsed.files) || !parsed.files.length) return null;
         return parsed.files;
       }catch(e){return null;}
+    }
+
+    function cachedListHasCoreDbs(files){
+      if(!Array.isArray(files)) return false;
+      const names = new Set(files.map(f => dbCanonicalName(f.name)));
+      // Bu uygulamada soru3-soru10 dosyaları özellikle bekleniyor; varsa cache doğrudan kullanılır.
+      for(let i=1;i<=10;i++){
+        if(!names.has(`soru${i}.db`) && !names.has(`soru${i}.sdb`)) return false;
+      }
+      return true;
     }
 
     function dbFileListCacheWrite(files){
@@ -4011,12 +4020,6 @@
 
     async function discoverDbFiles(){
       const cachedList = dbFileListCacheRead();
-      if(cachedList && cachedList.length){
-        els.status.classList.remove("hidden");
-        els.status.innerHTML = "Soru dosyası listesi önbellekten yükleniyor...";
-        return cachedList.map(file => ({...file, source:file.source || "cache"}));
-      }
-
       const candidates = [];
       const errors = [];
 
@@ -4025,6 +4028,17 @@
           if(!file || !file.name || !file.url) return;
           candidates.push({...file, source:file.source || label, canonicalName: dbCanonicalName(file.name)});
         });
+      }
+
+      // Eğer daha önce soru1-soru10 dahil tüm temel dosyalar bulunmuşsa tekrar tarama yapma.
+      if(cachedList && cachedList.length && cachedListHasCoreDbs(cachedList)){
+        els.status.classList.remove("hidden");
+        els.status.innerHTML = "Soru dosyası listesi önbellekten yükleniyor...";
+        return cachedList.map(file => ({...file, source:file.source || "cache"}));
+      }
+
+      if(cachedList && cachedList.length){
+        addList(cachedList, "cache");
       }
 
       async function addFrom(fn,label){
@@ -4037,16 +4051,19 @@
       }
 
       els.status.classList.remove("hidden");
-      els.status.innerHTML = "Soru dosyaları ilk kez aranıyor...";
+      els.status.innerHTML = cachedList && cachedList.length
+        ? "Eksik soru3-soru10 dosyaları için hızlı tarama yapılıyor..."
+        : "Soru dosyaları ilk kez aranıyor...";
 
+      // Küçük manifest hızlıdır; önce bunu dene.
       await addFrom(listDbFilesFromManifest,"manifest");
 
+      // Özellikle soru3.db-soru10.db gözden kaçmasın diye sadece ilk 20 dosya hızlı taranır.
+      await addFrom(()=>listDbFilesBySequentialProbe(20),"sequential-fast");
+
+      // Hâlâ hiçbir dosya yoksa daha ağır yollar denenir.
       if(!candidates.length){
         await addFrom(listDbFilesFromGithubApi,"github-api");
-      }
-
-      if(!candidates.length){
-        await addFrom(()=>listDbFilesBySequentialProbe(50),"sequential-fast");
       }
 
       if(!candidates.length){
@@ -4708,6 +4725,48 @@
     }
 
     
+    
+    function pushAppHistoryState(screen){
+      if(suppressHistoryAction) return;
+      try{
+        const state = {screen, fullscreen:document.body.classList.contains("question-card-fullscreen"), listMode};
+        history.pushState(state, "", location.href);
+      }catch(e){}
+    }
+
+    function replaceAppHistoryState(screen){
+      try{
+        history.replaceState({screen, fullscreen:document.body.classList.contains("question-card-fullscreen"), listMode}, "", location.href);
+      }catch(e){}
+    }
+
+    async function exitQuestionFullscreenOnly(){
+      try{
+        if(document.fullscreenElement) await document.exitFullscreen();
+      }catch(e){}
+      document.body.classList.remove("question-card-fullscreen");
+      updateQuestionFullscreenIcon();
+    }
+
+    function handleBrowserBack(){
+      if(document.body.classList.contains("question-card-fullscreen") || document.fullscreenElement){
+        exitQuestionFullscreenOnly();
+        return;
+      }
+      if(els.listView && els.listView.classList.contains("active")){
+        suppressHistoryAction = true;
+        showQuizView();
+        suppressHistoryAction = false;
+        return;
+      }
+      if(els.appView && els.appView.classList.contains("active")){
+        suppressHistoryAction = true;
+        showLanding();
+        suppressHistoryAction = false;
+        return;
+      }
+    }
+
     function currentSubjectForExam(){
       if(filters.subject && filters.subject !== "all") return filters.subject;
       const q = questions[current];
@@ -4973,9 +5032,12 @@ async function openCurrentQuestionInChatGPT(){
           await document.exitFullscreen();
           document.body.classList.remove("question-card-fullscreen");
         }else if(card.requestFullscreen){
+          pushAppHistoryState("fullscreen");
           await card.requestFullscreen();
           document.body.classList.add("question-card-fullscreen");
         }else{
+          const willEnter = !document.body.classList.contains("question-card-fullscreen");
+          if(willEnter) pushAppHistoryState("fullscreen");
           document.body.classList.toggle("question-card-fullscreen");
         }
       }catch(e){
@@ -4987,6 +5049,7 @@ async function openCurrentQuestionInChatGPT(){
     }
 
     function showLanding(){
+      replaceAppHistoryState("home");
       pauseStudyTimer();
       closeChatGPTWebview();
       document.body.classList.remove("question-card-fullscreen");
@@ -4998,6 +5061,7 @@ async function openCurrentQuestionInChatGPT(){
       els.results.style.display="none"; if(els.topMenu) els.topMenu.open=false; window.scrollTo(0,0); renderLanding();
     }
     function startCourseWithTeacher(subject, teacher){
+      pushAppHistoryState("question");
       stopQuizMode();
       document.body.classList.add("app-screen-active");
       document.body.classList.add("app-screen-active");
@@ -5016,6 +5080,7 @@ async function openCurrentQuestionInChatGPT(){
     }
 
     function startCourse(subject){
+      pushAppHistoryState("question");
       stopQuizMode();
       document.body.classList.add("app-screen-active");
       document.body.classList.add("app-screen-active");
@@ -5545,6 +5610,7 @@ ${body}
     }
 
     function showListView(mode="all"){
+      pushAppHistoryState("list");
       pauseStudyTimer();
       if(examMode) return;
       listMode = mode;
@@ -5624,6 +5690,7 @@ ${body}
       startStudyTimer();
       document.addEventListener("visibilitychange",()=>{ if(document.hidden){ commitStudyTime(true); saveStudyTimes(true); } else lastStudyTick = Date.now(); });
       window.addEventListener("beforeunload",()=>{ commitStudyTime(true); finalizeStudySession(); saveStudyTimes(true); });
+      window.addEventListener("popstate",()=>handleBrowserBack());
       if(els.questionFullscreenBtn) els.questionFullscreenBtn.addEventListener("click", toggleQuestionFullscreen);
       if(els.questionChatGPTBtn) els.questionChatGPTBtn.addEventListener("click", openCurrentQuestionInChatGPT);
       if(els.questionStarBtn) els.questionStarBtn.addEventListener("click",()=>{
@@ -5810,9 +5877,7 @@ ${body}
       });
 
       const priority = {"manifest":0, "github-api":1, "sequential-fast":2, "sequential":2, "sequential-full":3, "cache":4, "manual":5};
-      const groupEntries = [...groups.entries()];
-
-      const results = await Promise.all(groupEntries.map(async ([key, files])=>{
+      const results = await Promise.all([...groups.entries()].map(async ([key, files])=>{
         files.sort((a,b)=>(priority[a.source] ?? 9) - (priority[b.source] ?? 9));
         const errors = [];
         for(const file of files){
@@ -5830,7 +5895,6 @@ ${body}
       const loadedFiles = [];
       const all = [];
       const loadErrors = [];
-
       results.forEach(result=>{
         if(result.ok){
           loadedFiles.push(result.file);
@@ -5844,6 +5908,7 @@ ${body}
     }
 
 async function init(){
+      replaceAppHistoryState("home");
       document.body.classList.remove("app-screen-active");
       bindEvents();
       loadState();
