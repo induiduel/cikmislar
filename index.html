@@ -1,6 +1,9 @@
 <!doctype html>
 <html lang="tr">
 <head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans:wght@400;500;600;700;800;900&family=Roboto+Mono:wght@500;600;700&display=swap" rel="stylesheet">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Etkileşimli Soru Bankası</title>
@@ -2379,6 +2382,299 @@
       }
     }
 
+  
+    /* Google Font + daha kompakt soru çözüm görünümü */
+    body{
+      font-family:"Inter", "Noto Sans", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif!important;
+    }
+
+    button{
+      padding:8px 10px!important;
+      border-radius:10px!important;
+      font-size:11.5px!important;
+      line-height:1.15!important;
+    }
+
+    .top-menu-content button,
+    .compact-actionbar button,
+    .question-tools-content button,
+    .filter-actions button{
+      padding:7px 9px!important;
+      font-size:11px!important;
+    }
+
+    .question{
+      font-family:"Inter", "Noto Sans", ui-sans-serif, system-ui, sans-serif!important;
+      font-size:clamp(12.5px, calc(var(--q-font) - 1.5px), 18px)!important;
+      line-height:1.40!important;
+      padding:11px 12px!important;
+      margin-bottom:10px!important;
+      border-radius:12px!important;
+    }
+
+    .options{
+      gap:6px!important;
+    }
+
+    .option{
+      padding:9px 10px!important;
+      grid-template-columns:27px 1fr!important;
+      gap:8px!important;
+      border-radius:11px!important;
+    }
+
+    .letter{
+      width:26px!important;
+      height:26px!important;
+      border-radius:8px!important;
+      font-size:11px!important;
+    }
+
+    .option-text{
+      font-family:"Inter", "Noto Sans", ui-sans-serif, system-ui, sans-serif!important;
+      font-size:clamp(11px, calc(var(--opt-font) - 1px), 15px)!important;
+      line-height:1.42!important;
+      font-weight:500!important;
+    }
+
+    .feedback,
+    .info-box,
+    .ai-warning-box{
+      font-family:"Inter", "Noto Sans", ui-sans-serif, system-ui, sans-serif!important;
+      font-size:11.8px!important;
+      line-height:1.36!important;
+      padding:8px 9px!important;
+      border-radius:11px!important;
+      margin-top:7px!important;
+    }
+
+    /* Öncüllü soru fontu yenilendi */
+    .premise-list{
+      font-family:"Noto Sans", "Inter", ui-sans-serif, system-ui, sans-serif!important;
+      gap:5px!important;
+      margin-top:5px!important;
+      padding:6px!important;
+      border-radius:10px!important;
+      background:#f9fbff!important;
+    }
+    .premise-row{
+      grid-template-columns:34px 1fr!important;
+      gap:6px!important;
+      padding:4px 6px!important;
+      border-radius:8px!important;
+    }
+    .premise-roman{
+      font-family:"Roboto Mono", "Inter", monospace!important;
+      font-size:12px!important;
+      font-weight:700!important;
+      letter-spacing:0!important;
+      color:var(--primary)!important;
+    }
+    .premise-text{
+      font-family:"Noto Sans", "Inter", ui-sans-serif, system-ui, sans-serif!important;
+      font-style:normal!important;
+      font-size:clamp(11.5px, calc(var(--opt-font) - .8px), 15px)!important;
+      line-height:1.32!important;
+      color:#263445!important;
+      font-weight:500!important;
+    }
+
+    /* Alttaki ana butonlar biraz daha küçük */
+    .floating-question-nav{
+      padding:6px!important;
+      gap:6px!important;
+      border-radius:14px!important;
+    }
+    .floating-question-nav button{
+      min-height:38px!important;
+      padding:7px 7px!important;
+      font-size:11.5px!important;
+      border-radius:10px!important;
+    }
+
+    /* Tam ekran ve yatay ekranda sayfaya daha iyi sığdır */
+    .question-card:fullscreen,
+    body.question-card-fullscreen .question-card{
+      padding:7px 8px 64px!important;
+    }
+    .question-card:fullscreen .question,
+    body.question-card-fullscreen .question-card .question{
+      font-size:clamp(12px, 1.55vw, 16px)!important;
+      line-height:1.28!important;
+      max-height:32dvh!important;
+      padding:7px 8px!important;
+      margin-bottom:5px!important;
+    }
+    .question-card:fullscreen .option,
+    body.question-card-fullscreen .question-card .option{
+      min-height:32px!important;
+      padding:5px 7px!important;
+      grid-template-columns:24px 1fr!important;
+      gap:6px!important;
+      border-radius:9px!important;
+    }
+    .question-card:fullscreen .letter,
+    body.question-card-fullscreen .question-card .letter{
+      width:23px!important;
+      height:23px!important;
+      font-size:10px!important;
+      border-radius:7px!important;
+    }
+    .question-card:fullscreen .option-text,
+    body.question-card-fullscreen .question-card .option-text{
+      font-size:clamp(10.5px, 1.25vw, 13.5px)!important;
+      line-height:1.26!important;
+    }
+    .question-card:fullscreen .premise-list,
+    body.question-card-fullscreen .premise-list{
+      gap:3px!important;
+      padding:5px!important;
+    }
+    .question-card:fullscreen .premise-row,
+    body.question-card-fullscreen .premise-row{
+      grid-template-columns:30px 1fr!important;
+      padding:3px 5px!important;
+      gap:5px!important;
+    }
+    .question-card:fullscreen .premise-roman,
+    body.question-card-fullscreen .premise-roman{
+      font-size:10.5px!important;
+    }
+    .question-card:fullscreen .premise-text,
+    body.question-card-fullscreen .premise-text{
+      font-size:clamp(10.5px, 1.2vw, 13px)!important;
+      line-height:1.22!important;
+    }
+
+    .question-card:fullscreen .floating-question-nav,
+    body.question-card-fullscreen .floating-question-nav{
+      padding:5px max(6px, env(safe-area-inset-right)) calc(5px + env(safe-area-inset-bottom)) max(6px, env(safe-area-inset-left))!important;
+      gap:5px!important;
+    }
+    .question-card:fullscreen .floating-question-nav button,
+    body.question-card-fullscreen .floating-question-nav button{
+      min-height:34px!important;
+      padding:6px 6px!important;
+      font-size:10.8px!important;
+      border-radius:9px!important;
+    }
+
+    @media (max-width:560px){
+      button{
+        padding:7px 8px!important;
+        font-size:10.8px!important;
+      }
+      .question{
+        font-size:clamp(12px, calc(var(--q-font) - 2px), 16px)!important;
+        padding:9px 10px!important;
+        line-height:1.34!important;
+      }
+      .option{
+        padding:8px 9px!important;
+      }
+      .option-text{
+        font-size:clamp(10.8px, calc(var(--opt-font) - 1.4px), 13.5px)!important;
+        line-height:1.34!important;
+      }
+      .floating-question-nav button{
+        min-height:34px!important;
+        padding:6px 5px!important;
+        font-size:10.5px!important;
+      }
+    }
+
+    @media (orientation:landscape) and (max-height:620px){
+      .question-card:fullscreen,
+      body.question-card-fullscreen .question-card{
+        padding:5px 7px 50px!important;
+      }
+      .question-card:fullscreen .question,
+      body.question-card-fullscreen .question-card .question{
+        max-height:27dvh!important;
+        font-size:clamp(11px, 1.25vw, 14px)!important;
+        line-height:1.22!important;
+        padding:5px 6px!important;
+      }
+      .question-card:fullscreen .options,
+      body.question-card-fullscreen .question-card .options{
+        gap:3px!important;
+      }
+      .question-card:fullscreen .option,
+      body.question-card-fullscreen .question-card .option{
+        min-height:26px!important;
+        padding:3.5px 5px!important;
+      }
+      .question-card:fullscreen .floating-question-nav button,
+      body.question-card-fullscreen .floating-question-nav button{
+        min-height:29px!important;
+        font-size:10px!important;
+        padding:4px 5px!important;
+      }
+    }
+
+  
+    /* Çalışma süresi göstergeleri */
+    .question-study-time-badge{
+      flex:0 0 auto;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-width:43px;
+      height:22px;
+      padding:0 6px;
+      border-radius:999px;
+      border:1px solid rgba(23,58,138,.16);
+      background:#fff;
+      color:var(--primary);
+      font-family:"Roboto Mono","Inter",monospace;
+      font-size:10px;
+      font-weight:700;
+      line-height:1;
+      white-space:nowrap;
+      box-shadow:0 2px 6px rgba(15,23,42,.05);
+    }
+    .course-study-time{
+      display:inline-flex;
+      align-items:center;
+      width:max-content;
+      max-width:100%;
+      margin-top:4px;
+      padding:3px 6px;
+      border-radius:999px;
+      background:#eef4ff;
+      color:var(--primary);
+      border:1px solid rgba(23,58,138,.12);
+      font-family:"Roboto Mono","Inter",monospace;
+      font-size:10px;
+      font-weight:700;
+      line-height:1.15;
+    }
+    body.compact-mode .question-study-time-badge{
+      height:20px;
+      min-width:39px;
+      font-size:9px;
+      padding:0 5px;
+    }
+    @media (max-width:560px){
+      .question-study-time-badge{
+        height:20px;
+        min-width:39px;
+        font-size:9px;
+        padding:0 5px;
+      }
+      .course-study-time{
+        font-size:9.5px;
+        padding:3px 5px;
+      }
+    }
+    @media (orientation:landscape) and (max-height:620px){
+      .question-study-time-badge{
+        height:18px;
+        min-width:36px;
+        font-size:8.5px;
+      }
+    }
+
   </style>
 </head>
 <body class="font-normal">
@@ -2516,6 +2812,7 @@
           <article class="panel question-card">
             <div class="question-mini-header">
               <div class="section" id="section"></div>
+              <span class="question-study-time-badge" id="questionStudyTimeBadge" title="Bu soru ve toplam çalışma süresi">00:00</span>
               <details class="question-jump-menu" id="questionJumpMenuDetails">
                 <summary title="Soru seç" aria-label="Soru seç">☷</summary>
                 <div class="question-jump-menu-panel">
@@ -2684,6 +2981,7 @@
     const DB_CONTENT_CACHE_NAME = "question_bank_indexeddb_cache_v2";
     const DB_CONTENT_STORE_NAME = "dbFiles";
     const LAST_POSITION_KEY = "question_bank_last_positions_v1";
+    const STUDY_TIME_KEY = "question_bank_study_time_v1";
 
     let dbFiles = [];
     let questions = [];
@@ -2727,6 +3025,11 @@
     let lastPositions = {};
     let currentChatGPTPrompt = "";
     let currentChatGPTUrl = "";
+    let studyTimes = {questions:{}, subjects:{}, total:0};
+    let activeStudyQuestionKey = "";
+    let activeStudySubject = "";
+    let lastStudyTick = 0;
+    let studyTimerHandle = null;
     const LIST_BATCH_SIZE = 60;
 
     const $ = id => document.getElementById(id);
@@ -2743,7 +3046,7 @@
       manualDbBox:$("manualDbBox"), manualDbInput:$("manualDbInput"), dbList:$("dbList"),
       selectAllDbBtn:$("selectAllDbBtn"), clearDbBtn:$("clearDbBtn"), fontSizeSelect:$("fontSizeSelect"), designModeSelect:$("designModeSelect"), duplicateFilterSelect:$("duplicateFilterSelect"), questionOrderSelect:$("questionOrderSelect"), reshuffleBtn:$("reshuffleBtn"),
       examTopbar:$("examTopbar"), examModeTitle:$("examModeTitle"), examTimerText:$("examTimerText"), cancelExamBtn:$("cancelExamBtn"),
-      questionFullscreenBtn:$("questionFullscreenBtn"), questionChatGPTBtn:$("questionChatGPTBtn"), questionStarBtn:$("questionStarBtn"), questionJumpMenuDetails:$("questionJumpMenuDetails"), questionJumpMenuGrid:$("questionJumpMenuGrid"),
+      questionFullscreenBtn:$("questionFullscreenBtn"), questionChatGPTBtn:$("questionChatGPTBtn"), questionStarBtn:$("questionStarBtn"), questionStudyTimeBadge:$("questionStudyTimeBadge"), questionJumpMenuDetails:$("questionJumpMenuDetails"), questionJumpMenuGrid:$("questionJumpMenuGrid"),
       chatgptWebviewModal:$("chatgptWebviewModal"), chatgptWebviewFrame:$("chatgptWebviewFrame"), chatgptWebviewCloseBtn:$("chatgptWebviewCloseBtn"), chatgptOpenNewTabBtn:$("chatgptOpenNewTabBtn"), chatgptCopyPromptBtn:$("chatgptCopyPromptBtn"), chatgptWebviewNote:$("chatgptWebviewNote"),
       progress:$("progress"), counter:$("counter"), section:$("section"), meta:$("meta"), question:$("question"), options:$("options"),
       feedback:$("feedback"), aiWarningBox:$("aiWarningBox"), infoBox:$("infoBox"), showInfoBtn:$("showInfoBtn"), cardShowAllBtn:$("cardShowAllBtn"), hideQuestionBtn:$("hideQuestionBtn"), wideExitBtn:$("wideExitBtn"), prevBtn:$("prevBtn"), nextBtn:$("nextBtn"),
@@ -2769,6 +3072,119 @@
     function optionList(q){return Array.isArray(q.options) ? q.options : [];}
     function meta(q,key){return (q.metadata && q.metadata[key]) || "";}
     function answerKey(q){return duplicateMode === "all" ? (q._instanceId || q.id) : q.id;}
+
+    function safeStudyNumber(value){
+      const n = Number(value);
+      return Number.isFinite(n) && n > 0 ? n : 0;
+    }
+
+    function loadStudyTimes(){
+      try{
+        const raw = localStorage.getItem(STUDY_TIME_KEY);
+        const parsed = raw ? JSON.parse(raw) : null;
+        if(parsed && typeof parsed === "object"){
+          studyTimes = {
+            questions: parsed.questions && typeof parsed.questions === "object" ? parsed.questions : {},
+            subjects: parsed.subjects && typeof parsed.subjects === "object" ? parsed.subjects : {},
+            total: safeStudyNumber(parsed.total)
+          };
+        }
+      }catch(e){
+        studyTimes = {questions:{}, subjects:{}, total:0};
+      }
+    }
+
+    function saveStudyTimes(){
+      try{
+        localStorage.setItem(STUDY_TIME_KEY, JSON.stringify(studyTimes));
+      }catch(e){}
+    }
+
+    function formatStudyTime(seconds){
+      seconds = Math.max(0, Math.floor(Number(seconds) || 0));
+      const h = Math.floor(seconds / 3600);
+      const m = Math.floor((seconds % 3600) / 60);
+      const s = seconds % 60;
+      if(h > 0) return `${h}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+      return `${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+    }
+
+    function questionStudySeconds(q){
+      if(!q) return 0;
+      return safeStudyNumber(studyTimes.questions[answerKey(q)]);
+    }
+
+    function subjectStudySeconds(subject){
+      return safeStudyNumber(studyTimes.subjects[subject || "Ders yok"]);
+    }
+
+    function updateQuestionStudyTimeBadge(q=null){
+      if(!els.questionStudyTimeBadge) return;
+      if(!q) q = questions[current];
+      if(!q){
+        els.questionStudyTimeBadge.textContent = "00:00";
+        els.questionStudyTimeBadge.title = "Çalışma süresi";
+        return;
+      }
+      const qSec = questionStudySeconds(q);
+      const subjectSec = subjectStudySeconds(q.subject || "Ders yok");
+      els.questionStudyTimeBadge.textContent = formatStudyTime(qSec);
+      els.questionStudyTimeBadge.title = `Bu soru: ${formatStudyTime(qSec)} · ${q.subject || "Ders"} toplam: ${formatStudyTime(subjectSec)} · Genel toplam: ${formatStudyTime(studyTimes.total)}`;
+    }
+
+    function commitStudyTime(force=false){
+      if(!activeStudyQuestionKey || !lastStudyTick) return;
+      const now = Date.now();
+      let delta = Math.floor((now - lastStudyTick) / 1000);
+      if(delta <= 0 && !force) return;
+      if(delta <= 0) delta = 0;
+
+      // Uzun süre sekme arka planda kaldıysa tek seferde büyük süre yazılmasın.
+      if(delta > 30) delta = 30;
+
+      if(delta > 0){
+        studyTimes.questions[activeStudyQuestionKey] = safeStudyNumber(studyTimes.questions[activeStudyQuestionKey]) + delta;
+        studyTimes.subjects[activeStudySubject || "Ders yok"] = safeStudyNumber(studyTimes.subjects[activeStudySubject || "Ders yok"]) + delta;
+        studyTimes.total = safeStudyNumber(studyTimes.total) + delta;
+        saveStudyTimes();
+      }
+      lastStudyTick = now;
+    }
+
+    function setActiveStudyQuestion(q){
+      commitStudyTime(true);
+      if(!q || !answerKey(q)){
+        activeStudyQuestionKey = "";
+        activeStudySubject = "";
+        lastStudyTick = 0;
+        return;
+      }
+      activeStudyQuestionKey = answerKey(q);
+      activeStudySubject = q.subject || "Ders yok";
+      lastStudyTick = Date.now();
+      updateQuestionStudyTimeBadge(q);
+    }
+
+    function startStudyTimer(){
+      if(studyTimerHandle) return;
+      studyTimerHandle = setInterval(()=>{
+        if(document.hidden || !document.body.classList.contains("app-screen-active")){
+          commitStudyTime(true);
+          return;
+        }
+        commitStudyTime(false);
+        updateQuestionStudyTimeBadge();
+      }, 1000);
+    }
+
+    function pauseStudyTimer(){
+      commitStudyTime(true);
+      activeStudyQuestionKey = "";
+      activeStudySubject = "";
+      lastStudyTick = 0;
+    }
+
+
 
     function lastPositionKey(subject="all", teacher="all"){
       return `${subject || "all"}::${teacher || "all"}::${selectedDbFiles.map(dbCanonicalName).sort().join("|") || "all-db"}`;
@@ -3689,6 +4105,7 @@
     }
     function loadState(){
       loadLastPositions();
+      loadStudyTimes();
       try{
         const raw=localStorage.getItem(STORAGE_KEY);
         if(!raw) return false;
@@ -3939,6 +4356,7 @@
             <div class="course-icon">${escapeHTML(initials(item.value))}</div>
             <h2>${escapeHTML(item.value)}</h2>
             <p>${item.count} soru · ${examCount} grup · ${teacherCount} hoca</p>
+            <div class="course-study-time">Çalışma: ${formatStudyTime(subjectStudySeconds(item.value))}</div>
             <select class="teacher-select-mini" aria-label="${escapeHTML(item.value)} hoca seçimi">${teacherOptions}</select>
           </div>
           <div class="course-meta">
@@ -4318,6 +4736,7 @@ async function openCurrentQuestionInChatGPT(){
     }
 
     function showLanding(){
+      pauseStudyTimer();
       closeChatGPTWebview();
       document.body.classList.remove("question-card-fullscreen");
       exitExamModeWithoutConfirm();
@@ -4482,6 +4901,7 @@ async function openCurrentQuestionInChatGPT(){
     function renderQuestion(){
       const idxs=filteredIndexes();
       if(!idxs.length){
+        pauseStudyTimer();
         document.body.classList.add("no-question-active");
         els.section.textContent="Soru bulunamadı"; els.meta.innerHTML=""; els.question.textContent=questions.length?"Seçili filtrelerle veya aktif database seçimiyle eşleşen soru yok.":"Soru dosyası yüklenemedi veya soru bulunamadı.";
         els.options.innerHTML=""; els.feedback.className="feedback"; els.feedback.innerHTML=""; if(els.aiWarningBox){els.aiWarningBox.className="ai-warning-box"; els.aiWarningBox.innerHTML="";} els.infoBox.className="info-box"; els.infoBox.innerHTML=""; if(els.questionJumpMenuGrid) els.questionJumpMenuGrid.innerHTML=""; if(els.questionChatGPTBtn) els.questionChatGPTBtn.disabled=true; if(els.questionStarBtn){els.questionStarBtn.disabled=true; els.questionStarBtn.classList.remove("starred"); els.questionStarBtn.textContent="☆";} els.prevBtn.disabled=true; els.nextBtn.disabled=true; updateStats(); return;
@@ -4490,6 +4910,7 @@ async function openCurrentQuestionInChatGPT(){
       ensureCurrent();
       const q=questions[current], pos=idxs.indexOf(current), selected=answers[answerKey(q)], opts=optionList(q), answer=q.answer||{};
       if(els.questionChatGPTBtn) els.questionChatGPTBtn.disabled=false;
+      setActiveStudyQuestion(q);
       if(els.questionStarBtn){
         els.questionStarBtn.disabled=false;
         const starred = isStarredQuestion(q);
@@ -4873,6 +5294,7 @@ ${body}
     }
 
     function showListView(mode="all"){
+      pauseStudyTimer();
       if(examMode) return;
       listMode = mode;
       render();
@@ -4948,6 +5370,9 @@ ${body}
     }
 
     function bindEvents(){
+      startStudyTimer();
+      document.addEventListener("visibilitychange",()=>{ if(document.hidden) commitStudyTime(true); else lastStudyTick = Date.now(); });
+      window.addEventListener("beforeunload",()=>commitStudyTime(true));
       if(els.questionFullscreenBtn) els.questionFullscreenBtn.addEventListener("click", toggleQuestionFullscreen);
       if(els.questionChatGPTBtn) els.questionChatGPTBtn.addEventListener("click", openCurrentQuestionInChatGPT);
       if(els.questionStarBtn) els.questionStarBtn.addEventListener("click",()=>{
