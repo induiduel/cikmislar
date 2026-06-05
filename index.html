@@ -3274,6 +3274,151 @@
       }
     }
 
+  
+    /* İstenmeyen soru onayı: tam ekrandan çıkmadan question-card içinde gösterilir */
+    .question-card{
+      position:relative;
+    }
+    .unwanted-confirm-modal{
+      position:absolute;
+      inset:0;
+      z-index:900;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:14px;
+      border-radius:inherit;
+      background:
+        radial-gradient(circle at 50% 30%, rgba(255,255,255,.24), transparent 18rem),
+        rgba(15,23,42,.48);
+      backdrop-filter:blur(8px);
+      -webkit-backdrop-filter:blur(8px);
+    }
+    .question-card:fullscreen .unwanted-confirm-modal,
+    body.question-card-fullscreen .unwanted-confirm-modal{
+      position:fixed;
+      inset:0;
+      border-radius:0;
+      z-index:9999;
+    }
+    .unwanted-confirm-modal.hidden{
+      display:none!important;
+    }
+    .unwanted-confirm-card{
+      width:min(390px, calc(100% - 18px));
+      display:grid;
+      justify-items:center;
+      gap:9px;
+      text-align:center;
+      padding:22px 17px 16px;
+      border-radius:24px;
+      background:rgba(255,255,255,.97);
+      border:1px solid rgba(255,255,255,.65);
+      box-shadow:0 28px 80px rgba(15,23,42,.30);
+      animation:unwantedPop .20s ease-out;
+    }
+    .unwanted-confirm-icon{
+      width:58px;
+      height:58px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:20px;
+      background:#fff7df;
+      color:#7a4f08;
+      font-size:30px;
+      box-shadow:inset 0 0 0 1px rgba(122,79,8,.10);
+    }
+    .unwanted-confirm-card h2{
+      margin:2px 0 0;
+      color:var(--primary);
+      font-size:19px;
+      font-weight:950;
+      letter-spacing:-.02em;
+    }
+    .unwanted-confirm-card p{
+      margin:0 0 5px;
+      color:var(--muted);
+      font-size:12.5px;
+      line-height:1.45;
+      max-width:330px;
+    }
+    .unwanted-confirm-actions{
+      width:100%;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:8px;
+      margin-top:4px;
+    }
+    .unwanted-confirm-actions button{
+      min-height:38px;
+      border-radius:13px!important;
+      font-weight:900;
+    }
+    @keyframes unwantedPop{
+      from{transform:translateY(8px) scale(.97); opacity:0}
+      to{transform:translateY(0) scale(1); opacity:1}
+    }
+    body.theme-dark .unwanted-confirm-card,
+    body.theme-midnight .unwanted-confirm-card{
+      background:rgba(15,23,42,.97);
+      border-color:rgba(148,163,184,.24);
+      color:var(--text);
+    }
+    @media (max-width:560px){
+      .unwanted-confirm-card{
+        padding:20px 15px 15px;
+        border-radius:22px;
+      }
+      .unwanted-confirm-icon{
+        width:52px;
+        height:52px;
+        font-size:27px;
+      }
+      .unwanted-confirm-card h2{
+        font-size:18px;
+      }
+      .unwanted-confirm-card p{
+        font-size:12px;
+      }
+    }
+
+  
+    /* Fullscreen içinde mola ve istenmeyen onay modallarını görünür tut */
+    .question-card .break-modal,
+    .question-card .unwanted-confirm-modal,
+    .question-card:fullscreen .break-modal,
+    .question-card:fullscreen .unwanted-confirm-modal,
+    body.question-card-fullscreen .question-card .break-modal,
+    body.question-card-fullscreen .question-card .unwanted-confirm-modal{
+      position:fixed!important;
+      inset:0!important;
+      z-index:2147483000!important;
+      width:100vw!important;
+      height:100vh!important;
+      border-radius:0!important;
+      align-items:center!important;
+      justify-content:center!important;
+    }
+    .question-card .break-modal.hidden,
+    .question-card .unwanted-confirm-modal.hidden{
+      display:none!important;
+    }
+    .question-card .break-modal:not(.hidden),
+    .question-card .unwanted-confirm-modal:not(.hidden){
+      display:flex!important;
+      visibility:visible!important;
+      opacity:1!important;
+      pointer-events:auto!important;
+    }
+    .question-card:fullscreen .break-card,
+    .question-card:fullscreen .unwanted-confirm-card,
+    body.question-card-fullscreen .break-card,
+    body.question-card-fullscreen .unwanted-confirm-card{
+      transform:translateZ(0);
+      max-width:calc(100vw - 24px)!important;
+    }
+
   </style>
 </head>
 <body class="font-normal is-loading">
@@ -3484,6 +3629,29 @@
               <button class="secondary unwanted-btn" id="hideQuestionBtn">İstenmeyen işaretle</button>
               <button class="primary" id="nextBtn">Sonraki</button>
             </div>
+
+
+
+  
+    <section class="break-modal hidden" id="breakModal" aria-hidden="true">
+      <div class="break-card" role="dialog" aria-modal="true" aria-label="Mola ekranı">
+        <div class="break-icon">☕</div>
+        <h2>Mola verildi</h2>
+        <p>Çalışma süresi durduruldu. Devam ettiğinde süre kaldığı yerden işlemeye devam eder.</p>
+        <button class="primary" id="breakContinueBtn" type="button">Devam et</button>
+      </div>
+    </section>
+            <section class="unwanted-confirm-modal hidden" id="unwantedConfirmModal" aria-hidden="true">
+              <div class="unwanted-confirm-card" role="dialog" aria-modal="true" aria-label="İstenmeyen soru onayı">
+                <div class="unwanted-confirm-icon">⚠</div>
+                <h2>Bu soru gizlensin mi?</h2>
+                <p>Bu soru normal akışta ve quizlerde görünmez. Daha sonra ana sayfadaki gizlenen sorular bölümünden tekrar düzenleyebilir veya görünür yapabilirsin.</p>
+                <div class="unwanted-confirm-actions">
+                  <button class="secondary" id="unwantedConfirmCancelBtn" type="button">Vazgeç</button>
+                  <button class="danger" id="unwantedConfirmOkBtn" type="button">Evet, gizle</button>
+                </div>
+              </div>
+            </section>
           </article>
 
           <aside class="panel side-panel">
@@ -3622,16 +3790,6 @@
       </div>
     </section>
 
-  
-    <section class="break-modal hidden" id="breakModal" aria-hidden="true">
-      <div class="break-card" role="dialog" aria-modal="true" aria-label="Mola ekranı">
-        <div class="break-icon">☕</div>
-        <h2>Mola verildi</h2>
-        <p>Çalışma süresi durduruldu. Devam ettiğinde süre kaldığı yerden işlemeye devam eder.</p>
-        <button class="primary" id="breakContinueBtn" type="button">Devam et</button>
-      </div>
-    </section>
-
   </main>
 
   <script>
@@ -3700,6 +3858,7 @@
     let breakModeActive = false;
     let suppressHistoryAction = false;
     let questionEditOverrides = {};
+    let pendingUnwantedConfirmResolve = null;
     let initialLoadingStartedAt = Date.now();
     const INITIAL_LOADING_MIN_MS = 1800;
     const LIST_BATCH_SIZE = 60;
@@ -3721,7 +3880,7 @@
       questionFullscreenBtn:$("questionFullscreenBtn"), questionBreakBtn:$("questionBreakBtn"), questionChatGPTBtn:$("questionChatGPTBtn"), questionStarBtn:$("questionStarBtn"), questionEditedBadge:$("questionEditedBadge"), questionStudyTimeBadge:$("questionStudyTimeBadge"), questionHistoryDetails:$("questionHistoryDetails"), questionHistoryPanel:$("questionHistoryPanel"), questionJumpMenuDetails:$("questionJumpMenuDetails"), questionJumpMenuGrid:$("questionJumpMenuGrid"),
       chatgptWebviewModal:$("chatgptWebviewModal"), chatgptWebviewFrame:$("chatgptWebviewFrame"), chatgptWebviewCloseBtn:$("chatgptWebviewCloseBtn"), chatgptOpenNewTabBtn:$("chatgptOpenNewTabBtn"), chatgptCopyPromptBtn:$("chatgptCopyPromptBtn"), chatgptWebviewNote:$("chatgptWebviewNote"),
       progress:$("progress"), counter:$("counter"), section:$("section"), meta:$("meta"), question:$("question"), options:$("options"),
-      feedback:$("feedback"), aiWarningBox:$("aiWarningBox"), infoBox:$("infoBox"), showInfoBtn:$("showInfoBtn"), cardShowAllBtn:$("cardShowAllBtn"), hideQuestionBtn:$("hideQuestionBtn"), wideExitBtn:$("wideExitBtn"), prevBtn:$("prevBtn"), nextBtn:$("nextBtn"),
+      feedback:$("feedback"), aiWarningBox:$("aiWarningBox"), infoBox:$("infoBox"), showInfoBtn:$("showInfoBtn"), cardShowAllBtn:$("cardShowAllBtn"), hideQuestionBtn:$("hideQuestionBtn"), unwantedConfirmModal:$("unwantedConfirmModal"), unwantedConfirmOkBtn:$("unwantedConfirmOkBtn"), unwantedConfirmCancelBtn:$("unwantedConfirmCancelBtn"), wideExitBtn:$("wideExitBtn"), prevBtn:$("prevBtn"), nextBtn:$("nextBtn"),
       clearCacheBtn:$("clearCacheBtn"), resetVisibleBtn:$("resetVisibleBtn"), answeredCount:$("answeredCount"),
       correctCount:$("correctCount"), wrongCount:$("wrongCount"), emptyCount:$("emptyCount"), jumpGrid:$("jumpGrid"),
       subjectSelect:$("subjectSelect"), examSelect:$("examSelect"), yearSelect:$("yearSelect"), teacherSelect:$("teacherSelect"),
@@ -4123,8 +4282,11 @@
       lastStudyTick = 0;
       document.body.classList.add("break-active");
       if(els.breakModal){
+        attachModalToFullscreenHost(els.breakModal);
         els.breakModal.classList.remove("hidden");
+        els.breakModal.style.display = "flex";
         els.breakModal.setAttribute("aria-hidden","false");
+        requestAnimationFrame(()=>els.breakContinueBtn && els.breakContinueBtn.focus());
       }
     }
 
@@ -4134,6 +4296,7 @@
       document.body.classList.remove("break-active");
       if(els.breakModal){
         els.breakModal.classList.add("hidden");
+        els.breakModal.style.display = "";
         els.breakModal.setAttribute("aria-hidden","true");
       }
       updateQuestionStudyTimeBadge();
@@ -4199,19 +4362,28 @@
     }
 
     function restoreLastPosition(subject="all", teacher="all"){
-      const keys = [
-        lastPositionKey(subject, teacher),
-        lastPositionKey(subject, "all"),
-        lastPositionKey("all", "all"),
-        "__global__"
-      ];
+      // Dersler birbirinin filtrelerinden etkilenmesin:
+      // Belirli bir derse giriliyorsa yalnızca o dersin kayıtları aranır.
+      // Global/all kayıtları sadece "Tüm dersler" görünümünde kullanılır.
+      const isSpecificSubject = !!(subject && subject !== "all");
+      const keys = isSpecificSubject
+        ? (teacher && teacher !== "all"
+            ? [lastPositionKey(subject, teacher), lastPositionKey(subject, "all")]
+            : [lastPositionKey(subject, "all")])
+        : [lastPositionKey("all", "all"), "__global__"];
+
       const record = keys.map(k => lastPositions[k]).find(Boolean);
+
       if(record && record.filters){
         filters = {...filters, ...record.filters};
-        if(subject && subject !== "all") filters.subject = subject;
+        if(isSpecificSubject) filters.subject = subject;
         if(teacher && teacher !== "all") filters.teacher = teacher;
         sanitizeFilters();
+      }else if(isSpecificSubject){
+        // Bu derse ait kayıt yoksa temiz filtreyle başla.
+        filters = {subject, exam:"all", year:"all", teacher:teacher || "all", sourceGroup:"all", search:""};
       }
+
       const idx = findSavedQuestionIndex(record);
       if(idx >= 0){
         current = idx;
@@ -4222,11 +4394,13 @@
     }
 
     function hasLastPosition(subject="all", teacher="all"){
-      return !!(
-        lastPositions[lastPositionKey(subject, teacher)] ||
-        lastPositions[lastPositionKey(subject, "all")] ||
-        (subject === "all" && lastPositions["__global__"])
-      );
+      if(subject && subject !== "all"){
+        return !!(
+          (teacher && teacher !== "all" && lastPositions[lastPositionKey(subject, teacher)]) ||
+          lastPositions[lastPositionKey(subject, "all")]
+        );
+      }
+      return !!(lastPositions[lastPositionKey("all", "all")] || lastPositions["__global__"]);
     }
 
     function continueCourse(subject="all", teacher="all"){
@@ -4236,6 +4410,8 @@
       if(subject && subject !== "all"){
         filters={subject, exam:"all", year:"all", teacher:teacher||"all", sourceGroup:"all", search:""};
       }
+      infoOpen=false;
+      invalidateQuestionIndexes();
       restoreLastPosition(subject, teacher || "all");
       els.landing.classList.add("hidden");
       els.appView.classList.add("active");
@@ -4518,6 +4694,36 @@
         starredQuestionIds.push(id);
       }
       saveState();
+    }
+
+    
+    function closeUnwantedQuestionConfirm(result=false){
+      if(els.unwantedConfirmModal){
+        els.unwantedConfirmModal.classList.add("hidden");
+        els.unwantedConfirmModal.style.display = "";
+        els.unwantedConfirmModal.setAttribute("aria-hidden","true");
+      }
+      if(typeof pendingUnwantedConfirmResolve === "function"){
+        const resolve = pendingUnwantedConfirmResolve;
+        pendingUnwantedConfirmResolve = null;
+        resolve(!!result);
+      }
+    }
+
+    function askUnwantedQuestionConfirm(){
+      return new Promise(resolve=>{
+        pendingUnwantedConfirmResolve = resolve;
+        if(els.unwantedConfirmModal){
+          attachModalToFullscreenHost(els.unwantedConfirmModal);
+          els.unwantedConfirmModal.classList.remove("hidden");
+          els.unwantedConfirmModal.style.display = "flex";
+          els.unwantedConfirmModal.setAttribute("aria-hidden","false");
+          requestAnimationFrame(()=>els.unwantedConfirmOkBtn && els.unwantedConfirmOkBtn.focus());
+        }else{
+          // Modal bulunamazsa bile native confirm kullanmayarak tam ekranı korumaya çalış.
+          resolve(false);
+        }
+      });
     }
 
     function hideQuestionById(id){
@@ -5731,6 +5937,21 @@ async function openCurrentQuestionInChatGPT(){
       window.open(url, "_blank", "noopener,noreferrer");
     }
 
+    
+    function attachModalToFullscreenHost(modalEl){
+      if(!modalEl) return;
+      const card = questionCardElement();
+      const fullscreenHost = document.fullscreenElement || card;
+
+      // Fullscreen API açıkken yalnızca fullscreen elementinin çocukları görünür.
+      // Bu yüzden mola ve istenmeyen onay modallarını her açılışta soru kartının içine taşıyoruz.
+      if(fullscreenHost && fullscreenHost.contains && !fullscreenHost.contains(modalEl)){
+        fullscreenHost.appendChild(modalEl);
+      }else if(card && modalEl.parentElement !== card && !document.fullscreenElement){
+        card.appendChild(modalEl);
+      }
+    }
+
     function questionCardElement(){
       return document.querySelector(".question-card");
     }
@@ -5807,6 +6028,8 @@ async function openCurrentQuestionInChatGPT(){
       document.body.classList.add("app-screen-active");
       document.body.classList.add("app-screen-active");
       filters={subject:subject||"all", exam:"all", year:"all", teacher:teacher||"all", sourceGroup:"all", search:""};
+      infoOpen=false;
+      invalidateQuestionIndexes();
       restoreLastPosition(subject||"all", teacher||"all");
       els.landing.classList.add("hidden");
       els.appView.classList.add("active");
@@ -5826,6 +6049,8 @@ async function openCurrentQuestionInChatGPT(){
       document.body.classList.add("app-screen-active");
       document.body.classList.add("app-screen-active");
       filters={subject:subject||"all", exam:"all", year:"all", teacher:"all", sourceGroup:"all", search:""};
+      infoOpen=false;
+      invalidateQuestionIndexes();
       restoreLastPosition(subject||"all","all"); els.landing.classList.add("hidden"); els.appView.classList.add("active");
       els.quizView.classList.remove("hidden"); els.listView.classList.remove("active");
       els.activeTitle.textContent=subject&&subject!=="all"?subject+" soru bankası":"Tüm dersler soru bankası";
@@ -6567,6 +6792,9 @@ ${body}
       if(els.editResetBtn) els.editResetBtn.addEventListener("click", resetQuestionEditFromModal);
       if(els.editOptionsText) els.editOptionsText.addEventListener("input", syncEditAnswerChoicesFromText);
       if(els.questionEditModal) els.questionEditModal.addEventListener("click",(ev)=>{ if(ev.target === els.questionEditModal) closeQuestionEditModal(); });
+      if(els.unwantedConfirmOkBtn) els.unwantedConfirmOkBtn.addEventListener("click",()=>closeUnwantedQuestionConfirm(true));
+      if(els.unwantedConfirmCancelBtn) els.unwantedConfirmCancelBtn.addEventListener("click",()=>closeUnwantedQuestionConfirm(false));
+      if(els.unwantedConfirmModal) els.unwantedConfirmModal.addEventListener("click",(ev)=>{ if(ev.target === els.unwantedConfirmModal) closeUnwantedQuestionConfirm(false); });
       window.addEventListener("scroll",()=>requestAnimationFrame(updateScrollTopFab), {passive:true});
       window.addEventListener("resize",()=>requestAnimationFrame(updateScrollTopFab), {passive:true});
       if(els.scrollTopFab) els.scrollTopFab.addEventListener("click",()=>window.scrollTo({top:0, behavior:"smooth"}));
@@ -6586,7 +6814,14 @@ ${body}
       if(els.chatgptOpenNewTabBtn) els.chatgptOpenNewTabBtn.addEventListener("click", openChatGPTNewTab);
       if(els.chatgptCopyPromptBtn) els.chatgptCopyPromptBtn.addEventListener("click", copyCurrentChatGPTPrompt);
       if(els.chatgptWebviewModal) els.chatgptWebviewModal.addEventListener("click",(ev)=>{ if(ev.target === els.chatgptWebviewModal) closeChatGPTWebview(); });
-      document.addEventListener("keydown",(ev)=>{ if(ev.key === "Escape" && els.chatgptWebviewModal && !els.chatgptWebviewModal.classList.contains("hidden")) closeChatGPTWebview(); });
+      document.addEventListener("keydown",(ev)=>{
+        if(ev.key === "Escape" && els.unwantedConfirmModal && !els.unwantedConfirmModal.classList.contains("hidden")){
+          ev.preventDefault();
+          closeUnwantedQuestionConfirm(false);
+          return;
+        }
+        if(ev.key === "Escape" && els.chatgptWebviewModal && !els.chatgptWebviewModal.classList.contains("hidden")) closeChatGPTWebview();
+      });
       window.addEventListener("orientationchange",()=>setTimeout(()=>{ if(document.body.classList.contains("question-card-fullscreen")) scrollToQuestion("auto"); }, 250));
       window.addEventListener("resize",()=>{ if(document.body.classList.contains("question-card-fullscreen")) updateQuestionFullscreenIcon(); });
       document.addEventListener("fullscreenchange",()=>{
@@ -6719,7 +6954,7 @@ ${body}
         saveState();
         render();
       });
-      if(els.hideQuestionBtn) els.hideQuestionBtn.addEventListener("click",()=>{
+      if(els.hideQuestionBtn) els.hideQuestionBtn.addEventListener("click",async ()=>{
         const idxs=filteredIndexes();
         if(!idxs.length) return;
         const q=questions[current];
@@ -6728,7 +6963,7 @@ ${body}
         const nextCandidateIndex = idxs[pos+1] !== undefined ? idxs[pos+1] : (idxs[pos-1] !== undefined ? idxs[pos-1] : null);
         const nextCandidateKey = nextCandidateIndex !== null && questions[nextCandidateIndex] ? answerKey(questions[nextCandidateIndex]) : null;
 
-        const doHide = examMode ? true : confirm("Bu soruyu bundan sonra normal akışta ve quizlerde gizlemek istiyor musun?");
+        const doHide = await askUnwantedQuestionConfirm();
         if(doHide){
           hideQuestionById(answerKey(q));
           invalidateQuestionIndexes();
