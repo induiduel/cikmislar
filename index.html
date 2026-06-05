@@ -3038,7 +3038,7 @@
     }
 
   
-    /* Öncüllü sorularda doğru cevap işaretlenince öncülleri renklendir */
+    /* Öncüllü sorularda herhangi bir cevap işaretlenince öncülleri renklendir */
     .premise-list.premise-highlighted{
       background:#f8fafc!important;
       border-color:rgba(23,58,138,.14)!important;
@@ -6117,10 +6117,12 @@ async function openCurrentQuestionInChatGPT(){
     }
 
     function shouldHighlightPremises(q, selected){
+      // Normal soru çözümünde herhangi bir cevap işaretlenince öncüllerin doğru/yanlış durumu gösterilir.
+      // Sınav modunda ipucu vermemek için kapalı kalır.
       if(examMode) return false;
       if(selected === undefined || selected === null) return false;
       const correctIdx = correctAnswerIndex(q);
-      return correctIdx !== null && Number(selected) === correctIdx;
+      return correctIdx !== null;
     }
 
 
