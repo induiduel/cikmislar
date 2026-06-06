@@ -425,7 +425,7 @@
       display:none;
     }
     .settings-summary::after{
-      content:"ï¼‹";
+      content:"+";
       font-weight:950;
       color:var(--primary);
       background:var(--soft);
@@ -636,7 +636,7 @@
       display:none;
     }
     .top-menu-summary::after{
-      content:"ï¼‹";
+      content:"+";
       font-weight:950;
       color:var(--primary);
       background:var(--soft);
@@ -933,7 +933,7 @@
       display:none;
     }
     .compact-filter-summary::after{
-      content:"ï¼‹";
+      content:"+";
       display:inline-flex;
       align-items:center;
       justify-content:center;
@@ -3628,7 +3628,7 @@
       display:none;
     }
     .all-courses-summary::after{
-      content:"ï¼‹";
+      content:"+";
       font-weight:950;
       color:var(--primary);
       background:var(--soft);
@@ -3694,7 +3694,7 @@
       display:none;
     }
     .final-fast-summary::after{
-      content:"ï¼‹";
+      content:"+";
       font-weight:950;
       color:#7a4f08;
       background:#fff7df;
@@ -3989,6 +3989,170 @@
       .final-course-grid{
         grid-template-columns:1fr;
         max-height:none;
+      }
+    }
+
+    /* UI-CLEANUP: menü ikonları, buton ölçüleri ve tam ekran alt çubuk düzeltmesi */
+    .top-menu-summary::after,
+    .settings-summary::after,
+    .compact-filter-summary::after,
+    .all-courses-summary::after,
+    .final-fast-summary::after{
+      content:"+"!important;
+      font-family:Arial, ui-sans-serif, system-ui, sans-serif!important;
+      font-size:17px!important;
+      line-height:1!important;
+      text-align:center!important;
+    }
+    .top-menu[open] .top-menu-summary::after,
+    .collapsible-settings[open] .settings-summary::after,
+    .compact-filter-panel[open] .compact-filter-summary::after,
+    .all-courses-panel[open] .all-courses-summary::after,
+    .final-collapsible-panel[open] .final-fast-summary::after{
+      content:"-"!important;
+    }
+
+    button,
+    .filter-btn,
+    .quiz-card-btn,
+    .exam-card-btn,
+    .continue-card-btn,
+    .quick-group-btn{
+      display:inline-flex!important;
+      align-items:center!important;
+      justify-content:center!important;
+      text-align:center!important;
+      min-height:36px!important;
+      line-height:1.2!important;
+      white-space:normal!important;
+      overflow-wrap:anywhere!important;
+    }
+    .course-meta,
+    .db-actions,
+    .font-row,
+    .top-menu-content,
+    .filter-actions,
+    .question-top-actions,
+    .all-q-actions,
+    .fullscreen-results-actions{
+      align-items:stretch!important;
+    }
+    .course-meta button,
+    .db-actions button,
+    .font-row button,
+    .filter-actions button,
+    .question-top-actions button{
+      min-width:0!important;
+      flex:1 1 150px!important;
+    }
+    .top-menu-content button{
+      flex:1 1 138px!important;
+    }
+    .quick-group-btn{
+      justify-content:flex-start!important;
+      align-items:flex-start!important;
+      text-align:left!important;
+      flex-direction:column!important;
+    }
+    .question-mini-header{
+      display:grid!important;
+      grid-template-columns:minmax(0,1fr) repeat(10,auto)!important;
+      align-items:center!important;
+      gap:5px!important;
+    }
+    .question-mini-header .section{
+      text-align:left!important;
+    }
+    .question-edited-badge,
+    .question-study-time-badge{
+      align-self:center!important;
+      justify-self:end!important;
+    }
+    .question-card:not(:fullscreen) .floating-question-nav{
+      display:grid!important;
+      grid-template-columns:repeat(4,minmax(0,1fr))!important;
+      gap:7px!important;
+      position:static!important;
+      width:100%!important;
+      margin-top:14px!important;
+      padding:10px 0 0!important;
+      border-top:1px solid var(--line)!important;
+      border-radius:0!important;
+      background:transparent!important;
+      box-shadow:none!important;
+    }
+    .question-card:not(:fullscreen) .floating-question-nav button{
+      min-height:38px!important;
+      padding:8px 8px!important;
+      font-size:11.5px!important;
+    }
+    .question-card:fullscreen,
+    body.question-card-fullscreen .question-card{
+      padding-bottom:92px!important;
+    }
+    .question-card:fullscreen .feedback,
+    .question-card:fullscreen .ai-warning-box.show,
+    .question-card:fullscreen .info-box.show,
+    body.question-card-fullscreen .question-card .feedback,
+    body.question-card-fullscreen .question-card .ai-warning-box.show,
+    body.question-card-fullscreen .question-card .info-box.show{
+      max-height:23dvh!important;
+      margin-bottom:14px!important;
+      padding-bottom:12px!important;
+      flex-shrink:0!important;
+    }
+    .question-card:fullscreen .floating-question-nav,
+    body.question-card-fullscreen .floating-question-nav{
+      display:grid!important;
+      position:fixed!important;
+      grid-template-columns:repeat(4,minmax(0,1fr))!important;
+      gap:7px!important;
+      left:0!important;
+      right:0!important;
+      bottom:0!important;
+      transform:none!important;
+      width:100dvw!important;
+      padding:9px max(10px, env(safe-area-inset-right)) calc(10px + env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left))!important;
+      background:rgba(255,255,255,.98)!important;
+      border-top:1px solid var(--line)!important;
+      box-shadow:0 -12px 30px rgba(15,23,42,.15)!important;
+    }
+    .question-card:fullscreen .floating-question-nav button,
+    body.question-card-fullscreen .floating-question-nav button{
+      min-height:40px!important;
+      padding:7px 6px!important;
+      font-size:11px!important;
+      border-radius:10px!important;
+    }
+    @media(max-width:640px){
+      .question-mini-header{
+        grid-template-columns:minmax(0,1fr) repeat(8,auto)!important;
+      }
+      .question-edited-badge,
+      .question-study-time-badge{
+        display:none!important;
+      }
+      .question-card:not(:fullscreen) .floating-question-nav{
+        grid-template-columns:1fr 1fr!important;
+      }
+      .question-card:fullscreen .floating-question-nav,
+      body.question-card-fullscreen .floating-question-nav{
+        gap:4px!important;
+        padding-left:max(6px, env(safe-area-inset-left))!important;
+        padding-right:max(6px, env(safe-area-inset-right))!important;
+      }
+      .question-card:fullscreen .floating-question-nav button,
+      body.question-card-fullscreen .floating-question-nav button{
+        min-height:34px!important;
+        padding:5px 3px!important;
+        font-size:9.5px!important;
+      }
+      .top-menu-content button,
+      .course-meta button,
+      .db-actions button,
+      .font-row button,
+      .filter-actions button{
+        flex-basis:100%!important;
       }
     }
 
@@ -6057,7 +6221,7 @@ async function discoverDbFiles(){
     }
 
     function buildFinalReferenceIndex(baseQuestions = allLoadedQuestions){
-      const referenceQuestions = (baseQuestions || []).filter(q => hasFinalReferenceSource(q) && isCurrentFinalMetadata(q));
+      const referenceQuestions = (baseQuestions || []).filter(q => isCurrentFinalMetadata(q) || (hasFinalReferenceSource(q) && mentionsCurrentFinalYear(q)));
       const bySubject = new Map();
       const ids = new Set();
       referenceQuestions.forEach(q => {
@@ -6086,7 +6250,7 @@ async function discoverDbFiles(){
     function markFinal20252026Questions(baseQuestions = allLoadedQuestions){
       buildFinalReferenceIndex(baseQuestions);
       (baseQuestions || []).forEach(q => {
-        q._isFinal20252026 = (hasFinalReferenceSource(q) && isCurrentFinalMetadata(q)) || isSimilarToFinalReference(q);
+        q._isFinal20252026 = isCurrentFinalMetadata(q) || (hasFinalReferenceSource(q) && mentionsCurrentFinalYear(q)) || isSimilarToFinalReference(q);
       });
     }
 
@@ -6505,11 +6669,12 @@ async function discoverDbFiles(){
 
     
     function isFinal20252026Question(q){
-      // 2025-2026 final dönemi soru15(1).db referans setinden veya ona çok benzer
-      // kayıtlardan oluşur; eski yıl "Final" etiketleri tek başına yeterli değildir.
+      // 2025-2026 final dönemi doğrudan yıl+sınav grubu bilgisinden veya
+      // soru15(1).db referans setine çok benzer güncel kayıtlardan oluşur.
+      // Eski yıl "Final" etiketleri tek başına yeterli değildir.
       if(!q) return false;
       if(typeof q._isFinal20252026 === "boolean") return q._isFinal20252026;
-      return (hasFinalReferenceSource(q) && isCurrentFinalMetadata(q)) || isSimilarToFinalReference(q);
+      return isCurrentFinalMetadata(q) || (hasFinalReferenceSource(q) && mentionsCurrentFinalYear(q)) || isSimilarToFinalReference(q);
     }
 
     function final20252026Questions(baseQuestions = activeVisibleQuestions()){
