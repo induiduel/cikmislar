@@ -3791,7 +3791,7 @@
           <div class="final-fast-head">
             <div>
               <h2>2025-2026 Final çıkmışları</h2>
-              <p class="subtitle">Yalnızca soru15.db içindeki 2025-2026 final sorularını hızlıca aç.</p>
+              <p class="subtitle">Yalnızca güncel soru15.db içindeki 2025-2026 final sorularını hızlıca aç.</p>
             </div>
             <button class="primary" id="finalAllBtn" type="button">Tüm final çıkmışlarını aç</button>
           </div>
@@ -4184,10 +4184,10 @@
     const DB_DIRS = ["db", ""];
     const DB_EXTENSIONS = [".db", ".sdb"];
     const SEQUENTIAL_SCAN_MAX = 500;
-    const KNOWN_DB_FILES = ["soru1.db","soru2.db","soru3.db","soru4.db","soru5.db","soru6.db","soru7.db","soru8.db","soru9.db","soru10.db","soru11.db","soru12.db","soru13.db","soru14.db","soru15.db"];
+    const KNOWN_DB_FILES = ["soru1.db","soru2.db","soru3.db","soru4.db","soru5.db","soru6.db","soru7.db","soru8.db","soru9.db","soru10.db","soru11.db","soru12.db","soru13.db","soru14.db","soru15.db","soru15(1).db"];
     const STORAGE_KEY = "database_loader_question_bank_progress_v4";
-    const DB_FILE_LIST_CACHE_KEY = "question_bank_db_file_list_cache_v3_soru15";
-    const DB_CONTENT_CACHE_NAME = "question_bank_indexeddb_cache_v3_soru15";
+    const DB_FILE_LIST_CACHE_KEY = "question_bank_db_file_list_cache_v4_soru15_124";
+    const DB_CONTENT_CACHE_NAME = "question_bank_indexeddb_cache_v4_soru15_124";
     const DB_CONTENT_STORE_NAME = "dbFiles";
     const LAST_POSITION_KEY = "question_bank_last_positions_v1";
     const STUDY_TIME_KEY = "question_bank_study_time_v1";
@@ -6056,10 +6056,11 @@ async function discoverDbFiles(){
 
     
     function isFinal20252026Question(q){
-      // 2025-2026 final dönemi kesin olarak yalnızca soru15.db içinden alınır.
+      // 2025-2026 final dönemi kesin olarak yalnızca güncel soru15 databaseinden alınır.
       // Eski database dosyalarında final/2026 gibi etiketler olsa bile final sekmesine karışmaz.
       if(!q) return false;
-      return dbCanonicalName(q._dbFile || "") === "soru15.db";
+      const file = dbCanonicalName(q._dbFile || "");
+      return file === "soru15.db" || file === "soru15(1).db";
     }
 
     function final20252026Questions(baseQuestions = activeVisibleQuestions()){
