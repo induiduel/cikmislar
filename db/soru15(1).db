@@ -8,22 +8,22 @@
   "sourceSubjects": {
     "Tıbbi Biyoloji ve Genetik": 14,
     "Biyokimya": 21,
-    "Mikrobiyoloji": 24,
+    "Mikrobiyoloji": 27,
     "Anatomi": 30,
     "Fizyoloji": 12,
     "Biyofizik": 3,
     "Farmakoloji": 5,
     "Histoloji": 15
   },
-  "questionCount": 124,
+  "questionCount": 127,
   "duplicateHandling": {
-    "strategy": "normalized_question_root; tekrar eden kayıtlar tek soru olarak tutuldu, aktif kayda mergedDuplicates bilgisi eklendi.",
-    "removedDuplicateCount": 0,
-    "removedDuplicates": [],
-    "notes": [
-      "Farmakolojide duran antibakteriyel soru Mikrobiyoloji dersine taşındı.",
-      "Öncüllü/eksik şıklı sorular A-E formatına tamamlandı.",
-      "Her soruya explanation ve metadata.target_code/target_title/target_content alanları eklendi."
+    "method": "normalize(question) bazında birebir tekrar soru kökü temizlendi; bilinen semantik tekrarlar tek aktif kayıtta tutuldu ve güncel/eksiksiz sürüm korundu.",
+    "removedDuringThisUpdate": [],
+    "newOrUpdatedQuestions": [
+      "Stafilokoklar öncüllü soru eklendi/düzeltildi",
+      "Enterokoklar sorusu eklendi",
+      "Anaerop sporsuz gram pozitif bakteriler sorusu eklendi",
+      "Antibakteriyel ilaçlar sorusu görseldeki şıklarla güncellendi"
     ]
   },
   "questions": [
@@ -2537,55 +2537,55 @@
       "options": [
         {
           "letter": "A",
-          "text": "Aminoglikozidler sadece zorunlu anaeroblara etkilidir"
+          "text": "Beta-laktam antibiyotikler protein sentezini engeller"
         },
         {
           "letter": "B",
-          "text": "Beta-laktam antibiyotikler hücre duvarı sentezini inhibe eder"
+          "text": "Aztreonam bir beta-laktam antibiyotiktir"
         },
         {
           "letter": "C",
-          "text": "Makrolidler protein sentezini inhibe eder"
+          "text": "Aminoglikozidler aerob bakterilere etkilidir"
         },
         {
           "letter": "D",
-          "text": "Kinolonlar DNA giraz/topoizomeraz enzimlerini inhibe eder"
+          "text": "Kinolonlar DNA giraz ve topoizomeraz IV enzimlerini inhibe eder"
         },
         {
           "letter": "E",
-          "text": "Tetrasiklinler 30S ribozomal alt birime bağlanır"
+          "text": "Makrolidler protein sentezini inhibe eder"
         }
       ],
       "answer": {
         "index": 0,
         "letter": "A",
-        "text": "Aminoglikozidler sadece zorunlu anaeroblara etkilidir",
-        "raw": "A) Aminoglikozidler sadece zorunlu anaeroblara etkilidir"
+        "text": "Beta-laktam antibiyotikler protein sentezini engeller",
+        "raw": "A) Beta-laktam antibiyotikler protein sentezini engeller"
       },
-      "explanation": "Aminoglikozidler oksijen bağımlı taşınır ve zorunlu anaeroblara etkili değildir; bu nedenle A yanlıştır.",
+      "explanation": "Beta-laktam antibiyotikler protein sentezini değil, bakteri hücre duvarı sentezini inhibe eder. Aztreonam monobaktam yapılı bir beta-laktamdır; aminoglikozidler oksijen bağımlı taşındıkları için aerob bakterilerde etkilidir. Kinolonlar DNA giraz/topoizomeraz IV, makrolidler ise protein sentezi üzerinden etki gösterir.",
       "spot": "",
-      "sourceNote": "Kullanıcı tarafından sohbet içinde paylaşılan 2025-2026 Final çıkmış soru hatırlatması.",
+      "sourceNote": "Kullanıcı tarafından paylaşılan antibakteriyel etki mekanizması sorusu; Mikrobiyoloji altında düzenlendi.",
       "metadata": {
         "examGroup": "Final",
         "year": "2025-2026",
         "teacher": "Tıbbi Mikrobiyoloji Anabilim Dalı Öğretim Üyeleri",
-        "topic": "Antibakteriyel ilaçların mikrobiyolojik etki mekanizmaları",
-        "target": "TIP2K5.MIKRO.BAKTERIYOLOJI - Bakteriyoloji | Bakterilerin temel özelliklerini, virülans faktörlerini, klinik tablolarını ve antibakteriyel etki mekanizmalarını açıklar.",
-        "sourceGroup": "Sohbet içi çıkmış soru derleme",
-        "source": "Bu sohbet içinde kullanıcı paylaşımı",
-        "status": "Ders düzeltildi; Farmakoloji yerine Mikrobiyoloji altında sınıflandırıldı",
-        "confidence": "Orta",
+        "topic": "Antibakteriyel ilaçların etki mekanizmaları",
+        "target": "TIP2K5.MIKRO.ANTIBAKTERIYEL - Antibakteriyel Etki Mekanizmaları | Antibakteriyel grupların temel etki mekanizmalarını ve ayırt edici özelliklerini açıklar.",
+        "sourceGroup": "Sohbet içi çıkmış soru derleme + kaynak doğrulama",
+        "source": "Bu sohbet içinde kullanıcı paylaşımı; Drive kaynak dosyalarıyla konu düzeyinde doğrulandı",
+        "status": "Mevcut kayıt güncellendi; ders Mikrobiyoloji olarak korundu",
+        "confidence": "Orta-Yüksek",
         "aiEdited": true,
-        "aiInterventionNote": "Eksik/hatırlanmayan kısımlar gerektiğinde YP ile tamamlandı ve tekilleştirme sonrası aktif kayıt olarak bırakıldı.",
+        "aiInterventionNote": "Eksik/hatırlanmayan kısımlar kaynak konu bilgisine göre tamamlandı; kullanıcı kaynaklı doğru cevap bilgisi korunarak düzenlendi.",
         "duplicateStatus": "active_unique",
-        "correctionNote": "Kullanıcı geri bildirimi üzerine ders alanı Farmakoloji’den Mikrobiyoloji’ye taşındı.",
-        "target_code": "TIP2K5.MIKRO.BAKTERIYOLOJI",
-        "target_title": "Bakteriyoloji",
-        "target_content": "Bakterilerin temel özelliklerini, virülans faktörlerini, klinik tablolarını ve antibakteriyel etki mekanizmalarını açıklar.",
+        "correctionNote": "Kullanıcı görselindeki şıklarla yeniden düzenlendi; beta-laktamların protein sentezini engellediği ifadesi yanlış seçenek olarak alındı.",
+        "target_code": "TIP2K5.MIKRO.ANTIBAKTERIYEL",
+        "target_title": "Antibakteriyel Etki Mekanizmaları",
+        "target_content": "Antibakteriyel grupların temel etki mekanizmalarını ve ayırt edici özelliklerini açıklar.",
         "course": "Dönem 2",
         "outcomeMatchConfidence": "Orta-Yüksek",
-        "aiExplanation": "Aminoglikozidler oksijen bağımlı taşınır ve zorunlu anaeroblara etkili değildir; bu nedenle A yanlıştır.",
-        "target_code_status": "Ders-konu-hedef kazanımına göre yerel TIP2 hedef kodu olarak oluşturuldu; resmi kaynakta birebir kod doğrulanamadı.",
+        "aiExplanation": "Beta-laktam antibiyotikler protein sentezini değil, bakteri hücre duvarı sentezini inhibe eder. Aztreonam monobaktam yapılı bir beta-laktamdır; aminoglikozidler oksijen bağımlı taşındıkları için aerob bakterilerde etkilidir. Kinolonlar DNA giraz/topoizomeraz IV, makrolidler ise protein sentezi üzerinden etki gösterir.",
+        "target_code_status": "Ders-konu-hedef kazanımına göre yerel TIP2 hedef kodu olarak oluşturuldu; resmi kaynakta birebir kod doğrulanamadığında konu başlığı üzerinden eşleştirildi.",
         "target_mapping_note": "Hedef; soru kökü, ders, kurul ve konu içeriğine göre kazanım başlığıyla eşleştirildi."
       },
       "subjectOrder": 7
@@ -7591,7 +7591,216 @@
         "target_mapping_note": "Hedef; soru kökü, ders, kurul ve konu içeriğine göre kazanım başlığıyla eşleştirildi."
       },
       "subjectOrder": 15
+    },
+    {
+      "id": "fb7c849dd9bb053f3dae5c7a",
+      "subject": "Mikrobiyoloji",
+      "order": 125,
+      "title": "Stafilokoklar / Katalaz-Koagülaz ve Kateter Enfeksiyonu",
+      "question": "Stafilokoklar ile ilgili aşağıdaki ifadelerden hangileri yanlıştır?\n\nI. Stafilokoklar katalaz negatiftir.\nII. Staphylococcus epidermidis koagülaz negatiftir.\nIII. Stafilokoklar zorunlu anaeroptur.\nIV. Kateter, protez ve şant enfeksiyonlarının %50’sinden fazlasından koagülaz negatif stafilokoklar sorumludur.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "I ve II"
+        },
+        {
+          "letter": "B",
+          "text": "I ve III"
+        },
+        {
+          "letter": "C",
+          "text": "II ve III"
+        },
+        {
+          "letter": "D",
+          "text": "I, III ve IV"
+        },
+        {
+          "letter": "E",
+          "text": "I, II, III ve IV"
+        }
+      ],
+      "answer": {
+        "index": 1,
+        "letter": "B",
+        "text": "I ve III",
+        "raw": "B) I ve III"
+      },
+      "explanation": "Stafilokoklar katalaz pozitiftir; bu nedenle I yanlıştır. Staphylococcus epidermidis koagülaz negatiftir; II doğrudur. Stafilokoklar zorunlu anaerop değil, fakültatif anaerop bakterilerdir; III yanlıştır. Koagülaz negatif stafilokoklar kateter, protez ve şant enfeksiyonlarında önemli etkenlerdir; IV doğru kabul edilir. Bu nedenle yanlış olan öncüller I ve III’tür.",
+      "spot": "",
+      "sourceNote": "Kullanıcı soru hatırlatması; 8) Stafilokoklar kaynak dosyası ve mikrobiyoloji soru notlarıyla konu düzeyinde doğrulandı.",
+      "metadata": {
+        "examGroup": "Final",
+        "year": "2025-2026",
+        "teacher": "Tıbbi Mikrobiyoloji Anabilim Dalı Öğretim Üyeleri",
+        "topic": "Stafilokokların temel özellikleri ve koagülaz negatif stafilokok enfeksiyonları",
+        "target": "TIP2K5.MIKRO.STAFILOKOK - Stafilokoklar | Stafilokokların katalaz/koagülaz özelliklerini, virülans ve klinik enfeksiyon ilişkilerini açıklar.",
+        "sourceGroup": "Sohbet içi çıkmış soru derleme + kaynak doğrulama",
+        "source": "Bu sohbet içinde kullanıcı paylaşımı; Drive kaynak dosyalarıyla konu düzeyinde doğrulandı",
+        "status": "Düzeltilmiş çıkmış soru kaydı",
+        "confidence": "Orta-Yüksek",
+        "aiEdited": true,
+        "aiInterventionNote": "Eksik/hatırlanmayan kısımlar kaynak konu bilgisine göre tamamlandı; kullanıcı kaynaklı doğru cevap bilgisi korunarak düzenlendi.",
+        "duplicateStatus": "active_unique",
+        "target_code": "TIP2K5.MIKRO.STAFILOKOK",
+        "target_title": "Stafilokoklar",
+        "target_content": "Stafilokokların katalaz/koagülaz özelliklerini, virülans ve klinik enfeksiyon ilişkilerini açıklar.",
+        "course": "Dönem 2",
+        "outcomeMatchConfidence": "Orta-Yüksek",
+        "aiExplanation": "Stafilokoklar katalaz pozitiftir; bu nedenle I yanlıştır. Staphylococcus epidermidis koagülaz negatiftir; II doğrudur. Stafilokoklar zorunlu anaerop değil, fakültatif anaerop bakterilerdir; III yanlıştır. Koagülaz negatif stafilokoklar kateter, protez ve şant enfeksiyonlarında önemli etkenlerdir; IV doğru kabul edilir. Bu nedenle yanlış olan öncüller I ve III’tür.",
+        "target_code_status": "Ders-konu-hedef kazanımına göre yerel TIP2 hedef kodu olarak oluşturuldu; resmi kaynakta birebir kod doğrulanamadığında konu başlığı üzerinden eşleştirildi.",
+        "target_mapping_note": "Hedef; soru kökü, ders, kurul ve konu içeriğine göre kazanım başlığıyla eşleştirildi."
+      },
+      "premises": [
+        {
+          "no": "I",
+          "text": "Stafilokoklar katalaz negatiftir.",
+          "truth": false,
+          "explanation": "Stafilokoklar katalaz pozitiftir."
+        },
+        {
+          "no": "II",
+          "text": "Staphylococcus epidermidis koagülaz negatiftir.",
+          "truth": true,
+          "explanation": "S. epidermidis koagülaz negatif stafilokoklardandır."
+        },
+        {
+          "no": "III",
+          "text": "Stafilokoklar zorunlu anaeroptur.",
+          "truth": false,
+          "explanation": "Stafilokoklar fakültatif anaeroptur."
+        },
+        {
+          "no": "IV",
+          "text": "Kateter, protez ve şant enfeksiyonlarının %50’sinden fazlasından koagülaz negatif stafilokoklar sorumludur.",
+          "truth": true,
+          "explanation": "Koagülaz negatif stafilokoklar yabancı cisim/kateter-protez-şant ilişkili enfeksiyonlarda önemli etkenlerdir."
+        }
+      ],
+      "subjectOrder": 25
+    },
+    {
+      "id": "f7b788733464feadf85be3d6",
+      "subject": "Mikrobiyoloji",
+      "order": 126,
+      "title": "Enterokoklar",
+      "question": "Enterokoklar ile ilgili aşağıdakilerden hangisi yanlıştır?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "Gram pozitif koklardır"
+        },
+        {
+          "letter": "B",
+          "text": "Normal gastrointestinal sistem florasında bulunabilirler"
+        },
+        {
+          "letter": "C",
+          "text": "Enterococcus gallinarum vankomisine doğal direnç gösterebilir"
+        },
+        {
+          "letter": "D",
+          "text": "Başlıca solunum sistemi enfeksiyonlarına neden olurlar"
+        },
+        {
+          "letter": "E",
+          "text": "Üriner sistem enfeksiyonu, endokardit ve kateter ilişkili enfeksiyonlara neden olabilirler"
+        }
+      ],
+      "answer": {
+        "index": 3,
+        "letter": "D",
+        "text": "Başlıca solunum sistemi enfeksiyonlarına neden olurlar",
+        "raw": "D) Başlıca solunum sistemi enfeksiyonlarına neden olurlar"
+      },
+      "explanation": "Enterokoklar gram pozitif koklardır ve gastrointestinal sistem florasında bulunabilir. Üriner sistem enfeksiyonu, endokardit ve kateter ilişkili enfeksiyonlarla ilişkilidir. E. gallinarum gibi bazı enterokoklarda vankomisine doğal direnç görülebilir. Başlıca solunum sistemi enfeksiyonu etkeni olmaları beklenmez; bu nedenle D yanlıştır.",
+      "spot": "",
+      "sourceNote": "Kullanıcı soru hatırlatması; mikrobiyoloji kaynak notlarıyla konu düzeyinde tamamlandı.",
+      "metadata": {
+        "examGroup": "Final",
+        "year": "2025-2026",
+        "teacher": "Tıbbi Mikrobiyoloji Anabilim Dalı Öğretim Üyeleri",
+        "topic": "Enterokokların klinik özellikleri ve direnç paternleri",
+        "target": "TIP2K5.MIKRO.ENTEROKOK - Enterokoklar | Enterokokların temel mikrobiyolojik özelliklerini, klinik enfeksiyonlarını ve direnç özelliklerini açıklar.",
+        "sourceGroup": "Sohbet içi çıkmış soru derleme + kaynak doğrulama",
+        "source": "Bu sohbet içinde kullanıcı paylaşımı; Drive kaynak dosyalarıyla konu düzeyinde doğrulandı",
+        "status": "Düzeltilmiş çıkmış soru kaydı",
+        "confidence": "Orta-Yüksek",
+        "aiEdited": true,
+        "aiInterventionNote": "Eksik/hatırlanmayan kısımlar kaynak konu bilgisine göre tamamlandı; kullanıcı kaynaklı doğru cevap bilgisi korunarak düzenlendi.",
+        "duplicateStatus": "active_unique",
+        "target_code": "TIP2K5.MIKRO.ENTEROKOK",
+        "target_title": "Enterokoklar",
+        "target_content": "Enterokokların temel mikrobiyolojik özelliklerini, klinik enfeksiyonlarını ve direnç özelliklerini açıklar.",
+        "course": "Dönem 2",
+        "outcomeMatchConfidence": "Orta-Yüksek",
+        "aiExplanation": "Enterokoklar gram pozitif koklardır ve gastrointestinal sistem florasında bulunabilir. Üriner sistem enfeksiyonu, endokardit ve kateter ilişkili enfeksiyonlarla ilişkilidir. E. gallinarum gibi bazı enterokoklarda vankomisine doğal direnç görülebilir. Başlıca solunum sistemi enfeksiyonu etkeni olmaları beklenmez; bu nedenle D yanlıştır.",
+        "target_code_status": "Ders-konu-hedef kazanımına göre yerel TIP2 hedef kodu olarak oluşturuldu; resmi kaynakta birebir kod doğrulanamadığında konu başlığı üzerinden eşleştirildi.",
+        "target_mapping_note": "Hedef; soru kökü, ders, kurul ve konu içeriğine göre kazanım başlığıyla eşleştirildi."
+      },
+      "subjectOrder": 26
+    },
+    {
+      "id": "0d63b084a58c2580f98ab543",
+      "subject": "Mikrobiyoloji",
+      "order": 127,
+      "title": "Anaerop Sporsuz Gram Pozitif Bakteriler",
+      "question": "Aşağıdakilerden hangisi anaerop sporsuz gram pozitif bakterilerden değildir?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "Actinomyces"
+        },
+        {
+          "letter": "B",
+          "text": "Mobiluncus"
+        },
+        {
+          "letter": "C",
+          "text": "Lactobacillus"
+        },
+        {
+          "letter": "D",
+          "text": "Propionibacterium"
+        },
+        {
+          "letter": "E",
+          "text": "Fusobacterium"
+        }
+      ],
+      "answer": {
+        "index": 4,
+        "letter": "E",
+        "text": "Fusobacterium",
+        "raw": "E) Fusobacterium"
+      },
+      "explanation": "Actinomyces, Mobiluncus, Lactobacillus ve Propionibacterium anaerop/aerotoleran sporsuz gram pozitif bakteriler arasında değerlendirilir. Fusobacterium ise anaerop gram negatif basil grubundadır; bu nedenle anaerop sporsuz gram pozitif bakterilerden değildir.",
+      "spot": "",
+      "sourceNote": "Kullanıcı tarafından görsel olarak paylaşılan soru; cevap E olarak doğrulandı.",
+      "metadata": {
+        "examGroup": "Final",
+        "year": "2025-2026",
+        "teacher": "Tıbbi Mikrobiyoloji Anabilim Dalı Öğretim Üyeleri",
+        "topic": "Anaerop bakterilerin sınıflandırılması",
+        "target": "TIP2K5.MIKRO.ANAEROP - Anaerop Bakteriler | Anaerop bakterilerin gram boyanma ve spor oluşturma özelliklerine göre sınıflandırılmasını açıklar.",
+        "sourceGroup": "Sohbet içi çıkmış soru derleme + kaynak doğrulama",
+        "source": "Bu sohbet içinde kullanıcı paylaşımı; Drive kaynak dosyalarıyla konu düzeyinde doğrulandı",
+        "status": "Düzeltilmiş çıkmış soru kaydı",
+        "confidence": "Orta-Yüksek",
+        "aiEdited": true,
+        "aiInterventionNote": "Eksik/hatırlanmayan kısımlar kaynak konu bilgisine göre tamamlandı; kullanıcı kaynaklı doğru cevap bilgisi korunarak düzenlendi.",
+        "duplicateStatus": "active_unique",
+        "target_code": "TIP2K5.MIKRO.ANAEROP",
+        "target_title": "Anaerop Bakteriler",
+        "target_content": "Anaerop bakterilerin gram boyanma ve spor oluşturma özelliklerine göre sınıflandırılmasını açıklar.",
+        "course": "Dönem 2",
+        "outcomeMatchConfidence": "Orta-Yüksek",
+        "aiExplanation": "Actinomyces, Mobiluncus, Lactobacillus ve Propionibacterium anaerop/aerotoleran sporsuz gram pozitif bakteriler arasında değerlendirilir. Fusobacterium ise anaerop gram negatif basil grubundadır; bu nedenle anaerop sporsuz gram pozitif bakterilerden değildir.",
+        "target_code_status": "Ders-konu-hedef kazanımına göre yerel TIP2 hedef kodu olarak oluşturuldu; resmi kaynakta birebir kod doğrulanamadığında konu başlığı üzerinden eşleştirildi.",
+        "target_mapping_note": "Hedef; soru kökü, ders, kurul ve konu içeriğine göre kazanım başlığıyla eşleştirildi."
+      },
+      "subjectOrder": 27
     }
   ],
-  "updatedAt": "2026-06-06T09:12:18.431823+00:00"
+  "updatedAt": "2026-06-06T09:35:40.803439+00:00"
 }
