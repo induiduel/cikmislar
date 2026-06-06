@@ -3732,6 +3732,12 @@
       }
     }
 
+  
+    /* Final sekmesi yalnız soru15.db içindir */
+    .final-fast-panel .subtitle::after{
+      content:"";
+    }
+
   </style>
 </head>
 <body class="font-normal is-loading">
@@ -3785,7 +3791,7 @@
           <div class="final-fast-head">
             <div>
               <h2>2025-2026 Final çıkmışları</h2>
-              <p class="subtitle">Final olarak işaretlenen 2025-2026 sorularını hızlıca aç.</p>
+              <p class="subtitle">Yalnızca soru15.db içindeki 2025-2026 final sorularını hızlıca aç.</p>
             </div>
             <button class="primary" id="finalAllBtn" type="button">Tüm final çıkmışlarını aç</button>
           </div>
@@ -4835,7 +4841,7 @@
     function filterCacheKey(){
       return JSON.stringify([
         questions.length,
-        filters.subject, filters.exam, filters.year, filters.teacher, filters.sourceGroup, filters.search, filters.finalOnly ? "final20252026" : "all-exams",
+        filters.subject, filters.exam, filters.year, filters.teacher, filters.sourceGroup, filters.search, filters.finalOnly ? "final20252026" : "all-exams", filters.excludeFinalDb ? "exclude-soru15" : "include-soru15",
         selectedDbFiles.map(dbCanonicalName).sort().join("|"),
         hiddenQuestionIds.join("|"),
         duplicateMode,
@@ -4848,7 +4854,7 @@
     function filterControlsKey(){
       return JSON.stringify([
         questions.length,
-        filters.subject, filters.exam, filters.year, filters.teacher, filters.sourceGroup, filters.search, filters.finalOnly ? "final20252026" : "all-exams",
+        filters.subject, filters.exam, filters.year, filters.teacher, filters.sourceGroup, filters.search, filters.finalOnly ? "final20252026" : "all-exams", filters.excludeFinalDb ? "exclude-soru15" : "include-soru15",
         selectedDbFiles.map(dbCanonicalName).sort().join("|"),
         hiddenQuestionIds.length,
         duplicateMode
@@ -5247,7 +5253,7 @@ function closeUnwantedQuestionConfirm(result=false){
     }
     function startQuiz(subject, count){
       document.body.classList.add("app-screen-active");
-      const pool = activeVisibleQuestions().filter(q => !subject || subject === "all" || q.subject === subject);
+      const pool = activeVisibleQuestions().filter(q => !isFinal20252026Question(q) && (!subject || subject === "all" || q.subject === subject));
       if(!pool.length){
         alert("Bu seçimde quiz için uygun soru yok. Gizlenen sorular veya aktif soru dosyası seçimini kontrol et.");
         return;
@@ -5256,7 +5262,7 @@ function closeUnwantedQuestionConfirm(result=false){
       quizActive = true;
       quizIds = chosen.map(q => answerKey(q));
       quizTitle = subject && subject !== "all" ? `${subject} quiz modu · ${chosen.length} soru` : `Tüm dersler quiz modu · ${chosen.length} soru`;
-      filters = {subject: subject || "all", exam:"all", year:"all", teacher:"all", sourceGroup:"all", search:""};
+      filters = {subject: subject || "all", exam:"all", year:"all", teacher:"all", sourceGroup:"all", search:"", excludeFinalDb:true, finalOnly:false};
       const firstIndex = questions.findIndex(q => answerKey(q) === quizIds[0]);
       if(firstIndex >= 0) current = firstIndex;
       els.landing.classList.add("hidden");
@@ -5898,6 +5904,7 @@ async function discoverDbFiles(){
       if(excludeField!=="teacher" && filters.teacher!=="all" && meta(q,"teacher")!==filters.teacher) return false;
       if(excludeField!=="sourceGroup" && filters.sourceGroup!=="all" && meta(q,"sourceGroup")!==filters.sourceGroup) return false;
       if(filters.finalOnly && !isFinal20252026Question(q)) return false;
+      if(!filters.finalOnly && filters.excludeFinalDb && isFinal20252026Question(q)) return false;
       if(term){
         const haystack = q._searchText || prepareQuestionRecord(q)._searchText || "";
         if(!haystack.includes(term)) return false;
@@ -6049,29 +6056,25 @@ async function discoverDbFiles(){
 
     
     function isFinal20252026Question(q){
-      const combined = normalize([
-        meta(q,"year"), meta(q,"examGroup"), meta(q,"sourceGroup"), meta(q,"source"),
-        meta(q,"topic"), meta(q,"target"), q && q.sourceNote, q && q._dbFile
-      ].join(" "));
-      const hasFinal = combined.includes("final") || combined.includes("butunleme final") || combined.includes("final cikmis");
-      const hasYear =
-        (combined.includes("2025") && combined.includes("2026")) ||
-        /2025\s*[-–_/ ]\s*26/.test(combined) ||
-        /25\s*[-–_/ ]\s*26/.test(combined) ||
-        combined.includes("2026") ||
-        combined.includes("25 26");
-      return hasFinal && hasYear;
+      // 2025-2026 final dönemi kesin olarak yalnızca soru15.db içinden alınır.
+      // Eski database dosyalarında final/2026 gibi etiketler olsa bile final sekmesine karışmaz.
+      if(!q) return false;
+      return dbCanonicalName(q._dbFile || "") === "soru15.db";
     }
 
     function final20252026Questions(baseQuestions = activeVisibleQuestions()){
       return baseQuestions.filter(isFinal20252026Question);
     }
 
+    function otherExamQuestions(baseQuestions = activeVisibleQuestions()){
+      return baseQuestions.filter(q => !isFinal20252026Question(q));
+    }
+
     function startFinalCourse(subject="all"){
       pushAppHistoryState("question");
       stopQuizMode();
       document.body.classList.add("app-screen-active");
-      filters = {subject:subject || "all", exam:"all", year:"all", teacher:"all", sourceGroup:"all", search:"", finalOnly:true};
+      filters = {subject:subject || "all", exam:"all", year:"all", teacher:"all", sourceGroup:"all", search:"", finalOnly:true, excludeFinalDb:false};
       infoOpen = false;
       invalidateQuestionIndexes();
       const idxs = filteredIndexes();
@@ -6156,14 +6159,14 @@ async function discoverDbFiles(){
         ev.stopPropagation();
         const teacher = teacherSelect ? teacherSelect.value : "all";
         if(teacher && teacher !== "all"){
-          const pool = activeVisibleQuestions().filter(q => q.subject === item.value && meta(q,"teacher") === teacher);
+          const pool = activeVisibleQuestions().filter(q => !isFinal20252026Question(q) && q.subject === item.value && meta(q,"teacher") === teacher);
           if(!pool.length){ alert("Bu hoca için quiz sorusu bulunamadı."); return; }
           const chosen = shuffleArray(pool).slice(0, Math.min(30, pool.length));
           quizActive = true;
           quizIds = chosen.map(q => answerKey(q));
           quizTitle = `${item.value} · ${teacher} quiz modu · ${chosen.length} soru`;
           document.body.classList.add("app-screen-active");
-          filters = {subject:item.value, exam:"all", year:"all", teacher:teacher, sourceGroup:"all", search:"", finalOnly:false};
+          filters = {subject:item.value, exam:"all", year:"all", teacher:teacher, sourceGroup:"all", search:"", finalOnly:false, excludeFinalDb:true};
           const firstIndex = questions.findIndex(q => answerKey(q) === quizIds[0]);
           if(firstIndex >= 0) current = firstIndex;
           els.landing.classList.add("hidden");
@@ -6188,6 +6191,7 @@ async function discoverDbFiles(){
       sanitizeFilters();
       const aq = activeVisibleQuestions();
       const finalQ = final20252026Questions(aq);
+      const otherQ = otherExamQuestions(aq);
       els.totalQuestionsHero.textContent=aq.length;
       els.totalSubjectsHero.textContent=countValues(q=>q.subject, aq).length;
       renderDbSelector();
@@ -6208,12 +6212,12 @@ async function discoverDbFiles(){
       }
 
       els.courseGrid.innerHTML="";
-      const courseCounts=countValues(q=>q.subject, aq);
+      const courseCounts=countValues(q=>q.subject, otherQ);
       const filtered=courseCounts.filter(item=>!term || normalize(item.value).includes(term));
-      filtered.forEach(item=>els.courseGrid.appendChild(createHomeCourseCard(item, aq, "all")));
+      filtered.forEach(item=>els.courseGrid.appendChild(createHomeCourseCard(item, otherQ, "all")));
       els.courseEmpty.style.display=filtered.length?"none":"block";
 
-      els.continueBtn.disabled=!aq.length || !hasLastPosition("all","all");
+      els.continueBtn.disabled=!otherQ.length || !hasLastPosition("all","all");
       const wrongCount = activeWrongCount();
       els.wrongHomeBtn.disabled = wrongCount === 0;
       els.wrongHomeBtn.textContent = wrongCount ? `Yanlışlarımı aç (${wrongCount})` : "Yanlışlarımı aç";
@@ -6225,8 +6229,8 @@ async function discoverDbFiles(){
         els.starredHomeBtn.disabled = starredCount === 0;
         els.starredHomeBtn.textContent = starredCount ? `Yıldızlı sorular (${starredCount})` : "Yıldızlı sorular";
       }
-      els.quizAllBtn.disabled = aq.length === 0;
-      els.quizAllBtn.textContent = aq.length ? `Tüm dersler quiz modu (${Math.min(150, aq.length)})` : "Tüm dersler quiz modu";
+      els.quizAllBtn.disabled = otherQ.length === 0;
+      els.quizAllBtn.textContent = otherQ.length ? `Tüm dersler quiz modu (${Math.min(150, otherQ.length)})` : "Tüm dersler quiz modu";
     }
 
     function openHomeSettingsPanel(panelId){
@@ -6299,6 +6303,7 @@ async function discoverDbFiles(){
     function buildExamPool(subject, teacher="all"){
       return activeVisibleQuestions().filter(q=>{
         if(!subject || subject === "all") return false;
+        if(isFinal20252026Question(q)) return false;
         if(q.subject !== subject) return false;
         if(teacher && teacher !== "all" && meta(q,"teacher") !== teacher) return false;
         return true;
@@ -6627,11 +6632,12 @@ async function openCurrentQuestionInChatGPT(){
       stopQuizMode();
       document.body.classList.add("app-screen-active");
       document.body.classList.add("app-screen-active");
-      filters={subject:subject||"all", exam:"all", year:"all", teacher:teacher||"all", sourceGroup:"all", search:""};
+      filters={subject:subject||"all", exam:"all", year:"all", teacher:teacher||"all", sourceGroup:"all", search:"", excludeFinalDb:true, finalOnly:false};
       infoOpen=false;
       invalidateQuestionIndexes();
       restoreLastPosition(subject||"all", teacher||"all");
       filters.finalOnly = false;
+      filters.excludeFinalDb = true;
       invalidateQuestionIndexes();
       ensureCurrent();
       els.landing.classList.add("hidden");
@@ -6651,10 +6657,10 @@ async function openCurrentQuestionInChatGPT(){
       stopQuizMode();
       document.body.classList.add("app-screen-active");
       document.body.classList.add("app-screen-active");
-      filters={subject:subject||"all", exam:"all", year:"all", teacher:"all", sourceGroup:"all", search:""};
+      filters={subject:subject||"all", exam:"all", year:"all", teacher:"all", sourceGroup:"all", search:"", excludeFinalDb:true, finalOnly:false};
       infoOpen=false;
       invalidateQuestionIndexes();
-      restoreLastPosition(subject||"all","all"); filters.finalOnly = false; invalidateQuestionIndexes(); ensureCurrent(); els.landing.classList.add("hidden"); els.appView.classList.add("active");
+      restoreLastPosition(subject||"all","all"); filters.finalOnly = false; filters.excludeFinalDb = true; invalidateQuestionIndexes(); ensureCurrent(); els.landing.classList.add("hidden"); els.appView.classList.add("active");
       els.quizView.classList.remove("hidden"); els.listView.classList.remove("active");
       els.activeTitle.textContent=subject&&subject!=="all"?subject+" soru bankası":"Tüm dersler soru bankası";
       els.results.style.display="none"; render(); scrollToQuestion("auto");
@@ -6966,7 +6972,7 @@ async function openCurrentQuestionInChatGPT(){
       const idxsForCounter = filteredIndexes();
       els.counter.textContent=st.total?`Soru ${idxsForCounter.indexOf(current)+1} / ${st.total} · Genel no: ${current+1}`:"0 soru";
       els.answeredCount.textContent=st.answered; els.correctCount.textContent=st.correct; els.wrongCount.textContent=st.wrong+(st.neutral?` (+${st.neutral} manuel)`:""); els.emptyCount.textContent=st.empty;
-      els.activeFilterSummary.textContent=[filters.finalOnly?"2025-2026 Final çıkmışları":"Tüm çıkmışlar",filters.subject==="all"?"Tüm dersler":filters.subject,filters.exam==="all"?"Tüm gruplar":filters.exam,filters.year==="all"?"Tüm yıllar":filters.year,filters.teacher==="all"?"Tüm hocalar":filters.teacher,filters.sourceGroup==="all"?"Tüm kaynak türleri":filters.sourceGroup,filters.search.trim()?`Arama: “${filters.search.trim()}”`:"Arama yok"].join(" + ")+` → ${st.total} soru`;
+      els.activeFilterSummary.textContent=[filters.finalOnly?"2025-2026 Final çıkmışları":(filters.excludeFinalDb?"Diğer tüm çıkmışlar":"Tüm çıkmışlar"),filters.subject==="all"?"Tüm dersler":filters.subject,filters.exam==="all"?"Tüm gruplar":filters.exam,filters.year==="all"?"Tüm yıllar":filters.year,filters.teacher==="all"?"Tüm hocalar":filters.teacher,filters.sourceGroup==="all"?"Tüm kaynak türleri":filters.sourceGroup,filters.search.trim()?`Arama: “${filters.search.trim()}”`:"Arama yok"].join(" + ")+` → ${st.total} soru`;
     }
 
     function updateJumpGridState(){
@@ -7624,7 +7630,7 @@ ${body}
       els.teacherSelect.addEventListener("change",()=>{filters.teacher=els.teacherSelect.value; ensureCurrent(); render();});
       els.sourceGroupSelect.addEventListener("change",()=>{filters.sourceGroup=els.sourceGroupSelect.value; ensureCurrent(); render();});
       els.searchInput.addEventListener("input", debounce(()=>{filters.search=els.searchInput.value; ensureCurrent(); render();}, 180));
-      els.clearFiltersBtn.addEventListener("click",()=>{filters={subject:filters.subject,exam:"all",year:"all",teacher:"all",sourceGroup:"all",search:"",finalOnly:!!filters.finalOnly}; ensureCurrent(); render();});
+      els.clearFiltersBtn.addEventListener("click",()=>{filters={subject:filters.subject,exam:"all",year:"all",teacher:"all",sourceGroup:"all",search:"",finalOnly:!!filters.finalOnly,excludeFinalDb:!!filters.excludeFinalDb}; ensureCurrent(); render();});
       els.goFirstFilteredBtn.addEventListener("click",()=>{const idxs=filteredIndexes(); if(idxs.length){current=idxs[0]; render();}});
       els.prevBtn.addEventListener("click",()=>{const idxs=filteredIndexes(); const pos=idxs.indexOf(current); if(pos>0){current=idxs[pos-1]; render(); requestAnimationFrame(()=>scrollToQuestion("auto"));}});
       els.nextBtn.addEventListener("click",()=>{const idxs=filteredIndexes(); const pos=idxs.indexOf(current); if(pos<idxs.length-1){current=idxs[pos+1]; render(); requestAnimationFrame(()=>scrollToQuestion("auto"));}else{ if(examMode) stopExamTimer(); renderResults(); }});
