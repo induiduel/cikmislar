@@ -4540,13 +4540,13 @@
     const DB_DIRS = ["db", ""];
     const DB_EXTENSIONS = [".db", ".sdb"];
     const SEQUENTIAL_SCAN_MAX = 500;
-    const KNOWN_DB_FILES = ["soru20.db","soru1.db","soru2.db","soru3.db","soru4.db","soru5.db","soru6.db","soru7.db","soru8.db","soru9.db","soru10.db","soru11.db","soru12.db","soru13.db","soru14.db","soru15(1).db"];
+    const KNOWN_DB_FILES = ["yenisoru20.db","soru20.db","soru1.db","soru2.db","soru3.db","soru4.db","soru5.db","soru6.db","soru7.db","soru8.db","soru9.db","soru10.db","soru11.db","soru12.db","soru13.db","soru14.db","soru15(1).db"];
     const DISABLED_DB_FILES = ["soru15.db"];
     const FINAL_REFERENCE_DB_FILES = ["soru15(1).db"];
     const FINAL_REFERENCE_SIMILARITY = 0.90;
     const STORAGE_KEY = "database_loader_question_bank_progress_v4";
-    const DB_FILE_LIST_CACHE_KEY = "question_bank_db_file_list_cache_v6_clean_ai";
-    const DB_CONTENT_CACHE_NAME = "question_bank_indexeddb_cache_v6_clean_ai";
+    const DB_FILE_LIST_CACHE_KEY = "question_bank_db_file_list_cache_v7_yenisoru20";
+    const DB_CONTENT_CACHE_NAME = "question_bank_indexeddb_cache_v7_yenisoru20";
     const DB_CONTENT_STORE_NAME = "dbFiles";
     const LAST_POSITION_KEY = "question_bank_last_positions_v1";
     const STUDY_TIME_KEY = "question_bank_study_time_v1";
@@ -4660,6 +4660,10 @@
     function initials(name){return String(name||"?").split(/\s+/).map(x=>x[0]).join("").slice(0,2).toUpperCase();}
     function optionList(q){return Array.isArray(q.options) ? q.options : [];}
     function meta(q,key){return (q.metadata && q.metadata[key]) || "";}
+    function hasAiIntervention(q){
+      const flag = meta(q, "aiEdited");
+      return Boolean(meta(q, "aiInterventionNote")) || flag === true || flag === "true";
+    }
     function answerKey(q){return duplicateMode === "all" ? (q._instanceId || q.id) : q.id;}
 
     function loadQuestionEditOverrides(){
@@ -7607,12 +7611,16 @@ async function openCurrentQuestionInChatGPT(){
       els.activeTitle.textContent=quizActive ? quizTitle : (filters.subject!=="all"?filters.subject+" soru bankası":"Tüm dersler soru bankası");
       els.section.textContent=`${q.subject || "Ders yok"} · Soru ${pos+1}/${idxs.length} · ${meta(q,"examGroup")||"Kurul yok"} · ${meta(q,"teacher")||"Hoca yok"}`;
       renderHeaderJumpMenu(idxs);
+      const aiIntervention = hasAiIntervention(q);
+      const aiInterventionNote = String(meta(q,"aiInterventionNote") || "").trim();
       if(els.questionEditedBadge){
-        els.questionEditedBadge.classList.toggle("hidden", !q._editedByUser);
-        els.questionEditedBadge.textContent = q._editedByUser ? "Kullanıcı düzenledi" : "";
-        els.questionEditedBadge.title = q._editedByUser ? "Bu soru metni/şıkları/gerçek doğru cevabı kullanıcı tarafından düzenlendi." : "";
+        els.questionEditedBadge.classList.toggle("hidden", !q._editedByUser && !aiIntervention);
+        els.questionEditedBadge.textContent = aiIntervention ? "AI düzeltmesi" : (q._editedByUser ? "Kullanıcı düzenledi" : "");
+        els.questionEditedBadge.title = aiIntervention
+          ? (aiInterventionNote || "Bu soruda cevap anahtarı düzeltmesi işaretlendi.")
+          : (q._editedByUser ? "Bu soru metni/şıkları/gerçek doğru cevabı kullanıcı tarafından düzenlendi." : "");
       }
-      const rows=[["Ders",q.subject],["Dosya",q._dbFile||""],["Kurul / sınav grubu",meta(q,"examGroup")],["Yıl / sene",meta(q,"year")],["Hoca",meta(q,"teacher")],["Konu",meta(q,"topic")],["Hedef / kazanım",meta(q,"target")],["Kaynak türü",meta(q,"sourceGroup")],["Kaynak",meta(q,"source")],["Kaynak soru no",meta(q,"sourceNo")],["Durum / güven",meta(q,"status")],["Kullanıcı düzenlemesi",q._editedByUser ? "Bu soru kullanıcı tarafından düzenlendi." : ""]];
+      const rows=[["Ders",q.subject],["Dosya",q._dbFile||""],["Kurul / sınav grubu",meta(q,"examGroup")],["Yıl / sene",meta(q,"year")],["Hoca",meta(q,"teacher")],["Konu",meta(q,"topic")],["Hedef / kazanım",meta(q,"target")],["Kaynak türü",meta(q,"sourceGroup")],["Kaynak",meta(q,"source")],["Kaynak soru no",meta(q,"sourceNo")],["Durum / güven",meta(q,"status")],["AI müdahalesi",aiInterventionNote || (aiIntervention ? "Yapay zeka düzeltmesi işaretli." : "")],["Kullanıcı düzenlemesi",q._editedByUser ? "Bu soru kullanıcı tarafından düzenlendi." : ""]];
       els.meta.innerHTML=rows.filter(([,v])=>String(v??"").trim()).map(([k,v])=>`<div><b>${escapeHTML(k)}:</b> ${escapeHTML(v)}</div>`).join("");
       els.question.innerHTML=formatQuestionHTML(q.question||"", q, selected);
       els.options.innerHTML="";
@@ -7652,6 +7660,7 @@ async function openCurrentQuestionInChatGPT(){
       }
       const infoParts=[];
       if(q._editedByUser) infoParts.push("<b>Kullanıcı düzenlemesi:</b> Bu soru metni, şıkları veya gerçek doğru cevabı kullanıcı tarafından düzenlendi.");
+      if(aiIntervention) infoParts.push("<b>Yapay zeka müdahalesi:</b> "+escapeHTML(aiInterventionNote || "Bu soruda cevap anahtarı düzeltmesi işaretlendi."));
       if(q.explanation) infoParts.push("<b>Açıklama:</b> "+escapeHTML(q.explanation));
       if(q.spot) infoParts.push("<b>Spot bilgi:</b> "+escapeHTML(q.spot));
       if(q.sourceNote) infoParts.push("<b>Kaynak notu:</b> "+escapeHTML(q.sourceNote));

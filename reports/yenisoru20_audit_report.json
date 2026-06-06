@@ -1,0 +1,82 @@
+{
+  "stats": {
+    "current_questions": 1913,
+    "kazanım_matched": 1879,
+    "kazanım_weak_match": 30,
+    "kazanım_needs_review": 4,
+    "answer_differences": 1,
+    "missing_in_protected": 1
+  },
+  "input": {
+    "current": {
+      "path": "C:\\Users\\indui\\Desktop\\cikmislar\\db\\soru20.db",
+      "questions": 1913,
+      "bytes": 9541535
+    },
+    "protected": {
+      "path": "C:\\Users\\indui\\Desktop\\cikmislar\\db\\soru20koru.db",
+      "questions": 1912,
+      "bytes": 6499752
+    },
+    "new": {
+      "path": "C:\\Users\\indui\\Desktop\\cikmislar\\db\\yenisoru20.db",
+      "questions": 1913,
+      "bytes": 3137012
+    },
+    "kazanımFiles": [
+      {
+        "name": "k1.PDF",
+        "pages": 26,
+        "chars": 92927
+      },
+      {
+        "name": "k2.PDF",
+        "pages": 19,
+        "chars": 68304
+      },
+      {
+        "name": "k3.PDF",
+        "pages": 23,
+        "chars": 88788
+      },
+      {
+        "name": "k4.PDF",
+        "pages": 23,
+        "chars": 80218
+      },
+      {
+        "name": "k5.PDF",
+        "pages": 14,
+        "chars": 50159
+      }
+    ]
+  },
+  "answerDifferences": [
+    {
+      "id": "18496d0082616cfbcfc72b7f",
+      "subject": "Mikrobiyoloji",
+      "question": "Neisseria ve Moraxella ile ilgili aşağıdakilerden hangileri doğrudur?\n\nI. Neisseria gonorrhoeae erkeklerde asemptomatik, kadınlarda semptomatiktir.\nII. Neisseria gonorrhoeae yenidoğanda pürülan konjunktivite yapar.\nIII. ",
+      "current_answer": {
+        "letter": "C",
+        "text": "II, III ve IV",
+        "index": 2
+      },
+      "protected_answer": {
+        "letter": "B",
+        "text": "I, III ve IV",
+        "index": 1
+      },
+      "match_type": "id"
+    }
+  ],
+  "aiInterventions": [
+    "18496d0082616cfbcfc72b7f"
+  ],
+  "missingInProtected": [
+    {
+      "id": "1bb7bd445f0cf090249102e2",
+      "subject": "Fizyoloji",
+      "question": "Gastrointestinal hormonlar ile ilgili aşağıdakilerden hangileri doğrudur?\n\nI. Gastrin mide bezlerinin enzim salgılamasını uyarır.\nII. Sekretin bikarbonat salınımını uyarır.\nIII. So"
+    }
+  ]
+}
