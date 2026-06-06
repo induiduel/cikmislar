@@ -3917,6 +3917,62 @@
       color:#12633a!important;
       border-color:rgba(18,99,58,.18)!important;
     }
+    .histology-fast-panel{
+      border-color:rgba(190,24,93,.16)!important;
+      background:linear-gradient(180deg,#ffffff,#fff7fb)!important;
+    }
+    .histology-fast-panel .final-fast-summary{
+      color:#9f1239!important;
+      background:linear-gradient(90deg,rgba(255,241,246,.95),rgba(255,255,255,.96));
+      border-bottom-color:rgba(190,24,93,.12);
+    }
+    .histology-fast-panel .final-fast-summary::after{
+      color:#9f1239!important;
+      border-color:rgba(190,24,93,.16)!important;
+    }
+    .histology-fast-panel .final-hero-block{
+      border-color:rgba(190,24,93,.13);
+      background:linear-gradient(135deg,#fff7fb,#ffffff 58%,#edf4ff);
+    }
+    .histology-fast-panel .final-hero-block h2,
+    .histology-fast-panel .final-stat b,
+    .histology-fast-panel .final-course-shell-title{
+      color:#9f1239;
+    }
+    .quick-group-grid{
+      display:grid;
+      gap:8px;
+      max-height:430px;
+      overflow:auto;
+      padding-right:3px;
+    }
+    .quick-group-btn{
+      display:grid;
+      gap:4px;
+      width:100%;
+      text-align:left;
+      padding:10px;
+      border-radius:10px;
+      border:1px solid rgba(190,24,93,.12);
+      background:#fff;
+      color:#334155;
+      cursor:pointer;
+      box-shadow:none;
+    }
+    .quick-group-btn b{
+      color:#9f1239;
+      font-size:12.5px;
+      line-height:1.25;
+    }
+    .quick-group-btn span{
+      color:var(--muted);
+      font-size:11px;
+      font-weight:850;
+    }
+    .quick-group-btn:hover{
+      border-color:rgba(190,24,93,.28);
+      background:#fff7fb;
+    }
     @media(max-width:760px){
       .home-actions-panel,
       .final-dashboard{
@@ -4056,6 +4112,42 @@
               </div>
               <section class="course-grid final-course-grid" id="kurulCourseGrid"></section>
               <section class="course-empty final-empty" id="kurulEmpty">2025-2026 kurul olarak eşleşen soru bulunamadı.</section>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <details class="panel final-fast-panel final-collapsible-panel histology-fast-panel" id="histologyFastPanel">
+        <summary class="final-fast-summary">
+          <span>Histoloji soruları</span>
+          <small>Filtre yapmadan Histoloji çalış</small>
+        </summary>
+        <div class="final-fast-content">
+          <div class="final-dashboard">
+            <div class="final-hero-block">
+              <div>
+                <h2>Histoloji hızlı çalışma</h2>
+                <p class="subtitle" id="histologySummaryText">Histoloji soruları hazırlanıyor.</p>
+              </div>
+              <div class="final-stat-row">
+                <div class="final-stat"><b id="histologyQuestionCount">0</b><span>histoloji sorusu</span></div>
+                <div class="final-stat"><b id="histologyGroupCount">0</b><span>grup</span></div>
+                <div class="final-stat"><b id="histologyQuizCount">0</b><span>test sorusu</span></div>
+              </div>
+              <div class="final-action-grid">
+                <button class="primary" id="histologyAllBtn" type="button">Tüm Histoloji sorularını aç</button>
+                <button class="secondary" id="histologyQuizBtn" type="button">Kendini test et</button>
+                <button class="secondary" id="histologyFinalBtn" type="button">Final Histoloji</button>
+                <button class="secondary" id="histologyListBtn" type="button">Liste görünümü</button>
+              </div>
+            </div>
+            <div class="final-course-shell">
+              <div class="final-course-shell-title">
+                <span>Gruplar</span>
+                <small>Histoloji konu / sınav dağılımı</small>
+              </div>
+              <section class="quick-group-grid" id="histologyGroupGrid"></section>
+              <section class="course-empty final-empty" id="histologyEmpty">Histoloji sorusu bulunamadı.</section>
             </div>
           </div>
         </div>
@@ -4530,6 +4622,7 @@
       menuInfoBtn:$("menuInfoBtn"), menuShowAllBtn:$("menuShowAllBtn"), menuStarredBtn:$("menuStarredBtn"), menuExamBtn:$("menuExamBtn"), menuWideToggleBtn:$("menuWideToggleBtn"), menuResetVisibleBtn:$("menuResetVisibleBtn"), menuClearCacheBtn:$("menuClearCacheBtn"),
       courseGrid:$("courseGrid"), finalCourseGrid:$("finalCourseGrid"), finalEmpty:$("finalEmpty"), finalAllBtn:$("finalAllBtn"), finalQuizBtn:$("finalQuizBtn"), finalCoursesBtn:$("finalCoursesBtn"), finalListBtn:$("finalListBtn"), finalSummaryText:$("finalSummaryText"), finalQuestionCount:$("finalQuestionCount"), finalSubjectCount:$("finalSubjectCount"), finalQuizCount:$("finalQuizCount"),
       kurulCourseGrid:$("kurulCourseGrid"), kurulEmpty:$("kurulEmpty"), kurulAllBtn:$("kurulAllBtn"), kurulQuizBtn:$("kurulQuizBtn"), kurulCoursesBtn:$("kurulCoursesBtn"), kurulListBtn:$("kurulListBtn"), kurulSummaryText:$("kurulSummaryText"), kurulQuestionCount:$("kurulQuestionCount"), kurulSubjectCount:$("kurulSubjectCount"), kurulQuizCount:$("kurulQuizCount"),
+      histologyGroupGrid:$("histologyGroupGrid"), histologyEmpty:$("histologyEmpty"), histologyAllBtn:$("histologyAllBtn"), histologyQuizBtn:$("histologyQuizBtn"), histologyFinalBtn:$("histologyFinalBtn"), histologyListBtn:$("histologyListBtn"), histologySummaryText:$("histologySummaryText"), histologyQuestionCount:$("histologyQuestionCount"), histologyGroupCount:$("histologyGroupCount"), histologyQuizCount:$("histologyQuizCount"),
       allCoursesDetails:$("allCoursesDetails"), courseEmpty:$("courseEmpty"), courseSearch:$("courseSearch"),
       clearCourseSearch:$("clearCourseSearch"), continueBtn:$("continueBtn"), wrongHomeBtn:$("wrongHomeBtn"), hiddenHomeBtn:$("hiddenHomeBtn"), starredHomeBtn:$("starredHomeBtn"), quizAllBtn:$("quizAllBtn"), startAllBtn:$("startAllBtn"),
       backHomeBtn:$("backHomeBtn"), changeCourseBtn:$("changeCourseBtn"), activeTitle:$("activeTitle"),
@@ -6429,6 +6522,10 @@ async function discoverDbFiles(){
       return baseQuestions.filter(isKurul20252026Question);
     }
 
+    function histologyQuestions(baseQuestions = activeVisibleQuestions()){
+      return baseQuestions.filter(q => q && q.subject === "Histoloji");
+    }
+
     function otherExamQuestions(baseQuestions = activeVisibleQuestions()){
       return baseQuestions.filter(q => !isFinal20252026Question(q));
     }
@@ -6508,6 +6605,63 @@ async function discoverDbFiles(){
       els.landing.classList.add("hidden");
       els.appView.classList.add("active");
       els.activeTitle.textContent = "2025-2026 Kurul listesi";
+      showListView("all");
+    }
+
+    function startHistologyCourse(examGroup="all"){
+      pushAppHistoryState("question");
+      stopQuizMode();
+      document.body.classList.add("app-screen-active");
+      filters = {subject:"Histoloji", exam:examGroup || "all", year:"all", teacher:"all", sourceGroup:"all", search:"", finalOnly:false, kurulOnly:false, excludeFinalDb:false};
+      infoOpen = false;
+      invalidateQuestionIndexes();
+      const idxs = filteredIndexes();
+      current = idxs.length ? idxs[0] : 0;
+      els.landing.classList.add("hidden");
+      els.appView.classList.add("active");
+      els.quizView.classList.remove("hidden");
+      els.listView.classList.remove("active");
+      els.activeTitle.textContent = examGroup && examGroup !== "all"
+        ? `Histoloji · ${examGroup}`
+        : "Histoloji soruları";
+      els.results.style.display = "none";
+      render();
+      scrollToQuestion("auto");
+    }
+
+    function startHistologyQuiz(count=40){
+      const pool = histologyQuestions(activeVisibleQuestions());
+      if(!pool.length){
+        alert("Histoloji testi için uygun soru bulunamadı.");
+        return;
+      }
+      const chosen = shuffleArray(pool).slice(0, Math.min(count, pool.length));
+      quizActive = true;
+      quizIds = chosen.map(q => answerKey(q));
+      quizTitle = `Histoloji test modu · ${chosen.length} soru`;
+      document.body.classList.add("app-screen-active");
+      filters = {subject:"Histoloji", exam:"all", year:"all", teacher:"all", sourceGroup:"all", search:"", finalOnly:false, kurulOnly:false, excludeFinalDb:false};
+      const firstIndex = questions.findIndex(q => answerKey(q) === quizIds[0]);
+      if(firstIndex >= 0) current = firstIndex;
+      els.landing.classList.add("hidden");
+      els.appView.classList.add("active");
+      els.quizView.classList.remove("hidden");
+      els.listView.classList.remove("active");
+      els.activeTitle.textContent = quizTitle;
+      els.results.style.display = "none";
+      render();
+      scrollToQuestion("auto");
+    }
+
+    function showHistologyList(){
+      stopQuizMode();
+      document.body.classList.add("app-screen-active");
+      filters = {subject:"Histoloji", exam:"all", year:"all", teacher:"all", sourceGroup:"all", search:"", finalOnly:false, kurulOnly:false, excludeFinalDb:false};
+      sanitizeFilters();
+      ensureCurrent();
+      els.landing.classList.add("hidden");
+      els.appView.classList.add("active");
+      els.activeTitle.textContent = "Histoloji listesi";
       showListView("all");
     }
 
@@ -6649,6 +6803,7 @@ async function discoverDbFiles(){
       const aq = activeVisibleQuestions();
       const finalQ = final20252026Questions(aq);
       const kurulQ = kurul20252026Questions(aq);
+      const histologyQ = histologyQuestions(aq);
       const otherQ = otherExamQuestions(aq);
       els.totalQuestionsHero.textContent=aq.length;
       els.totalSubjectsHero.textContent=countValues(q=>q.subject, aq).length;
@@ -6723,6 +6878,46 @@ async function discoverDbFiles(){
       if(els.kurulSummaryText) els.kurulSummaryText.textContent = kurulQ.length
         ? `${kurulQ.length} soru, ${kurulSubjectCount} ders.`
         : "Kurul sorusu bulunamadı.";
+
+      const histologyGroups = countValues(q=>meta(q,"examGroup"), histologyQ).filter(item=>!term || normalize(item.value).includes(term));
+      if(els.histologyGroupGrid){
+        els.histologyGroupGrid.innerHTML = "";
+        histologyGroups.forEach(item=>{
+          const btn = document.createElement("button");
+          btn.className = "quick-group-btn";
+          btn.type = "button";
+          btn.innerHTML = `<b>${escapeHTML(item.value)}</b><span>${item.count} soru · aç</span>`;
+          btn.addEventListener("click",()=>startHistologyCourse(item.value));
+          els.histologyGroupGrid.appendChild(btn);
+        });
+        if(els.histologyEmpty) els.histologyEmpty.style.display = histologyGroups.length ? "none" : "block";
+      }
+      if(els.histologyAllBtn){
+        els.histologyAllBtn.disabled = histologyQ.length === 0;
+        els.histologyAllBtn.textContent = histologyQ.length ? `Tüm Histoloji sorularını aç (${histologyQ.length})` : "Histoloji sorusu yok";
+        els.histologyAllBtn.onclick = () => startHistologyCourse("all");
+      }
+      if(els.histologyQuizBtn){
+        els.histologyQuizBtn.disabled = histologyQ.length === 0;
+        els.histologyQuizBtn.textContent = histologyQ.length ? `Kendini test et (${Math.min(40, histologyQ.length)})` : "Test yok";
+        els.histologyQuizBtn.onclick = () => startHistologyQuiz(40);
+      }
+      if(els.histologyFinalBtn){
+        const finalHistologyCount = finalQ.filter(q=>q.subject === "Histoloji").length;
+        els.histologyFinalBtn.disabled = finalHistologyCount === 0;
+        els.histologyFinalBtn.textContent = finalHistologyCount ? `Final Histoloji (${finalHistologyCount})` : "Final Histoloji yok";
+        els.histologyFinalBtn.onclick = () => startFinalCourse("Histoloji");
+      }
+      if(els.histologyListBtn){
+        els.histologyListBtn.disabled = histologyQ.length === 0;
+        els.histologyListBtn.onclick = showHistologyList;
+      }
+      if(els.histologyQuestionCount) els.histologyQuestionCount.textContent = histologyQ.length;
+      if(els.histologyGroupCount) els.histologyGroupCount.textContent = countValues(q=>meta(q,"examGroup"), histologyQ).length;
+      if(els.histologyQuizCount) els.histologyQuizCount.textContent = Math.min(40, histologyQ.length);
+      if(els.histologySummaryText) els.histologySummaryText.textContent = histologyQ.length
+        ? `${histologyQ.length} soru, ${countValues(q=>meta(q,"examGroup"), histologyQ).length} grup.`
+        : "Histoloji sorusu bulunamadı.";
 
       els.courseGrid.innerHTML="";
       const courseCounts=countValues(q=>q.subject, otherQ);
