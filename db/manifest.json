@@ -1,8 +1,8 @@
 {
   "schemaVersion": "1.0",
   "files": [
-    "soru1.db",
-    "soru2.db"
+    "soru20.db"
   ],
-  "note": "index.html manifest, GitHub API ve soru*.db taramasını dener. Stale/bozuk yollar yüzünden yükleme artık takılmaz."
+  "note": "Birleştirilmiş tek dosya. Kaynak: soru1.db, soru2.db, soru3.db, soru4.db, soru5.db, soru6.db, soru7.db, soru8.db, soru10.db, soru15(1).db",
+  "updatedAt": "2026-06-06T09:48:34.108310+00:00"
 }
