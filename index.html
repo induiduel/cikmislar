@@ -3733,7 +3733,7 @@
     }
 
   
-    /* Final sekmesi yalnız soru15.db içindir */
+    /* Final sekmesi soru15(1).db referans setiyle eşleşen güncel final soruları içindir */
     .final-fast-panel .subtitle::after{
       content:"";
     }
@@ -3791,7 +3791,7 @@
           <div class="final-fast-head">
             <div>
               <h2>2025-2026 Final çıkmışları</h2>
-              <p class="subtitle">Yalnızca güncel soru15.db içindeki 2025-2026 final sorularını hızlıca aç.</p>
+              <p class="subtitle">soru15(1).db referans setiyle eşleşen 2025-2026 final sorularını hızlıca aç.</p>
             </div>
             <button class="primary" id="finalAllBtn" type="button">Tüm final çıkmışlarını aç</button>
           </div>
@@ -4184,10 +4184,13 @@
     const DB_DIRS = ["db", ""];
     const DB_EXTENSIONS = [".db", ".sdb"];
     const SEQUENTIAL_SCAN_MAX = 500;
-    const KNOWN_DB_FILES = ["soru1.db","soru2.db","soru3.db","soru4.db","soru5.db","soru6.db","soru7.db","soru8.db","soru9.db","soru10.db","soru11.db","soru12.db","soru13.db","soru14.db","soru15.db","soru15(1).db"];
+    const KNOWN_DB_FILES = ["soru20.db","soru1.db","soru2.db","soru3.db","soru4.db","soru5.db","soru6.db","soru7.db","soru8.db","soru9.db","soru10.db","soru11.db","soru12.db","soru13.db","soru14.db","soru15(1).db"];
+    const DISABLED_DB_FILES = ["soru15.db"];
+    const FINAL_REFERENCE_DB_FILES = ["soru15(1).db"];
+    const FINAL_REFERENCE_SIMILARITY = 0.90;
     const STORAGE_KEY = "database_loader_question_bank_progress_v4";
-    const DB_FILE_LIST_CACHE_KEY = "question_bank_db_file_list_cache_v4_soru15_124";
-    const DB_CONTENT_CACHE_NAME = "question_bank_indexeddb_cache_v4_soru15_124";
+    const DB_FILE_LIST_CACHE_KEY = "question_bank_db_file_list_cache_v6_clean_ai";
+    const DB_CONTENT_CACHE_NAME = "question_bank_indexeddb_cache_v6_clean_ai";
     const DB_CONTENT_STORE_NAME = "dbFiles";
     const LAST_POSITION_KEY = "question_bank_last_positions_v1";
     const STUDY_TIME_KEY = "question_bank_study_time_v1";
@@ -4251,6 +4254,7 @@
     let questionEditOverrides = {};
     let pendingUnwantedConfirmResolve = null;
     let fastCacheMode = false;
+    let finalReferenceIndex = null;
     let initialLoadingStartedAt = Date.now();
     const INITIAL_LOADING_MIN_MS = 1800;
     const LIST_BATCH_SIZE = 60;
@@ -4951,7 +4955,7 @@
     }
 
     function aiAnswerObj(q){
-      return q && q.aiAnswer && typeof q.aiAnswer === "object" ? q.aiAnswer : null;
+      return null;
     }
     function normalizeLetterValue(value){
       return String(value ?? "").trim().toLocaleUpperCase("tr-TR");
@@ -5029,27 +5033,15 @@
       return parts.join("\n");
     }
     function aiExplanationText(q){
-      const ai = aiAnswerObj(q);
-      if(ai && ai.explanation) return ai.explanation;
-      if(q && q.yapayZekaCevabi) return q.yapayZekaCevabi;
       return "";
     }
 
     function hasAnyAiAnswer(q){
-      const ai = aiAnswerObj(q);
-      if(ai && (ai.letter || typeof ai.index === "number" || ai.text || ai.raw || ai.explanation || ai.verificationStatus)) return true;
-      if(q && typeof q.yapayZekaCevabi === "string" && q.yapayZekaCevabi.trim()) return true;
       return false;
     }
 
     function aiQualityScore(q){
       let score = 0;
-      if(hasAnyAiAnswer(q)) score += 1000;
-      if(hasAiDiscrepancy(q)) score += 120;
-      const ai = aiAnswerObj(q);
-      if(ai && ai.explanation) score += 40;
-      if(ai && ai.verificationStatus) score += 20;
-      if(q && q.yapayZekaCevabi) score += 25;
       if(q && q.explanation) score += 10;
       if(q && q.spot) score += 8;
       if(q && q.sourceNote) score += 5;
@@ -5339,6 +5331,11 @@ function closeUnwantedQuestionConfirm(result=false){
 
     function activeDbSet(){return new Set(selectedDbFiles.map(dbCanonicalName));}
 
+    function isDbFileAllowed(name){
+      const disabled = new Set(DISABLED_DB_FILES.map(dbCanonicalName));
+      return !disabled.has(dbCanonicalName(name));
+    }
+
     function dbBaseName(name){
       return String(name || "").split("/").pop().trim();
     }
@@ -5373,7 +5370,7 @@ function closeUnwantedQuestionConfirm(result=false){
           if (!res.ok) continue;
           const items = await res.json();
           if (!Array.isArray(items)) continue;
-          items.filter(x => x.type === "file" && DB_EXTENSIONS.some(ext => x.name.toLowerCase().endsWith(ext)))
+          items.filter(x => x.type === "file" && isDbFileAllowed(x.name) && DB_EXTENSIONS.some(ext => x.name.toLowerCase().endsWith(ext)))
                .forEach(x => out.push({name: dir ? `${dir}/${x.name}` : x.name, url:x.download_url, source:"github-api"}));
         }catch(e){}
       }
@@ -5390,7 +5387,7 @@ function closeUnwantedQuestionConfirm(result=false){
           if (!res.ok) continue;
           const manifest = await res.json();
           const files = Array.isArray(manifest.files) ? manifest.files : [];
-          files.filter(name => DB_EXTENSIONS.some(ext => String(name).toLowerCase().endsWith(ext))).forEach(name => {
+          files.filter(name => isDbFileAllowed(name) && DB_EXTENSIONS.some(ext => String(name).toLowerCase().endsWith(ext))).forEach(name => {
             const nameStr = String(name);
             const alreadyHasDir = nameStr.includes("/");
             const url = alreadyHasDir ? nameStr : (dir ? `${dir}/${encodeURIComponent(nameStr)}` : encodeURIComponent(nameStr));
@@ -5407,8 +5404,8 @@ function closeUnwantedQuestionConfirm(result=false){
       const candidates = [];
       const limit = Math.max(1, Math.min(Number(maxScan) || SEQUENTIAL_SCAN_MAX, SEQUENTIAL_SCAN_MAX));
       for (let i=1;i<=limit;i++){
-        candidates.push(`soru${i}.db`);
-        candidates.push(`soru${i}.sdb`);
+        if(isDbFileAllowed(`soru${i}.db`)) candidates.push(`soru${i}.db`);
+        if(isDbFileAllowed(`soru${i}.sdb`)) candidates.push(`soru${i}.sdb`);
       }
 
       const already = new Set();
@@ -5460,7 +5457,7 @@ async function discoverDbFiles(){
 
       function addList(list, label){
         (list || []).forEach(file => {
-          if(!file || !file.name || !file.url) return;
+          if(!file || !file.name || !file.url || !isDbFileAllowed(file.name)) return;
           candidates.push({...file, source:file.source || label, canonicalName: dbCanonicalName(file.name)});
         });
       }
@@ -5490,8 +5487,22 @@ async function discoverDbFiles(){
 
       // Küçük manifest hızlıdır; önce bunu dene.
       await addFrom(listDbFilesFromManifest,"manifest");
+      if(candidates.length){
+        const priority = {"manifest":0, "known-list":1, "github-api":2, "sequential-fast":3, "sequential":3, "sequential-full":4, "cache":5};
+        const best = new Map();
+        candidates.forEach(file=>{
+          const key = dbCanonicalName(file.name);
+          const prev = best.get(key);
+          if(!prev || (priority[file.source] ?? 9) < (priority[prev.source] ?? 9)){
+            best.set(key, file);
+          }
+        });
+        const files = [...best.values()].sort((a,b)=>dbBaseName(a.name).localeCompare(dbBaseName(b.name),"tr", {numeric:true}));
+        dbFileListCacheWrite(files);
+        return files;
+      }
 
-      // Paket içinde özellikle eklenen database dosyaları; soru15.db bu listeyle doğrudan okunur.
+      // Manifest yoksa paket içinde özellikle eklenen database dosyaları denenir.
       await addFrom(listKnownDbFiles,"known-list");
 
       // Özellikle soru3.db-soru10.db gözden kaçmasın diye sadece ilk 20 dosya hızlı taranır.
@@ -5584,6 +5595,7 @@ async function discoverDbFiles(){
       }
       allLoadedQuestions = all;
       applyQuestionEditOverridesToAll();
+      markFinal20252026Questions(allLoadedQuestions);
       selectedDbFiles = dbFiles.map(f => dbBaseName(f.name));
       const duplicates = rebuildQuestionsFromActiveFiles(false);
       els.status.className = "panel status";
@@ -5640,6 +5652,79 @@ async function discoverDbFiles(){
 
       const sim = jaccardSimilarity(tokenSet(sigA), tokenSet(sigB));
       return sim >= 0.90;
+    }
+
+    function questionSimilarity(a, b){
+      const sigA = dedupeSignature(a);
+      const sigB = dedupeSignature(b);
+      if (!sigA || !sigB) return 0;
+      return signatureSimilarity(sigA, tokenSet(sigA), sigB, tokenSet(sigB));
+    }
+
+    function signatureSimilarity(sigA, tokensA, sigB, tokensB){
+      if (sigA === sigB) return 1;
+      const lenRatio = Math.min(sigA.length, sigB.length) / Math.max(sigA.length, sigB.length);
+      if (lenRatio < 0.72) return 0;
+      return jaccardSimilarity(tokensA, tokensB);
+    }
+
+    function questionSourceFiles(q){
+      const files = [];
+      if(q && q._dbFile) files.push(q._dbFile);
+      const md = (q && q.metadata) || {};
+      if(md.originalSourceFile) files.push(md.originalSourceFile);
+      if(Array.isArray(md.mergedFromFiles)) files.push(...md.mergedFromFiles);
+      return files.map(dbCanonicalName).filter(Boolean);
+    }
+
+    function hasFinalReferenceSource(q){
+      const finalFiles = new Set(FINAL_REFERENCE_DB_FILES.map(dbCanonicalName));
+      return questionSourceFiles(q).some(file => finalFiles.has(file));
+    }
+
+    function isCurrentFinalMetadata(q){
+      const year = String(meta(q, "year") || "").trim();
+      const exam = normalizeQuestionTextForDedupe(meta(q, "examGroup") || "");
+      return year === "2025-2026" && exam === "final";
+    }
+
+    function mentionsCurrentFinalYear(q){
+      const year = String(meta(q, "year") || "");
+      return /\b2025\s*[-/]\s*2026\b/.test(year);
+    }
+
+    function buildFinalReferenceIndex(baseQuestions = allLoadedQuestions){
+      const referenceQuestions = (baseQuestions || []).filter(q => hasFinalReferenceSource(q) && isCurrentFinalMetadata(q));
+      const bySubject = new Map();
+      const ids = new Set();
+      referenceQuestions.forEach(q => {
+        if(q.id) ids.add(String(q.id));
+        const subjectKey = normalizeQuestionTextForDedupe(q.subject || "");
+        if(!bySubject.has(subjectKey)) bySubject.set(subjectKey, []);
+        const sig = dedupeSignature(q);
+        if(sig) bySubject.get(subjectKey).push({sig, tokens:tokenSet(sig)});
+      });
+      finalReferenceIndex = {ids, bySubject, size:referenceQuestions.length};
+    }
+
+    function isSimilarToFinalReference(q){
+      if(!q) return false;
+      if(!finalReferenceIndex) buildFinalReferenceIndex();
+      if(finalReferenceIndex.ids.has(String(q.id || ""))) return true;
+      if(!mentionsCurrentFinalYear(q)) return false;
+      const subjectKey = normalizeQuestionTextForDedupe(q.subject || "");
+      const sig = dedupeSignature(q);
+      if(!sig) return false;
+      const tokens = tokenSet(sig);
+      const candidates = (finalReferenceIndex.bySubject.get(subjectKey) || []).concat(finalReferenceIndex.bySubject.get("") || []);
+      return candidates.some(ref => signatureSimilarity(sig, tokens, ref.sig, ref.tokens) >= FINAL_REFERENCE_SIMILARITY);
+    }
+
+    function markFinal20252026Questions(baseQuestions = allLoadedQuestions){
+      buildFinalReferenceIndex(baseQuestions);
+      (baseQuestions || []).forEach(q => {
+        q._isFinal20252026 = (hasFinalReferenceSource(q) && isCurrentFinalMetadata(q)) || isSimilarToFinalReference(q);
+      });
     }
 
     function dedupeKeyBucket(q){
@@ -6056,11 +6141,11 @@ async function discoverDbFiles(){
 
     
     function isFinal20252026Question(q){
-      // 2025-2026 final dönemi kesin olarak yalnızca güncel soru15 databaseinden alınır.
-      // Eski database dosyalarında final/2026 gibi etiketler olsa bile final sekmesine karışmaz.
+      // 2025-2026 final dönemi soru15(1).db referans setinden veya ona çok benzer
+      // kayıtlardan oluşur; eski yıl "Final" etiketleri tek başına yeterli değildir.
       if(!q) return false;
-      const file = dbCanonicalName(q._dbFile || "");
-      return file === "soru15.db" || file === "soru15(1).db";
+      if(typeof q._isFinal20252026 === "boolean") return q._isFinal20252026;
+      return (hasFinalReferenceSource(q) && isCurrentFinalMetadata(q)) || isSimilarToFinalReference(q);
     }
 
     function final20252026Questions(baseQuestions = activeVisibleQuestions()){
@@ -6948,8 +7033,6 @@ async function openCurrentQuestionInChatGPT(){
       if(q.spot) infoParts.push("<b>Spot bilgi:</b> "+escapeHTML(q.spot));
       if(q.sourceNote) infoParts.push("<b>Kaynak notu:</b> "+escapeHTML(q.sourceNote));
       if(answer.raw) infoParts.push("<b>Cevap anahtarı:</b> "+escapeHTML(answer.raw));
-      const aiExplanation = aiExplanationText(q);
-      if(aiExplanation) infoParts.push("<b>Yapay zeka cevabı:</b> "+escapeHTML(aiExplanation));
       els.infoBox.innerHTML=infoParts.join("\n\n")||"<b>Bilgi:</b> Bu kayıtta açıklama/spot alanı boş.";
       els.infoBox.className=infoOpen?"info-box show":"info-box";
       if(els.questionInfoToggleBtn){
@@ -7276,8 +7359,7 @@ function renderReview(){
       }).join("");
       const correctText = cachedCorrectText(q);
       const aiWarningText = aiPlainWarningText(q);
-      const aiExplanation = aiExplanationText(q);
-      const info = [q.explanation ? "Açıklama: " + q.explanation : "", q.spot ? "Spot: " + q.spot : "", ans.raw ? "Cevap anahtarı: " + ans.raw : "", aiExplanation ? "Yapay zeka cevabı: " + aiExplanation : ""].filter(Boolean).join("<br>");
+      const info = [q.explanation ? "Açıklama: " + q.explanation : "", q.spot ? "Spot: " + q.spot : "", ans.raw ? "Cevap anahtarı: " + ans.raw : ""].filter(Boolean).join("<br>");
       return `
         <section class="p-card">
           <div class="p-meta">${pos+1}. soru · ${escapeHTML(q.subject || "")} · ${escapeHTML(meta(q,"examGroup") || "")} · ${escapeHTML(meta(q,"topic") || "")}</div>
@@ -7769,6 +7851,7 @@ async function init(){
         els.status.innerHTML = "Sorular hazırlanıyor; önbellek ve indeksler kuruluyor...";
         allLoadedQuestions = all;
         applyQuestionEditOverridesToAll();
+        markFinal20252026Questions(allLoadedQuestions);
         ensureSelectedDbFiles();
         const duplicates = rebuildQuestionsFromActiveFiles(false);
 

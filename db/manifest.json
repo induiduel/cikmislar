@@ -3,6 +3,6 @@
   "files": [
     "soru20.db"
   ],
-  "note": "Birleştirilmiş tek dosya. Kaynak: soru1.db, soru2.db, soru3.db, soru4.db, soru5.db, soru6.db, soru7.db, soru8.db, soru10.db, soru15(1).db",
-  "updatedAt": "2026-06-06T09:48:34.108310+00:00"
+  "note": "Birlesik tek dosya. AI cevap/aciklama metinleri ve kullanilmayan ham kopya alanlari temizlendi. Kaynak: soru1.db, soru2.db, soru3.db, soru4.db, soru5.db, soru6.db, soru7.db, soru8.db, soru10.db, soru15(1).db",
+  "updatedAt": "2026-06-06T00:00:00+03:00"
 }
