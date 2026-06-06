@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>EtkileÅŸimli Soru BankasÄ±</title>
+  <title>Etkileşimli Soru Bankası</title>
   <style>
     :root{
       --bg:#f5f7fb;--text:#101828;--muted:#667085;--line:#dbe4f0;
@@ -174,7 +174,7 @@
     }
 
 
-    /* Normal gÃ¶rÃ¼nÃ¼m geniÅŸlet/daralt modlarÄ± */
+    /* Normal görünüm genişlet/daralt modları */
     body.question-wide-mode:not(.compact-mode) .wrap{
       width:min(1500px,calc(100% - 18px));
     }
@@ -209,7 +209,7 @@
       font-size:calc(var(--q-font) + 1px);
     }
 
-    /* Sade Ã§Ã¶zÃ¼m modu: soru, cevaplar ve iÅŸlem butonlarÄ± Ã¶ne Ã§Ä±karÄ±lÄ±r. */
+    /* Sade çözüm modu: soru, cevaplar ve işlem butonları öne çıkarılır. */
     body.compact-mode .hero,
     body.compact-mode #statusBox,
     body.compact-mode #manualDbBox,
@@ -330,12 +330,12 @@
     .all-q-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}
     .all-q-actions button{padding:8px 9px;border-radius:10px;font-size:12px}
     .hidden-badge{background:var(--warnbg)!important;color:#7a4f08!important;border-color:rgba(122,79,8,.22)!important}
-    body.quiz-active-mode .active-filter-summary::before{content:"Quiz modu aktif Â· ";font-weight:900}
+    body.quiz-active-mode .active-filter-summary::before{content:"Quiz modu aktif · ";font-weight:900}
 
   
     #restoreHiddenBtn{display:none}
   
-    /* Tekli ekranÄ± geniÅŸlet: yalnÄ±z soru, seÃ§enekler, geri bildirim ve soru iÅŸlem butonlarÄ± gÃ¶rÃ¼nÃ¼r. */
+    /* Tekli ekranı genişlet: yalnız soru, seçenekler, geri bildirim ve soru işlem butonları görünür. */
     body.question-wide-mode:not(.compact-mode) .hero,
     body.question-wide-mode:not(.compact-mode) #statusBox,
     body.question-wide-mode:not(.compact-mode) #manualDbBox,
@@ -401,7 +401,7 @@
       display:inline-flex!important;
     }
 
-    /* Ana sayfada ayar panelleri kapalÄ± durarak yer kaplamaz. */
+    /* Ana sayfada ayar panelleri kapalı durarak yer kaplamaz. */
     .compact-settings-grid{
       align-items:start;
     }
@@ -439,7 +439,7 @@
       flex:0 0 auto;
     }
     .collapsible-settings[open] .settings-summary::after{
-      content:"âˆ’";
+      content:"−";
     }
     .settings-summary span{
       font-size:14px;
@@ -521,7 +521,7 @@
       margin-top:8px;
     }
 
-    /* Ders seÃ§ildikten sonra: Ã¶nce soru, sonra ayarlar/filtreler */
+    /* Ders seçildikten sonra: önce soru, sonra ayarlar/filtreler */
     .app-view.active .toolbar{
       display:none!important;
     }
@@ -563,7 +563,7 @@
     }
 
   
-    /* Ders/soru ekranÄ± aÃ§Ä±kken ana sayfa Ã¼st bilgileri gizlenir. */
+    /* Ders/soru ekranı açıkken ana sayfa üst bilgileri gizlenir. */
     body.app-screen-active .hero,
     body.app-screen-active #statusBox,
     body.app-screen-active #manualDbBox{
@@ -574,7 +574,7 @@
     }
 
   
-    /* Ana sayfa ve soru ekranÄ±nda gereksiz Ã¼st bilgiler kaldÄ±rÄ±ldÄ±. */
+    /* Ana sayfa ve soru ekranında gereksiz üst bilgiler kaldırıldı. */
     body .hero{
       display:none!important;
     }
@@ -650,7 +650,7 @@
       flex:0 0 auto;
     }
     .top-menu[open] .top-menu-summary::after{
-      content:"âˆ’";
+      content:"−";
     }
     .top-menu-summary span{
       font-size:13.5px;
@@ -690,7 +690,7 @@
       --q-font:13px; --opt-font:11.5px; --ui-font:11px; --meta-font:9.5px; --card-title:16px; --h1-size:21px; --line-q:1.38;
     }
 
-    /* Ã‡ok kÃ¼Ã§Ã¼k + sade Ã§Ã¶zÃ¼m modu: en kompakt Ã§alÄ±ÅŸma alanÄ± */
+    /* Çok küçük + sade çözüm modu: en kompakt çalışma alanı */
     body.compact-mode.font-xsmall .wrap{
       width:min(760px,calc(100% - 8px));
       margin:4px auto 10px;
@@ -790,7 +790,7 @@
       flex:0 1 auto;
     }
 
-    /* Sade Ã§Ã¶zÃ¼m modunun normal/kÃ¼Ã§Ã¼k halinde de biraz daha az yer kaplamasÄ± */
+    /* Sade çözüm modunun normal/küçük halinde de biraz daha az yer kaplaması */
     body.compact-mode:not(.font-xsmall) .wrap{
       width:min(820px,calc(100% - 10px));
       margin:6px auto 14px;
@@ -861,7 +861,7 @@
   
     body.no-question-active .floating-question-nav{display:none!important;}
   
-    /* Ãœst menÃ¼ye taÅŸÄ±nan soru araÃ§larÄ± */
+    /* Üst menüye taşınan soru araçları */
     .top-menu-subtools{
       display:inline-flex;
       position:relative;
@@ -882,11 +882,11 @@
       display:none;
     }
     .top-menu-subtools summary::after{
-      content:" â–¾";
+      content:" ▾";
       font-weight:950;
     }
     .top-menu-subtools[open] summary::after{
-      content:" â–´";
+      content:" ▴";
     }
     .top-menu-subtools-content{
       position:absolute;
@@ -908,12 +908,12 @@
       justify-content:center;
     }
 
-    /* Soru kartÄ±ndaki ekstra iÅŸlem butonlarÄ± gizlendi; iÅŸlemler Ã¼st menÃ¼de */
+    /* Soru kartındaki ekstra işlem butonları gizlendi; işlemler üst menüde */
     .question-top-actions{
       display:none!important;
     }
 
-    /* Soru ekranÄ± filtresi kompakt ve aÃ§Ä±lÄ±r/kapanÄ±r */
+    /* Soru ekranı filtresi kompakt ve açılır/kapanır */
     .compact-filter-panel{
       padding:0!important;
       overflow:hidden;
@@ -947,7 +947,7 @@
       flex:0 0 auto;
     }
     .compact-filter-panel[open] .compact-filter-summary::after{
-      content:"âˆ’";
+      content:"−";
     }
     .compact-filter-content{
       padding:0 9px 9px;
@@ -1234,7 +1234,7 @@
     }
 
   
-    /* Ä°ÅŸaretlenen ÅŸÄ±k belirgin gÃ¶rÃ¼nsÃ¼n */
+    /* İşaretlenen şık belirgin görünsün */
     .option.selected{
       border-color:rgba(23,58,138,.55)!important;
       background:#eef4ff!important;
@@ -1256,7 +1256,7 @@
       border-color:var(--primary)!important;
     }
     body.exam-mode .option.selected::after{
-      content:"SeÃ§ildi";
+      content:"Seçildi";
       justify-self:end;
       align-self:center;
       grid-column:2;
@@ -1276,7 +1276,7 @@
     }
 
   
-    /* Ãœst menÃ¼de diÄŸer iÅŸlemler artÄ±k tek tek gÃ¶rÃ¼nÃ¼r */
+    /* Üst menüde diğer işlemler artık tek tek görünür */
     .top-menu-content #menuWideToggleBtn,
     .top-menu-content #menuResetVisibleBtn,
     .top-menu-content #menuClearCacheBtn{
@@ -1303,7 +1303,7 @@
     }
 
   
-    /* Tekli soru Ã§Ã¶zÃ¼mÃ¼nde istenmeyen otomatik kaydÄ±rmayÄ± azalt */
+    /* Tekli soru çözümünde istenmeyen otomatik kaydırmayı azalt */
     .question-card,
     .question,
     .options,
@@ -1324,7 +1324,7 @@
     }
 
   
-    /* Soru Ã¼stÃ¼ndeki kÄ±sa bilgi alanÄ± */
+    /* Soru üstündeki kısa bilgi alanı */
     .question-mini-header{
       display:flex;
       align-items:center;
@@ -1483,7 +1483,7 @@
     }
 
   
-    /* Soru kartÄ± saÄŸ Ã¼st tam ekran ikonu */
+    /* Soru kartı sağ üst tam ekran ikonu */
     .question-fullscreen-btn{
       flex:0 0 auto;
       width:24px;
@@ -1515,7 +1515,7 @@
       border-color:var(--primary);
     }
 
-    /* Browser Fullscreen API Ã§alÄ±ÅŸtÄ±ÄŸÄ±nda */
+    /* Browser Fullscreen API çalıştığında */
     .question-card:fullscreen{
       width:100vw!important;
       height:100vh!important;
@@ -1571,7 +1571,7 @@
       border-radius:15px;
     }
 
-    /* Fullscreen API desteklenmezse CSS sÄ±nÄ±fÄ±yla yedek tam ekran */
+    /* Fullscreen API desteklenmezse CSS sınıfıyla yedek tam ekran */
     body.question-card-fullscreen{
       overflow:hidden;
       padding-bottom:0!important;
@@ -1681,7 +1681,7 @@
     }
 
   
-    /* ÅÃ¼phe/dikkat/hata: soruyu ChatGPT'ye Ã§Ã¶zdÃ¼rme butonu */
+    /* Şüphe/dikkat/hata: soruyu ChatGPT'ye çözdürme butonu */
     .question-chatgpt-btn{
       flex:0 0 auto;
       width:24px;
@@ -1722,7 +1722,7 @@
     }
 
   
-    /* Sayfa iÃ§i ChatGPT webview penceresi */
+    /* Sayfa içi ChatGPT webview penceresi */
     .chatgpt-webview-modal{
       position:fixed;
       inset:0;
@@ -1833,7 +1833,7 @@
     }
 
   
-    /* Daha kÃ¼Ã§Ã¼k soru Ã¼st bilgi alanÄ± + yÄ±ldÄ±z */
+    /* Daha küçük soru üst bilgi alanı + yıldız */
     .question-mini-header{
       padding:3px 5px!important;
       min-height:24px!important;
@@ -1914,7 +1914,7 @@
       }
     }
 
-    /* Tam ekran + yatay ekran dÃ¼zeltmesi */
+    /* Tam ekran + yatay ekran düzeltmesi */
     .question-card:fullscreen,
     body.question-card-fullscreen .question-card{
       height:100dvh!important;
@@ -2007,7 +2007,7 @@
     }
 
   
-    /* Minimal dÃ¼zeltme: yalnÄ±zca mavi bilgi alanÄ± biraz kÃ¼Ã§Ã¼ltÃ¼ldÃ¼ */
+    /* Minimal düzeltme: yalnızca mavi bilgi alanı biraz küçültüldü */
     .question-mini-header{
       padding:4px 6px!important;
       min-height:27px!important;
@@ -2040,7 +2040,7 @@
     }
 
   
-    /* Ana sayfa ders kartÄ± butonlarÄ± kompakt dÃ¼zeltme */
+    /* Ana sayfa ders kartı butonları kompakt düzeltme */
     .course-card{
       min-height:108px!important;
       padding:9px!important;
@@ -2111,7 +2111,7 @@
     }
 
   
-    /* Tablet/tam ekran alt gezinme dÃ¼zeltmesi */
+    /* Tablet/tam ekran alt gezinme düzeltmesi */
     .question-card:fullscreen .floating-question-nav,
     body.question-card-fullscreen .floating-question-nav{
       position:fixed!important;
@@ -2145,7 +2145,7 @@
       padding-bottom:76px!important;
     }
 
-    /* Ã–ncÃ¼llÃ¼ soru gÃ¶rÃ¼nÃ¼mÃ¼ */
+    /* Öncüllü soru görünümü */
     .question-lead{
       margin-bottom:8px;
     }
@@ -2182,7 +2182,7 @@
       overflow-wrap:anywhere;
     }
 
-    /* Mavi alandaki soru seÃ§me menÃ¼sÃ¼ */
+    /* Mavi alandaki soru seçme menüsü */
     .question-jump-menu{
       flex:0 0 auto;
       position:relative;
@@ -2271,7 +2271,7 @@
       border-color:rgba(122,79,8,.22);
     }
 
-    /* Sayfaya sÄ±ÄŸdÄ±rma: tam ekranda biraz daha kompakt */
+    /* Sayfaya sığdırma: tam ekranda biraz daha kompakt */
     .question-card:fullscreen .question,
     body.question-card-fullscreen .question-card .question{
       font-size:clamp(13px, 1.8vw, 18px)!important;
@@ -2380,7 +2380,7 @@
     }
 
   
-    /* Google Font + daha kompakt soru Ã§Ã¶zÃ¼m gÃ¶rÃ¼nÃ¼mÃ¼ */
+    /* Google Font + daha kompakt soru çözüm görünümü */
     body{
       font-family:"Inter", "Noto Sans", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif!important;
     }
@@ -2445,7 +2445,7 @@
       margin-top:7px!important;
     }
 
-    /* Ã–ncÃ¼llÃ¼ soru fontu yenilendi */
+    /* Öncüllü soru fontu yenilendi */
     .premise-list{
       font-family:"Noto Sans", "Inter", ui-sans-serif, system-ui, sans-serif!important;
       gap:5px!important;
@@ -2476,7 +2476,7 @@
       font-weight:500!important;
     }
 
-    /* Alttaki ana butonlar biraz daha kÃ¼Ã§Ã¼k */
+    /* Alttaki ana butonlar biraz daha küçük */
     .floating-question-nav{
       padding:6px!important;
       gap:6px!important;
@@ -2489,7 +2489,7 @@
       border-radius:10px!important;
     }
 
-    /* Tam ekran ve yatay ekranda sayfaya daha iyi sÄ±ÄŸdÄ±r */
+    /* Tam ekran ve yatay ekranda sayfaya daha iyi sığdır */
     .question-card:fullscreen,
     body.question-card-fullscreen .question-card{
       padding:7px 8px 64px!important;
@@ -2610,7 +2610,7 @@
     }
 
   
-    /* Ã‡alÄ±ÅŸma sÃ¼resi gÃ¶stergeleri */
+    /* Çalışma süresi göstergeleri */
     .question-study-time-badge{
       flex:0 0 auto;
       display:inline-flex;
@@ -2699,7 +2699,7 @@
                  linear-gradient(180deg,#fff 0%,#fff7f8 56%,#fdecef 100%);
     }
 
-    /* Ã‡alÄ±ÅŸma geÃ§miÅŸi aÃ§Ä±lÄ±r menÃ¼sÃ¼ */
+    /* Çalışma geçmişi açılır menüsü */
     .question-history-menu{
       flex:0 0 auto;
       position:relative;
@@ -2789,7 +2789,7 @@
       background:#fbfdff;
     }
 
-    /* Performans ve aÃ§Ä±lÄ±ÅŸ optimizasyonu */
+    /* Performans ve açılış optimizasyonu */
     .course-grid,
     .all-list,
     .question-jump-menu-grid{
@@ -2811,7 +2811,7 @@
     }
 
   
-    /* Ã–ncÃ¼l etiketi: arka planÄ± geniÅŸletmeden roman numarasÄ±nÄ±n hemen baÅŸÄ±nda gÃ¶ster */
+    /* Öncül etiketi: arka planı genişletmeden roman numarasının hemen başında göster */
     .premise-list.premise-highlighted{
       background:#f8fafc!important;
       border-color:rgba(23,58,138,.14)!important;
@@ -2871,7 +2871,7 @@
     }
 
   
-    /* GÃœÃ‡LÃœ DÃœZELTME: aÃ§Ä±lÄ±ÅŸta yalnÄ±zca yÃ¼kleme ekranÄ± gÃ¶rÃ¼nsÃ¼n */
+    /* GÜÇLÜ DÜZELTME: açılışta yalnızca yükleme ekranı görünsün */
     body.is-loading .wrap{
       opacity:0!important;
       visibility:hidden!important;
@@ -2916,7 +2916,7 @@
     }
     @keyframes loaderSpinFinal{to{transform:rotate(360deg)}}
 
-    /* GÃœÃ‡LÃœ DÃœZELTME: menÃ¼ler sayfayla birlikte kaysÄ±n, sticky/floating olmasÄ±n */
+    /* GÜÇLÜ DÜZELTME: menüler sayfayla birlikte kaysın, sticky/floating olmasın */
     body.app-screen-active .top-menu,
     body.compact-mode .compact-actionbar,
     .all-list-header,
@@ -2934,7 +2934,7 @@
       padding-right:0!important;
     }
 
-    /* Tek yukarÄ± Ã§Ä±kma butonu */
+    /* Tek yukarı çıkma butonu */
     .scroll-top-fab{
       position:fixed!important;
       right:16px!important;
@@ -2960,7 +2960,7 @@
     }
 
   
-    /* Ä°stenmeyen/gizlenen soru dÃ¼zenleme penceresi */
+    /* İstenmeyen/gizlenen soru düzenleme penceresi */
     .question-edit-modal{
       position:fixed;
       inset:0;
@@ -3097,7 +3097,7 @@
       border-color:var(--primary)!important;
     }
 
-    /* Estetik mola ekranÄ± */
+    /* Estetik mola ekranı */
     .break-modal{
       position:fixed;
       inset:0;
@@ -3189,7 +3189,7 @@
     }
 
   
-    /* Mola ikonunun tam ekran / geniÅŸ ekran gÃ¶rÃ¼nÃ¼rlÃ¼ÄŸÃ¼nÃ¼ kesinleÅŸtir */
+    /* Mola ikonunun tam ekran / geniş ekran görünürlüğünü kesinleştir */
     .question-mini-header .question-break-btn{
       display:none!important;
       align-items:center!important;
@@ -3224,7 +3224,7 @@
     }
 
   
-    /* KullanÄ±cÄ± tarafÄ±ndan dÃ¼zenlenen soru gÃ¶stergeleri */
+    /* Kullanıcı tarafından düzenlenen soru göstergeleri */
     .question-edited-badge{
       flex:0 0 auto;
       display:inline-flex;
@@ -3272,7 +3272,7 @@
     }
 
   
-    /* Ä°stenmeyen soru onayÄ±: tam ekrandan Ã§Ä±kmadan question-card iÃ§inde gÃ¶sterilir */
+    /* İstenmeyen soru onayı: tam ekrandan çıkmadan question-card içinde gösterilir */
     .question-card{
       position:relative;
     }
@@ -3381,7 +3381,7 @@
     }
 
   
-    /* Fullscreen iÃ§inde mola ve istenmeyen onay modallarÄ±nÄ± gÃ¶rÃ¼nÃ¼r tut */
+    /* Fullscreen içinde mola ve istenmeyen onay modallarını görünür tut */
     .question-card .break-modal,
     .question-card .unwanted-confirm-modal,
     .question-card:fullscreen .break-modal,
@@ -3417,7 +3417,7 @@
     }
 
   
-    /* Tam ekran aÃ§Ä±klama/spot ikonu */
+    /* Tam ekran açıklama/spot ikonu */
     .question-info-toggle-btn{
       display:none!important;
       flex:0 0 auto;
@@ -3442,7 +3442,7 @@
       display:inline-flex!important;
     }
 
-    /* Bilmiyorum etiketi ve sonuÃ§ gÃ¶zden geÃ§irme */
+    /* Bilmiyorum etiketi ve sonuç gözden geçirme */
     .unknown-btn.active{
       background:#fff7df!important;
       color:#7a4f08!important;
@@ -3483,7 +3483,7 @@
     }
 
   
-    /* FINAL-RESTORE: ek tema ve tasarÄ±m modelleri */
+    /* FINAL-RESTORE: ek tema ve tasarım modelleri */
     body.theme-teal{--primary:#0f6674;--primary2:#1495a8;--soft:#e8fbfd;background:linear-gradient(180deg,#fff 0%,#f3fcfd 56%,#e7f8fb 100%)}
     body.theme-amber{--primary:#8a4f08;--primary2:#d18818;--soft:#fff6e4;background:linear-gradient(180deg,#fff 0%,#fffaf0 56%,#fff1d6 100%)}
     body.theme-slate{--primary:#334155;--primary2:#64748b;--soft:#f1f5f9;background:linear-gradient(180deg,#fff 0%,#f8fafc 56%,#eef2f7 100%)}
@@ -3508,7 +3508,7 @@
     body.design-dense .question{padding:8px 9px!important;font-size:13px!important;line-height:1.32!important}
     body.design-dense .option{padding:7px 8px!important}
 
-    /* FINAL-RESTORE: yÃ¼kleme ekranÄ± gÃ¶rÃ¼nÃ¼r */
+    /* FINAL-RESTORE: yükleme ekranı görünür */
     body.is-loading .wrap{opacity:0!important;visibility:hidden!important;pointer-events:none!important}
     .initial-loading-overlay{position:fixed!important;inset:0!important;z-index:99999!important;display:flex!important;align-items:center!important;justify-content:center!important;background:radial-gradient(circle at 18% 12%, rgba(23,58,138,.18), transparent 24rem),radial-gradient(circle at 84% 2%, rgba(47,91,189,.13), transparent 28rem),linear-gradient(180deg,#fff 0%,var(--bg) 100%)!important}
     .initial-loading-overlay.hidden{display:none!important}
@@ -3516,7 +3516,7 @@
     .loader-ring{width:52px!important;height:52px!important;border-radius:50%!important;border:5px solid var(--soft)!important;border-top-color:var(--primary)!important;border-right-color:var(--primary2)!important;animation:loaderSpinRestore .62s linear infinite!important}
     @keyframes loaderSpinRestore{to{transform:rotate(360deg)}}
 
-    /* FINAL-RESTORE: fullscreen sonuÃ§/analiz penceresi */
+    /* FINAL-RESTORE: fullscreen sonuç/analiz penceresi */
     .fullscreen-results-modal{position:fixed!important;inset:0!important;z-index:2147483000!important;width:100vw!important;height:100vh!important;display:flex;align-items:center;justify-content:center;padding:12px;background:rgba(15,23,42,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
     .fullscreen-results-modal.hidden{display:none!important}
     .fullscreen-results-card{width:min(760px, calc(100vw - 22px));max-height:min(92vh, 880px);overflow:hidden;display:flex;flex-direction:column;border-radius:24px;background:#fff;border:1px solid rgba(255,255,255,.65);box-shadow:0 28px 80px rgba(15,23,42,.34)}
@@ -3530,7 +3530,7 @@
     .fullscreen-review{overflow:auto;padding:10px 12px 14px;max-height:58vh}
     body.theme-dark .fullscreen-results-card,body.theme-midnight .fullscreen-results-card{background:rgba(15,23,42,.97);border-color:rgba(148,163,184,.24);color:var(--text)}
 
-    /* FINAL-RESTORE: alt butonlar tek sÄ±ra ve cevap kutusu buton arkasÄ±nda kalmasÄ±n */
+    /* FINAL-RESTORE: alt butonlar tek sıra ve cevap kutusu buton arkasında kalmasın */
     .floating-question-nav{display:grid!important;grid-template-columns:.86fr 1.05fr 1fr .86fr!important;gap:5px!important;align-items:stretch!important}
     .floating-question-nav button{min-width:0!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;padding:6px 5px!important;font-size:10.8px!important;min-height:34px!important;border-radius:9px!important}
     .question-card:fullscreen,body.question-card-fullscreen .question-card{padding-bottom:68px!important}
@@ -3538,7 +3538,7 @@
     .question-card:fullscreen .floating-question-nav,body.question-card-fullscreen .floating-question-nav{grid-template-columns:.86fr 1.05fr 1fr .86fr!important;padding:5px max(5px, env(safe-area-inset-right)) calc(5px + env(safe-area-inset-bottom)) max(5px, env(safe-area-inset-left))!important;gap:4px!important}
     .question-card:fullscreen .floating-question-nav button,body.question-card-fullscreen .floating-question-nav button{min-height:32px!important;padding:4px 4px!important;font-size:10px!important;border-radius:8px!important}
 
-    /* FINAL-RESTORE: mola ve aÃ§Ä±klama ikonlarÄ± */
+    /* FINAL-RESTORE: mola ve açıklama ikonları */
     .question-mini-header .question-break-btn{display:none!important;align-items:center!important;justify-content:center!important;width:24px!important;height:24px!important;min-width:24px!important;flex:0 0 24px!important;border-radius:999px!important;border:1px solid rgba(122,79,8,.22)!important;background:#fff7df!important;color:#7a4f08!important;font-size:13px!important;font-weight:950!important;line-height:1!important;padding:0!important;box-shadow:0 2px 6px rgba(15,23,42,.08)!important;cursor:pointer!important}
     body.question-card-fullscreen .question-mini-header .question-break-btn,body.question-wide-mode .question-mini-header .question-break-btn,.question-card:fullscreen .question-break-btn,.question-mini-header .question-break-btn.break-visible{display:inline-flex!important;visibility:visible!important;opacity:1!important}
     .question-info-toggle-btn{display:none!important;flex:0 0 auto;width:24px!important;height:24px!important;min-width:24px!important;align-items:center!important;justify-content:center!important;border:1px solid rgba(23,58,138,.18)!important;border-radius:999px!important;background:#fff!important;color:var(--primary)!important;box-shadow:0 2px 6px rgba(15,23,42,.08)!important;padding:0!important;font-size:12px!important;line-height:1!important;cursor:pointer!important}
@@ -3549,7 +3549,7 @@
     @media (max-width:560px){.floating-question-nav{grid-template-columns:.85fr 1.06fr 1fr .85fr!important;gap:3px!important}.floating-question-nav button{font-size:9.2px!important;padding:4px 2px!important;min-height:31px!important}.fullscreen-results-score{grid-template-columns:1fr;justify-items:center}.fullscreen-results-actions{justify-content:center}.fullscreen-results-card{border-radius:18px}}
 
   
-    /* OPTIMIZE-FIX: loader yalnÄ±z gerÃ§ek ilk yÃ¼klemede gÃ¶rÃ¼nÃ¼r */
+    /* OPTIMIZE-FIX: loader yalnız gerçek ilk yüklemede görünür */
     body:not(.is-loading) .initial-loading-overlay{
       display:none!important;
     }
@@ -3558,7 +3558,7 @@
     }
 
   
-    /* Ana sayfa ayrÄ±mÄ±: 2025-2026 Final / DiÄŸer tÃ¼m Ã§Ä±kmÄ±ÅŸlar */
+    /* Ana sayfa ayrımı: 2025-2026 Final / Diğer tüm çıkmışlar */
     .final-fast-panel{
       padding:12px;
       margin-bottom:12px;
@@ -3642,7 +3642,7 @@
       flex:0 0 auto;
     }
     .all-courses-panel[open] .all-courses-summary::after{
-      content:"âˆ’";
+      content:"−";
     }
     .all-courses-summary span{
       font-size:15px;
@@ -3673,7 +3673,7 @@
     }
 
   
-    /* KapalÄ± ana sayfa sekmeleri: final ve diÄŸer Ã§Ä±kmÄ±ÅŸlar */
+    /* Kapalı ana sayfa sekmeleri: final ve diğer çıkmışlar */
     .final-collapsible-panel{
       padding:0!important;
       overflow:hidden;
@@ -3708,7 +3708,7 @@
       flex:0 0 auto;
     }
     .final-collapsible-panel[open] .final-fast-summary::after{
-      content:"âˆ’";
+      content:"−";
     }
     .final-fast-summary span{
       font-size:15px;
@@ -3730,7 +3730,7 @@
     }
 
   
-    /* Final sekmesi soru15(1).db referans setiyle eÅŸleÅŸen gÃ¼ncel final sorularÄ± iÃ§indir */
+    /* Final sekmesi soru15(1).db referans setiyle eşleşen güncel final soruları içindir */
     .final-fast-panel .subtitle::after{
       content:"";
     }
@@ -3998,8 +3998,8 @@
   <section class="initial-loading-overlay" id="initialLoadingOverlay" aria-live="polite" aria-busy="true">
     <div class="initial-loading-card">
       <div class="loader-ring" aria-hidden="true"></div>
-      <b>Soru bankasÄ± hazÄ±rlanÄ±yor</b>
-      <span id="initialLoadingText">Database dosyalarÄ± kontrol ediliyor...</span>
+      <b>Soru bankası hazırlanıyor</b>
+      <span id="initialLoadingText">Database dosyaları kontrol ediliyor...</span>
     </div>
   </section>
   
@@ -4007,39 +4007,39 @@
 
     <details class="top-menu panel" id="topMenu">
       <summary class="top-menu-summary">
-        <span>â˜° MenÃ¼</span>
-        <small>Ã‡alÄ±ÅŸma, gÃ¶rÃ¼nÃ¼m ve araÃ§lar</small>
+        <span>☰ Menü</span>
+        <small>Çalışma, görünüm ve araçlar</small>
       </summary>
       <div class="top-menu-content">
         <div class="top-menu-group">
-          <div class="top-menu-group-title">Ã‡alÄ±ÅŸma</div>
+          <div class="top-menu-group-title">Çalışma</div>
           <button class="secondary" id="menuHomeBtn" type="button">Ana sayfa</button>
-          <button class="secondary" id="menuShowAllBtn" type="button">TÃ¼m sorular</button>
-          <button class="secondary" id="menuStarredBtn" type="button">YÄ±ldÄ±zlÄ±lar</button>
-          <button class="secondary" id="menuExamBtn" type="button">SÄ±nav modu</button>
+          <button class="secondary" id="menuShowAllBtn" type="button">Tüm sorular</button>
+          <button class="secondary" id="menuStarredBtn" type="button">Yıldızlılar</button>
+          <button class="secondary" id="menuExamBtn" type="button">Sınav modu</button>
         </div>
         <div class="top-menu-group">
-          <div class="top-menu-group-title">GÃ¶rÃ¼nÃ¼m</div>
-          <button class="secondary" id="menuViewBtn" type="button">GÃ¶rÃ¼nÃ¼m ayarlarÄ±</button>
-          <button class="secondary" id="menuInfoBtn" type="button">AÃ§Ä±klama/spot</button>
+          <div class="top-menu-group-title">Görünüm</div>
+          <button class="secondary" id="menuViewBtn" type="button">Görünüm ayarları</button>
+          <button class="secondary" id="menuInfoBtn" type="button">Açıklama/spot</button>
           <button class="secondary" id="menuWideToggleBtn" type="button">Tekli ekran</button>
-          <button class="secondary" id="menuShuffleBtn" type="button">KarÄ±ÅŸÄ±k sÄ±ra</button>
+          <button class="secondary" id="menuShuffleBtn" type="button">Karışık sıra</button>
         </div>
         <div class="top-menu-group">
-          <div class="top-menu-group-title">AraÃ§lar</div>
-          <button class="secondary hidden" id="menuSourceBtn" type="button">Kaynak seÃ§imi</button>
+          <div class="top-menu-group-title">Araçlar</div>
+          <button class="secondary hidden" id="menuSourceBtn" type="button">Kaynak seçimi</button>
           <button class="secondary" id="menuDuplicateBtn" type="button">Tekrarlar</button>
-          <button class="secondary" id="menuResetVisibleBtn" type="button">CevaplarÄ± sÄ±fÄ±rla</button>
-          <button class="secondary" id="menuCacheBtn" type="button">Ã–nbelleÄŸi yenile</button>
-          <button class="danger" id="menuClearCacheBtn" type="button">Ã–nbelleÄŸi temizle</button>
+          <button class="secondary" id="menuResetVisibleBtn" type="button">Cevapları sıfırla</button>
+          <button class="secondary" id="menuCacheBtn" type="button">Önbelleği yenile</button>
+          <button class="danger" id="menuClearCacheBtn" type="button">Önbelleği temizle</button>
         </div>
       </div>
     </details>
 
     <div class="hidden" aria-hidden="true"><span id="totalQuestionsHero">0</span><span id="totalSubjectsHero">0</span></div>
-<section class="panel status warn hidden" id="statusBox">Soru dosyalarÄ± yÃ¼kleniyor...</section>
+<section class="panel status warn hidden" id="statusBox">Soru dosyaları yükleniyor...</section>
     <section class="panel status warn hidden" id="manualDbBox">
-      <b>Manuel database yÃ¼kleme:</b> GitHub Pages dÄ±ÅŸÄ±nda veya tarayÄ±cÄ± dosya eriÅŸimini engellediÄŸinde .db/.sdb dosyalarÄ±nÄ± buradan seÃ§ebilirsin.
+      <b>Manuel database yükleme:</b> GitHub Pages dışında veya tarayıcı dosya erişimini engellediğinde .db/.sdb dosyalarını buradan seçebilirsin.
       <div style="margin-top:8px;"><input id="manualDbInput" type="file" accept=".db,.sdb,application/json" multiple></div>
     </section>
 
@@ -4048,14 +4048,14 @@
       <details class="panel final-fast-panel final-collapsible-panel" id="finalFastPanel" open>
         <summary class="final-fast-summary">
           <span>2025-2026 Final</span>
-          <small>GÃ¼ncel final Ã§alÄ±ÅŸma alanÄ±</small>
+          <small>Güncel final çalışma alanı</small>
         </summary>
         <div class="final-fast-content">
           <div class="final-dashboard">
             <div class="final-hero-block">
               <div>
-                <h2>2025-2026 Final Ã§Ä±kmÄ±ÅŸlarÄ±</h2>
-                <p class="subtitle" id="finalSummaryText">GÃ¼ncel final sorularÄ± hazÄ±rlanÄ±yor.</p>
+                <h2>2025-2026 Final çıkmışları</h2>
+                <p class="subtitle" id="finalSummaryText">Güncel final soruları hazırlanıyor.</p>
               </div>
               <div class="final-stat-row" id="finalStatRow">
                 <div class="final-stat"><b id="finalQuestionCount">0</b><span>final sorusu</span></div>
@@ -4063,19 +4063,19 @@
                 <div class="final-stat"><b id="finalQuizCount">0</b><span>test sorusu</span></div>
               </div>
               <div class="final-action-grid">
-                <button class="primary" id="finalAllBtn" type="button">TÃ¼m sorularÄ± aÃ§</button>
+                <button class="primary" id="finalAllBtn" type="button">Tüm soruları aç</button>
                 <button class="secondary" id="finalQuizBtn" type="button">Kendini test et</button>
-                <button class="secondary" id="finalCoursesBtn" type="button">Dersleri aÃ§</button>
-                <button class="secondary" id="finalListBtn" type="button">Liste gÃ¶rÃ¼nÃ¼mÃ¼</button>
+                <button class="secondary" id="finalCoursesBtn" type="button">Dersleri aç</button>
+                <button class="secondary" id="finalListBtn" type="button">Liste görünümü</button>
               </div>
             </div>
             <div class="final-course-shell">
               <div class="final-course-shell-title">
                 <span>Dersler</span>
-                <small id="finalCourseHint">Final ders daÄŸÄ±lÄ±mÄ±</small>
+                <small id="finalCourseHint">Final ders dağılımı</small>
               </div>
               <section class="course-grid final-course-grid" id="finalCourseGrid"></section>
-              <section class="course-empty final-empty" id="finalEmpty">2025-2026 final olarak eÅŸleÅŸen soru bulunamadÄ±.</section>
+              <section class="course-empty final-empty" id="finalEmpty">2025-2026 final olarak eşleşen soru bulunamadı.</section>
             </div>
           </div>
         </div>
@@ -4083,15 +4083,15 @@
 
       <details class="panel final-fast-panel final-collapsible-panel kurul-fast-panel" id="kurulFastPanel">
         <summary class="final-fast-summary">
-          <span>2025-2026 Kurul Ã§Ä±kmÄ±ÅŸlarÄ±</span>
-          <small>Filtre yapmadan kurul sorularÄ±na eriÅŸ</small>
+          <span>2025-2026 Kurul çıkmışları</span>
+          <small>Filtre yapmadan kurul sorularına eriş</small>
         </summary>
         <div class="final-fast-content">
           <div class="final-dashboard">
             <div class="final-hero-block">
               <div>
-                <h2>2025-2026 Kurul Ã§Ä±kmÄ±ÅŸlarÄ±</h2>
-                <p class="subtitle" id="kurulSummaryText">GÃ¼ncel kurul sorularÄ± hazÄ±rlanÄ±yor.</p>
+                <h2>2025-2026 Kurul çıkmışları</h2>
+                <p class="subtitle" id="kurulSummaryText">Güncel kurul soruları hazırlanıyor.</p>
               </div>
               <div class="final-stat-row">
                 <div class="final-stat"><b id="kurulQuestionCount">0</b><span>kurul sorusu</span></div>
@@ -4099,19 +4099,19 @@
                 <div class="final-stat"><b id="kurulQuizCount">0</b><span>test sorusu</span></div>
               </div>
               <div class="final-action-grid">
-                <button class="primary" id="kurulAllBtn" type="button">TÃ¼m kurul sorularÄ±nÄ± aÃ§</button>
+                <button class="primary" id="kurulAllBtn" type="button">Tüm kurul sorularını aç</button>
                 <button class="secondary" id="kurulQuizBtn" type="button">Kendini test et</button>
-                <button class="secondary" id="kurulCoursesBtn" type="button">Dersleri aÃ§</button>
-                <button class="secondary" id="kurulListBtn" type="button">Liste gÃ¶rÃ¼nÃ¼mÃ¼</button>
+                <button class="secondary" id="kurulCoursesBtn" type="button">Dersleri aç</button>
+                <button class="secondary" id="kurulListBtn" type="button">Liste görünümü</button>
               </div>
             </div>
             <div class="final-course-shell">
               <div class="final-course-shell-title">
                 <span>Dersler</span>
-                <small>Kurul ders daÄŸÄ±lÄ±mÄ±</small>
+                <small>Kurul ders dağılımı</small>
               </div>
               <section class="course-grid final-course-grid" id="kurulCourseGrid"></section>
-              <section class="course-empty final-empty" id="kurulEmpty">2025-2026 kurul olarak eÅŸleÅŸen soru bulunamadÄ±.</section>
+              <section class="course-empty final-empty" id="kurulEmpty">2025-2026 kurul olarak eşleşen soru bulunamadı.</section>
             </div>
           </div>
         </div>
@@ -4119,15 +4119,15 @@
 
       <details class="panel final-fast-panel final-collapsible-panel histology-fast-panel" id="histologyFastPanel">
         <summary class="final-fast-summary">
-          <span>Histoloji sorularÄ±</span>
-          <small>Filtre yapmadan Histoloji Ã§alÄ±ÅŸ</small>
+          <span>Histoloji soruları</span>
+          <small>Filtre yapmadan Histoloji çalış</small>
         </summary>
         <div class="final-fast-content">
           <div class="final-dashboard">
             <div class="final-hero-block">
               <div>
-                <h2>Histoloji hÄ±zlÄ± Ã§alÄ±ÅŸma</h2>
-                <p class="subtitle" id="histologySummaryText">Histoloji sorularÄ± hazÄ±rlanÄ±yor.</p>
+                <h2>Histoloji hızlı çalışma</h2>
+                <p class="subtitle" id="histologySummaryText">Histoloji soruları hazırlanıyor.</p>
               </div>
               <div class="final-stat-row">
                 <div class="final-stat"><b id="histologyQuestionCount">0</b><span>histoloji sorusu</span></div>
@@ -4135,19 +4135,19 @@
                 <div class="final-stat"><b id="histologyQuizCount">0</b><span>test sorusu</span></div>
               </div>
               <div class="final-action-grid">
-                <button class="primary" id="histologyAllBtn" type="button">TÃ¼m Histoloji sorularÄ±nÄ± aÃ§</button>
+                <button class="primary" id="histologyAllBtn" type="button">Tüm Histoloji sorularını aç</button>
                 <button class="secondary" id="histologyQuizBtn" type="button">Kendini test et</button>
                 <button class="secondary" id="histologyFinalBtn" type="button">Final Histoloji</button>
-                <button class="secondary" id="histologyListBtn" type="button">Liste gÃ¶rÃ¼nÃ¼mÃ¼</button>
+                <button class="secondary" id="histologyListBtn" type="button">Liste görünümü</button>
               </div>
             </div>
             <div class="final-course-shell">
               <div class="final-course-shell-title">
                 <span>Gruplar</span>
-                <small>Histoloji konu / sÄ±nav daÄŸÄ±lÄ±mÄ±</small>
+                <small>Histoloji konu / sınav dağılımı</small>
               </div>
               <section class="quick-group-grid" id="histologyGroupGrid"></section>
-              <section class="course-empty final-empty" id="histologyEmpty">Histoloji sorusu bulunamadÄ±.</section>
+              <section class="course-empty final-empty" id="histologyEmpty">Histoloji sorusu bulunamadı.</section>
             </div>
           </div>
         </div>
@@ -4155,12 +4155,12 @@
 
       <details class="panel all-courses-panel" id="allCoursesDetails">
         <summary class="all-courses-summary">
-          <span>DiÄŸer tÃ¼m Ã§Ä±kmÄ±ÅŸlar</span>
-          <small>Sekmeyi aÃ§arak tÃ¼m derslere eriÅŸ</small>
+          <span>Diğer tüm çıkmışlar</span>
+          <small>Sekmeyi açarak tüm derslere eriş</small>
         </summary>
         <div class="all-courses-content">
           <section class="course-grid" id="courseGrid"></section>
-          <section class="course-empty" id="courseEmpty">Bu aramayla eÅŸleÅŸen ders bulunamadÄ± veya aktif database seÃ§ili deÄŸil.</section>
+          <section class="course-empty" id="courseEmpty">Bu aramayla eşleşen ders bulunamadı veya aktif database seçili değil.</section>
         </div>
       </details>
 
@@ -4168,13 +4168,13 @@
 <section class="home-actions-panel panel">
         <input class="search" id="courseSearch" placeholder="Ders ara: anatomi, fizyoloji, histoloji, biyokimya, mikrobiyoloji, biyofizik...">
         <div class="home-actions-group">
-          <button class="secondary" id="clearCourseSearch" type="button">AramayÄ± temizle</button>
+          <button class="secondary" id="clearCourseSearch" type="button">Aramayı temizle</button>
           <button class="secondary" id="continueBtn" type="button">Devam et</button>
-          <button class="secondary" id="wrongHomeBtn" type="button">YanlÄ±ÅŸlarÄ±m</button>
+          <button class="secondary" id="wrongHomeBtn" type="button">Yanlışlarım</button>
           <button class="secondary" id="hiddenHomeBtn" type="button">Gizlenenler</button>
-          <button class="secondary" id="starredHomeBtn" type="button">YÄ±ldÄ±zlÄ±lar</button>
+          <button class="secondary" id="starredHomeBtn" type="button">Yıldızlılar</button>
           <button class="secondary" id="quizAllBtn" type="button">Test et</button>
-          <button class="primary" id="startAllBtn" type="button">TÃ¼m Ã§Ä±kmÄ±ÅŸlar</button>
+          <button class="primary" id="startAllBtn" type="button">Tüm çıkmışlar</button>
         </div>
       </section>
       
@@ -4182,64 +4182,64 @@
       <section class="settings-grid compact-settings-grid">
         <details class="panel settings-box collapsible-settings" id="dbSettingsDetails">
           <summary class="settings-summary">
-            <span>Aktif soru dosyalarÄ±</span>
-            <small>SeÃ§mek iÃ§in aÃ§</small>
+            <span>Aktif soru dosyaları</span>
+            <small>Seçmek için aç</small>
           </summary>
           <div class="settings-content">
-            <p class="subtitle" style="margin-bottom:8px;">Sadece seÃ§ili soru dosyalarÄ±ndaki sorular kullanÄ±lÄ±r. Dosyalar Ã¶nbellekten hÄ±zlÄ± aÃ§Ä±lÄ±r; yeni .db eklersen â€œÃ–nbelleÄŸi temizleâ€ ile yeniden taratabilirsin.</p>
+            <p class="subtitle" style="margin-bottom:8px;">Sadece seçili soru dosyalarındaki sorular kullanılır. Dosyalar önbellekten hızlı açılır; yeni .db eklersen “Önbelleği temizle” ile yeniden taratabilirsin.</p>
             <div class="db-list" id="dbList"></div>
             <div class="db-actions">
-              <button class="secondary" id="selectAllDbBtn" type="button">TÃ¼mÃ¼nÃ¼ seÃ§</button>
-              <button class="secondary" id="clearDbBtn" type="button">SeÃ§imi temizle</button>
+              <button class="secondary" id="selectAllDbBtn" type="button">Tümünü seç</button>
+              <button class="secondary" id="clearDbBtn" type="button">Seçimi temizle</button>
             </div>
           </div>
         </details>
         <details class="panel settings-box collapsible-settings" id="viewSettingsDetails">
           <summary class="settings-summary">
-            <span>GÃ¶rÃ¼nÃ¼m</span>
-            <small>YazÄ± ve tasarÄ±m ayarlarÄ±</small>
+            <span>Görünüm</span>
+            <small>Yazı ve tasarım ayarları</small>
           </summary>
           <div class="settings-content font-controls">
             <div class="select-row">
               <label for="fontSizeSelect">Font boyutu</label>
               <select id="fontSizeSelect">
-                <option value="xsmall">Ã‡ok kÃ¼Ã§Ã¼k</option>
-                <option value="small">KÃ¼Ã§Ã¼k</option>
+                <option value="xsmall">Çok küçük</option>
+                <option value="small">Küçük</option>
                 <option value="normal">Normal</option>
-                <option value="large">BÃ¼yÃ¼k</option>
+                <option value="large">Büyük</option>
               </select>
             </div>
             <div class="select-row">
-              <label for="designModeSelect">TasarÄ±m modu</label>
+              <label for="designModeSelect">Tasarım modu</label>
               <select id="designModeSelect">
-                <option value="standard">Standart gÃ¶rÃ¼nÃ¼m</option>
-                <option value="compact">Sade Ã§Ã¶zÃ¼m modu</option>
+                <option value="standard">Standart görünüm</option>
+                <option value="compact">Sade çözüm modu</option>
               </select>
             </div>
             <div class="select-row">
-              <label for="designPresetSelect">TasarÄ±m modeli</label>
+              <label for="designPresetSelect">Tasarım modeli</label>
               <select id="designPresetSelect">
-                <option value="classic">Klasik - mevcut tasarÄ±m</option>
-                <option value="modern">Modern kartlÄ±</option>
-                <option value="glass">Cam / yumuÅŸak</option>
+                <option value="classic">Klasik - mevcut tasarım</option>
+                <option value="modern">Modern kartlı</option>
+                <option value="glass">Cam / yumuşak</option>
                 <option value="academic">Akademik sade</option>
-                <option value="dense">Kompakt Ã§alÄ±ÅŸma</option>
+                <option value="dense">Kompakt çalışma</option>
               </select>
             </div>
             <div class="select-row">
               <label for="themeSelect">Tema rengi</label>
               <select id="themeSelect">
                 <option value="blue">Mavi</option>
-                <option value="green">YeÅŸil</option>
+                <option value="green">Yeşil</option>
                 <option value="purple">Mor</option>
-                <option value="rose">KÄ±rmÄ±zÄ±</option>
+                <option value="rose">Kırmızı</option>
                 <option value="teal">Turkuaz</option>
                 <option value="amber">Kehribar</option>
                 <option value="slate">Gri</option>
                 <option value="dark">Koyu</option>
-                <option value="indigo">Ä°ndigo</option>
-                <option value="cyan">CamgÃ¶beÄŸi</option>
-                <option value="lime">Limon yeÅŸili</option>
+                <option value="indigo">İndigo</option>
+                <option value="cyan">Camgöbeği</option>
+                <option value="lime">Limon yeşili</option>
                 <option value="orange">Turuncu</option>
                 <option value="pink">Pembe</option>
                 <option value="brown">Kahverengi</option>
@@ -4249,21 +4249,21 @@
             <div class="select-row">
               <label for="duplicateFilterSelect">Tekrarlayan sorular</label>
               <select id="duplicateFilterSelect">
-                <option value="all">AÃ§Ä±k - TÃ¼m tekrarlarÄ± gÃ¶ster</option>
-                <option value="smart">KapalÄ± - TekilleÅŸtir, AI cevaplÄ± sÃ¼rÃ¼mÃ¼ tercih et</option>
+                <option value="all">Açık - Tüm tekrarları göster</option>
+                <option value="smart">Kapalı - Tekilleştir, AI cevaplı sürümü tercih et</option>
               </select>
             </div>
             <div class="select-row">
-              <label for="questionOrderSelect">Soru sÄ±rasÄ±</label>
+              <label for="questionOrderSelect">Soru sırası</label>
               <select id="questionOrderSelect">
-                <option value="normal">Normal sÄ±ra</option>
-                <option value="shuffle">KarÄ±ÅŸÄ±k sÄ±ra</option>
+                <option value="normal">Normal sıra</option>
+                <option value="shuffle">Karışık sıra</option>
               </select>
             </div>
             <div class="db-actions">
-              <button class="secondary" id="reshuffleBtn" type="button">Yeni karÄ±ÅŸÄ±k sÄ±ra oluÅŸtur</button>
+              <button class="secondary" id="reshuffleBtn" type="button">Yeni karışık sıra oluştur</button>
             </div>
-            <p class="subtitle">Sade Ã§Ã¶zÃ¼m modu, soru Ã§Ã¶zerken yalnÄ±zca gerekli alanlarÄ± gÃ¶sterir. TekrarlarÄ± aÃ§Ä±k bÄ±rakÄ±rsan soru1.db, soru6.db ve soru7.db iÃ§indeki aynÄ±/benzer kayÄ±tlar ayrÄ± ayrÄ± gÃ¶rÃ¼nÃ¼r. KapatÄ±rsan tekilleÅŸtirilir; AI cevabÄ± olan sÃ¼rÃ¼m tercih edilir. KarÄ±ÅŸÄ±k sÄ±ra seÃ§ildiÄŸinde filtreye uygun sorular rastgele sÄ±rayla gÃ¶sterilir.</p>
+            <p class="subtitle">Sade çözüm modu, soru çözerken yalnızca gerekli alanları gösterir. Tekrarları açık bırakırsan soru1.db, soru6.db ve soru7.db içindeki aynı/benzer kayıtlar ayrı ayrı görünür. Kapatırsan tekilleştirilir; AI cevabı olan sürüm tercih edilir. Karışık sıra seçildiğinde filtreye uygun sorular rastgele sırayla gösterilir.</p>
           </div>
         </details>
       </section>
@@ -4274,13 +4274,13 @@
 
     <section class="app-view" id="appView">
       <section class="exam-topbar" id="examTopbar">
-        <div class="exam-topbar-title" id="examModeTitle">SÄ±nav modu</div>
+        <div class="exam-topbar-title" id="examModeTitle">Sınav modu</div>
         <div class="exam-topbar-timer" id="examTimerText">20 sn</div>
-        <button class="danger" id="cancelExamBtn" type="button">SÄ±navÄ± bitir</button>
+        <button class="danger" id="cancelExamBtn" type="button">Sınavı bitir</button>
       </section>
 <section class="panel compact-actionbar" id="compactActionbar">
-        <button class="secondary" id="compactHomeBtn" type="button">â† Ana ekrana dÃ¶n</button>
-        <button class="primary" id="compactShowAllBtn" type="button">TÃ¼m sorularÄ± gÃ¶r</button>
+        <button class="secondary" id="compactHomeBtn" type="button">← Ana ekrana dön</button>
+        <button class="primary" id="compactShowAllBtn" type="button">Tüm soruları gör</button>
       </section>
 
       <section class="quiz-view" id="quizView">
@@ -4293,35 +4293,35 @@
           <article class="panel question-card">
             <div class="question-mini-header">
               <div class="section" id="section"></div>
-              <span class="question-edited-badge hidden" id="questionEditedBadge" title="Bu soru kullanÄ±cÄ± tarafÄ±ndan dÃ¼zenlendi">DÃ¼zenlendi</span>
-              <span class="question-study-time-badge" id="questionStudyTimeBadge" title="Bu soru ve toplam Ã§alÄ±ÅŸma sÃ¼resi">00:00</span>
+              <span class="question-edited-badge hidden" id="questionEditedBadge" title="Bu soru kullanıcı tarafından düzenlendi">Düzenlendi</span>
+              <span class="question-study-time-badge" id="questionStudyTimeBadge" title="Bu soru ve toplam çalışma süresi">00:00</span>
               <details class="question-history-menu" id="questionHistoryDetails">
-                <summary title="Bu sorunun Ã§alÄ±ÅŸma geÃ§miÅŸi" aria-label="Bu sorunun Ã§alÄ±ÅŸma geÃ§miÅŸi">â—·</summary>
+                <summary title="Bu sorunun çalışma geçmişi" aria-label="Bu sorunun çalışma geçmişi">◷</summary>
                 <div class="question-history-panel" id="questionHistoryPanel"></div>
               </details>
               <details class="question-jump-menu" id="questionJumpMenuDetails">
-                <summary title="Soru seÃ§" aria-label="Soru seÃ§">â˜·</summary>
+                <summary title="Soru seç" aria-label="Soru seç">☷</summary>
                 <div class="question-jump-menu-panel">
-                  <div class="question-jump-menu-title">Soru seÃ§</div>
+                  <div class="question-jump-menu-title">Soru seç</div>
                   <div class="question-jump-menu-grid" id="questionJumpMenuGrid"></div>
                 </div>
               </details>
-              <button class="question-star-btn" id="questionStarBtn" type="button" title="Soruyu yÄ±ldÄ±zla" aria-label="Soruyu yÄ±ldÄ±zla">â˜†</button>
-              <button class="question-chatgpt-btn" id="questionChatGPTBtn" type="button" title="Bu soruyu ChatGPT'ye Ã§Ã¶zdÃ¼r" aria-label="Bu soruyu ChatGPT'ye Ã§Ã¶zdÃ¼r">
+              <button class="question-star-btn" id="questionStarBtn" type="button" title="Soruyu yıldızla" aria-label="Soruyu yıldızla">☆</button>
+              <button class="question-chatgpt-btn" id="questionChatGPTBtn" type="button" title="Bu soruyu ChatGPT'ye çözdür" aria-label="Bu soruyu ChatGPT'ye çözdür">
                 <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                   <path d="M12 3 2.8 20h18.4L12 3Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
                   <path d="M12 8v5M12 17h.01" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                 </svg>
               </button>
-              <button class="question-info-toggle-btn" id="questionInfoToggleBtn" type="button" title="AÃ§Ä±klama/spot gÃ¶ster" aria-label="AÃ§Ä±klama/spot gÃ¶ster">ğŸ’¬</button>
-              <button class="question-break-btn" id="questionBreakBtn" type="button" title="Mola ver" aria-label="Mola ver">â¸</button>
+              <button class="question-info-toggle-btn" id="questionInfoToggleBtn" type="button" title="Açıklama/spot göster" aria-label="Açıklama/spot göster">💬</button>
+              <button class="question-break-btn" id="questionBreakBtn" type="button" title="Mola ver" aria-label="Mola ver">⏸</button>
               <button class="question-fullscreen-btn" id="questionFullscreenBtn" type="button" title="Tam ekran yap" aria-label="Tam ekran yap">
                 <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                   <path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </button>
               <details class="meta-box meta-icon-box" id="metaDetails">
-                <summary title="Soru bilgilerini gÃ¶ster" aria-label="Soru bilgilerini gÃ¶ster">â“˜</summary>
+                <summary title="Soru bilgilerini göster" aria-label="Soru bilgilerini göster">ⓘ</summary>
                 <div class="meta" id="meta"></div>
               </details>
             </div>
@@ -4333,21 +4333,21 @@
             <div class="info-box" id="infoBox"></div>
 
             <div class="question-top-actions">
-              <button class="secondary" id="showInfoBtn">AÃ§Ä±klama/spot gÃ¶ster</button>
-              <button class="secondary" id="cardShowAllBtn" type="button">TÃ¼m sorularÄ± gÃ¶rÃ¼ntÃ¼le</button>
+              <button class="secondary" id="showInfoBtn">Açıklama/spot göster</button>
+              <button class="secondary" id="cardShowAllBtn" type="button">Tüm soruları görüntüle</button>
               <details class="question-tools">
-                <summary>DiÄŸer iÅŸlemler</summary>
+                <summary>Diğer işlemler</summary>
                 <div class="question-tools-content">
-                  <button class="secondary wide-exit-btn" id="wideExitBtn">Tekli ekranÄ± daralt</button>
-                  <button class="secondary" id="resetVisibleBtn">Filtre cevaplarÄ±nÄ± sÄ±fÄ±rla</button>
-                  <button class="danger" id="clearCacheBtn">Ã–nbelleÄŸi temizle</button>
+                  <button class="secondary wide-exit-btn" id="wideExitBtn">Tekli ekranı daralt</button>
+                  <button class="secondary" id="resetVisibleBtn">Filtre cevaplarını sıfırla</button>
+                  <button class="danger" id="clearCacheBtn">Önbelleği temizle</button>
                 </div>
               </details>
             </div>
 
-            <div class="nav floating-question-nav" aria-label="Soru geÃ§iÅŸleri">
-              <button class="secondary" id="prevBtn">Ã–nceki</button>
-              <button class="secondary unwanted-btn" id="hideQuestionBtn">Ä°stenmeyen iÅŸaretle</button>
+            <div class="nav floating-question-nav" aria-label="Soru geçişleri">
+              <button class="secondary" id="prevBtn">Önceki</button>
+              <button class="secondary unwanted-btn" id="hideQuestionBtn">İstenmeyen işaretle</button>
               <button class="secondary unknown-btn" id="unknownQuestionBtn">Bilmiyorum</button>
               <button class="primary" id="nextBtn">Sonraki</button>
             </div>
@@ -4356,10 +4356,10 @@
 
   
     <section class="break-modal hidden" id="breakModal" aria-hidden="true">
-      <div class="break-card" role="dialog" aria-modal="true" aria-label="Mola ekranÄ±">
-        <div class="break-icon">â˜•</div>
+      <div class="break-card" role="dialog" aria-modal="true" aria-label="Mola ekranı">
+        <div class="break-icon">☕</div>
         <h2>Mola verildi</h2>
-        <p>Ã‡alÄ±ÅŸma sÃ¼resi durduruldu. Devam ettiÄŸinde sÃ¼re kaldÄ±ÄŸÄ± yerden iÅŸlemeye devam eder.</p>
+        <p>Çalışma süresi durduruldu. Devam ettiğinde süre kaldığı yerden işlemeye devam eder.</p>
         <button class="primary" id="breakContinueBtn" type="button">Devam et</button>
       </div>
     </section>
@@ -4376,20 +4376,20 @@
                 <div class="fullscreen-results-score">
                   <div class="score-circle mini-score-circle" id="fullscreenScoreCircle"><div class="score-text" id="fullscreenScoreText">0%</div></div>
                   <div class="fullscreen-results-actions">
-                    <button class="secondary" id="fullscreenAskReviewChatGPTBtn" type="button">YanlÄ±ÅŸ + bilmiyorum sorularÄ±nÄ± ChatGPT'ye sor</button>
-                    <button class="primary" id="fullscreenReviewToggleBtn" type="button">GÃ¶zden geÃ§irilecekleri gÃ¶ster</button>
+                    <button class="secondary" id="fullscreenAskReviewChatGPTBtn" type="button">Yanlış + bilmiyorum sorularını ChatGPT'ye sor</button>
+                    <button class="primary" id="fullscreenReviewToggleBtn" type="button">Gözden geçirilecekleri göster</button>
                   </div>
                 </div>
                 <div class="review fullscreen-review hidden" id="fullscreenReview"></div>
               </div>
             </section>
 <section class="unwanted-confirm-modal hidden" id="unwantedConfirmModal" aria-hidden="true">
-              <div class="unwanted-confirm-card" role="dialog" aria-modal="true" aria-label="Ä°stenmeyen soru onayÄ±">
-                <div class="unwanted-confirm-icon">âš </div>
+              <div class="unwanted-confirm-card" role="dialog" aria-modal="true" aria-label="İstenmeyen soru onayı">
+                <div class="unwanted-confirm-icon">⚠</div>
                 <h2>Bu soru gizlensin mi?</h2>
-                <p>Bu soru normal akÄ±ÅŸta ve quizlerde gÃ¶rÃ¼nmez. Daha sonra ana sayfadaki gizlenen sorular bÃ¶lÃ¼mÃ¼nden tekrar dÃ¼zenleyebilir veya gÃ¶rÃ¼nÃ¼r yapabilirsin.</p>
+                <p>Bu soru normal akışta ve quizlerde görünmez. Daha sonra ana sayfadaki gizlenen sorular bölümünden tekrar düzenleyebilir veya görünür yapabilirsin.</p>
                 <div class="unwanted-confirm-actions">
-                  <button class="secondary" id="unwantedConfirmCancelBtn" type="button">VazgeÃ§</button>
+                  <button class="secondary" id="unwantedConfirmCancelBtn" type="button">Vazgeç</button>
                   <button class="danger" id="unwantedConfirmOkBtn" type="button">Evet, gizle</button>
                 </div>
               </div>
@@ -4400,9 +4400,9 @@
             <h3 class="side-title">Durum</h3>
             <div class="mini-stats">
               <div class="mini"><span>Cevaplanan</span><b id="answeredCount">0</b></div>
-              <div class="mini"><span>DoÄŸru</span><b id="correctCount">0</b></div>
-              <div class="mini"><span>YanlÄ±ÅŸ</span><b id="wrongCount">0</b></div>
-              <div class="mini"><span>BoÅŸ</span><b id="emptyCount">0</b></div>
+              <div class="mini"><span>Doğru</span><b id="correctCount">0</b></div>
+              <div class="mini"><span>Yanlış</span><b id="wrongCount">0</b></div>
+              <div class="mini"><span>Boş</span><b id="emptyCount">0</b></div>
             </div>
 
             <details class="combo-panel compact-filter-panel" id="filterPanelDetails">
@@ -4410,25 +4410,25 @@
               <div class="compact-filter-content">
                 <div class="combo-grid">
                   <div class="select-row"><label for="subjectSelect">Ders</label><select id="subjectSelect"></select></div>
-                  <div class="select-row"><label for="examSelect">Kurul / sÄ±nav grubu</label><select id="examSelect"></select></div>
-                  <div class="select-row"><label for="yearSelect">YÄ±l / sene</label><select id="yearSelect"></select></div>
+                  <div class="select-row"><label for="examSelect">Kurul / sınav grubu</label><select id="examSelect"></select></div>
+                  <div class="select-row"><label for="yearSelect">Yıl / sene</label><select id="yearSelect"></select></div>
                   <div class="select-row"><label for="teacherSelect">Hoca</label><select id="teacherSelect"></select></div>
-                  <div class="select-row"><label for="sourceGroupSelect">Kaynak tÃ¼rÃ¼</label><select id="sourceGroupSelect"></select></div>
+                  <div class="select-row"><label for="sourceGroupSelect">Kaynak türü</label><select id="sourceGroupSelect"></select></div>
                   <div class="select-row">
-                    <label for="searchInput">Soru / konu / hedef / kaynak aramasÄ±</label>
-                    <input class="search" id="searchInput" placeholder="Ã–rn: HPV, EKG, a. subclavia, keton, Sertoli...">
+                    <label for="searchInput">Soru / konu / hedef / kaynak araması</label>
+                    <input class="search" id="searchInput" placeholder="Örn: HPV, EKG, a. subclavia, keton, Sertoli...">
                   </div>
                 </div>
                 <div class="active-filter-summary" id="activeFilterSummary"></div>
                 <div class="filter-actions">
                   <button class="secondary" id="clearFiltersBtn">Filtreleri temizle</button>
-                  <button class="primary" id="goFirstFilteredBtn">Ä°lk soruya git</button>
+                  <button class="primary" id="goFirstFilteredBtn">İlk soruya git</button>
                 </div>
               </div>
             </details>
 
             <details class="quick-block">
-              <summary class="side-title" style="cursor:pointer;">HÄ±zlÄ± ders tuÅŸlarÄ±</summary>
+              <summary class="side-title" style="cursor:pointer;">Hızlı ders tuşları</summary>
               <div style="height:8px;"></div>
               <div class="button-grid" id="subjectButtons"></div>
             </details>
@@ -4446,8 +4446,8 @@
               <p class="subtitle" id="resultSubtitle"></p>
               <div class="nav" style="border-top:0;padding-top:8px;margin-top:8px;">
                 <button class="secondary" id="hideResultBtn">Sonucu gizle</button>
-                <button class="secondary" id="askReviewChatGPTBtn">YanlÄ±ÅŸ + bilmiyorum sorularÄ±nÄ± ChatGPT'ye sor</button>
-                <button class="primary" id="reviewToggleBtn">GÃ¶zden geÃ§irilecekleri gÃ¶ster</button>
+                <button class="secondary" id="askReviewChatGPTBtn">Yanlış + bilmiyorum sorularını ChatGPT'ye sor</button>
+                <button class="primary" id="reviewToggleBtn">Gözden geçirilecekleri göster</button>
               </div>
             </div>
           </div>
@@ -4456,11 +4456,11 @@
       </section>
 
       <section class="panel top-nav">
-        <button class="secondary" id="backHomeBtn" type="button">â† Ders seÃ§imine dÃ¶n</button>
+        <button class="secondary" id="backHomeBtn" type="button">← Ders seçimine dön</button>
         <div class="top-nav-title" id="activeTitle">Ders</div>
-        <button class="secondary" id="wideQuestionBtn" type="button" title="Tekli soru ekranÄ±nÄ± geniÅŸlet/daralt">â›¶ Tekli Ã§Ã¶zÃ¼m ekranÄ±</button>
-        <button class="secondary" id="showAllBtn" type="button">TÃ¼m sorularÄ± listele</button>
-        <button class="primary" id="changeCourseBtn" type="button">Dersi deÄŸiÅŸtir</button>
+        <button class="secondary" id="wideQuestionBtn" type="button" title="Tekli soru ekranını genişlet/daralt">⛶ Tekli çözüm ekranı</button>
+        <button class="secondary" id="showAllBtn" type="button">Tüm soruları listele</button>
+        <button class="primary" id="changeCourseBtn" type="button">Dersi değiştir</button>
       </section>
 
       
@@ -4468,16 +4468,16 @@
       <section class="list-view" id="listView">
         <section class="panel all-list-header">
           <div>
-            <b id="listTitle" style="color:var(--primary);font-size:16px;">TÃ¼m sorular</b>
+            <b id="listTitle" style="color:var(--primary);font-size:16px;">Tüm sorular</b>
             <div class="small" id="listSubtitle"></div>
           </div>
           <div class="list-export-actions">
-            <button class="secondary" id="backToQuizBtn" type="button">Tek soru moduna dÃ¶n</button>
-            <button class="secondary" id="wideListBtn" type="button" title="TÃ¼m sorular ekranÄ±nÄ± geniÅŸlet/daralt">â›¶ Listeyi geniÅŸlet</button>
-            <button class="secondary" id="pdfListBtn" type="button">PDF oluÅŸtur</button>
+            <button class="secondary" id="backToQuizBtn" type="button">Tek soru moduna dön</button>
+            <button class="secondary" id="wideListBtn" type="button" title="Tüm sorular ekranını genişlet/daralt">⛶ Listeyi genişlet</button>
+            <button class="secondary" id="pdfListBtn" type="button">PDF oluştur</button>
             <button class="secondary" id="textListBtn" type="button">Metin al</button>
-            <button class="secondary" id="restoreHiddenBtn" type="button">Gizlenenleri geri yÃ¼kle</button>
-            <button class="primary" id="refreshListBtn" type="button">Listeyi gÃ¼ncelle</button>
+            <button class="secondary" id="restoreHiddenBtn" type="button">Gizlenenleri geri yükle</button>
+            <button class="primary" id="refreshListBtn" type="button">Listeyi güncelle</button>
           </div>
         </section>
         <section class="all-list" id="allList"></section>
@@ -4485,33 +4485,33 @@
     </section>
   
     <section class="chatgpt-webview-modal hidden" id="chatgptWebviewModal" aria-hidden="true">
-      <div class="chatgpt-webview-panel" role="dialog" aria-modal="true" aria-label="ChatGPT soru Ã§Ã¶zÃ¼m penceresi">
+      <div class="chatgpt-webview-panel" role="dialog" aria-modal="true" aria-label="ChatGPT soru çözüm penceresi">
         <div class="chatgpt-webview-header">
           <div>
-            <b>ChatGPT ile Ã§Ã¶z</b>
-            <small>Webview aÃ§Ä±lmazsa yeni sekme veya kopyalama seÃ§eneklerini kullan.</small>
+            <b>ChatGPT ile çöz</b>
+            <small>Webview açılmazsa yeni sekme veya kopyalama seçeneklerini kullan.</small>
           </div>
           <button class="secondary" id="chatgptWebviewCloseBtn" type="button">Kapat</button>
         </div>
         <div class="chatgpt-webview-actions">
-          <button class="primary" id="chatgptOpenNewTabBtn" type="button">Yeni sekmede aÃ§</button>
+          <button class="primary" id="chatgptOpenNewTabBtn" type="button">Yeni sekmede aç</button>
           <button class="secondary" id="chatgptCopyPromptBtn" type="button">Promptu kopyala</button>
         </div>
         <div class="chatgpt-webview-note" id="chatgptWebviewNote">
-          ChatGPT bazÄ± tarayÄ±cÄ±larda gÃ¼venlik nedeniyle sayfa iÃ§inde aÃ§Ä±lmayabilir. Bu durumda â€œYeni sekmede aÃ§â€ butonunu kullan.
+          ChatGPT bazı tarayıcılarda güvenlik nedeniyle sayfa içinde açılmayabilir. Bu durumda “Yeni sekmede aç” butonunu kullan.
         </div>
         <iframe id="chatgptWebviewFrame" title="ChatGPT webview" loading="lazy" referrerpolicy="no-referrer"></iframe>
       </div>
     </section>
 
-  <button class="scroll-top-fab hidden" id="scrollTopFab" type="button" title="SayfanÄ±n baÅŸÄ±na Ã§Ä±k" aria-label="SayfanÄ±n baÅŸÄ±na Ã§Ä±k">â†‘</button>
+  <button class="scroll-top-fab hidden" id="scrollTopFab" type="button" title="Sayfanın başına çık" aria-label="Sayfanın başına çık">↑</button>
   
     <section class="question-edit-modal hidden" id="questionEditModal" aria-hidden="true">
-      <div class="question-edit-panel" role="dialog" aria-modal="true" aria-label="Ä°stenmeyen soruyu dÃ¼zenle">
+      <div class="question-edit-panel" role="dialog" aria-modal="true" aria-label="İstenmeyen soruyu düzenle">
         <div class="question-edit-header">
           <div>
-            <b>Ä°stenmeyen soruyu dÃ¼zenle</b>
-            <small>Soru metni, ÅŸÄ±klar ve gerÃ§ek doÄŸru cevap bu tarayÄ±cÄ±da saklanÄ±r.</small>
+            <b>İstenmeyen soruyu düzenle</b>
+            <small>Soru metni, şıklar ve gerçek doğru cevap bu tarayıcıda saklanır.</small>
           </div>
           <button class="secondary" id="editCloseBtn" type="button">Kapat</button>
         </div>
@@ -4520,14 +4520,14 @@
           <label for="editQuestionText">Soru metni</label>
           <textarea id="editQuestionText" rows="7"></textarea>
 
-          <label for="editOptionsText">ÅÄ±klar</label>
+          <label for="editOptionsText">Şıklar</label>
           <textarea id="editOptionsText" rows="8" placeholder="A) ...&#10;B) ...&#10;C) ...&#10;D) ...&#10;E) ..."></textarea>
 
-          <label for="editAnswerSelect">GerÃ§ek doÄŸru cevap</label>
+          <label for="editAnswerSelect">Gerçek doğru cevap</label>
           <select id="editAnswerSelect"></select>
 
           <div class="edit-actions">
-            <button class="danger" id="editResetBtn" type="button">Bu dÃ¼zenlemeyi sÄ±fÄ±rla</button>
+            <button class="danger" id="editResetBtn" type="button">Bu düzenlemeyi sıfırla</button>
             <button class="primary" id="editSaveBtn" type="button">Kaydet</button>
           </div>
         </div>
@@ -4578,7 +4578,7 @@
     let designPreset = "classic";
     let themeColor = "blue";
     let duplicateMode = "all";
-    let duplicateFilterEnabled = true; // eski kayÄ±tlarla uyumluluk iÃ§in tutulur
+    let duplicateFilterEnabled = true; // eski kayıtlarla uyumluluk için tutulur
     let allLoadedQuestions = [];
     let questionWideMode = false;
     let listWideMode = false;
@@ -4656,7 +4656,7 @@
         timer = setTimeout(() => fn(...args), wait);
       };
     }
-    function normalize(str){let s=String(str ?? "").toLocaleLowerCase("tr-TR");try{s=s.normalize("NFKD").replace(/[\u0300-\u036f]/g,"");}catch(e){} return s.replace(/Ä±/g,"i");}
+    function normalize(str){let s=String(str ?? "").toLocaleLowerCase("tr-TR");try{s=s.normalize("NFKD").replace(/[\u0300-\u036f]/g,"");}catch(e){} return s.replace(/ı/g,"i");}
     function initials(name){return String(name||"?").split(/\s+/).map(x=>x[0]).join("").slice(0,2).toUpperCase();}
     function optionList(q){return Array.isArray(q.options) ? q.options : [];}
     function meta(q,key){return (q.metadata && q.metadata[key]) || "";}
@@ -4793,7 +4793,7 @@
 
       const options = parseEditedOptions(els.editOptionsText.value);
       if(options.length < 2){
-        alert("En az iki ÅŸÄ±k olmalÄ±.");
+        alert("En az iki şık olmalı.");
         return;
       }
 
@@ -4820,7 +4820,7 @@
     function resetQuestionEditFromModal(){
       const id = els.editQuestionId ? els.editQuestionId.value : "";
       if(!id) return;
-      if(!confirm("Bu soru iÃ§in yaptÄ±ÄŸÄ±n dÃ¼zenleme silinsin mi?")) return;
+      if(!confirm("Bu soru için yaptığın düzenleme silinsin mi?")) return;
       delete questionEditOverrides[id];
       saveQuestionEditOverrides();
       location.reload();
@@ -4903,13 +4903,13 @@
       if(!q) q = questions[current];
       if(!q){
         els.questionStudyTimeBadge.textContent = "00:00";
-        els.questionStudyTimeBadge.title = "Ã‡alÄ±ÅŸma sÃ¼resi";
+        els.questionStudyTimeBadge.title = "Çalışma süresi";
         return;
       }
       const qSec = questionStudySeconds(q);
       const subjectSec = subjectStudySeconds(q.subject || "Ders yok");
       els.questionStudyTimeBadge.textContent = formatStudyTime(qSec);
-      els.questionStudyTimeBadge.title = `Bu soru: ${formatStudyTime(qSec)} Â· ${q.subject || "Ders"} toplam: ${formatStudyTime(subjectSec)} Â· Genel toplam: ${formatStudyTime(studyTimes.total)}`;
+      els.questionStudyTimeBadge.title = `Bu soru: ${formatStudyTime(qSec)} · ${q.subject || "Ders"} toplam: ${formatStudyTime(subjectSec)} · Genel toplam: ${formatStudyTime(studyTimes.total)}`;
     }
 
     function formatStudyDate(ts){
@@ -4922,7 +4922,7 @@
       if(!els.questionHistoryPanel) return;
       if(!q) q = questions[current];
       if(!q){
-        els.questionHistoryPanel.innerHTML = `<div class="history-empty">GeÃ§miÅŸ yok.</div>`;
+        els.questionHistoryPanel.innerHTML = `<div class="history-empty">Geçmiş yok.</div>`;
         return;
       }
 
@@ -4939,10 +4939,10 @@
       `).join("");
 
       els.questionHistoryPanel.innerHTML = `
-        <div class="history-title">Ã‡alÄ±ÅŸma geÃ§miÅŸi</div>
+        <div class="history-title">Çalışma geçmişi</div>
         <div class="history-total">Bu soru: <b>${escapeHTML(formatStudyTime(qTotal))}</b></div>
-        <div class="history-total">Ders toplamÄ±: <b>${escapeHTML(formatStudyTime(subjectTotal))}</b></div>
-        <div class="history-list">${rows || `<div class="history-empty">Bu soru iÃ§in kayÄ±tlÄ± oturum yok.</div>`}</div>
+        <div class="history-total">Ders toplamı: <b>${escapeHTML(formatStudyTime(subjectTotal))}</b></div>
+        <div class="history-list">${rows || `<div class="history-empty">Bu soru için kayıtlı oturum yok.</div>`}</div>
       `;
     }
 
@@ -4955,7 +4955,7 @@
       if(delta <= 0 && !force) return;
       if(delta <= 0) delta = 0;
 
-      // Uzun sÃ¼re sekme arka planda kaldÄ±ysa tek seferde bÃ¼yÃ¼k sÃ¼re yazÄ±lmasÄ±n.
+      // Uzun süre sekme arka planda kaldıysa tek seferde büyük süre yazılmasın.
       if(delta > 30) delta = 30;
 
       if(delta > 0){
@@ -5118,8 +5118,8 @@
 
     function restoreLastPosition(subject="all", teacher="all"){
       // Dersler birbirinin filtrelerinden etkilenmesin:
-      // Belirli bir derse giriliyorsa yalnÄ±zca o dersin kayÄ±tlarÄ± aranÄ±r.
-      // Global/all kayÄ±tlarÄ± sadece "TÃ¼m dersler" gÃ¶rÃ¼nÃ¼mÃ¼nde kullanÄ±lÄ±r.
+      // Belirli bir derse giriliyorsa yalnızca o dersin kayıtları aranır.
+      // Global/all kayıtları sadece "Tüm dersler" görünümünde kullanılır.
       const isSpecificSubject = !!(subject && subject !== "all");
       const keys = isSpecificSubject
         ? (teacher && teacher !== "all"
@@ -5135,7 +5135,7 @@
         if(teacher && teacher !== "all") filters.teacher = teacher;
         sanitizeFilters();
       }else if(isSpecificSubject){
-        // Bu derse ait kayÄ±t yoksa temiz filtreyle baÅŸla.
+        // Bu derse ait kayıt yoksa temiz filtreyle başla.
         filters = {subject, exam:"all", year:"all", teacher:teacher || "all", sourceGroup:"all", search:""};
       }
 
@@ -5173,8 +5173,8 @@
       els.quizView.classList.remove("hidden");
       els.listView.classList.remove("active");
       els.activeTitle.textContent = filters.subject && filters.subject !== "all"
-        ? (filters.teacher && filters.teacher !== "all" ? filters.subject + " Â· " + filters.teacher : filters.subject + " soru bankasÄ±")
-        : "TÃ¼m dersler soru bankasÄ±";
+        ? (filters.teacher && filters.teacher !== "all" ? filters.subject + " · " + filters.teacher : filters.subject + " soru bankası")
+        : "Tüm dersler soru bankası";
       els.results.style.display="none";
       render();
       scrollToQuestion("auto");
@@ -5235,9 +5235,9 @@
     }
 
     function cachedListHasCoreDbs(files){
-      // Ã–nceki sÃ¼rÃ¼m soru1-soru10 dosyalarÄ±nÄ±n hepsini beklediÄŸi iÃ§in,
-      // eksik numara olduÄŸunda her aÃ§Ä±lÄ±ÅŸta repository taramasÄ± yapÄ±yordu.
-      // ArtÄ±k bulunan ve Ã¶nbelleÄŸe alÄ±nan dosya listesi yeterlidir.
+      // Önceki sürüm soru1-soru10 dosyalarının hepsini beklediği için,
+      // eksik numara olduğunda her açılışta repository taraması yapıyordu.
+      // Artık bulunan ve önbelleğe alınan dosya listesi yeterlidir.
       return Array.isArray(files) && files.length > 0;
     }
 
@@ -5257,7 +5257,7 @@
           if(!db.objectStoreNames.contains(DB_CONTENT_STORE_NAME)) db.createObjectStore(DB_CONTENT_STORE_NAME, {keyPath:"key"});
         };
         req.onsuccess = () => resolve(req.result);
-        req.onerror = () => reject(req.error || new Error("IndexedDB aÃ§Ä±lamadÄ±."));
+        req.onerror = () => reject(req.error || new Error("IndexedDB açılamadı."));
       });
     }
 
@@ -5297,7 +5297,7 @@
     }
 
     async function clearDatabaseCacheAndReload(){
-      if(!confirm("Soru dosyasÄ± Ã¶nbelleÄŸi temizlenip database dosyalarÄ± yeniden taransÄ±n mÄ±? Yeni eklediÄŸin .db dosyalarÄ±nÄ± gÃ¶rmek iÃ§in bunu kullanmalÄ±sÄ±n.")) return;
+      if(!confirm("Soru dosyası önbelleği temizlenip database dosyaları yeniden taransın mı? Yeni eklediğin .db dosyalarını görmek için bunu kullanmalısın.")) return;
       try{localStorage.removeItem(DB_FILE_LIST_CACHE_KEY);}catch(e){}
       await deleteIndexedDbCache();
       location.reload();
@@ -5340,7 +5340,7 @@
       const idx = typeof ai.index === "number" ? ai.index : null;
       const letter = ai.letter || (idx !== null && opts[idx] ? opts[idx].letter : "");
       const text = ai.text || (idx !== null && opts[idx] ? opts[idx].text : "") || ai.raw || "";
-      return `${letter ? letter + ") " : ""}${text || "Yapay zeka cevabÄ± metni yok"}`;
+      return `${letter ? letter + ") " : ""}${text || "Yapay zeka cevabı metni yok"}`;
     }
     function aiAnswerDiffers(q){
       const ai = aiAnswerObj(q);
@@ -5366,29 +5366,29 @@
       const ai = aiAnswerObj(q);
       if(!ai) return false;
       const status = normalizeAnswerText(ai.verificationStatus || "");
-      const explicitMismatch = ai.matchesStoredAnswer === false || status.includes("uyumsuz") || status.includes("farkli") || status.includes("farklÄ±") || status.includes("hata");
+      const explicitMismatch = ai.matchesStoredAnswer === false || status.includes("uyumsuz") || status.includes("farkli") || status.includes("farklı") || status.includes("hata");
       return explicitMismatch || aiAnswerDiffers(q);
     }
     function aiDiscrepancyHTML(q){
       if(!hasAiDiscrepancy(q)) return "";
       const ai = aiAnswerObj(q) || {};
       const status = ai.verificationStatus ? `\nDurum: ${ai.verificationStatus}` : "";
-      const confidence = ai.confidence ? `\nGÃ¼ven: ${ai.confidence}` : "";
-      const explanation = ai.explanation ? `\n\nYapay zeka aÃ§Ä±klamasÄ±: ${ai.explanation}` : (q.yapayZekaCevabi ? `\n\nYapay zeka aÃ§Ä±klamasÄ±: ${q.yapayZekaCevabi}` : "");
-      return `<span class="ai-diff-title">âš  Yapay zeka doÄŸrulama uyarÄ±sÄ±</span><span class="ai-diff-row"><b>Kaynakta kayÄ±tlÄ± cevap:</b> ${escapeHTML(storedAnswerLabel(q))}</span><span class="ai-diff-row"><b>Yapay zeka cevabÄ±:</b> ${escapeHTML(aiAnswerLabel(q))}</span>${escapeHTML(status + confidence + explanation)}`;
+      const confidence = ai.confidence ? `\nGüven: ${ai.confidence}` : "";
+      const explanation = ai.explanation ? `\n\nYapay zeka açıklaması: ${ai.explanation}` : (q.yapayZekaCevabi ? `\n\nYapay zeka açıklaması: ${q.yapayZekaCevabi}` : "");
+      return `<span class="ai-diff-title">⚠ Yapay zeka doğrulama uyarısı</span><span class="ai-diff-row"><b>Kaynakta kayıtlı cevap:</b> ${escapeHTML(storedAnswerLabel(q))}</span><span class="ai-diff-row"><b>Yapay zeka cevabı:</b> ${escapeHTML(aiAnswerLabel(q))}</span>${escapeHTML(status + confidence + explanation)}`;
     }
     function aiPlainWarningText(q){
       if(!hasAiDiscrepancy(q)) return "";
       const ai = aiAnswerObj(q) || {};
       const parts = [
-        "Yapay zeka doÄŸrulama uyarÄ±sÄ±",
-        "Kaynakta kayÄ±tlÄ± cevap: " + storedAnswerLabel(q),
-        "Yapay zeka cevabÄ±: " + aiAnswerLabel(q)
+        "Yapay zeka doğrulama uyarısı",
+        "Kaynakta kayıtlı cevap: " + storedAnswerLabel(q),
+        "Yapay zeka cevabı: " + aiAnswerLabel(q)
       ];
       if(ai.verificationStatus) parts.push("Durum: " + ai.verificationStatus);
-      if(ai.confidence) parts.push("GÃ¼ven: " + ai.confidence);
-      if(ai.explanation) parts.push("Yapay zeka aÃ§Ä±klamasÄ±: " + ai.explanation);
-      else if(q.yapayZekaCevabi) parts.push("Yapay zeka aÃ§Ä±klamasÄ±: " + q.yapayZekaCevabi);
+      if(ai.confidence) parts.push("Güven: " + ai.confidence);
+      if(ai.explanation) parts.push("Yapay zeka açıklaması: " + ai.explanation);
+      else if(q.yapayZekaCevabi) parts.push("Yapay zeka açıklaması: " + q.yapayZekaCevabi);
       return parts.join("\n");
     }
     function aiExplanationText(q){
@@ -5471,8 +5471,8 @@
     function selectedAnswerText(q){
       const a = answers[answerKey(q)];
       const opts = optionList(q);
-      if(isUnknownQuestion(q)) return "Bilmiyorum olarak iÅŸaretlendi";
-      if(a === undefined || a === null) return "BoÅŸ";
+      if(isUnknownQuestion(q)) return "Bilmiyorum olarak işaretlendi";
+      if(a === undefined || a === null) return "Boş";
       return `${opts[a]?.letter || ""}) ${opts[a]?.text || ""}`.trim();
     }
     function correctAnswerText(q){
@@ -5486,9 +5486,9 @@
     function buildBatchReviewPrompt(){
       const idxs = reviewIndexes();
       const parts = [];
-      parts.push("AÅŸaÄŸÄ±daki Ã§oktan seÃ§meli sorularÄ± tek tek Ã§Ã¶z ve Ã¶ÄŸretici ÅŸekilde aÃ§Ä±kla.");
-      parts.push("Bu liste yanlÄ±ÅŸ yaptÄ±ÄŸÄ±m ve/veya 'bilmiyorum' olarak iÅŸaretlediÄŸim sorulardan oluÅŸuyor.");
-      parts.push("Her soru iÃ§in: doÄŸru cevabÄ±, neden doÄŸru olduÄŸunu, benim cevabÄ±mÄ±n neden yanlÄ±ÅŸ/eksik olduÄŸunu ve kÄ±sa konu Ã¶zetini yaz.");
+      parts.push("Aşağıdaki çoktan seçmeli soruları tek tek çöz ve öğretici şekilde açıkla.");
+      parts.push("Bu liste yanlış yaptığım ve/veya 'bilmiyorum' olarak işaretlediğim sorulardan oluşuyor.");
+      parts.push("Her soru için: doğru cevabı, neden doğru olduğunu, benim cevabımın neden yanlış/eksik olduğunu ve kısa konu özetini yaz.");
       parts.push("");
 
       idxs.forEach((i, n)=>{
@@ -5497,27 +5497,27 @@
         parts.push(`--- Soru ${n+1} ---`);
         parts.push([
           q.subject ? `Ders: ${q.subject}` : "",
-          meta(q,"examGroup") ? `Kurul/SÄ±nav: ${meta(q,"examGroup")}` : "",
-          meta(q,"year") ? `YÄ±l: ${meta(q,"year")}` : "",
+          meta(q,"examGroup") ? `Kurul/Sınav: ${meta(q,"examGroup")}` : "",
+          meta(q,"year") ? `Yıl: ${meta(q,"year")}` : "",
           meta(q,"teacher") ? `Hoca: ${meta(q,"teacher")}` : "",
           meta(q,"topic") ? `Konu: ${meta(q,"topic")}` : ""
         ].filter(Boolean).join(" | "));
         parts.push("");
         parts.push("Durum: " + [
-          isWrongAnswerQuestion(q) ? "YanlÄ±ÅŸ cevaplandÄ±" : "",
-          isUnknownQuestion(q) ? "Bilmiyorum olarak iÅŸaretlendi" : ""
+          isWrongAnswerQuestion(q) ? "Yanlış cevaplandı" : "",
+          isUnknownQuestion(q) ? "Bilmiyorum olarak işaretlendi" : ""
         ].filter(Boolean).join(" + "));
-        parts.push("Benim cevabÄ±m: " + selectedAnswerText(q));
-        parts.push("Sistemdeki doÄŸru cevap: " + correctAnswerText(q));
+        parts.push("Benim cevabım: " + selectedAnswerText(q));
+        parts.push("Sistemdeki doğru cevap: " + correctAnswerText(q));
         parts.push("");
         parts.push("Soru:");
         parts.push(q.question || "");
         if(opts.length){
           parts.push("");
-          parts.push("ÅÄ±klar:");
+          parts.push("Şıklar:");
           opts.forEach((opt, idx)=>parts.push(`${opt.letter || String.fromCharCode(65+idx)}) ${opt.text || ""}`));
         }
-        if(q.explanation) parts.push("\nMevcut aÃ§Ä±klama: " + q.explanation);
+        if(q.explanation) parts.push("\nMevcut açıklama: " + q.explanation);
         if(q.spot) parts.push("Spot bilgi: " + q.spot);
         parts.push("");
       });
@@ -5527,7 +5527,7 @@
     async function askReviewQuestionsInChatGPT(){
       const idxs = reviewIndexes();
       if(!idxs.length){
-        alert("ChatGPT'ye gÃ¶nderilecek yanlÄ±ÅŸ veya bilmiyorum iÅŸaretli soru yok.");
+        alert("ChatGPT'ye gönderilecek yanlış veya bilmiyorum işaretli soru yok.");
         return;
       }
       const prompt = buildBatchReviewPrompt();
@@ -5538,8 +5538,8 @@
         const copied = await copyTextSafely(prompt);
         window.open("https://chatgpt.com/", "_blank", "noopener,noreferrer");
         alert(copied
-          ? "Prompt uzun olduÄŸu iÃ§in panoya kopyalandÄ±. AÃ§Ä±lan ChatGPT sekmesine yapÄ±ÅŸtÄ±rabilirsin."
-          : "Prompt Ã§ok uzun olduÄŸu iÃ§in otomatik aktarÄ±lamadÄ±. ChatGPT aÃ§Ä±ldÄ±; promptu manuel kopyalaman gerekebilir.");
+          ? "Prompt uzun olduğu için panoya kopyalandı. Açılan ChatGPT sekmesine yapıştırabilirsin."
+          : "Prompt çok uzun olduğu için otomatik aktarılamadı. ChatGPT açıldı; promptu manuel kopyalaman gerekebilir.");
         return;
       }
       window.open(url, "_blank", "noopener,noreferrer");
@@ -5568,7 +5568,7 @@ function closeUnwantedQuestionConfirm(result=false){
           els.unwantedConfirmModal.setAttribute("aria-hidden","false");
           requestAnimationFrame(()=>els.unwantedConfirmOkBtn && els.unwantedConfirmOkBtn.focus());
         }else{
-          // Modal bulunamazsa bile native confirm kullanmayarak tam ekranÄ± korumaya Ã§alÄ±ÅŸ.
+          // Modal bulunamazsa bile native confirm kullanmayarak tam ekranı korumaya çalış.
           resolve(false);
         }
       });
@@ -5587,12 +5587,12 @@ function closeUnwantedQuestionConfirm(result=false){
       saveState();
     }
     function restoreAllHiddenQuestions(){
-      if(!confirm("Gizlenen tÃ¼m sorular yeniden gÃ¶sterilsin mi?")) return;
+      if(!confirm("Gizlenen tüm sorular yeniden gösterilsin mi?")) return;
       hiddenQuestionIds = [];
       invalidateQuestionIndexes();
       saveState();
       renderLanding();
-      // Liste ekranÄ± aÃ§Ä±kken aÄŸÄ±r yeniden Ã§izim yalnÄ±zca liste komutlarÄ±yla yapÄ±lÄ±r.
+      // Liste ekranı açıkken ağır yeniden çizim yalnızca liste komutlarıyla yapılır.
     }
     function shuffleArray(arr){
       const copy = arr.slice();
@@ -5606,13 +5606,13 @@ function closeUnwantedQuestionConfirm(result=false){
       document.body.classList.add("app-screen-active");
       const pool = activeVisibleQuestions().filter(q => !isFinal20252026Question(q) && (!subject || subject === "all" || q.subject === subject));
       if(!pool.length){
-        alert("Bu seÃ§imde quiz iÃ§in uygun soru yok. Gizlenen sorular veya aktif soru dosyasÄ± seÃ§imini kontrol et.");
+        alert("Bu seçimde quiz için uygun soru yok. Gizlenen sorular veya aktif soru dosyası seçimini kontrol et.");
         return;
       }
       const chosen = shuffleArray(pool).slice(0, Math.min(count, pool.length));
       quizActive = true;
       quizIds = chosen.map(q => answerKey(q));
-      quizTitle = subject && subject !== "all" ? `${subject} quiz modu Â· ${chosen.length} soru` : `TÃ¼m dersler quiz modu Â· ${chosen.length} soru`;
+      quizTitle = subject && subject !== "all" ? `${subject} quiz modu · ${chosen.length} soru` : `Tüm dersler quiz modu · ${chosen.length} soru`;
       filters = {subject: subject || "all", exam:"all", year:"all", teacher:"all", sourceGroup:"all", search:"", excludeFinalDb:true, finalOnly:false, kurulOnly:false};
       const firstIndex = questions.findIndex(q => answerKey(q) === quizIds[0]);
       if(firstIndex >= 0) current = firstIndex;
@@ -5673,16 +5673,16 @@ function closeUnwantedQuestionConfirm(result=false){
     function cachedSelectedText(q){
       const selected = numericAnswerValue(answers[answerKey(q)]);
       const opts = optionList(q);
-      if (selected === null) return "KayÄ±t yok";
+      if (selected === null) return "Kayıt yok";
       if (opts[selected]) return `${opts[selected].letter || String.fromCharCode(65+selected)}) ${opts[selected].text || ""}`;
-      return `SeÃ§ilen indeks: ${selected}`;
+      return `Seçilen indeks: ${selected}`;
     }
     function cachedCorrectText(q){
       const correct = correctAnswerIndex(q);
       const opts = optionList(q);
       const ans = q && q.answer ? q.answer : {};
       if (correct !== null && opts[correct]) return `${opts[correct].letter || String.fromCharCode(65+correct)}) ${opts[correct].text || ""}`;
-      return ans.raw || ans.text || "Cevap anahtarÄ± yok";
+      return ans.raw || ans.text || "Cevap anahtarı yok";
     }
     function activeWrongCount(){
       return activeVisibleQuestions().filter(q => isWrongFromCache(q)).length;
@@ -5719,7 +5719,7 @@ function closeUnwantedQuestionConfirm(result=false){
 
     async function listDbFilesFromGithubApi(){
       const info = inferRepoFromGithubPages();
-      if (!info) throw new Error("GitHub Pages host algÄ±lanmadÄ±.");
+      if (!info) throw new Error("GitHub Pages host algılanmadı.");
       const out = [];
       for (const dir of DB_DIRS){
         const apiPath = dir ? `/contents/${dir}` : `/contents`;
@@ -5733,7 +5733,7 @@ function closeUnwantedQuestionConfirm(result=false){
                .forEach(x => out.push({name: dir ? `${dir}/${x.name}` : x.name, url:x.download_url, source:"github-api"}));
         }catch(e){}
       }
-      if (!out.length) throw new Error("GitHub API ile .db/.sdb bulunamadÄ±.");
+      if (!out.length) throw new Error("GitHub API ile .db/.sdb bulunamadı.");
       return out;
     }
 
@@ -5754,7 +5754,7 @@ function closeUnwantedQuestionConfirm(result=false){
           });
         }catch(e){}
       }
-      if (!out.length) throw new Error("manifest.json iÃ§inde .db/.sdb bulunamadÄ±.");
+      if (!out.length) throw new Error("manifest.json içinde .db/.sdb bulunamadı.");
       return out;
     }
 
@@ -5777,7 +5777,7 @@ function closeUnwantedQuestionConfirm(result=false){
             const key = `${dir}/${name}`;
             if(already.has(key)) return;
             try{
-              // BazÄ± GitHub/CDN ortamlarÄ±nda HEAD gÃ¼venilir olmayabiliyor. Ã–nce kÃ¼Ã§Ã¼k GET deniyoruz.
+              // Bazı GitHub/CDN ortamlarında HEAD güvenilir olmayabiliyor. Önce küçük GET deniyoruz.
               let res = await fetchWithTimeout(url, {cache:"no-store", headers: {"Range":"bytes=0-0"}}, 3500);
               if(!res.ok){
                 res = await fetchWithTimeout(url, {cache:"no-store", method:"HEAD"}, 2500);
@@ -5790,7 +5790,7 @@ function closeUnwantedQuestionConfirm(result=false){
           }));
         }
       }
-      if (!found.length) throw new Error(`soru1.db-soru${limit}.db taramasÄ±nda dosya bulunamadÄ±.`);
+      if (!found.length) throw new Error(`soru1.db-soru${limit}.db taramasında dosya bulunamadı.`);
       return found;
     }
 
@@ -5821,13 +5821,13 @@ async function discoverDbFiles(){
         });
       }
 
-      // HÄ±zlÄ± mod: dosya listesi Ã¶nbellekte varsa hiÃ§bir repository/manifest/sequential tarama yapma.
-      // Yeni .db dosyasÄ± eklenirse kullanÄ±cÄ± "Ã–nbelleÄŸi temizle" ile yeniden tarama baÅŸlatabilir.
+      // Hızlı mod: dosya listesi önbellekte varsa hiçbir repository/manifest/sequential tarama yapma.
+      // Yeni .db dosyası eklenirse kullanıcı "Önbelleği temizle" ile yeniden tarama başlatabilir.
       if(cachedList && cachedList.length){
         fastCacheMode = true;
         if(els.status){
           els.status.classList.add("hidden");
-          els.status.innerHTML = "Soru dosyasÄ± listesi Ã¶nbellekten yÃ¼klendi.";
+          els.status.innerHTML = "Soru dosyası listesi önbellekten yüklendi.";
         }
         return cachedList.map(file => ({...file, source:file.source || "cache"}));
       }
@@ -5842,9 +5842,9 @@ async function discoverDbFiles(){
       }
 
       els.status.classList.remove("hidden");
-      els.status.innerHTML = "Soru dosyalarÄ± ilk kez aranÄ±yor...";
+      els.status.innerHTML = "Soru dosyaları ilk kez aranıyor...";
 
-      // KÃ¼Ã§Ã¼k manifest hÄ±zlÄ±dÄ±r; Ã¶nce bunu dene.
+      // Küçük manifest hızlıdır; önce bunu dene.
       await addFrom(listDbFilesFromManifest,"manifest");
       if(candidates.length){
         const priority = {"manifest":0, "known-list":1, "github-api":2, "sequential-fast":3, "sequential":3, "sequential-full":4, "cache":5};
@@ -5861,19 +5861,19 @@ async function discoverDbFiles(){
         return files;
       }
 
-      // Manifest yoksa paket iÃ§inde Ã¶zellikle eklenen database dosyalarÄ± denenir.
+      // Manifest yoksa paket içinde özellikle eklenen database dosyaları denenir.
       await addFrom(listKnownDbFiles,"known-list");
 
-      // Ã–zellikle soru3.db-soru10.db gÃ¶zden kaÃ§masÄ±n diye sadece ilk 20 dosya hÄ±zlÄ± taranÄ±r.
+      // Özellikle soru3.db-soru10.db gözden kaçmasın diye sadece ilk 20 dosya hızlı taranır.
       await addFrom(()=>listDbFilesBySequentialProbe(20),"sequential-fast");
 
-      // HÃ¢lÃ¢ hiÃ§bir dosya yoksa daha aÄŸÄ±r yollar denenir.
+      // Hâlâ hiçbir dosya yoksa daha ağır yollar denenir.
       if(!candidates.length){
         await addFrom(listDbFilesFromGithubApi,"github-api");
       }
 
       if(!candidates.length){
-        els.status.innerHTML = "Soru dosyalarÄ± geniÅŸ tarama ile aranÄ±yor...";
+        els.status.innerHTML = "Soru dosyaları geniş tarama ile aranıyor...";
         await addFrom(()=>listDbFilesBySequentialProbe(SEQUENTIAL_SCAN_MAX),"sequential-full");
       }
 
@@ -5909,18 +5909,18 @@ async function discoverDbFiles(){
       }
 
       const res = await fetchWithTimeout(file.url, {cache:"force-cache"}, 15000);
-      if(!res.ok) throw new Error(file.name+" okunamadÄ±: HTTP "+res.status);
+      if(!res.ok) throw new Error(file.name+" okunamadı: HTTP "+res.status);
 
       let db;
       try{
         const text = await res.text();
         db = JSON.parse(text);
       }catch(e){
-        throw new Error(file.name+" JSON olarak okunamadÄ±. Dosya gerÃ§ekten JSON tabanlÄ± .db formatÄ±nda mÄ±?");
+        throw new Error(file.name+" JSON olarak okunamadı. Dosya gerçekten JSON tabanlı .db formatında mı?");
       }
 
       if(!db || !Array.isArray(db.questions)) {
-        throw new Error(file.name+" geÃ§erli soru dosyasÄ± deÄŸil. Ä°Ã§inde questions dizisi olmalÄ±.");
+        throw new Error(file.name+" geçerli soru dosyası değil. İçinde questions dizisi olmalı.");
       }
 
       await setCachedDbPayload(cacheKey, {schemaVersion:db.schemaVersion || "", questions:db.questions});
@@ -5941,8 +5941,8 @@ async function discoverDbFiles(){
       for (const file of files){
         const text = await file.text();
         let db;
-        try{db = JSON.parse(text);}catch(e){throw new Error(file.name+" JSON olarak okunamadÄ±.");}
-        if(!db || !Array.isArray(db.questions)) throw new Error(file.name+" geÃ§erli database deÄŸil. questions dizisi bulunamadÄ±.");
+        try{db = JSON.parse(text);}catch(e){throw new Error(file.name+" JSON olarak okunamadı.");}
+        if(!db || !Array.isArray(db.questions)) throw new Error(file.name+" geçerli database değil. questions dizisi bulunamadı.");
         dbFiles.push({name:dbBaseName(file.name), url:file.name, source:"manual", displayName:dbBaseName(file.name)});
         all.push(...db.questions.map((q,idx) => {
           const qq = {...q, _dbFile:dbBaseName(file.name), _dbSource:"manual"};
@@ -5958,7 +5958,7 @@ async function discoverDbFiles(){
       selectedDbFiles = dbFiles.map(f => dbBaseName(f.name));
       const duplicates = rebuildQuestionsFromActiveFiles(false);
       els.status.className = "panel status";
-      els.status.innerHTML = `<b>${files.length}</b> manuel database dosyasÄ± yÃ¼klendi. <b>${activeQuestions().length}</b> benzersiz aktif soru kullanÄ±lÄ±yor${duplicates ? `; ${duplicates} tekrar otomatik ayÄ±klandÄ±` : ""}.`;
+      els.status.innerHTML = `<b>${files.length}</b> manuel database dosyası yüklendi. <b>${activeQuestions().length}</b> benzersiz aktif soru kullanılıyor${duplicates ? `; ${duplicates} tekrar otomatik ayıklandı` : ""}.`;
       els.manualDbBox.classList.add("hidden");
       sanitizeFilters(); saveState(); renderLanding();
     }
@@ -5968,10 +5968,10 @@ async function discoverDbFiles(){
       let s = String(value ?? "").toLocaleLowerCase("tr-TR");
       try { s = s.normalize("NFKD").replace(/[\u0300-\u036f]/g, ""); } catch(e) {}
       s = s
-        .replace(/Ä±/g, "i")
+        .replace(/ı/g, "i")
         .replace(/[abcde]\s*\)/g, " ")
         .replace(/\b(i|ii|iii|iv|v|vi|vii|viii|ix|x)\s*[\.\)]/g, " ")
-        .replace(/[^a-z0-9Ã§ÄŸÄ±Ã¶ÅŸÃ¼\s]/gi, " ")
+        .replace(/[^a-z0-9çğıöşü\s]/gi, " ")
         .replace(/\s+/g, " ")
         .trim();
       return s;
@@ -5998,7 +5998,7 @@ async function discoverDbFiles(){
     function isNearDuplicateQuestion(a, b){
       if (!a || !b) return false;
 
-      // AynÄ± dosya iÃ§indeki sorularÄ± agresif ÅŸekilde silmemek iÃ§in asÄ±l hedef farklÄ± soru dosyalarÄ±dÄ±r.
+      // Aynı dosya içindeki soruları agresif şekilde silmemek için asıl hedef farklı soru dosyalarıdır.
       if (a._dbFile && b._dbFile && dbCanonicalName(a._dbFile) === dbCanonicalName(b._dbFile)) return false;
 
       const sigA = dedupeSignature(a);
@@ -6139,7 +6139,7 @@ async function discoverDbFiles(){
         if(!q.id) q.id = fallbackId(q);
         if(!q._instanceId) q._instanceId = `${q._dbFile || "db"}::${idx}::${q.id}`;
 
-        // 1) AynÄ± id tekrar ederse doÄŸrudan silme; AI cevabÄ± olan/kaliteli kaydÄ± temsilci yap.
+        // 1) Aynı id tekrar ederse doğrudan silme; AI cevabı olan/kaliteli kaydı temsilci yap.
         if(exactMap.has(q.id)){
           duplicates++;
           const prev = exactMap.get(q.id);
@@ -6151,7 +6151,7 @@ async function discoverDbFiles(){
           return;
         }
 
-        // 2) Benzer soru tekrarÄ±nda da AI cevaplÄ± sÃ¼rÃ¼m tercih edilir.
+        // 2) Benzer soru tekrarında da AI cevaplı sürüm tercih edilir.
         const bucket = dedupeKeyBucket(q);
         const localCandidates = [];
 
@@ -6238,8 +6238,8 @@ async function discoverDbFiles(){
       if(els.status){
         els.status.className = "panel status";
         els.status.innerHTML = duplicateMode === "smart"
-          ? `Tekrarlar kapatÄ±ldÄ±. ${duplicates ? duplicates + " aynÄ±/benzer kayÄ±t tekilleÅŸtirildi; AI cevaplÄ± sÃ¼rÃ¼m varsa o gÃ¶sterildi." : "TekrarlÄ± kayÄ±t bulunmadÄ±."}`
-          : "Tekrarlar aÃ§Ä±ldÄ±. SeÃ§ili soru dosyalarÄ±ndaki tÃ¼m kayÄ±tlar ayrÄ± ayrÄ± gÃ¶steriliyor.";
+          ? `Tekrarlar kapatıldı. ${duplicates ? duplicates + " aynı/benzer kayıt tekilleştirildi; AI cevaplı sürüm varsa o gösterildi." : "Tekrarlı kayıt bulunmadı."}`
+          : "Tekrarlar açıldı. Seçili soru dosyalarındaki tüm kayıtlar ayrı ayrı gösteriliyor.";
         els.status.classList.remove("hidden");
         setTimeout(()=>els.status.classList.add("hidden"), 2500);
       }
@@ -6308,8 +6308,8 @@ async function discoverDbFiles(){
       if (els.designModeSelect) els.designModeSelect.value = designMode;
       if (els.duplicateFilterSelect) els.duplicateFilterSelect.value = duplicateMode;
       if (els.questionOrderSelect) els.questionOrderSelect.value = shuffleQuestions ? "shuffle" : "normal";
-      if (els.menuDuplicateBtn) els.menuDuplicateBtn.textContent = duplicateMode === "all" ? "TekrarlarÄ± kapat" : "TekrarlarÄ± aÃ§";
-      if (els.menuShuffleBtn) els.menuShuffleBtn.textContent = shuffleQuestions ? "SÄ±rayÄ± normale al" : "KarÄ±ÅŸÄ±k sÄ±ra";
+      if (els.menuDuplicateBtn) els.menuDuplicateBtn.textContent = duplicateMode === "all" ? "Tekrarları kapat" : "Tekrarları aç";
+      if (els.menuShuffleBtn) els.menuShuffleBtn.textContent = shuffleQuestions ? "Sırayı normale al" : "Karışık sıra";
       applyWideModes();
     }
 
@@ -6319,15 +6319,15 @@ async function discoverDbFiles(){
       document.body.classList.toggle("quiz-active-mode", !!quizActive);
 
       if (els.wideQuestionBtn) {
-        els.wideQuestionBtn.textContent = questionWideMode ? "â†” Tekli Ã§Ã¶zÃ¼m ekranÄ±ndan Ã§Ä±k" : "â›¶ Tekli Ã§Ã¶zÃ¼m ekranÄ±";
-        els.wideQuestionBtn.title = questionWideMode ? "Tekli soru ekranÄ±nÄ± normal geniÅŸliÄŸe dÃ¶ndÃ¼r" : "Tekli soru ekranÄ±nÄ± geniÅŸlet";
+        els.wideQuestionBtn.textContent = questionWideMode ? "↔ Tekli çözüm ekranından çık" : "⛶ Tekli çözüm ekranı";
+        els.wideQuestionBtn.title = questionWideMode ? "Tekli soru ekranını normal genişliğe döndür" : "Tekli soru ekranını genişlet";
       }
       if (els.menuWideToggleBtn) {
-        els.menuWideToggleBtn.textContent = questionWideMode ? "Tekli ekranÄ± daralt" : "Tekli ekranÄ± geniÅŸlet";
+        els.menuWideToggleBtn.textContent = questionWideMode ? "Tekli ekranı daralt" : "Tekli ekranı genişlet";
       }
       if (els.wideListBtn) {
-        els.wideListBtn.textContent = listWideMode ? "â†” Listeyi daralt" : "â›¶ Listeyi geniÅŸlet";
-        els.wideListBtn.title = listWideMode ? "TÃ¼m sorular ekranÄ±nÄ± normal geniÅŸliÄŸe dÃ¶ndÃ¼r" : "TÃ¼m sorular ekranÄ±nÄ± geniÅŸlet";
+        els.wideListBtn.textContent = listWideMode ? "↔ Listeyi daralt" : "⛶ Listeyi genişlet";
+        els.wideListBtn.title = listWideMode ? "Tüm sorular ekranını normal genişliğe döndür" : "Tüm sorular ekranını genişlet";
       }
       updateBreakButtonVisibility();
     }
@@ -6419,12 +6419,12 @@ async function discoverDbFiles(){
     function filteredQuestionsForOptions(excludeField){return questions.filter(q=>matchesFilters(q, excludeField));}
     function countValuesForOptions(fieldFn, excludeField){
       const map=new Map();
-      filteredQuestionsForOptions(excludeField).forEach(q=>{const v=fieldFn(q)||"BelirtilmemiÅŸ"; map.set(v,(map.get(v)||0)+1);});
+      filteredQuestionsForOptions(excludeField).forEach(q=>{const v=fieldFn(q)||"Belirtilmemiş"; map.set(v,(map.get(v)||0)+1);});
       return [...map.entries()].map(([value,count])=>({value,count})).sort((a,b)=>a.value.localeCompare(b.value,"tr"));
     }
     function countValues(fieldFn, baseQuestions = activeQuestions()){
       const map=new Map();
-      baseQuestions.forEach(q=>{const v=fieldFn(q)||"BelirtilmemiÅŸ"; map.set(v,(map.get(v)||0)+1);});
+      baseQuestions.forEach(q=>{const v=fieldFn(q)||"Belirtilmemiş"; map.set(v,(map.get(v)||0)+1);});
       return [...map.entries()].map(([value,count])=>({value,count})).sort((a,b)=>a.value.localeCompare(b.value,"tr"));
     }
     function optionSet(fieldFn, excludeField){return new Set(countValuesForOptions(fieldFn, excludeField).map(x=>x.value));}
@@ -6484,7 +6484,7 @@ async function discoverDbFiles(){
         const checked = activeDbSet().has(dbCanonicalName(shownName));
         label.innerHTML = `
           <input type="checkbox" value="${escapeHTML(shownName)}" ${checked ? "checked" : ""}>
-          <span><b>${escapeHTML(shownName)}</b><br><span class="small">${activeCounts.get(shownName) || activeCounts.get(file.name) || 0} ${duplicateMode === "smart" ? "seÃ§ili soru" : "soru kaydÄ±"} Â· ${escapeHTML(file.source || "")}</span></span>
+          <span><b>${escapeHTML(shownName)}</b><br><span class="small">${activeCounts.get(shownName) || activeCounts.get(file.name) || 0} ${duplicateMode === "smart" ? "seçili soru" : "soru kaydı"} · ${escapeHTML(file.source || "")}</span></span>
         `;
         const input = label.querySelector("input");
         input.addEventListener("change", () => {
@@ -6501,8 +6501,8 @@ async function discoverDbFiles(){
 
     
     function isFinal20252026Question(q){
-      // 2025-2026 final dÃ¶nemi soru15(1).db referans setinden veya ona Ã§ok benzer
-      // kayÄ±tlardan oluÅŸur; eski yÄ±l "Final" etiketleri tek baÅŸÄ±na yeterli deÄŸildir.
+      // 2025-2026 final dönemi soru15(1).db referans setinden veya ona çok benzer
+      // kayıtlardan oluşur; eski yıl "Final" etiketleri tek başına yeterli değildir.
       if(!q) return false;
       if(typeof q._isFinal20252026 === "boolean") return q._isFinal20252026;
       return (hasFinalReferenceSource(q) && isCurrentFinalMetadata(q)) || isSimilarToFinalReference(q);
@@ -6544,8 +6544,8 @@ async function discoverDbFiles(){
       els.quizView.classList.remove("hidden");
       els.listView.classList.remove("active");
       els.activeTitle.textContent = subject && subject !== "all"
-        ? `${subject} Â· 2025-2026 Final Ã§Ä±kmÄ±ÅŸlarÄ±`
-        : "2025-2026 Final Ã§Ä±kmÄ±ÅŸlarÄ±";
+        ? `${subject} · 2025-2026 Final çıkmışları`
+        : "2025-2026 Final çıkmışları";
       els.results.style.display = "none";
       render();
       scrollToQuestion("auto");
@@ -6565,8 +6565,8 @@ async function discoverDbFiles(){
       els.quizView.classList.remove("hidden");
       els.listView.classList.remove("active");
       els.activeTitle.textContent = subject && subject !== "all"
-        ? `${subject} Â· 2025-2026 Kurul Ã§Ä±kmÄ±ÅŸlarÄ±`
-        : "2025-2026 Kurul Ã§Ä±kmÄ±ÅŸlarÄ±";
+        ? `${subject} · 2025-2026 Kurul çıkmışları`
+        : "2025-2026 Kurul çıkmışları";
       els.results.style.display = "none";
       render();
       scrollToQuestion("auto");
@@ -6575,13 +6575,13 @@ async function discoverDbFiles(){
     function startKurulQuiz(count=60){
       const pool = kurul20252026Questions(activeVisibleQuestions());
       if(!pool.length){
-        alert("Kurul testi iÃ§in uygun soru bulunamadÄ±.");
+        alert("Kurul testi için uygun soru bulunamadı.");
         return;
       }
       const chosen = shuffleArray(pool).slice(0, Math.min(count, pool.length));
       quizActive = true;
       quizIds = chosen.map(q => answerKey(q));
-      quizTitle = `2025-2026 Kurul test modu Â· ${chosen.length} soru`;
+      quizTitle = `2025-2026 Kurul test modu · ${chosen.length} soru`;
       document.body.classList.add("app-screen-active");
       filters = {subject:"all", exam:"all", year:"all", teacher:"all", sourceGroup:"all", search:"", finalOnly:false, kurulOnly:true, excludeFinalDb:false};
       const firstIndex = questions.findIndex(q => answerKey(q) === quizIds[0]);
@@ -6622,8 +6622,8 @@ async function discoverDbFiles(){
       els.quizView.classList.remove("hidden");
       els.listView.classList.remove("active");
       els.activeTitle.textContent = examGroup && examGroup !== "all"
-        ? `Histoloji Â· ${examGroup}`
-        : "Histoloji sorularÄ±";
+        ? `Histoloji · ${examGroup}`
+        : "Histoloji soruları";
       els.results.style.display = "none";
       render();
       scrollToQuestion("auto");
@@ -6632,13 +6632,13 @@ async function discoverDbFiles(){
     function startHistologyQuiz(count=40){
       const pool = histologyQuestions(activeVisibleQuestions());
       if(!pool.length){
-        alert("Histoloji testi iÃ§in uygun soru bulunamadÄ±.");
+        alert("Histoloji testi için uygun soru bulunamadı.");
         return;
       }
       const chosen = shuffleArray(pool).slice(0, Math.min(count, pool.length));
       quizActive = true;
       quizIds = chosen.map(q => answerKey(q));
-      quizTitle = `Histoloji test modu Â· ${chosen.length} soru`;
+      quizTitle = `Histoloji test modu · ${chosen.length} soru`;
       document.body.classList.add("app-screen-active");
       filters = {subject:"Histoloji", exam:"all", year:"all", teacher:"all", sourceGroup:"all", search:"", finalOnly:false, kurulOnly:false, excludeFinalDb:false};
       const firstIndex = questions.findIndex(q => answerKey(q) === quizIds[0]);
@@ -6668,13 +6668,13 @@ async function discoverDbFiles(){
     function startFinalQuiz(count=40){
       const pool = final20252026Questions(activeVisibleQuestions());
       if(!pool.length){
-        alert("Final testi iÃ§in uygun soru bulunamadÄ±.");
+        alert("Final testi için uygun soru bulunamadı.");
         return;
       }
       const chosen = shuffleArray(pool).slice(0, Math.min(count, pool.length));
       quizActive = true;
       quizIds = chosen.map(q => answerKey(q));
-      quizTitle = `2025-2026 Final test modu Â· ${chosen.length} soru`;
+      quizTitle = `2025-2026 Final test modu · ${chosen.length} soru`;
       document.body.classList.add("app-screen-active");
       filters = {subject:"all", exam:"all", year:"all", teacher:"all", sourceGroup:"all", search:"", finalOnly:true, kurulOnly:false, excludeFinalDb:false};
       const firstIndex = questions.findIndex(q => answerKey(q) === quizIds[0]);
@@ -6710,24 +6710,24 @@ async function discoverDbFiles(){
       card.tabIndex = 0;
 
       const teachers = [...new Set(subjectQuestions.map(q=>meta(q,"teacher")).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"tr"));
-      const teacherOptions = [`<option value="all">TÃ¼m hocalar</option>`].concat(teachers.map(t=>`<option value="${escapeHTML(t)}">${escapeHTML(t)}</option>`)).join("");
-      const titleSuffix = mode === "final" ? "Finali aÃ§" : (mode === "kurul" ? "Kurulu aÃ§" : "Dersi aÃ§");
+      const teacherOptions = [`<option value="all">Tüm hocalar</option>`].concat(teachers.map(t=>`<option value="${escapeHTML(t)}">${escapeHTML(t)}</option>`)).join("");
+      const titleSuffix = mode === "final" ? "Finali aç" : (mode === "kurul" ? "Kurulu aç" : "Dersi aç");
 
       card.innerHTML=`
         <div>
           <div class="course-icon">${escapeHTML(initials(item.value))}</div>
           <h2>${escapeHTML(item.value)}</h2>
-          <p>${item.count} soru Â· ${examCount} grup Â· ${teacherCount} hoca</p>
-          <div class="course-study-time">Ã‡alÄ±ÅŸma: ${formatStudyTime(subjectStudySeconds(item.value))}</div>
-          ${mode === "final" || mode === "kurul" ? "" : `<select class="teacher-select-mini" aria-label="${escapeHTML(item.value)} hoca seÃ§imi">${teacherOptions}</select>`}
+          <p>${item.count} soru · ${examCount} grup · ${teacherCount} hoca</p>
+          <div class="course-study-time">Çalışma: ${formatStudyTime(subjectStudySeconds(item.value))}</div>
+          ${mode === "final" || mode === "kurul" ? "" : `<select class="teacher-select-mini" aria-label="${escapeHTML(item.value)} hoca seçimi">${teacherOptions}</select>`}
         </div>
         <div class="course-meta">
           <span class="chip">${item.count} soru</span>
           <span class="chip">${titleSuffix}</span>
-          ${mode === "final" ? `<button class="quiz-card-btn" type="button" data-subject="${escapeHTML(item.value)}">Finali aÃ§</button>` : (mode === "kurul" ? `<button class="quiz-card-btn" type="button" data-subject="${escapeHTML(item.value)}">Kurulu aÃ§</button>` : `
+          ${mode === "final" ? `<button class="quiz-card-btn" type="button" data-subject="${escapeHTML(item.value)}">Finali aç</button>` : (mode === "kurul" ? `<button class="quiz-card-btn" type="button" data-subject="${escapeHTML(item.value)}">Kurulu aç</button>` : `
             <button class="quiz-card-btn" type="button" data-subject="${escapeHTML(item.value)}">Quiz (${Math.min(30, item.count)})</button>
-            <button class="exam-card-btn" type="button" data-subject="${escapeHTML(item.value)}">SÄ±nav modu</button>
-            <button class="continue-card-btn" type="button" data-subject="${escapeHTML(item.value)}">KaldÄ±ÄŸÄ±m yerden devam</button>
+            <button class="exam-card-btn" type="button" data-subject="${escapeHTML(item.value)}">Sınav modu</button>
+            <button class="continue-card-btn" type="button" data-subject="${escapeHTML(item.value)}">Kaldığım yerden devam</button>
           `)}
         </div>
       `;
@@ -6756,7 +6756,7 @@ async function discoverDbFiles(){
           const teacher = teacherSelect ? teacherSelect.value : "all";
           const available = hasLastPosition(item.value, teacher);
           continueCourseBtn.disabled = !available;
-          continueCourseBtn.textContent = available ? "KaldÄ±ÄŸÄ±m yerden devam" : "KayÄ±t yok";
+          continueCourseBtn.textContent = available ? "Kaldığım yerden devam" : "Kayıt yok";
         };
         updateContinueButton();
         teacherSelect.addEventListener("change", updateContinueButton);
@@ -6771,11 +6771,11 @@ async function discoverDbFiles(){
         const teacher = teacherSelect ? teacherSelect.value : "all";
         if(teacher && teacher !== "all"){
           const pool = activeVisibleQuestions().filter(q => !isFinal20252026Question(q) && q.subject === item.value && meta(q,"teacher") === teacher);
-          if(!pool.length){ alert("Bu hoca iÃ§in quiz sorusu bulunamadÄ±."); return; }
+          if(!pool.length){ alert("Bu hoca için quiz sorusu bulunamadı."); return; }
           const chosen = shuffleArray(pool).slice(0, Math.min(30, pool.length));
           quizActive = true;
           quizIds = chosen.map(q => answerKey(q));
-          quizTitle = `${item.value} Â· ${teacher} quiz modu Â· ${chosen.length} soru`;
+          quizTitle = `${item.value} · ${teacher} quiz modu · ${chosen.length} soru`;
           document.body.classList.add("app-screen-active");
           filters = {subject:item.value, exam:"all", year:"all", teacher:teacher, sourceGroup:"all", search:"", finalOnly:false, kurulOnly:false, excludeFinalDb:true};
           const firstIndex = questions.findIndex(q => answerKey(q) === quizIds[0]);
@@ -6819,7 +6819,7 @@ async function discoverDbFiles(){
       }
       if(els.finalAllBtn){
         els.finalAllBtn.disabled = finalQ.length === 0;
-        els.finalAllBtn.textContent = finalQ.length ? `TÃ¼m sorularÄ± aÃ§ (${finalQ.length})` : "Final sorusu yok";
+        els.finalAllBtn.textContent = finalQ.length ? `Tüm soruları aç (${finalQ.length})` : "Final sorusu yok";
         els.finalAllBtn.onclick = () => startFinalCourse("all");
       }
       if(els.finalQuizBtn){
@@ -6843,7 +6843,7 @@ async function discoverDbFiles(){
       if(els.finalQuizCount) els.finalQuizCount.textContent = Math.min(40, finalQ.length);
       if(els.finalSummaryText) els.finalSummaryText.textContent = finalQ.length
         ? `${finalQ.length} soru, ${finalSubjectCount} ders.`
-        : "Final sorusu bulunamadÄ±.";
+        : "Final sorusu bulunamadı.";
 
       if(els.kurulCourseGrid){
         els.kurulCourseGrid.innerHTML = "";
@@ -6853,7 +6853,7 @@ async function discoverDbFiles(){
       }
       if(els.kurulAllBtn){
         els.kurulAllBtn.disabled = kurulQ.length === 0;
-        els.kurulAllBtn.textContent = kurulQ.length ? `TÃ¼m kurul sorularÄ±nÄ± aÃ§ (${kurulQ.length})` : "Kurul sorusu yok";
+        els.kurulAllBtn.textContent = kurulQ.length ? `Tüm kurul sorularını aç (${kurulQ.length})` : "Kurul sorusu yok";
         els.kurulAllBtn.onclick = () => startKurulCourse("all");
       }
       if(els.kurulQuizBtn){
@@ -6877,7 +6877,7 @@ async function discoverDbFiles(){
       if(els.kurulQuizCount) els.kurulQuizCount.textContent = Math.min(60, kurulQ.length);
       if(els.kurulSummaryText) els.kurulSummaryText.textContent = kurulQ.length
         ? `${kurulQ.length} soru, ${kurulSubjectCount} ders.`
-        : "Kurul sorusu bulunamadÄ±.";
+        : "Kurul sorusu bulunamadı.";
 
       const histologyGroups = countValues(q=>meta(q,"examGroup"), histologyQ).filter(item=>!term || normalize(item.value).includes(term));
       if(els.histologyGroupGrid){
@@ -6886,7 +6886,7 @@ async function discoverDbFiles(){
           const btn = document.createElement("button");
           btn.className = "quick-group-btn";
           btn.type = "button";
-          btn.innerHTML = `<b>${escapeHTML(item.value)}</b><span>${item.count} soru Â· aÃ§</span>`;
+          btn.innerHTML = `<b>${escapeHTML(item.value)}</b><span>${item.count} soru · aç</span>`;
           btn.addEventListener("click",()=>startHistologyCourse(item.value));
           els.histologyGroupGrid.appendChild(btn);
         });
@@ -6894,7 +6894,7 @@ async function discoverDbFiles(){
       }
       if(els.histologyAllBtn){
         els.histologyAllBtn.disabled = histologyQ.length === 0;
-        els.histologyAllBtn.textContent = histologyQ.length ? `TÃ¼m Histoloji sorularÄ±nÄ± aÃ§ (${histologyQ.length})` : "Histoloji sorusu yok";
+        els.histologyAllBtn.textContent = histologyQ.length ? `Tüm Histoloji sorularını aç (${histologyQ.length})` : "Histoloji sorusu yok";
         els.histologyAllBtn.onclick = () => startHistologyCourse("all");
       }
       if(els.histologyQuizBtn){
@@ -6917,7 +6917,7 @@ async function discoverDbFiles(){
       if(els.histologyQuizCount) els.histologyQuizCount.textContent = Math.min(40, histologyQ.length);
       if(els.histologySummaryText) els.histologySummaryText.textContent = histologyQ.length
         ? `${histologyQ.length} soru, ${countValues(q=>meta(q,"examGroup"), histologyQ).length} grup.`
-        : "Histoloji sorusu bulunamadÄ±.";
+        : "Histoloji sorusu bulunamadı.";
 
       els.courseGrid.innerHTML="";
       const courseCounts=countValues(q=>q.subject, otherQ);
@@ -6928,17 +6928,17 @@ async function discoverDbFiles(){
       els.continueBtn.disabled=!otherQ.length || !hasLastPosition("all","all");
       const wrongCount = activeWrongCount();
       els.wrongHomeBtn.disabled = wrongCount === 0;
-      els.wrongHomeBtn.textContent = wrongCount ? `YanlÄ±ÅŸlarÄ±mÄ± aÃ§ (${wrongCount})` : "YanlÄ±ÅŸlarÄ±mÄ± aÃ§";
+      els.wrongHomeBtn.textContent = wrongCount ? `Yanlışlarımı aç (${wrongCount})` : "Yanlışlarımı aç";
       const hiddenCount = hiddenQuestionCount();
       els.hiddenHomeBtn.disabled = hiddenCount === 0;
-      els.hiddenHomeBtn.textContent = hiddenCount ? `Gizlenen sorularÄ± yÃ¶net (${hiddenCount})` : "Gizlenen sorularÄ± yÃ¶net";
+      els.hiddenHomeBtn.textContent = hiddenCount ? `Gizlenen soruları yönet (${hiddenCount})` : "Gizlenen soruları yönet";
       const starredCount = starredQuestionCount();
       if(els.starredHomeBtn){
         els.starredHomeBtn.disabled = starredCount === 0;
-        els.starredHomeBtn.textContent = starredCount ? `YÄ±ldÄ±zlÄ± sorular (${starredCount})` : "YÄ±ldÄ±zlÄ± sorular";
+        els.starredHomeBtn.textContent = starredCount ? `Yıldızlı sorular (${starredCount})` : "Yıldızlı sorular";
       }
       els.quizAllBtn.disabled = otherQ.length === 0;
-      els.quizAllBtn.textContent = otherQ.length ? `TÃ¼m dersler quiz modu (${Math.min(150, otherQ.length)})` : "TÃ¼m dersler quiz modu";
+      els.quizAllBtn.textContent = otherQ.length ? `Tüm dersler quiz modu (${Math.min(150, otherQ.length)})` : "Tüm dersler quiz modu";
     }
 
     function openHomeSettingsPanel(panelId){
@@ -7059,11 +7059,11 @@ async function discoverDbFiles(){
       stopQuizMode();
       const pool = buildExamPool(subject, teacher);
       if(!pool.length){
-        alert("Bu ders iÃ§in sÄ±nav modunda gÃ¶sterilecek soru bulunamadÄ±.");
+        alert("Bu ders için sınav modunda gösterilecek soru bulunamadı.");
         return;
       }
 
-      // Her sÄ±nav yeni baÅŸlar: rastgele en fazla 30 soru seÃ§ilir ve eski cevaplarÄ± temizlenir.
+      // Her sınav yeni başlar: rastgele en fazla 30 soru seçilir ve eski cevapları temizlenir.
       const chosen = shuffleArray(pool).slice(0, Math.min(30, pool.length));
       chosen.forEach(q=>{
         delete answers[answerKey(q)];
@@ -7087,7 +7087,7 @@ async function discoverDbFiles(){
       els.quizView.classList.remove("hidden");
       els.listView.classList.remove("active");
       els.results.style.display="none";
-      if(els.examModeTitle) els.examModeTitle.textContent = `${subject}${examTeacher !== "all" ? " Â· " + examTeacher : ""} Â· SÄ±nav modu Â· ${chosen.length} soru`;
+      if(els.examModeTitle) els.examModeTitle.textContent = `${subject}${examTeacher !== "all" ? " · " + examTeacher : ""} · Sınav modu · ${chosen.length} soru`;
       if(els.topMenu) els.topMenu.open = false;
       render();
       startExamTimer();
@@ -7112,17 +7112,17 @@ async function discoverDbFiles(){
       const opts = optionList(q);
       const parts = [];
 
-      parts.push("AÅŸaÄŸÄ±daki Ã§oktan seÃ§meli soruyu Ã§Ã¶z.");
-      parts.push("Bu sorunun cevabÄ± nedir? DoÄŸru ÅŸÄ±kkÄ± ve kÄ±sa gerekÃ§esini yaz.");
+      parts.push("Aşağıdaki çoktan seçmeli soruyu çöz.");
+      parts.push("Bu sorunun cevabı nedir? Doğru şıkkı ve kısa gerekçesini yaz.");
       parts.push("");
 
       const info = [
         q.subject ? `Ders: ${q.subject}` : "",
-        meta(q,"examGroup") ? `Kurul/SÄ±nav: ${meta(q,"examGroup")}` : "",
-        meta(q,"year") ? `YÄ±l: ${meta(q,"year")}` : "",
+        meta(q,"examGroup") ? `Kurul/Sınav: ${meta(q,"examGroup")}` : "",
+        meta(q,"year") ? `Yıl: ${meta(q,"year")}` : "",
         meta(q,"teacher") ? `Hoca: ${meta(q,"teacher")}` : "",
         meta(q,"topic") ? `Konu: ${meta(q,"topic")}` : "",
-        meta(q,"target") ? `Hedef/KazanÄ±m: ${meta(q,"target")}` : ""
+        meta(q,"target") ? `Hedef/Kazanım: ${meta(q,"target")}` : ""
       ].filter(Boolean);
 
       if(info.length){
@@ -7136,14 +7136,14 @@ async function discoverDbFiles(){
 
       if(opts.length){
         parts.push("");
-        parts.push("ÅÄ±klar:");
+        parts.push("Şıklar:");
         opts.forEach((opt, idx)=>{
           parts.push(`${opt.letter || String.fromCharCode(65+idx)}) ${opt.text || ""}`);
         });
       }
 
       parts.push("");
-      parts.push("LÃ¼tfen yalnÄ±zca soruyu Ã§Ã¶z; doÄŸru cevabÄ±, neden doÄŸru olduÄŸunu ve diÄŸer ÅŸÄ±klarÄ±n neden uygun olmadÄ±ÄŸÄ±nÄ± kÄ±sa ÅŸekilde aÃ§Ä±kla.");
+      parts.push("Lütfen yalnızca soruyu çöz; doğru cevabı, neden doğru olduğunu ve diğer şıkların neden uygun olmadığını kısa şekilde açıkla.");
       return parts.join("\n");
     }
 
@@ -7190,11 +7190,11 @@ async function discoverDbFiles(){
 
     async function copyCurrentChatGPTPrompt(){
       if(!currentChatGPTPrompt){
-        alert("Kopyalanacak prompt bulunamadÄ±.");
+        alert("Kopyalanacak prompt bulunamadı.");
         return;
       }
       const ok = await copyTextSafely(currentChatGPTPrompt);
-      alert(ok ? "Prompt panoya kopyalandÄ±." : "Prompt otomatik kopyalanamadÄ±.");
+      alert(ok ? "Prompt panoya kopyalandı." : "Prompt otomatik kopyalanamadı.");
     }
 
     function openChatGPTWebview(url, promptWasCopied=false){
@@ -7209,8 +7209,8 @@ async function discoverDbFiles(){
 
       if(els.chatgptWebviewNote){
         els.chatgptWebviewNote.textContent = promptWasCopied
-          ? "Soru metni Ã§ok uzun olduÄŸu iÃ§in prompt panoya kopyalandÄ±. Webview iÃ§inde ChatGPT aÃ§Ä±lÄ±rsa promptu yapÄ±ÅŸtÄ±rabilirsin. AÃ§Ä±lmazsa yeni sekmede aÃ§."
-          : "ChatGPT bazÄ± tarayÄ±cÄ±larda gÃ¼venlik nedeniyle sayfa iÃ§inde aÃ§Ä±lmayabilir. AÃ§Ä±lmazsa â€œYeni sekmede aÃ§â€ butonunu kullan.";
+          ? "Soru metni çok uzun olduğu için prompt panoya kopyalandı. Webview içinde ChatGPT açılırsa promptu yapıştırabilirsin. Açılmazsa yeni sekmede aç."
+          : "ChatGPT bazı tarayıcılarda güvenlik nedeniyle sayfa içinde açılmayabilir. Açılmazsa “Yeni sekmede aç” butonunu kullan.";
       }
 
       try{
@@ -7221,7 +7221,7 @@ async function discoverDbFiles(){
 
       setTimeout(()=>{
         if(!els.chatgptWebviewModal.classList.contains("hidden") && els.chatgptWebviewNote){
-          els.chatgptWebviewNote.textContent = "Webview boÅŸ/engellenmiÅŸ gÃ¶rÃ¼nÃ¼yorsa ChatGPT sayfa iÃ§inde aÃ§Ä±lmÄ±yor olabilir. â€œYeni sekmede aÃ§â€ ya da â€œPromptu kopyalaâ€ seÃ§eneklerini kullan.";
+          els.chatgptWebviewNote.textContent = "Webview boş/engellenmiş görünüyorsa ChatGPT sayfa içinde açılmıyor olabilir. “Yeni sekmede aç” ya da “Promptu kopyala” seçeneklerini kullan.";
         }
       }, 2800);
     }
@@ -7229,7 +7229,7 @@ async function discoverDbFiles(){
 async function openCurrentQuestionInChatGPT(){
       const q = questions[current];
       if(!q){
-        alert("GÃ¶nderilecek soru bulunamadÄ±.");
+        alert("Gönderilecek soru bulunamadı.");
         return;
       }
 
@@ -7242,8 +7242,8 @@ async function openCurrentQuestionInChatGPT(){
         const copied = await copyTextSafely(prompt);
         window.open("https://chatgpt.com/", "_blank", "noopener,noreferrer");
         alert(copied
-          ? "Soru metni Ã§ok uzun olduÄŸu iÃ§in panoya kopyalandÄ±. AÃ§Ä±lan ChatGPT sekmesine yapÄ±ÅŸtÄ±rabilirsin."
-          : "Soru metni Ã§ok uzun olduÄŸu iÃ§in doÄŸrudan aktarÄ±lamadÄ±. ChatGPT aÃ§Ä±ldÄ±; soruyu manuel kopyalaman gerekebilir.");
+          ? "Soru metni çok uzun olduğu için panoya kopyalandı. Açılan ChatGPT sekmesine yapıştırabilirsin."
+          : "Soru metni çok uzun olduğu için doğrudan aktarılamadı. ChatGPT açıldı; soruyu manuel kopyalaman gerekebilir.");
         return;
       }
 
@@ -7256,8 +7256,8 @@ async function openCurrentQuestionInChatGPT(){
       const card = questionCardElement();
       const fullscreenHost = document.fullscreenElement || card;
 
-      // Fullscreen API aÃ§Ä±kken yalnÄ±zca fullscreen elementinin Ã§ocuklarÄ± gÃ¶rÃ¼nÃ¼r.
-      // Bu yÃ¼zden mola ve istenmeyen onay modallarÄ±nÄ± her aÃ§Ä±lÄ±ÅŸta soru kartÄ±nÄ±n iÃ§ine taÅŸÄ±yoruz.
+      // Fullscreen API açıkken yalnızca fullscreen elementinin çocukları görünür.
+      // Bu yüzden mola ve istenmeyen onay modallarını her açılışta soru kartının içine taşıyoruz.
       if(fullscreenHost && fullscreenHost.contains && !fullscreenHost.contains(modalEl)){
         fullscreenHost.appendChild(modalEl);
       }else if(card && modalEl.parentElement !== card && !document.fullscreenElement){
@@ -7289,8 +7289,8 @@ async function openCurrentQuestionInChatGPT(){
       if(!btn) return;
       const active = document.body.classList.contains("question-card-fullscreen") ||
         (document.fullscreenElement && document.fullscreenElement.classList && document.fullscreenElement.classList.contains("question-card"));
-      btn.title = active ? "Tam ekrandan Ã§Ä±k" : "Tam ekran yap";
-      btn.setAttribute("aria-label", active ? "Tam ekrandan Ã§Ä±k" : "Tam ekran yap");
+      btn.title = active ? "Tam ekrandan çık" : "Tam ekran yap";
+      btn.setAttribute("aria-label", active ? "Tam ekrandan çık" : "Tam ekran yap");
       btn.innerHTML = active
         ? `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`
         : `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
@@ -7354,8 +7354,8 @@ async function openCurrentQuestionInChatGPT(){
       els.quizView.classList.remove("hidden");
       els.listView.classList.remove("active");
       els.activeTitle.textContent = subject && subject !== "all"
-        ? (teacher && teacher !== "all" ? subject + " Â· " + teacher : subject + " soru bankasÄ±")
-        : "TÃ¼m dersler soru bankasÄ±";
+        ? (teacher && teacher !== "all" ? subject + " · " + teacher : subject + " soru bankası")
+        : "Tüm dersler soru bankası";
       els.results.style.display="none";
       render();
       scrollToQuestion("auto");
@@ -7371,7 +7371,7 @@ async function openCurrentQuestionInChatGPT(){
       invalidateQuestionIndexes();
       restoreLastPosition(subject||"all","all"); filters.finalOnly = false; filters.kurulOnly = false; filters.excludeFinalDb = true; invalidateQuestionIndexes(); ensureCurrent(); els.landing.classList.add("hidden"); els.appView.classList.add("active");
       els.quizView.classList.remove("hidden"); els.listView.classList.remove("active");
-      els.activeTitle.textContent=subject&&subject!=="all"?subject+" soru bankasÄ±":"TÃ¼m dersler soru bankasÄ±";
+      els.activeTitle.textContent=subject&&subject!=="all"?subject+" soru bankası":"Tüm dersler soru bankası";
       els.results.style.display="none"; render(); scrollToQuestion("auto");
     }
     function continueLast(){
@@ -7380,14 +7380,14 @@ async function openCurrentQuestionInChatGPT(){
 
     function renderFilters(){
       sanitizeFilters();
-      setSelect(els.subjectSelect, countValuesForOptions(q=>q.subject,"subject"), "TÃ¼m dersler", filters.subject);
-      setSelect(els.examSelect, countValuesForOptions(q=>meta(q,"examGroup"),"exam"), "TÃ¼m kurul/sÄ±nav gruplarÄ±", filters.exam);
-      setSelect(els.yearSelect, countValuesForOptions(q=>meta(q,"year"),"year"), "TÃ¼m yÄ±llar", filters.year);
-      setSelect(els.teacherSelect, countValuesForOptions(q=>meta(q,"teacher"),"teacher"), "TÃ¼m hocalar", filters.teacher);
-      setSelect(els.sourceGroupSelect, countValuesForOptions(q=>meta(q,"sourceGroup"),"sourceGroup"), "TÃ¼m kaynak tÃ¼rleri", filters.sourceGroup);
+      setSelect(els.subjectSelect, countValuesForOptions(q=>q.subject,"subject"), "Tüm dersler", filters.subject);
+      setSelect(els.examSelect, countValuesForOptions(q=>meta(q,"examGroup"),"exam"), "Tüm kurul/sınav grupları", filters.exam);
+      setSelect(els.yearSelect, countValuesForOptions(q=>meta(q,"year"),"year"), "Tüm yıllar", filters.year);
+      setSelect(els.teacherSelect, countValuesForOptions(q=>meta(q,"teacher"),"teacher"), "Tüm hocalar", filters.teacher);
+      setSelect(els.sourceGroupSelect, countValuesForOptions(q=>meta(q,"sourceGroup"),"sourceGroup"), "Tüm kaynak türleri", filters.sourceGroup);
       els.searchInput.value=filters.search;
       els.subjectButtons.innerHTML="";
-      els.subjectButtons.appendChild(makeFilterButton("TÃ¼m dersler",activeVisibleQuestions().length,filters.subject==="all",()=>{filters.subject="all";ensureCurrent();render();},true));
+      els.subjectButtons.appendChild(makeFilterButton("Tüm dersler",activeVisibleQuestions().length,filters.subject==="all",()=>{filters.subject="all";ensureCurrent();render();},true));
       countValuesForOptions(q=>q.subject,"subject").forEach(item=>els.subjectButtons.appendChild(makeFilterButton(item.value,item.count,filters.subject===item.value,()=>{filters.subject=item.value;ensureCurrent();render();})));
     }
 
@@ -7402,12 +7402,12 @@ async function openCurrentQuestionInChatGPT(){
       const tokens = new Set();
 
       const ranges = [
-        [/I\s*[-â€“â€”]\s*II\b/g, ["I","II"]],
-        [/I\s*[-â€“â€”]\s*III\b/g, ["I","II","III"]],
-        [/I\s*[-â€“â€”]\s*IV\b/g, ["I","II","III","IV"]],
-        [/II\s*[-â€“â€”]\s*III\b/g, ["II","III"]],
-        [/II\s*[-â€“â€”]\s*IV\b/g, ["II","III","IV"]],
-        [/III\s*[-â€“â€”]\s*IV\b/g, ["III","IV"]]
+        [/I\s*[-–—]\s*II\b/g, ["I","II"]],
+        [/I\s*[-–—]\s*III\b/g, ["I","II","III"]],
+        [/I\s*[-–—]\s*IV\b/g, ["I","II","III","IV"]],
+        [/II\s*[-–—]\s*III\b/g, ["II","III"]],
+        [/II\s*[-–—]\s*IV\b/g, ["II","III","IV"]],
+        [/III\s*[-–—]\s*IV\b/g, ["III","IV"]]
       ];
       ranges.forEach(([re, arr])=>{
         if(re.test(s)) arr.forEach(x=>tokens.add(x));
@@ -7438,7 +7438,7 @@ async function openCurrentQuestionInChatGPT(){
       const joined = pieces.join(" ");
       const lower = joined.toLocaleLowerCase("tr-TR");
 
-      if(/\b(hepsi|tÃ¼mÃ¼|tumu|tamamÄ±|tamami|hepsi doÄŸru|hepsi dogru)\b/.test(lower)){
+      if(/\b(hepsi|tümü|tumu|tamamı|tamami|hepsi doğru|hepsi dogru)\b/.test(lower)){
         return new Set(premiseRomans);
       }
 
@@ -7446,8 +7446,8 @@ async function openCurrentQuestionInChatGPT(){
     }
 
     function shouldHighlightPremises(q, selected){
-      // Normal soru Ã§Ã¶zÃ¼mÃ¼nde herhangi bir cevap iÅŸaretlenince Ã¶ncÃ¼llerin doÄŸru/yanlÄ±ÅŸ durumu gÃ¶sterilir.
-      // SÄ±nav modunda ipucu vermemek iÃ§in kapalÄ± kalÄ±r.
+      // Normal soru çözümünde herhangi bir cevap işaretlenince öncüllerin doğru/yanlış durumu gösterilir.
+      // Sınav modunda ipucu vermemek için kapalı kalır.
       if(examMode) return false;
       if(selected === undefined || selected === null) return false;
       const correctIdx = correctAnswerIndex(q);
@@ -7493,7 +7493,7 @@ async function openCurrentQuestionInChatGPT(){
       const itemHTML = items.map(item => {
         const isCorrect = canColor && correctSet.has(item.roman);
         const colorClass = canColor ? (isCorrect ? " premise-correct" : " premise-wrong") : "";
-        const label = canColor ? `<span class="premise-status-inline">${isCorrect ? "(DoÄŸru)" : "(YanlÄ±ÅŸ)"}</span> ` : "";
+        const label = canColor ? `<span class="premise-status-inline">${isCorrect ? "(Doğru)" : "(Yanlış)"}</span> ` : "";
         return `
           <div class="premise-row${colorClass}">
             <span class="premise-roman">${label}${escapeHTML(item.roman)}.</span>
@@ -7551,7 +7551,7 @@ async function openCurrentQuestionInChatGPT(){
         btn.className = "header-jump";
         btn.dataset.index = String(i);
         btn.textContent = pos + 1;
-        btn.title = `${pos+1}. soru Â· ${q ? (q.subject || "") : ""} Â· ${q ? meta(q,"examGroup") : ""}`;
+        btn.title = `${pos+1}. soru · ${q ? (q.subject || "") : ""} · ${q ? meta(q,"examGroup") : ""}`;
         if(i === current) btn.classList.add("active");
         const cls = q ? questionAnswerStatusClass(q) : "";
         if(cls) btn.classList.add(cls);
@@ -7572,8 +7572,8 @@ async function openCurrentQuestionInChatGPT(){
       if(!idxs.length){
         pauseStudyTimer();
         document.body.classList.add("no-question-active");
-        els.section.textContent="Soru bulunamadÄ±"; els.meta.innerHTML=""; els.question.textContent=questions.length?"SeÃ§ili filtrelerle veya aktif database seÃ§imiyle eÅŸleÅŸen soru yok.":"Soru dosyasÄ± yÃ¼klenemedi veya soru bulunamadÄ±.";
-        els.options.innerHTML=""; els.feedback.className="feedback"; els.feedback.innerHTML=""; if(els.aiWarningBox){els.aiWarningBox.className="ai-warning-box"; els.aiWarningBox.innerHTML="";} els.infoBox.className="info-box"; els.infoBox.innerHTML=""; if(els.questionJumpMenuGrid) els.questionJumpMenuGrid.innerHTML=""; if(els.questionChatGPTBtn) els.questionChatGPTBtn.disabled=true; if(els.questionInfoToggleBtn) els.questionInfoToggleBtn.disabled=true; if(els.unknownQuestionBtn) els.unknownQuestionBtn.disabled=true; if(els.questionStarBtn){els.questionStarBtn.disabled=true; els.questionStarBtn.classList.remove("starred"); els.questionStarBtn.textContent="â˜†";} els.prevBtn.disabled=true; els.nextBtn.disabled=true; updateStats(); return;
+        els.section.textContent="Soru bulunamadı"; els.meta.innerHTML=""; els.question.textContent=questions.length?"Seçili filtrelerle veya aktif database seçimiyle eşleşen soru yok.":"Soru dosyası yüklenemedi veya soru bulunamadı.";
+        els.options.innerHTML=""; els.feedback.className="feedback"; els.feedback.innerHTML=""; if(els.aiWarningBox){els.aiWarningBox.className="ai-warning-box"; els.aiWarningBox.innerHTML="";} els.infoBox.className="info-box"; els.infoBox.innerHTML=""; if(els.questionJumpMenuGrid) els.questionJumpMenuGrid.innerHTML=""; if(els.questionChatGPTBtn) els.questionChatGPTBtn.disabled=true; if(els.questionInfoToggleBtn) els.questionInfoToggleBtn.disabled=true; if(els.unknownQuestionBtn) els.unknownQuestionBtn.disabled=true; if(els.questionStarBtn){els.questionStarBtn.disabled=true; els.questionStarBtn.classList.remove("starred"); els.questionStarBtn.textContent="☆";} els.prevBtn.disabled=true; els.nextBtn.disabled=true; updateStats(); return;
       }
       document.body.classList.remove("no-question-active");
       ensureCurrent();
@@ -7584,40 +7584,40 @@ async function openCurrentQuestionInChatGPT(){
         els.unknownQuestionBtn.disabled=false;
         const unk = isUnknownQuestion(q);
         els.unknownQuestionBtn.classList.toggle("active", unk);
-        els.unknownQuestionBtn.textContent = unk ? "Bilmiyorum âœ“" : "Bilmiyorum";
-        els.unknownQuestionBtn.title = unk ? "Bilmiyorum iÅŸaretini kaldÄ±r" : "Bu soruyu bilmiyorum olarak iÅŸaretle";
+        els.unknownQuestionBtn.textContent = unk ? "Bilmiyorum ✓" : "Bilmiyorum";
+        els.unknownQuestionBtn.title = unk ? "Bilmiyorum işaretini kaldır" : "Bu soruyu bilmiyorum olarak işaretle";
       }
       setActiveStudyQuestion(q);
       if(els.questionStarBtn){
         els.questionStarBtn.disabled=false;
         const starred = isStarredQuestion(q);
         els.questionStarBtn.classList.toggle("starred", starred);
-        els.questionStarBtn.textContent = starred ? "â˜…" : "â˜†";
-        els.questionStarBtn.title = starred ? "YÄ±ldÄ±zÄ± kaldÄ±r" : "Soruyu yÄ±ldÄ±zla";
-        els.questionStarBtn.setAttribute("aria-label", starred ? "YÄ±ldÄ±zÄ± kaldÄ±r" : "Soruyu yÄ±ldÄ±zla");
+        els.questionStarBtn.textContent = starred ? "★" : "☆";
+        els.questionStarBtn.title = starred ? "Yıldızı kaldır" : "Soruyu yıldızla";
+        els.questionStarBtn.setAttribute("aria-label", starred ? "Yıldızı kaldır" : "Soruyu yıldızla");
       }
       if(examMode){
-        if(els.examModeTitle) els.examModeTitle.textContent = `${examSubject}${examTeacher !== "all" ? " Â· " + examTeacher : ""} Â· ${pos+1}/${idxs.length}`;
+        if(els.examModeTitle) els.examModeTitle.textContent = `${examSubject}${examTeacher !== "all" ? " · " + examTeacher : ""} · ${pos+1}/${idxs.length}`;
         const qKey = answerKey(q);
         if(qKey !== lastExamQuestionKey){
           lastExamQuestionKey = qKey;
           startExamTimer();
         }
       }
-      els.activeTitle.textContent=quizActive ? quizTitle : (filters.subject!=="all"?filters.subject+" soru bankasÄ±":"TÃ¼m dersler soru bankasÄ±");
-      els.section.textContent=`${q.subject || "Ders yok"} Â· Soru ${pos+1}/${idxs.length} Â· ${meta(q,"examGroup")||"Kurul yok"} Â· ${meta(q,"teacher")||"Hoca yok"}`;
+      els.activeTitle.textContent=quizActive ? quizTitle : (filters.subject!=="all"?filters.subject+" soru bankası":"Tüm dersler soru bankası");
+      els.section.textContent=`${q.subject || "Ders yok"} · Soru ${pos+1}/${idxs.length} · ${meta(q,"examGroup")||"Kurul yok"} · ${meta(q,"teacher")||"Hoca yok"}`;
       renderHeaderJumpMenu(idxs);
       if(els.questionEditedBadge){
         els.questionEditedBadge.classList.toggle("hidden", !q._editedByUser);
-        els.questionEditedBadge.textContent = q._editedByUser ? "KullanÄ±cÄ± dÃ¼zenledi" : "";
-        els.questionEditedBadge.title = q._editedByUser ? "Bu soru metni/ÅŸÄ±klarÄ±/gerÃ§ek doÄŸru cevabÄ± kullanÄ±cÄ± tarafÄ±ndan dÃ¼zenlendi." : "";
+        els.questionEditedBadge.textContent = q._editedByUser ? "Kullanıcı düzenledi" : "";
+        els.questionEditedBadge.title = q._editedByUser ? "Bu soru metni/şıkları/gerçek doğru cevabı kullanıcı tarafından düzenlendi." : "";
       }
-      const rows=[["Ders",q.subject],["Dosya",q._dbFile||""],["Kurul / sÄ±nav grubu",meta(q,"examGroup")],["YÄ±l / sene",meta(q,"year")],["Hoca",meta(q,"teacher")],["Konu",meta(q,"topic")],["Hedef / kazanÄ±m",meta(q,"target")],["Kaynak tÃ¼rÃ¼",meta(q,"sourceGroup")],["Kaynak",meta(q,"source")],["Kaynak soru no",meta(q,"sourceNo")],["Durum / gÃ¼ven",meta(q,"status")],["KullanÄ±cÄ± dÃ¼zenlemesi",q._editedByUser ? "Bu soru kullanÄ±cÄ± tarafÄ±ndan dÃ¼zenlendi." : ""]];
+      const rows=[["Ders",q.subject],["Dosya",q._dbFile||""],["Kurul / sınav grubu",meta(q,"examGroup")],["Yıl / sene",meta(q,"year")],["Hoca",meta(q,"teacher")],["Konu",meta(q,"topic")],["Hedef / kazanım",meta(q,"target")],["Kaynak türü",meta(q,"sourceGroup")],["Kaynak",meta(q,"source")],["Kaynak soru no",meta(q,"sourceNo")],["Durum / güven",meta(q,"status")],["Kullanıcı düzenlemesi",q._editedByUser ? "Bu soru kullanıcı tarafından düzenlendi." : ""]];
       els.meta.innerHTML=rows.filter(([,v])=>String(v??"").trim()).map(([k,v])=>`<div><b>${escapeHTML(k)}:</b> ${escapeHTML(v)}</div>`).join("");
       els.question.innerHTML=formatQuestionHTML(q.question||"", q, selected);
       els.options.innerHTML="";
       if(!opts.length){
-        els.options.innerHTML=`<div class="feedback neutral" style="display:block"><b>ÅÄ±k yok:</b> Bu kayÄ±tta seÃ§enekler bulunmuyor. Cevap anahtarÄ± bilgi alanÄ±nda gÃ¶sterilir.</div>`;
+        els.options.innerHTML=`<div class="feedback neutral" style="display:block"><b>Şık yok:</b> Bu kayıtta seçenekler bulunmuyor. Cevap anahtarı bilgi alanında gösterilir.</div>`;
       }else{
         opts.forEach((opt,idx)=>{
           const div=document.createElement("div");
@@ -7638,12 +7638,12 @@ async function openCurrentQuestionInChatGPT(){
       if(!examMode && selected!==undefined&&selected!==null){
         const letter=answer.letter||(answer.index!==null&&answer.index!==undefined&&opts[answer.index]?opts[answer.index].letter:"");
         const text=answer.text||answer.raw||"";
-        if(answer.index===null||answer.index===undefined||answer.index<0){els.feedback.className="feedback neutral"; els.feedback.innerHTML=`<b>Cevap anahtarÄ±:</b> ${escapeHTML(answer.raw||text)}`;}
-        else if(selected===answer.index){els.feedback.className="feedback ok"; els.feedback.innerHTML=`<b>DoÄŸru.</b> DoÄŸru cevap: <b>${escapeHTML(letter)} ÅŸÄ±kkÄ±</b> â€” ${escapeHTML(text)}`;}
-        else{els.feedback.className="feedback bad"; els.feedback.innerHTML=`<b>YanlÄ±ÅŸ.</b> DoÄŸru cevap: <b>${escapeHTML(letter)} ÅŸÄ±kkÄ±</b> â€” ${escapeHTML(text)}`;}
+        if(answer.index===null||answer.index===undefined||answer.index<0){els.feedback.className="feedback neutral"; els.feedback.innerHTML=`<b>Cevap anahtarı:</b> ${escapeHTML(answer.raw||text)}`;}
+        else if(selected===answer.index){els.feedback.className="feedback ok"; els.feedback.innerHTML=`<b>Doğru.</b> Doğru cevap: <b>${escapeHTML(letter)} şıkkı</b> — ${escapeHTML(text)}`;}
+        else{els.feedback.className="feedback bad"; els.feedback.innerHTML=`<b>Yanlış.</b> Doğru cevap: <b>${escapeHTML(letter)} şıkkı</b> — ${escapeHTML(text)}`;}
       }else if(!examMode && isUnknownQuestion(q)){
         els.feedback.className="feedback neutral";
-        els.feedback.innerHTML="<b>Bilmiyorum:</b> Bu soru gÃ¶zden geÃ§irilecekler listesine eklendi.";
+        els.feedback.innerHTML="<b>Bilmiyorum:</b> Bu soru gözden geçirilecekler listesine eklendi.";
       }else{els.feedback.className="feedback"; els.feedback.innerHTML="";}
       const aiWarning = aiDiscrepancyHTML(q);
       if(els.aiWarningBox){
@@ -7651,23 +7651,23 @@ async function openCurrentQuestionInChatGPT(){
         els.aiWarningBox.className = aiWarning ? "ai-warning-box show" : "ai-warning-box";
       }
       const infoParts=[];
-      if(q._editedByUser) infoParts.push("<b>KullanÄ±cÄ± dÃ¼zenlemesi:</b> Bu soru metni, ÅŸÄ±klarÄ± veya gerÃ§ek doÄŸru cevabÄ± kullanÄ±cÄ± tarafÄ±ndan dÃ¼zenlendi.");
-      if(q.explanation) infoParts.push("<b>AÃ§Ä±klama:</b> "+escapeHTML(q.explanation));
+      if(q._editedByUser) infoParts.push("<b>Kullanıcı düzenlemesi:</b> Bu soru metni, şıkları veya gerçek doğru cevabı kullanıcı tarafından düzenlendi.");
+      if(q.explanation) infoParts.push("<b>Açıklama:</b> "+escapeHTML(q.explanation));
       if(q.spot) infoParts.push("<b>Spot bilgi:</b> "+escapeHTML(q.spot));
       if(q.sourceNote) infoParts.push("<b>Kaynak notu:</b> "+escapeHTML(q.sourceNote));
-      if(answer.raw) infoParts.push("<b>Cevap anahtarÄ±:</b> "+escapeHTML(answer.raw));
-      els.infoBox.innerHTML=infoParts.join("\n\n")||"<b>Bilgi:</b> Bu kayÄ±tta aÃ§Ä±klama/spot alanÄ± boÅŸ.";
+      if(answer.raw) infoParts.push("<b>Cevap anahtarı:</b> "+escapeHTML(answer.raw));
+      els.infoBox.innerHTML=infoParts.join("\n\n")||"<b>Bilgi:</b> Bu kayıtta açıklama/spot alanı boş.";
       els.infoBox.className=infoOpen?"info-box show":"info-box";
       if(els.questionInfoToggleBtn){
-        els.questionInfoToggleBtn.textContent = infoOpen ? "âœ•" : "ğŸ’¬";
-        els.questionInfoToggleBtn.title = infoOpen ? "AÃ§Ä±klamayÄ± gizle" : "AÃ§Ä±klama/spot gÃ¶ster";
-        els.questionInfoToggleBtn.setAttribute("aria-label", infoOpen ? "AÃ§Ä±klamayÄ± gizle" : "AÃ§Ä±klama/spot gÃ¶ster");
+        els.questionInfoToggleBtn.textContent = infoOpen ? "✕" : "💬";
+        els.questionInfoToggleBtn.title = infoOpen ? "Açıklamayı gizle" : "Açıklama/spot göster";
+        els.questionInfoToggleBtn.setAttribute("aria-label", infoOpen ? "Açıklamayı gizle" : "Açıklama/spot göster");
       }
-      els.showInfoBtn.textContent=infoOpen?"AÃ§Ä±klamayÄ± gizle":"AÃ§Ä±klama/spot";
-      if(els.menuInfoBtn) els.menuInfoBtn.textContent = infoOpen ? "AÃ§Ä±klamayÄ± gizle" : "AÃ§Ä±klama/spot";
+      els.showInfoBtn.textContent=infoOpen?"Açıklamayı gizle":"Açıklama/spot";
+      if(els.menuInfoBtn) els.menuInfoBtn.textContent = infoOpen ? "Açıklamayı gizle" : "Açıklama/spot";
       els.prevBtn.disabled=pos<=0;
       els.nextBtn.disabled=false;
-      els.nextBtn.textContent=pos===idxs.length-1?"Sonucu gÃ¶ster":"Sonraki";
+      els.nextBtn.textContent=pos===idxs.length-1?"Sonucu göster":"Sonraki";
       if(els.hideQuestionBtn) els.hideQuestionBtn.disabled = !q || isHiddenQuestion(q);
       updateStats();
       recordLastPosition(q);
@@ -7677,9 +7677,9 @@ async function openCurrentQuestionInChatGPT(){
       const st=stats();
       els.progress.style.width=st.total?((st.answered/st.total)*100)+"%":"0%";
       const idxsForCounter = filteredIndexes();
-      els.counter.textContent=st.total?`Soru ${idxsForCounter.indexOf(current)+1} / ${st.total} Â· Genel no: ${current+1}`:"0 soru";
+      els.counter.textContent=st.total?`Soru ${idxsForCounter.indexOf(current)+1} / ${st.total} · Genel no: ${current+1}`:"0 soru";
       els.answeredCount.textContent=st.answered; els.correctCount.textContent=st.correct; els.wrongCount.textContent=st.wrong+(st.neutral?` (+${st.neutral} manuel)`:""); els.emptyCount.textContent=st.empty;
-      els.activeFilterSummary.textContent=[filters.finalOnly?"2025-2026 Final Ã§Ä±kmÄ±ÅŸlarÄ±":(filters.kurulOnly?"2025-2026 Kurul Ã§Ä±kmÄ±ÅŸlarÄ±":(filters.excludeFinalDb?"DiÄŸer tÃ¼m Ã§Ä±kmÄ±ÅŸlar":"TÃ¼m Ã§Ä±kmÄ±ÅŸlar")),filters.subject==="all"?"TÃ¼m dersler":filters.subject,filters.exam==="all"?"TÃ¼m gruplar":filters.exam,filters.year==="all"?"TÃ¼m yÄ±llar":filters.year,filters.teacher==="all"?"TÃ¼m hocalar":filters.teacher,filters.sourceGroup==="all"?"TÃ¼m kaynak tÃ¼rleri":filters.sourceGroup,filters.search.trim()?`Arama: â€œ${filters.search.trim()}â€`:"Arama yok"].join(" + ")+` â†’ ${st.total} soru`;
+      els.activeFilterSummary.textContent=[filters.finalOnly?"2025-2026 Final çıkmışları":(filters.kurulOnly?"2025-2026 Kurul çıkmışları":(filters.excludeFinalDb?"Diğer tüm çıkmışlar":"Tüm çıkmışlar")),filters.subject==="all"?"Tüm dersler":filters.subject,filters.exam==="all"?"Tüm gruplar":filters.exam,filters.year==="all"?"Tüm yıllar":filters.year,filters.teacher==="all"?"Tüm hocalar":filters.teacher,filters.sourceGroup==="all"?"Tüm kaynak türleri":filters.sourceGroup,filters.search.trim()?`Arama: “${filters.search.trim()}”`:"Arama yok"].join(" + ")+` → ${st.total} soru`;
     }
 
     function updateJumpGridState(){
@@ -7709,7 +7709,7 @@ async function openCurrentQuestionInChatGPT(){
 
       els.jumpGrid.innerHTML="";
       lastJumpGridKey = key;
-      if(!idxs.length){els.jumpGrid.innerHTML=`<div class="small" style="grid-column:1 / -1;">Bu filtre/arama ile eÅŸleÅŸen soru yok.</div>`; return;}
+      if(!idxs.length){els.jumpGrid.innerHTML=`<div class="small" style="grid-column:1 / -1;">Bu filtre/arama ile eşleşen soru yok.</div>`; return;}
 
       const frag = document.createDocumentFragment();
       idxs.forEach((i,pos)=>{
@@ -7719,7 +7719,7 @@ async function openCurrentQuestionInChatGPT(){
         if(i===current) b.classList.add("active");
         const a=answers[answerKey(q)];
         if(a!==undefined&&a!==null){const ci=q.answer?q.answer.index:null; if(ci===null||ci===undefined||ci<0)b.classList.add("done-neutral"); else b.classList.add(a===ci?"done-ok":"done-bad");}
-        b.textContent=pos+1; b.title=`${shuffleQuestions ? "KarÄ±ÅŸÄ±k sÄ±ra: " + (pos+1) + " Â· " : ""}${q.subject} Â· ${meta(q,"examGroup")} Â· ${meta(q,"topic")}`;
+        b.textContent=pos+1; b.title=`${shuffleQuestions ? "Karışık sıra: " + (pos+1) + " · " : ""}${q.subject} · ${meta(q,"examGroup")} · ${meta(q,"topic")}`;
         b.addEventListener("click",()=>{current=i; render(); requestAnimationFrame(()=>scrollToQuestion("auto"));});
         frag.appendChild(b);
       });
@@ -7761,7 +7761,7 @@ function renderReview(){
       els.review.innerHTML="";
       const idxs = reviewIndexes();
       if(!idxs.length){
-        els.review.innerHTML = `<div class="review-item"><div class="q">YanlÄ±ÅŸ yapÄ±lan veya bilmiyorum olarak iÅŸaretlenen soru yok.</div></div>`;
+        els.review.innerHTML = `<div class="review-item"><div class="q">Yanlış yapılan veya bilmiyorum olarak işaretlenen soru yok.</div></div>`;
         return;
       }
       idxs.forEach(i=>{
@@ -7769,12 +7769,12 @@ function renderReview(){
         const selectedText=selectedAnswerText(q);
         const correctBody=correctAnswerText(q);
         const flags = [
-          isWrongAnswerQuestion(q) ? `<span class="review-flag wrong">YanlÄ±ÅŸ</span>` : "",
+          isWrongAnswerQuestion(q) ? `<span class="review-flag wrong">Yanlış</span>` : "",
           isUnknownQuestion(q) ? `<span class="review-flag unknown">Bilmiyorum</span>` : ""
         ].filter(Boolean).join(" ");
         const item=document.createElement("div");
         item.className="review-item";
-        item.innerHTML=`<div class="small"><b>${i+1}. soru</b> Â· ${escapeHTML(q.subject)} Â· ${escapeHTML(meta(q,"examGroup"))} Â· ${escapeHTML(meta(q,"topic"))} ${flags}</div><div class="q">${escapeHTML(q.question)}</div><div class="small"><b>Senin cevabÄ±n:</b> ${escapeHTML(selectedText)}</div><div class="small"><b>DoÄŸru cevap:</b> ${escapeHTML(correctBody)}</div><div class="small"><b>Dosya:</b> ${escapeHTML(q._dbFile||"")}</div>`;
+        item.innerHTML=`<div class="small"><b>${i+1}. soru</b> · ${escapeHTML(q.subject)} · ${escapeHTML(meta(q,"examGroup"))} · ${escapeHTML(meta(q,"topic"))} ${flags}</div><div class="q">${escapeHTML(q.question)}</div><div class="small"><b>Senin cevabın:</b> ${escapeHTML(selectedText)}</div><div class="small"><b>Doğru cevap:</b> ${escapeHTML(correctBody)}</div><div class="small"><b>Dosya:</b> ${escapeHTML(q._dbFile||"")}</div>`;
         els.review.appendChild(item);
       });
     }
@@ -7786,19 +7786,19 @@ function renderReview(){
         stopExamTimer();
         document.body.classList.remove("exam-mode");
 
-        // SonuÃ§lar yalnÄ±zca biten sÄ±nav sorularÄ± Ã¼zerinden hesaplansÄ±n.
+        // Sonuçlar yalnızca biten sınav soruları üzerinden hesaplansın.
         quizActive = true;
         quizIds = finishedExamIds;
-        quizTitle = `${examSubject}${examTeacher !== "all" ? " Â· " + examTeacher : ""} sÄ±nav sonucu`;
+        quizTitle = `${examSubject}${examTeacher !== "all" ? " · " + examTeacher : ""} sınav sonucu`;
         examIds = [];
         if(els.activeTitle) els.activeTitle.textContent = quizTitle;
       }
       const st=stats(), score=st.total?Math.round((st.correct/st.total)*100):0, deg=Math.round((score/100)*360);
       els.scoreText.textContent=score+"%";
       els.scoreCircle.style.background=`conic-gradient(var(--primary) 0deg, var(--primary) ${deg}deg, #e8edf5 ${deg}deg)`;
-      els.resultSubtitle.textContent=`${st.total} soru Ã¼zerinden ${st.correct} doÄŸru, ${st.wrong} yanlÄ±ÅŸ, ${st.unknown} bilmiyorum, ${st.neutral} manuel/indekslenemeyen cevaplÄ±, ${st.empty} boÅŸ. GÃ¶zden geÃ§irilecek: ${st.reviewCount}.`;
+      els.resultSubtitle.textContent=`${st.total} soru üzerinden ${st.correct} doğru, ${st.wrong} yanlış, ${st.unknown} bilmiyorum, ${st.neutral} manuel/indekslenemeyen cevaplı, ${st.empty} boş. Gözden geçirilecek: ${st.reviewCount}.`;
       if(els.askReviewChatGPTBtn) els.askReviewChatGPTBtn.disabled = !st.reviewCount;
-      if(els.reviewToggleBtn) els.reviewToggleBtn.textContent = st.reviewCount ? `GÃ¶zden geÃ§irilecekleri gÃ¶ster (${st.reviewCount})` : "GÃ¶zden geÃ§irilecek yok";
+      if(els.reviewToggleBtn) els.reviewToggleBtn.textContent = st.reviewCount ? `Gözden geçirilecekleri göster (${st.reviewCount})` : "Gözden geçirilecek yok";
       els.results.style.display="block";
       renderReview();
       updateFullscreenResultsFromMain();
@@ -7824,21 +7824,21 @@ function renderReview(){
       return listMode === "hidden"
         ? "Gizlenen sorular"
         : (listMode === "starred"
-          ? "YÄ±ldÄ±zlÄ± sorular"
+          ? "Yıldızlı sorular"
           : (listMode === "wrong"
-            ? "YanlÄ±ÅŸ yapÄ±lan sorular"
-            : (filters.subject !== "all" ? filters.subject + " Â· tÃ¼m sorular" : "TÃ¼m dersler Â· tÃ¼m sorular")));
+            ? "Yanlış yapılan sorular"
+            : (filters.subject !== "all" ? filters.subject + " · tüm sorular" : "Tüm dersler · tüm sorular")));
     }
 
     function listModeSubtitle(total){
       const base = listMode === "hidden"
-        ? `${total} gizlenen soru Â· buradan yeniden gÃ¶rÃ¼nÃ¼r yapabilirsin`
+        ? `${total} gizlenen soru · buradan yeniden görünür yapabilirsin`
         : (listMode === "starred"
-          ? `${total} yÄ±ldÄ±zlÄ± soru Â· buradan yÄ±ldÄ±zlarÄ± kaldÄ±rabilir veya sorularÄ± inceleyebilirsin`
+          ? `${total} yıldızlı soru · buradan yıldızları kaldırabilir veya soruları inceleyebilirsin`
           : (listMode === "wrong"
-            ? `${total} yanlÄ±ÅŸ / bilmiyorum soru Â· kaydedilmiÅŸ cevaplarÄ±na gÃ¶re`
+            ? `${total} yanlış / bilmiyorum soru · kaydedilmiş cevaplarına göre`
             : (quizActive ? `${total} quiz sorusu` : (els.activeFilterSummary.textContent || `${total} soru`))));
-      return shuffleQuestions && listMode !== "hidden" ? base + " Â· karÄ±ÅŸÄ±k sÄ±ra" : base;
+      return shuffleQuestions && listMode !== "hidden" ? base + " · karışık sıra" : base;
     }
 
     function buildListCardHTML(i, pos){
@@ -7850,18 +7850,18 @@ function renderReview(){
         return `<div class="all-q-option ${isCorrect ? "correct" : ""}" style="${isSelectedWrong ? "background:var(--badbg);border-color:rgba(166,29,53,.35);color:var(--bad);font-weight:780;" : ""}"><b>${escapeHTML(opt.letter || String.fromCharCode(65+idx))})</b> ${escapeHTML(opt.text || "")}</div>`;
       }).join("") : `<div class="all-q-option correct"><b>Cevap:</b> ${escapeHTML(ans.raw || ans.text || "")}</div>`;
 
-      const info = [q.explanation ? "AÃ§Ä±klama: " + q.explanation : "", q.spot ? "Spot: " + q.spot : "", ans.raw ? "Cevap anahtarÄ±: " + ans.raw : ""].filter(Boolean).join("\n");
+      const info = [q.explanation ? "Açıklama: " + q.explanation : "", q.spot ? "Spot: " + q.spot : "", ans.raw ? "Cevap anahtarı: " + ans.raw : ""].filter(Boolean).join("\n");
 
       const wrongNotes = listMode === "wrong"
-        ? `<div class="wrong-answer-note"><b>Senin cevabÄ±n:</b> ${escapeHTML(cachedSelectedText(q))}</div><div class="correct-answer-note"><b>DoÄŸru cevap:</b> ${escapeHTML(cachedCorrectText(q))}</div>`
+        ? `<div class="wrong-answer-note"><b>Senin cevabın:</b> ${escapeHTML(cachedSelectedText(q))}</div><div class="correct-answer-note"><b>Doğru cevap:</b> ${escapeHTML(cachedCorrectText(q))}</div>`
         : "";
       const aiWarning = aiDiscrepancyHTML(q);
 
       const cardActions = listMode === "hidden"
-        ? `<div class="all-q-actions"><button class="secondary edit-hidden-question-btn" type="button" data-qid="${escapeHTML(answerKey(q))}">Soru/ÅŸÄ±k/gerÃ§ek cevabÄ± dÃ¼zenle</button><button class="secondary unhide-question-btn" type="button" data-qid="${escapeHTML(answerKey(q))}">Bu soruyu tekrar gÃ¶ster</button></div>`
+        ? `<div class="all-q-actions"><button class="secondary edit-hidden-question-btn" type="button" data-qid="${escapeHTML(answerKey(q))}">Soru/şık/gerçek cevabı düzenle</button><button class="secondary unhide-question-btn" type="button" data-qid="${escapeHTML(answerKey(q))}">Bu soruyu tekrar göster</button></div>`
         : (listMode === "starred"
-          ? `<div class="all-q-actions"><button class="secondary unstar-question-btn" type="button" data-qid="${escapeHTML(answerKey(q))}">YÄ±ldÄ±zÄ± kaldÄ±r</button><button class="secondary hide-list-question-btn" type="button" data-qid="${escapeHTML(answerKey(q))}">Bu soruyu bir daha gÃ¶sterme</button></div>`
-          : `<div class="all-q-actions"><button class="secondary star-list-question-btn" type="button" data-qid="${escapeHTML(answerKey(q))}">${isStarredQuestion(q) ? "YÄ±ldÄ±zÄ± kaldÄ±r" : "YÄ±ldÄ±zla"}</button><button class="secondary hide-list-question-btn" type="button" data-qid="${escapeHTML(answerKey(q))}">Bu soruyu bir daha gÃ¶sterme</button></div>`);
+          ? `<div class="all-q-actions"><button class="secondary unstar-question-btn" type="button" data-qid="${escapeHTML(answerKey(q))}">Yıldızı kaldır</button><button class="secondary hide-list-question-btn" type="button" data-qid="${escapeHTML(answerKey(q))}">Bu soruyu bir daha gösterme</button></div>`
+          : `<div class="all-q-actions"><button class="secondary star-list-question-btn" type="button" data-qid="${escapeHTML(answerKey(q))}">${isStarredQuestion(q) ? "Yıldızı kaldır" : "Yıldızla"}</button><button class="secondary hide-list-question-btn" type="button" data-qid="${escapeHTML(answerKey(q))}">Bu soruyu bir daha gösterme</button></div>`);
 
       return `
         <article class="all-q-card">
@@ -7871,16 +7871,16 @@ function renderReview(){
             <span class="chip">${escapeHTML(meta(q,"examGroup") || "")}</span>
             <span class="chip">${escapeHTML(meta(q,"topic") || "")}</span>
             <span class="chip">${escapeHTML(q._dbFile || "")}</span>
-            ${q._editedByUser ? `<span class="chip edited-chip">KullanÄ±cÄ± dÃ¼zenledi</span>` : ""}
+            ${q._editedByUser ? `<span class="chip edited-chip">Kullanıcı düzenledi</span>` : ""}
           </div>
           <div class="all-q-question">${escapeHTML(q.question || "")}</div>
           <div class="all-q-options">${optHtml}</div>
           ${wrongNotes}
           ${aiWarning ? `<div class="all-q-ai-warning">${aiWarning}</div>` : ""}
           ${cardActions}
-          ${listMode === "hidden" ? `<div class="hidden-manager-note">Bu soru gizlendiÄŸi iÃ§in normal soru akÄ±ÅŸÄ±nda ve quizlerde gÃ¶rÃ¼nmez.</div>` : ""}
-          ${listMode === "starred" ? `<div class="hidden-manager-note">Bu soru yÄ±ldÄ±zlÄ± listendedir.</div>` : ""}
-          ${q._editedByUser ? `<div class="hidden-manager-note edited-note">Bu soru kullanÄ±cÄ± tarafÄ±ndan dÃ¼zenlendi. Metin, ÅŸÄ±klar veya gerÃ§ek doÄŸru cevap kullanÄ±cÄ± dÃ¼zeltmesine gÃ¶re gÃ¶steriliyor.</div>` : ""}
+          ${listMode === "hidden" ? `<div class="hidden-manager-note">Bu soru gizlendiği için normal soru akışında ve quizlerde görünmez.</div>` : ""}
+          ${listMode === "starred" ? `<div class="hidden-manager-note">Bu soru yıldızlı listendedir.</div>` : ""}
+          ${q._editedByUser ? `<div class="hidden-manager-note edited-note">Bu soru kullanıcı tarafından düzenlendi. Metin, şıklar veya gerçek doğru cevap kullanıcı düzeltmesine göre gösteriliyor.</div>` : ""}
           ${info ? `<div class="all-q-info">${escapeHTML(info)}</div>` : ""}
         </article>
       `;
@@ -7933,11 +7933,11 @@ function renderReview(){
 
       const total = currentListIndexes.length;
       els.listTitle.textContent = listModeTitle();
-      els.listSubtitle.textContent = listModeSubtitle(total) + (total > LIST_BATCH_SIZE ? ` Â· performans iÃ§in ${LIST_BATCH_SIZE}'lik parÃ§alarla gÃ¶steriliyor` : "");
+      els.listSubtitle.textContent = listModeSubtitle(total) + (total > LIST_BATCH_SIZE ? ` · performans için ${LIST_BATCH_SIZE}'lik parçalarla gösteriliyor` : "");
       els.allList.innerHTML = "";
 
       if(!total){
-        els.allList.innerHTML = `<section class="panel status warn">${listMode === "hidden" ? "Gizlenen soru bulunamadÄ±." : (listMode === "starred" ? "YÄ±ldÄ±zlÄ± soru bulunamadÄ±." : (listMode === "wrong" ? "SeÃ§ili soru dosyalarÄ±nda yanlÄ±ÅŸ yaptÄ±ÄŸÄ±n soru bulunamadÄ±." : "Bu filtreye uygun soru bulunamadÄ±."))}</section>`;
+        els.allList.innerHTML = `<section class="panel status warn">${listMode === "hidden" ? "Gizlenen soru bulunamadı." : (listMode === "starred" ? "Yıldızlı soru bulunamadı." : (listMode === "wrong" ? "Seçili soru dosyalarında yanlış yaptığın soru bulunamadı." : "Bu filtreye uygun soru bulunamadı."))}</section>`;
         return;
       }
 
@@ -7962,13 +7962,13 @@ function renderReview(){
       if(renderedListCount < currentListIndexes.length){
         els.allList.insertAdjacentHTML("beforeend", `
           <div class="load-more-wrap">
-            <button class="secondary" id="loadMoreListBtn" type="button">Daha fazla gÃ¶ster (${renderedListCount}/${currentListIndexes.length})</button>
+            <button class="secondary" id="loadMoreListBtn" type="button">Daha fazla göster (${renderedListCount}/${currentListIndexes.length})</button>
           </div>
         `);
         const btn = document.getElementById("loadMoreListBtn");
         btn.addEventListener("click", renderMoreListItems);
       } else {
-        els.allList.insertAdjacentHTML("beforeend", `<div class="list-performance-note">TÃ¼m liste gÃ¶steriliyor. Toplam ${currentListIndexes.length} soru.</div>`);
+        els.allList.insertAdjacentHTML("beforeend", `<div class="list-performance-note">Tüm liste gösteriliyor. Toplam ${currentListIndexes.length} soru.</div>`);
       }
 
       attachListActionEvents();
@@ -7982,13 +7982,13 @@ function renderReview(){
       }).join("");
       const correctText = cachedCorrectText(q);
       const aiWarningText = aiPlainWarningText(q);
-      const info = [q.explanation ? "AÃ§Ä±klama: " + q.explanation : "", q.spot ? "Spot: " + q.spot : "", ans.raw ? "Cevap anahtarÄ±: " + ans.raw : ""].filter(Boolean).join("<br>");
+      const info = [q.explanation ? "Açıklama: " + q.explanation : "", q.spot ? "Spot: " + q.spot : "", ans.raw ? "Cevap anahtarı: " + ans.raw : ""].filter(Boolean).join("<br>");
       return `
         <section class="p-card">
-          <div class="p-meta">${pos+1}. soru Â· ${escapeHTML(q.subject || "")} Â· ${escapeHTML(meta(q,"examGroup") || "")} Â· ${escapeHTML(meta(q,"topic") || "")}</div>
+          <div class="p-meta">${pos+1}. soru · ${escapeHTML(q.subject || "")} · ${escapeHTML(meta(q,"examGroup") || "")} · ${escapeHTML(meta(q,"topic") || "")}</div>
           <div class="p-question">${escapeHTML(q.question || "")}</div>
           <div class="p-options">${options || `<div class="p-option p-correct"><b>Cevap:</b> ${escapeHTML(ans.raw || ans.text || "")}</div>`}</div>
-          <div class="p-answer"><b>DoÄŸru cevap:</b> ${escapeHTML(correctText)}</div>
+          <div class="p-answer"><b>Doğru cevap:</b> ${escapeHTML(correctText)}</div>
           ${aiWarningText ? `<div class="p-ai-warning">${escapeHTML(aiWarningText).replace(/\n/g,"<br>")}</div>` : ""}
           ${info ? `<div class="p-info">${info}</div>` : ""}
         </section>
@@ -7998,7 +7998,7 @@ function renderReview(){
     function createPdfFromCurrentList(){
       const idxs = currentListIndexes.length ? currentListIndexes : getListIndexesForCurrentMode();
       if(!idxs.length){
-        alert("PDF oluÅŸturmak iÃ§in uygun soru bulunamadÄ±.");
+        alert("PDF oluşturmak için uygun soru bulunamadı.");
         return;
       }
 
@@ -8026,7 +8026,7 @@ function renderReview(){
 </head>
 <body>
 <h1>${escapeHTML(title)}</h1>
-<div class="sub">${idxs.length} soru Â· PDF olarak kaydetmek iÃ§in yazdÄ±rma penceresinde â€œPDF olarak kaydetâ€ seÃ§eneÄŸini kullan.</div>
+<div class="sub">${idxs.length} soru · PDF olarak kaydetmek için yazdırma penceresinde “PDF olarak kaydet” seçeneğini kullan.</div>
 ${body}
 <script>
   window.onload = function(){ setTimeout(function(){ window.print(); }, 250); };
@@ -8036,7 +8036,7 @@ ${body}
 
       const w = window.open("", "_blank");
       if(!w){
-        alert("PDF penceresi aÃ§Ä±lamadÄ±. TarayÄ±cÄ± aÃ§Ä±lÄ±r pencereyi engellemiÅŸ olabilir.");
+        alert("PDF penceresi açılamadı. Tarayıcı açılır pencereyi engellemiş olabilir.");
         return;
       }
       w.document.open();
@@ -8061,7 +8061,7 @@ ${body}
       }
       lines.push("");
       lines.push(`Cevap: ${cachedCorrectText(q)}`);
-      if(q.explanation) lines.push(`AÃ§Ä±klama: ${q.explanation}`);
+      if(q.explanation) lines.push(`Açıklama: ${q.explanation}`);
       if(q.spot) lines.push(`Spot: ${q.spot}`);
       return lines.join("\n");
     }
@@ -8069,7 +8069,7 @@ ${body}
     function downloadCurrentListAsText(){
       const idxs = currentListIndexes.length ? currentListIndexes : getListIndexesForCurrentMode();
       if(!idxs.length){
-        alert("Metin almak iÃ§in uygun soru bulunamadÄ±.");
+        alert("Metin almak için uygun soru bulunamadı.");
         return;
       }
       const title = listModeTitle();
@@ -8112,7 +8112,7 @@ ${body}
       sanitizeFilters(); ensureCurrent();
       els.landing.classList.add("hidden");
       els.appView.classList.add("active");
-      els.activeTitle.textContent="YanlÄ±ÅŸ yapÄ±lan sorular";
+      els.activeTitle.textContent="Yanlış yapılan sorular";
       showListView("wrong");
     }
 
@@ -8134,7 +8134,7 @@ ${body}
       sanitizeFilters();
       els.landing.classList.add("hidden");
       els.appView.classList.add("active");
-      els.activeTitle.textContent="YÄ±ldÄ±zlÄ± sorular";
+      els.activeTitle.textContent="Yıldızlı sorular";
       showListView("starred");
     }
 
@@ -8167,7 +8167,7 @@ ${body}
       if(els.results && els.results.style.display === "block" && !els.review.classList.contains("hidden")) renderReview();
       saveState();
       requestAnimationFrame(updateScrollTopFab);
-      // Liste ekranÄ± aÃ§Ä±kken aÄŸÄ±r yeniden Ã§izim yalnÄ±zca liste komutlarÄ±yla yapÄ±lÄ±r.
+      // Liste ekranı açıkken ağır yeniden çizim yalnızca liste komutlarıyla yapılır.
     }
 
     
@@ -8306,7 +8306,7 @@ ${body}
       if(els.menuExamBtn) els.menuExamBtn.addEventListener("click",()=>{
         const subject = currentSubjectForExam();
         if(subject === "all"){
-          alert("SÄ±nav modu iÃ§in Ã¶nce bir ders seÃ§melisin.");
+          alert("Sınav modu için önce bir ders seçmelisin.");
           return;
         }
         startExamMode(subject, filters.teacher || "all");
@@ -8328,7 +8328,7 @@ ${body}
       });
       els.courseSearch.addEventListener("input", debounce(renderLanding, 180));
       els.clearCourseSearch.addEventListener("click",()=>{els.courseSearch.value=""; renderLanding(); els.courseSearch.focus();});
-      els.manualDbInput.addEventListener("change",async()=>{try{await loadManualDbFiles(els.manualDbInput.files);}catch(e){els.status.className="panel status warn"; els.status.innerHTML=`<b>Manuel database yÃ¼klenemedi:</b> ${escapeHTML(e.message)}`;}});
+      els.manualDbInput.addEventListener("change",async()=>{try{await loadManualDbFiles(els.manualDbInput.files);}catch(e){els.status.className="panel status warn"; els.status.innerHTML=`<b>Manuel database yüklenemedi:</b> ${escapeHTML(e.message)}`;}});
       els.continueBtn.addEventListener("click", continueLast);
       els.wrongHomeBtn.addEventListener("click", showWrongFromHome);
       els.hiddenHomeBtn.addEventListener("click", showHiddenFromHome);
@@ -8431,13 +8431,13 @@ ${body}
         }
       });
       els.clearCacheBtn.addEventListener("click",()=>{
-        if(!confirm("TÃ¼m cevaplar, filtreler ve kaldÄ±ÄŸÄ±n yer silinsin mi?")) return;
+        if(!confirm("Tüm cevaplar, filtreler ve kaldığın yer silinsin mi?")) return;
         answers={}; current=0; filters={subject:"all",exam:"all",year:"all",teacher:"all",sourceGroup:"all",search:""}; infoOpen=false; listMode="all"; hiddenQuestionIds=[]; starredQuestionIds=[]; unknownQuestionIds=[]; stopQuizMode();
         try{localStorage.removeItem(STORAGE_KEY); localStorage.removeItem(LAST_POSITION_KEY); lastPositions={};}catch(e){}
         els.results.style.display="none"; showLanding();
       });
       els.resetVisibleBtn.addEventListener("click",()=>{
-        if(!confirm("Sadece ÅŸu anki filtrede gÃ¶rÃ¼nen sorularÄ±n cevaplarÄ± silinsin mi?")) return;
+        if(!confirm("Sadece şu anki filtrede görünen soruların cevapları silinsin mi?")) return;
         filteredIndexes().forEach(i=>delete answers[answerKey(questions[i])]);
         els.results.style.display="none"; render();
       });
@@ -8448,11 +8448,11 @@ ${body}
       if(els.fullscreenReviewToggleBtn) els.fullscreenReviewToggleBtn.addEventListener("click",()=>{
         if(!els.fullscreenReview) return;
         els.fullscreenReview.classList.toggle("hidden");
-        els.fullscreenReviewToggleBtn.textContent = els.fullscreenReview.classList.contains("hidden") ? "GÃ¶zden geÃ§irilecekleri gÃ¶ster" : "GÃ¶zden geÃ§irilecekleri gizle";
+        els.fullscreenReviewToggleBtn.textContent = els.fullscreenReview.classList.contains("hidden") ? "Gözden geçirilecekleri göster" : "Gözden geçirilecekleri gizle";
       });
       els.reviewToggleBtn.addEventListener("click",()=>{
         els.review.classList.toggle("hidden");
-        els.reviewToggleBtn.textContent=els.review.classList.contains("hidden")?"Cevap dÃ¶kÃ¼mÃ¼nÃ¼ gÃ¶ster":"Cevap dÃ¶kÃ¼mÃ¼nÃ¼ gizle";
+        els.reviewToggleBtn.textContent=els.review.classList.contains("hidden")?"Cevap dökümünü göster":"Cevap dökümünü gizle";
       });
     }
 
@@ -8477,7 +8477,7 @@ ${body}
             errors.push(`${file.name}: ${e.message}`);
           }
         }
-        console.warn("Bu soru dosyasÄ± okunamadÄ±:", key, files);
+        console.warn("Bu soru dosyası okunamadı:", key, files);
         return {ok:false, errors};
       }));
 
@@ -8497,7 +8497,7 @@ ${body}
     }
 
 async function init(){
-      setInitialLoading("Database dosyalarÄ± kontrol ediliyor...");
+      setInitialLoading("Database dosyaları kontrol ediliyor...");
       replaceAppHistoryState("home");
       document.body.classList.remove("app-screen-active");
       bindEvents();
@@ -8505,20 +8505,20 @@ async function init(){
       applyFontSize();
       applyDesignMode();
       try{
-        setInitialLoading("Soru dosyalarÄ± kontrol ediliyor...");
+        setInitialLoading("Soru dosyaları kontrol ediliyor...");
         const candidates = await discoverDbFiles();
-        setInitialLoading(fastCacheMode ? "Sorular Ã¶nbellekten hÄ±zlÄ±ca hazÄ±rlanÄ±yor..." : "Sorular database dosyalarÄ±ndan alÄ±nÄ±yor...");
+        setInitialLoading(fastCacheMode ? "Sorular önbellekten hızlıca hazırlanıyor..." : "Sorular database dosyalarından alınıyor...");
         const loaded = await loadCandidateGroups(candidates);
 
         if(!loaded.loadedFiles.length){
-          throw new Error("Dosya adÄ± bulundu fakat hiÃ§bir soru dosyasÄ± okunamadÄ±. " + loaded.loadErrors.slice(0,6).join(" | "));
+          throw new Error("Dosya adı bulundu fakat hiçbir soru dosyası okunamadı. " + loaded.loadErrors.slice(0,6).join(" | "));
         }
 
         dbFiles=[...new Map(loaded.loadedFiles.map(f=>[dbCanonicalName(f.name), {...f, name:dbBaseName(f.name)}])).values()];
         const all = loaded.all;
 
-        setInitialLoading("Sorular hazÄ±rlanÄ±yor...");
-        els.status.innerHTML = "Sorular hazÄ±rlanÄ±yor; Ã¶nbellek ve indeksler kuruluyor...";
+        setInitialLoading("Sorular hazırlanıyor...");
+        els.status.innerHTML = "Sorular hazırlanıyor; önbellek ve indeksler kuruluyor...";
         allLoadedQuestions = all;
         applyQuestionEditOverridesToAll();
         markFinal20252026Questions(allLoadedQuestions);
@@ -8526,7 +8526,7 @@ async function init(){
         const duplicates = rebuildQuestionsFromActiveFiles(false);
 
         els.status.className="panel status";
-        els.status.innerHTML=`<b>${dbFiles.length}</b> soru dosyasÄ± ${fastCacheMode ? "Ã¶nbellekten" : "database dosyalarÄ±ndan"} yÃ¼klendi: ${[...new Set(dbFiles.map(f=>dbBaseName(f.name)))].map(escapeHTML).join(", ")}. <b>${questions.length}</b> benzersiz soru bulundu${duplicateMode === "smart" && duplicates?`; ${duplicates} aynÄ±/benzer soru tekilleÅŸtirildi`: (duplicateMode === "all" ? `; tekrarlar aÃ§Ä±k` : "")}.`;
+        els.status.innerHTML=`<b>${dbFiles.length}</b> soru dosyası ${fastCacheMode ? "önbellekten" : "database dosyalarından"} yüklendi: ${[...new Set(dbFiles.map(f=>dbBaseName(f.name)))].map(escapeHTML).join(", ")}. <b>${questions.length}</b> benzersiz soru bulundu${duplicateMode === "smart" && duplicates?`; ${duplicates} aynı/benzer soru tekilleştirildi`: (duplicateMode === "all" ? `; tekrarlar açık` : "")}.`;
         els.status.classList.add("hidden");
         els.manualDbBox.classList.add("hidden");
         renderLanding();
@@ -8534,10 +8534,10 @@ async function init(){
       }catch(e){
         els.status.className="panel status warn";
         els.status.classList.remove("hidden");
-        els.status.innerHTML=`<b>Soru dosyasÄ± yÃ¼klenemedi:</b> ${escapeHTML(e.message)}<br><br>
-        <b>Kontrol:</b> Repository iÃ§inde <b>db/soru6.db</b> ve <b>db/soru7.db</b> dosyalarÄ±nÄ±n gerÃ§ekten bulunduÄŸundan emin ol. 
-        Bu sÃ¼rÃ¼m manifest eski olsa bile <b>db/</b> ve kÃ¶k dizindeki <b>soru1.db-soru500.db</b> dosyalarÄ±nÄ± ayrÄ±ca tarar.
-        Gerekirse aÅŸaÄŸÄ±daki manuel yÃ¼kleme alanÄ±ndan .db dosyalarÄ±nÄ± seÃ§ebilirsin.`;
+        els.status.innerHTML=`<b>Soru dosyası yüklenemedi:</b> ${escapeHTML(e.message)}<br><br>
+        <b>Kontrol:</b> Repository içinde <b>db/soru6.db</b> ve <b>db/soru7.db</b> dosyalarının gerçekten bulunduğundan emin ol. 
+        Bu sürüm manifest eski olsa bile <b>db/</b> ve kök dizindeki <b>soru1.db-soru500.db</b> dosyalarını ayrıca tarar.
+        Gerekirse aşağıdaki manuel yükleme alanından .db dosyalarını seçebilirsin.`;
         els.manualDbBox.classList.remove("hidden");
         renderLanding();
         hideInitialLoading();
