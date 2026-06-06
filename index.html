@@ -3675,6 +3675,63 @@
       }
     }
 
+  
+    /* Kapalı ana sayfa sekmeleri: final ve diğer çıkmışlar */
+    .final-collapsible-panel{
+      padding:0!important;
+      overflow:hidden;
+    }
+    .final-fast-summary{
+      cursor:pointer;
+      list-style:none;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding:12px 14px;
+      color:#7a4f08;
+      font-weight:950;
+      user-select:none;
+    }
+    .final-fast-summary::-webkit-details-marker{
+      display:none;
+    }
+    .final-fast-summary::after{
+      content:"＋";
+      font-weight:950;
+      color:#7a4f08;
+      background:#fff7df;
+      border:1px solid rgba(122,79,8,.18);
+      border-radius:999px;
+      width:26px;
+      height:26px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      flex:0 0 auto;
+    }
+    .final-collapsible-panel[open] .final-fast-summary::after{
+      content:"−";
+    }
+    .final-fast-summary span{
+      font-size:15px;
+      letter-spacing:-.02em;
+    }
+    .final-fast-summary small{
+      color:var(--muted);
+      font-size:11.5px;
+      font-weight:800;
+      margin-left:auto;
+    }
+    .final-fast-content{
+      padding:0 12px 12px;
+    }
+    @media(max-width:560px){
+      .final-fast-summary small{
+        display:none;
+      }
+    }
+
   </style>
 </head>
 <body class="font-normal is-loading">
@@ -3719,17 +3776,23 @@
 
     <section class="landing" id="landing">
 
-      <section class="panel final-fast-panel" id="finalFastPanel">
-        <div class="final-fast-head">
-          <div>
-            <h2>2025-2026 Final çıkmışları</h2>
-            <p class="subtitle">Final olarak işaretlenen 2025-2026 sorularını hızlıca aç.</p>
+      <details class="panel final-fast-panel final-collapsible-panel" id="finalFastPanel">
+        <summary class="final-fast-summary">
+          <span>2025-2026 Final çıkmışları</span>
+          <small>Basarak final sorularını aç</small>
+        </summary>
+        <div class="final-fast-content">
+          <div class="final-fast-head">
+            <div>
+              <h2>2025-2026 Final çıkmışları</h2>
+              <p class="subtitle">Final olarak işaretlenen 2025-2026 sorularını hızlıca aç.</p>
+            </div>
+            <button class="primary" id="finalAllBtn" type="button">Tüm final çıkmışlarını aç</button>
           </div>
-          <button class="primary" id="finalAllBtn" type="button">Tüm final çıkmışlarını aç</button>
+          <section class="course-grid final-course-grid" id="finalCourseGrid"></section>
+          <section class="course-empty final-empty" id="finalEmpty">2025-2026 final olarak eşleşen soru bulunamadı.</section>
         </div>
-        <section class="course-grid final-course-grid" id="finalCourseGrid"></section>
-        <section class="course-empty final-empty" id="finalEmpty">2025-2026 final olarak eşleşen soru bulunamadı.</section>
-      </section>
+      </details>
 
       <details class="panel all-courses-panel" id="allCoursesDetails">
         <summary class="all-courses-summary">
@@ -4115,9 +4178,10 @@
     const DB_DIRS = ["db", ""];
     const DB_EXTENSIONS = [".db", ".sdb"];
     const SEQUENTIAL_SCAN_MAX = 500;
+    const KNOWN_DB_FILES = ["soru1.db","soru2.db","soru3.db","soru4.db","soru5.db","soru6.db","soru7.db","soru8.db","soru9.db","soru10.db","soru11.db","soru12.db","soru13.db","soru14.db","soru15.db"];
     const STORAGE_KEY = "database_loader_question_bank_progress_v4";
-    const DB_FILE_LIST_CACHE_KEY = "question_bank_db_file_list_cache_v2";
-    const DB_CONTENT_CACHE_NAME = "question_bank_indexeddb_cache_v2";
+    const DB_FILE_LIST_CACHE_KEY = "question_bank_db_file_list_cache_v3_soru15";
+    const DB_CONTENT_CACHE_NAME = "question_bank_indexeddb_cache_v3_soru15";
     const DB_CONTENT_STORE_NAME = "dbFiles";
     const LAST_POSITION_KEY = "question_bank_last_positions_v1";
     const STUDY_TIME_KEY = "question_bank_study_time_v1";
@@ -5368,7 +5432,22 @@ function closeUnwantedQuestionConfirm(result=false){
       return found;
     }
 
-    async function discoverDbFiles(){
+    
+    async function listKnownDbFiles(){
+      const found = [];
+      for(const dir of DB_DIRS){
+        for(const name of KNOWN_DB_FILES){
+          const url = dir ? `${dir}/${name}` : name;
+          try{
+            const res = await fetchWithTimeout(url, {method:"HEAD", cache:"force-cache"}, 2500);
+            if(res.ok) found.push({name, url, source:"known-list", displayName:name});
+          }catch(e){}
+        }
+      }
+      return found;
+    }
+
+async function discoverDbFiles(){
       const cachedList = dbFileListCacheRead();
       const candidates = [];
       const errors = [];
@@ -5406,6 +5485,9 @@ function closeUnwantedQuestionConfirm(result=false){
       // Küçük manifest hızlıdır; önce bunu dene.
       await addFrom(listDbFilesFromManifest,"manifest");
 
+      // Paket içinde özellikle eklenen database dosyaları; soru15.db bu listeyle doğrudan okunur.
+      await addFrom(listKnownDbFiles,"known-list");
+
       // Özellikle soru3.db-soru10.db gözden kaçmasın diye sadece ilk 20 dosya hızlı taranır.
       await addFrom(()=>listDbFilesBySequentialProbe(20),"sequential-fast");
 
@@ -5421,7 +5503,7 @@ function closeUnwantedQuestionConfirm(result=false){
 
       if(!candidates.length) throw new Error(errors.join(" | "));
 
-      const priority = {"manifest":0, "github-api":1, "sequential-fast":2, "sequential":2, "sequential-full":3, "cache":4};
+      const priority = {"manifest":0, "known-list":1, "github-api":2, "sequential-fast":3, "sequential":3, "sequential-full":4, "cache":5};
       const best = new Map();
       candidates.forEach(file=>{
         const key = dbCanonicalName(file.name);
@@ -5969,14 +6051,15 @@ function closeUnwantedQuestionConfirm(result=false){
     function isFinal20252026Question(q){
       const combined = normalize([
         meta(q,"year"), meta(q,"examGroup"), meta(q,"sourceGroup"), meta(q,"source"),
-        meta(q,"topic"), q && q._dbFile
+        meta(q,"topic"), meta(q,"target"), q && q.sourceNote, q && q._dbFile
       ].join(" "));
-      const hasFinal = combined.includes("final");
+      const hasFinal = combined.includes("final") || combined.includes("butunleme final") || combined.includes("final cikmis");
       const hasYear =
         (combined.includes("2025") && combined.includes("2026")) ||
         /2025\s*[-–_/ ]\s*26/.test(combined) ||
         /25\s*[-–_/ ]\s*26/.test(combined) ||
-        (hasFinal && combined.includes("2026"));
+        combined.includes("2026") ||
+        combined.includes("25 26");
       return hasFinal && hasYear;
     }
 
