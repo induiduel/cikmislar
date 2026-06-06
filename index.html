@@ -3883,6 +3883,40 @@
     #textListBtn,#pdfListBtn{
       white-space:nowrap;
     }
+    .kurul-fast-panel{
+      border-color:rgba(18,99,58,.18)!important;
+      background:linear-gradient(180deg,#ffffff,#f7fff9)!important;
+    }
+    .kurul-fast-panel .final-fast-summary{
+      color:#12633a!important;
+      background:linear-gradient(90deg,rgba(232,247,238,.94),rgba(255,255,255,.96));
+      border-bottom-color:rgba(18,99,58,.12);
+    }
+    .kurul-fast-panel .final-fast-summary::after{
+      color:#12633a!important;
+      border-color:rgba(18,99,58,.16)!important;
+    }
+    .kurul-fast-panel .final-hero-block{
+      border-color:rgba(18,99,58,.13);
+      background:linear-gradient(135deg,#f7fff9,#ffffff 58%,#edf4ff);
+    }
+    .kurul-fast-panel .final-hero-block h2,
+    .kurul-fast-panel .final-stat b,
+    .kurul-fast-panel .final-course-shell-title{
+      color:#12633a;
+    }
+    .kurul-course-card{
+      border-color:rgba(18,99,58,.18)!important;
+      background:linear-gradient(180deg,#ffffff,#f7fff9)!important;
+    }
+    .kurul-course-card .course-icon{
+      background:linear-gradient(135deg,#12633a,#22c55e)!important;
+    }
+    .kurul-course-card .chip{
+      background:#e8f7ee!important;
+      color:#12633a!important;
+      border-color:rgba(18,99,58,.18)!important;
+    }
     @media(max-width:760px){
       .home-actions-panel,
       .final-dashboard{
@@ -3986,6 +4020,42 @@
               </div>
               <section class="course-grid final-course-grid" id="finalCourseGrid"></section>
               <section class="course-empty final-empty" id="finalEmpty">2025-2026 final olarak eşleşen soru bulunamadı.</section>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <details class="panel final-fast-panel final-collapsible-panel kurul-fast-panel" id="kurulFastPanel">
+        <summary class="final-fast-summary">
+          <span>2025-2026 Kurul çıkmışları</span>
+          <small>Filtre yapmadan kurul sorularına eriş</small>
+        </summary>
+        <div class="final-fast-content">
+          <div class="final-dashboard">
+            <div class="final-hero-block">
+              <div>
+                <h2>2025-2026 Kurul çıkmışları</h2>
+                <p class="subtitle" id="kurulSummaryText">Güncel kurul soruları hazırlanıyor.</p>
+              </div>
+              <div class="final-stat-row">
+                <div class="final-stat"><b id="kurulQuestionCount">0</b><span>kurul sorusu</span></div>
+                <div class="final-stat"><b id="kurulSubjectCount">0</b><span>ders</span></div>
+                <div class="final-stat"><b id="kurulQuizCount">0</b><span>test sorusu</span></div>
+              </div>
+              <div class="final-action-grid">
+                <button class="primary" id="kurulAllBtn" type="button">Tüm kurul sorularını aç</button>
+                <button class="secondary" id="kurulQuizBtn" type="button">Kendini test et</button>
+                <button class="secondary" id="kurulCoursesBtn" type="button">Dersleri aç</button>
+                <button class="secondary" id="kurulListBtn" type="button">Liste görünümü</button>
+              </div>
+            </div>
+            <div class="final-course-shell">
+              <div class="final-course-shell-title">
+                <span>Dersler</span>
+                <small>Kurul ders dağılımı</small>
+              </div>
+              <section class="course-grid final-course-grid" id="kurulCourseGrid"></section>
+              <section class="course-empty final-empty" id="kurulEmpty">2025-2026 kurul olarak eşleşen soru bulunamadı.</section>
             </div>
           </div>
         </div>
@@ -4458,7 +4528,9 @@
       landing:$("landing"), appView:$("appView"), quizView:$("quizView"), listView:$("listView"),
       topMenu:$("topMenu"), menuHomeBtn:$("menuHomeBtn"), menuSourceBtn:$("menuSourceBtn"), menuViewBtn:$("menuViewBtn"), menuDuplicateBtn:$("menuDuplicateBtn"), menuShuffleBtn:$("menuShuffleBtn"), menuCacheBtn:$("menuCacheBtn"),
       menuInfoBtn:$("menuInfoBtn"), menuShowAllBtn:$("menuShowAllBtn"), menuStarredBtn:$("menuStarredBtn"), menuExamBtn:$("menuExamBtn"), menuWideToggleBtn:$("menuWideToggleBtn"), menuResetVisibleBtn:$("menuResetVisibleBtn"), menuClearCacheBtn:$("menuClearCacheBtn"),
-      courseGrid:$("courseGrid"), finalCourseGrid:$("finalCourseGrid"), finalEmpty:$("finalEmpty"), finalAllBtn:$("finalAllBtn"), finalQuizBtn:$("finalQuizBtn"), finalCoursesBtn:$("finalCoursesBtn"), finalListBtn:$("finalListBtn"), finalSummaryText:$("finalSummaryText"), finalQuestionCount:$("finalQuestionCount"), finalSubjectCount:$("finalSubjectCount"), finalQuizCount:$("finalQuizCount"), allCoursesDetails:$("allCoursesDetails"), courseEmpty:$("courseEmpty"), courseSearch:$("courseSearch"),
+      courseGrid:$("courseGrid"), finalCourseGrid:$("finalCourseGrid"), finalEmpty:$("finalEmpty"), finalAllBtn:$("finalAllBtn"), finalQuizBtn:$("finalQuizBtn"), finalCoursesBtn:$("finalCoursesBtn"), finalListBtn:$("finalListBtn"), finalSummaryText:$("finalSummaryText"), finalQuestionCount:$("finalQuestionCount"), finalSubjectCount:$("finalSubjectCount"), finalQuizCount:$("finalQuizCount"),
+      kurulCourseGrid:$("kurulCourseGrid"), kurulEmpty:$("kurulEmpty"), kurulAllBtn:$("kurulAllBtn"), kurulQuizBtn:$("kurulQuizBtn"), kurulCoursesBtn:$("kurulCoursesBtn"), kurulListBtn:$("kurulListBtn"), kurulSummaryText:$("kurulSummaryText"), kurulQuestionCount:$("kurulQuestionCount"), kurulSubjectCount:$("kurulSubjectCount"), kurulQuizCount:$("kurulQuizCount"),
+      allCoursesDetails:$("allCoursesDetails"), courseEmpty:$("courseEmpty"), courseSearch:$("courseSearch"),
       clearCourseSearch:$("clearCourseSearch"), continueBtn:$("continueBtn"), wrongHomeBtn:$("wrongHomeBtn"), hiddenHomeBtn:$("hiddenHomeBtn"), starredHomeBtn:$("starredHomeBtn"), quizAllBtn:$("quizAllBtn"), startAllBtn:$("startAllBtn"),
       backHomeBtn:$("backHomeBtn"), changeCourseBtn:$("changeCourseBtn"), activeTitle:$("activeTitle"),
       wideQuestionBtn:$("wideQuestionBtn"), showAllBtn:$("showAllBtn"), compactHomeBtn:$("compactHomeBtn"), compactShowAllBtn:$("compactShowAllBtn"), backToQuizBtn:$("backToQuizBtn"), wideListBtn:$("wideListBtn"), pdfListBtn:$("pdfListBtn"), textListBtn:$("textListBtn"), restoreHiddenBtn:$("restoreHiddenBtn"), refreshListBtn:$("refreshListBtn"),
@@ -5039,7 +5111,7 @@
     function filterCacheKey(){
       return JSON.stringify([
         questions.length,
-        filters.subject, filters.exam, filters.year, filters.teacher, filters.sourceGroup, filters.search, filters.finalOnly ? "final20252026" : "all-exams", filters.excludeFinalDb ? "exclude-soru15" : "include-soru15",
+        filters.subject, filters.exam, filters.year, filters.teacher, filters.sourceGroup, filters.search, filters.finalOnly ? "final20252026" : (filters.kurulOnly ? "kurul20252026" : "all-exams"), filters.excludeFinalDb ? "exclude-soru15" : "include-soru15",
         selectedDbFiles.map(dbCanonicalName).sort().join("|"),
         hiddenQuestionIds.join("|"),
         duplicateMode,
@@ -5052,7 +5124,7 @@
     function filterControlsKey(){
       return JSON.stringify([
         questions.length,
-        filters.subject, filters.exam, filters.year, filters.teacher, filters.sourceGroup, filters.search, filters.finalOnly ? "final20252026" : "all-exams", filters.excludeFinalDb ? "exclude-soru15" : "include-soru15",
+        filters.subject, filters.exam, filters.year, filters.teacher, filters.sourceGroup, filters.search, filters.finalOnly ? "final20252026" : (filters.kurulOnly ? "kurul20252026" : "all-exams"), filters.excludeFinalDb ? "exclude-soru15" : "include-soru15",
         selectedDbFiles.map(dbCanonicalName).sort().join("|"),
         hiddenQuestionIds.length,
         duplicateMode
@@ -5448,7 +5520,7 @@ function closeUnwantedQuestionConfirm(result=false){
       quizActive = true;
       quizIds = chosen.map(q => answerKey(q));
       quizTitle = subject && subject !== "all" ? `${subject} quiz modu · ${chosen.length} soru` : `Tüm dersler quiz modu · ${chosen.length} soru`;
-      filters = {subject: subject || "all", exam:"all", year:"all", teacher:"all", sourceGroup:"all", search:"", excludeFinalDb:true, finalOnly:false};
+      filters = {subject: subject || "all", exam:"all", year:"all", teacher:"all", sourceGroup:"all", search:"", excludeFinalDb:true, finalOnly:false, kurulOnly:false};
       const firstIndex = questions.findIndex(q => answerKey(q) === quizIds[0]);
       if(firstIndex >= 0) current = firstIndex;
       els.landing.classList.add("hidden");
@@ -6183,7 +6255,8 @@ async function discoverDbFiles(){
       if(excludeField!=="teacher" && filters.teacher!=="all" && meta(q,"teacher")!==filters.teacher) return false;
       if(excludeField!=="sourceGroup" && filters.sourceGroup!=="all" && meta(q,"sourceGroup")!==filters.sourceGroup) return false;
       if(filters.finalOnly && !isFinal20252026Question(q)) return false;
-      if(!filters.finalOnly && filters.excludeFinalDb && isFinal20252026Question(q)) return false;
+      if(filters.kurulOnly && !isKurul20252026Question(q)) return false;
+      if(!filters.finalOnly && !filters.kurulOnly && filters.excludeFinalDb && isFinal20252026Question(q)) return false;
       if(term){
         const haystack = q._searchText || prepareQuestionRecord(q)._searchText || "";
         if(!haystack.includes(term)) return false;
@@ -6346,6 +6419,16 @@ async function discoverDbFiles(){
       return baseQuestions.filter(isFinal20252026Question);
     }
 
+    function isKurul20252026Question(q){
+      if(!q || isFinal20252026Question(q)) return false;
+      const exam = normalizeQuestionTextForDedupe(meta(q, "examGroup") || "");
+      return mentionsCurrentFinalYear(q) && exam.startsWith("kurul");
+    }
+
+    function kurul20252026Questions(baseQuestions = activeVisibleQuestions()){
+      return baseQuestions.filter(isKurul20252026Question);
+    }
+
     function otherExamQuestions(baseQuestions = activeVisibleQuestions()){
       return baseQuestions.filter(q => !isFinal20252026Question(q));
     }
@@ -6354,7 +6437,7 @@ async function discoverDbFiles(){
       pushAppHistoryState("question");
       stopQuizMode();
       document.body.classList.add("app-screen-active");
-      filters = {subject:subject || "all", exam:"all", year:"all", teacher:"all", sourceGroup:"all", search:"", finalOnly:true, excludeFinalDb:false};
+      filters = {subject:subject || "all", exam:"all", year:"all", teacher:"all", sourceGroup:"all", search:"", finalOnly:true, kurulOnly:false, excludeFinalDb:false};
       infoOpen = false;
       invalidateQuestionIndexes();
       const idxs = filteredIndexes();
@@ -6371,6 +6454,63 @@ async function discoverDbFiles(){
       scrollToQuestion("auto");
     }
 
+    function startKurulCourse(subject="all"){
+      pushAppHistoryState("question");
+      stopQuizMode();
+      document.body.classList.add("app-screen-active");
+      filters = {subject:subject || "all", exam:"all", year:"all", teacher:"all", sourceGroup:"all", search:"", finalOnly:false, kurulOnly:true, excludeFinalDb:false};
+      infoOpen = false;
+      invalidateQuestionIndexes();
+      const idxs = filteredIndexes();
+      current = idxs.length ? idxs[0] : 0;
+      els.landing.classList.add("hidden");
+      els.appView.classList.add("active");
+      els.quizView.classList.remove("hidden");
+      els.listView.classList.remove("active");
+      els.activeTitle.textContent = subject && subject !== "all"
+        ? `${subject} · 2025-2026 Kurul çıkmışları`
+        : "2025-2026 Kurul çıkmışları";
+      els.results.style.display = "none";
+      render();
+      scrollToQuestion("auto");
+    }
+
+    function startKurulQuiz(count=60){
+      const pool = kurul20252026Questions(activeVisibleQuestions());
+      if(!pool.length){
+        alert("Kurul testi için uygun soru bulunamadı.");
+        return;
+      }
+      const chosen = shuffleArray(pool).slice(0, Math.min(count, pool.length));
+      quizActive = true;
+      quizIds = chosen.map(q => answerKey(q));
+      quizTitle = `2025-2026 Kurul test modu · ${chosen.length} soru`;
+      document.body.classList.add("app-screen-active");
+      filters = {subject:"all", exam:"all", year:"all", teacher:"all", sourceGroup:"all", search:"", finalOnly:false, kurulOnly:true, excludeFinalDb:false};
+      const firstIndex = questions.findIndex(q => answerKey(q) === quizIds[0]);
+      if(firstIndex >= 0) current = firstIndex;
+      els.landing.classList.add("hidden");
+      els.appView.classList.add("active");
+      els.quizView.classList.remove("hidden");
+      els.listView.classList.remove("active");
+      els.activeTitle.textContent = quizTitle;
+      els.results.style.display = "none";
+      render();
+      scrollToQuestion("auto");
+    }
+
+    function showKurulList(){
+      stopQuizMode();
+      document.body.classList.add("app-screen-active");
+      filters = {subject:"all", exam:"all", year:"all", teacher:"all", sourceGroup:"all", search:"", finalOnly:false, kurulOnly:true, excludeFinalDb:false};
+      sanitizeFilters();
+      ensureCurrent();
+      els.landing.classList.add("hidden");
+      els.appView.classList.add("active");
+      els.activeTitle.textContent = "2025-2026 Kurul listesi";
+      showListView("all");
+    }
+
     function startFinalQuiz(count=40){
       const pool = final20252026Questions(activeVisibleQuestions());
       if(!pool.length){
@@ -6382,7 +6522,7 @@ async function discoverDbFiles(){
       quizIds = chosen.map(q => answerKey(q));
       quizTitle = `2025-2026 Final test modu · ${chosen.length} soru`;
       document.body.classList.add("app-screen-active");
-      filters = {subject:"all", exam:"all", year:"all", teacher:"all", sourceGroup:"all", search:"", finalOnly:true, excludeFinalDb:false};
+      filters = {subject:"all", exam:"all", year:"all", teacher:"all", sourceGroup:"all", search:"", finalOnly:true, kurulOnly:false, excludeFinalDb:false};
       const firstIndex = questions.findIndex(q => answerKey(q) === quizIds[0]);
       if(firstIndex >= 0) current = firstIndex;
       els.landing.classList.add("hidden");
@@ -6398,7 +6538,7 @@ async function discoverDbFiles(){
     function showFinalList(){
       stopQuizMode();
       document.body.classList.add("app-screen-active");
-      filters = {subject:"all", exam:"all", year:"all", teacher:"all", sourceGroup:"all", search:"", finalOnly:true, excludeFinalDb:false};
+      filters = {subject:"all", exam:"all", year:"all", teacher:"all", sourceGroup:"all", search:"", finalOnly:true, kurulOnly:false, excludeFinalDb:false};
       sanitizeFilters();
       ensureCurrent();
       els.landing.classList.add("hidden");
@@ -6412,12 +6552,12 @@ async function discoverDbFiles(){
       const examCount = new Set(subjectQuestions.map(q=>meta(q,"examGroup")).filter(Boolean)).size;
       const teacherCount = new Set(subjectQuestions.map(q=>meta(q,"teacher")).filter(Boolean)).size;
       const card = document.createElement("article");
-      card.className = mode === "final" ? "course-card panel final-course-card" : "course-card panel";
+      card.className = mode === "final" ? "course-card panel final-course-card" : (mode === "kurul" ? "course-card panel kurul-course-card" : "course-card panel");
       card.tabIndex = 0;
 
       const teachers = [...new Set(subjectQuestions.map(q=>meta(q,"teacher")).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"tr"));
       const teacherOptions = [`<option value="all">Tüm hocalar</option>`].concat(teachers.map(t=>`<option value="${escapeHTML(t)}">${escapeHTML(t)}</option>`)).join("");
-      const titleSuffix = mode === "final" ? "Finali aç" : "Dersi aç";
+      const titleSuffix = mode === "final" ? "Finali aç" : (mode === "kurul" ? "Kurulu aç" : "Dersi aç");
 
       card.innerHTML=`
         <div>
@@ -6425,24 +6565,25 @@ async function discoverDbFiles(){
           <h2>${escapeHTML(item.value)}</h2>
           <p>${item.count} soru · ${examCount} grup · ${teacherCount} hoca</p>
           <div class="course-study-time">Çalışma: ${formatStudyTime(subjectStudySeconds(item.value))}</div>
-          ${mode === "final" ? "" : `<select class="teacher-select-mini" aria-label="${escapeHTML(item.value)} hoca seçimi">${teacherOptions}</select>`}
+          ${mode === "final" || mode === "kurul" ? "" : `<select class="teacher-select-mini" aria-label="${escapeHTML(item.value)} hoca seçimi">${teacherOptions}</select>`}
         </div>
         <div class="course-meta">
           <span class="chip">${item.count} soru</span>
           <span class="chip">${titleSuffix}</span>
-          ${mode === "final" ? `<button class="quiz-card-btn" type="button" data-subject="${escapeHTML(item.value)}">Finali aç</button>` : `
+          ${mode === "final" ? `<button class="quiz-card-btn" type="button" data-subject="${escapeHTML(item.value)}">Finali aç</button>` : (mode === "kurul" ? `<button class="quiz-card-btn" type="button" data-subject="${escapeHTML(item.value)}">Kurulu aç</button>` : `
             <button class="quiz-card-btn" type="button" data-subject="${escapeHTML(item.value)}">Quiz (${Math.min(30, item.count)})</button>
             <button class="exam-card-btn" type="button" data-subject="${escapeHTML(item.value)}">Sınav modu</button>
             <button class="continue-card-btn" type="button" data-subject="${escapeHTML(item.value)}">Kaldığım yerden devam</button>
-          `}
+          `)}
         </div>
       `;
 
-      if(mode === "final"){
+      if(mode === "final" || mode === "kurul"){
         const openBtn = card.querySelector(".quiz-card-btn");
-        if(openBtn) openBtn.addEventListener("click",(ev)=>{ev.stopPropagation(); startFinalCourse(item.value);});
-        card.addEventListener("click",()=>startFinalCourse(item.value));
-        card.addEventListener("keydown",ev=>{if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();startFinalCourse(item.value);}});
+        const openCourse = () => mode === "final" ? startFinalCourse(item.value) : startKurulCourse(item.value);
+        if(openBtn) openBtn.addEventListener("click",(ev)=>{ev.stopPropagation(); openCourse();});
+        card.addEventListener("click",openCourse);
+        card.addEventListener("keydown",ev=>{if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();openCourse();}});
         return card;
       }
 
@@ -6482,7 +6623,7 @@ async function discoverDbFiles(){
           quizIds = chosen.map(q => answerKey(q));
           quizTitle = `${item.value} · ${teacher} quiz modu · ${chosen.length} soru`;
           document.body.classList.add("app-screen-active");
-          filters = {subject:item.value, exam:"all", year:"all", teacher:teacher, sourceGroup:"all", search:"", finalOnly:false, excludeFinalDb:true};
+          filters = {subject:item.value, exam:"all", year:"all", teacher:teacher, sourceGroup:"all", search:"", finalOnly:false, kurulOnly:false, excludeFinalDb:true};
           const firstIndex = questions.findIndex(q => answerKey(q) === quizIds[0]);
           if(firstIndex >= 0) current = firstIndex;
           els.landing.classList.add("hidden");
@@ -6507,6 +6648,7 @@ async function discoverDbFiles(){
       sanitizeFilters();
       const aq = activeVisibleQuestions();
       const finalQ = final20252026Questions(aq);
+      const kurulQ = kurul20252026Questions(aq);
       const otherQ = otherExamQuestions(aq);
       els.totalQuestionsHero.textContent=aq.length;
       els.totalSubjectsHero.textContent=countValues(q=>q.subject, aq).length;
@@ -6547,6 +6689,40 @@ async function discoverDbFiles(){
       if(els.finalSummaryText) els.finalSummaryText.textContent = finalQ.length
         ? `${finalQ.length} soru, ${finalSubjectCount} ders.`
         : "Final sorusu bulunamadı.";
+
+      if(els.kurulCourseGrid){
+        els.kurulCourseGrid.innerHTML = "";
+        const kurulCounts = countValues(q=>q.subject, kurulQ).filter(item=>!term || normalize(item.value).includes(term));
+        kurulCounts.forEach(item=>els.kurulCourseGrid.appendChild(createHomeCourseCard(item, kurulQ, "kurul")));
+        if(els.kurulEmpty) els.kurulEmpty.style.display = kurulCounts.length ? "none" : "block";
+      }
+      if(els.kurulAllBtn){
+        els.kurulAllBtn.disabled = kurulQ.length === 0;
+        els.kurulAllBtn.textContent = kurulQ.length ? `Tüm kurul sorularını aç (${kurulQ.length})` : "Kurul sorusu yok";
+        els.kurulAllBtn.onclick = () => startKurulCourse("all");
+      }
+      if(els.kurulQuizBtn){
+        els.kurulQuizBtn.disabled = kurulQ.length === 0;
+        els.kurulQuizBtn.textContent = kurulQ.length ? `Kendini test et (${Math.min(60, kurulQ.length)})` : "Test yok";
+        els.kurulQuizBtn.onclick = () => startKurulQuiz(60);
+      }
+      if(els.kurulListBtn){
+        els.kurulListBtn.disabled = kurulQ.length === 0;
+        els.kurulListBtn.onclick = showKurulList;
+      }
+      if(els.kurulCoursesBtn){
+        els.kurulCoursesBtn.disabled = kurulQ.length === 0;
+        els.kurulCoursesBtn.onclick = () => {
+          if(els.kurulCourseGrid) els.kurulCourseGrid.scrollIntoView({behavior:"smooth", block:"start"});
+        };
+      }
+      const kurulSubjectCount = countValues(q=>q.subject, kurulQ).length;
+      if(els.kurulQuestionCount) els.kurulQuestionCount.textContent = kurulQ.length;
+      if(els.kurulSubjectCount) els.kurulSubjectCount.textContent = kurulSubjectCount;
+      if(els.kurulQuizCount) els.kurulQuizCount.textContent = Math.min(60, kurulQ.length);
+      if(els.kurulSummaryText) els.kurulSummaryText.textContent = kurulQ.length
+        ? `${kurulQ.length} soru, ${kurulSubjectCount} ders.`
+        : "Kurul sorusu bulunamadı.";
 
       els.courseGrid.innerHTML="";
       const courseCounts=countValues(q=>q.subject, otherQ);
@@ -6969,11 +7145,12 @@ async function openCurrentQuestionInChatGPT(){
       stopQuizMode();
       document.body.classList.add("app-screen-active");
       document.body.classList.add("app-screen-active");
-      filters={subject:subject||"all", exam:"all", year:"all", teacher:teacher||"all", sourceGroup:"all", search:"", excludeFinalDb:true, finalOnly:false};
+      filters={subject:subject||"all", exam:"all", year:"all", teacher:teacher||"all", sourceGroup:"all", search:"", excludeFinalDb:true, finalOnly:false, kurulOnly:false};
       infoOpen=false;
       invalidateQuestionIndexes();
       restoreLastPosition(subject||"all", teacher||"all");
       filters.finalOnly = false;
+      filters.kurulOnly = false;
       filters.excludeFinalDb = true;
       invalidateQuestionIndexes();
       ensureCurrent();
@@ -6994,10 +7171,10 @@ async function openCurrentQuestionInChatGPT(){
       stopQuizMode();
       document.body.classList.add("app-screen-active");
       document.body.classList.add("app-screen-active");
-      filters={subject:subject||"all", exam:"all", year:"all", teacher:"all", sourceGroup:"all", search:"", excludeFinalDb:true, finalOnly:false};
+      filters={subject:subject||"all", exam:"all", year:"all", teacher:"all", sourceGroup:"all", search:"", excludeFinalDb:true, finalOnly:false, kurulOnly:false};
       infoOpen=false;
       invalidateQuestionIndexes();
-      restoreLastPosition(subject||"all","all"); filters.finalOnly = false; filters.excludeFinalDb = true; invalidateQuestionIndexes(); ensureCurrent(); els.landing.classList.add("hidden"); els.appView.classList.add("active");
+      restoreLastPosition(subject||"all","all"); filters.finalOnly = false; filters.kurulOnly = false; filters.excludeFinalDb = true; invalidateQuestionIndexes(); ensureCurrent(); els.landing.classList.add("hidden"); els.appView.classList.add("active");
       els.quizView.classList.remove("hidden"); els.listView.classList.remove("active");
       els.activeTitle.textContent=subject&&subject!=="all"?subject+" soru bankası":"Tüm dersler soru bankası";
       els.results.style.display="none"; render(); scrollToQuestion("auto");
@@ -7307,7 +7484,7 @@ async function openCurrentQuestionInChatGPT(){
       const idxsForCounter = filteredIndexes();
       els.counter.textContent=st.total?`Soru ${idxsForCounter.indexOf(current)+1} / ${st.total} · Genel no: ${current+1}`:"0 soru";
       els.answeredCount.textContent=st.answered; els.correctCount.textContent=st.correct; els.wrongCount.textContent=st.wrong+(st.neutral?` (+${st.neutral} manuel)`:""); els.emptyCount.textContent=st.empty;
-      els.activeFilterSummary.textContent=[filters.finalOnly?"2025-2026 Final çıkmışları":(filters.excludeFinalDb?"Diğer tüm çıkmışlar":"Tüm çıkmışlar"),filters.subject==="all"?"Tüm dersler":filters.subject,filters.exam==="all"?"Tüm gruplar":filters.exam,filters.year==="all"?"Tüm yıllar":filters.year,filters.teacher==="all"?"Tüm hocalar":filters.teacher,filters.sourceGroup==="all"?"Tüm kaynak türleri":filters.sourceGroup,filters.search.trim()?`Arama: “${filters.search.trim()}”`:"Arama yok"].join(" + ")+` → ${st.total} soru`;
+      els.activeFilterSummary.textContent=[filters.finalOnly?"2025-2026 Final çıkmışları":(filters.kurulOnly?"2025-2026 Kurul çıkmışları":(filters.excludeFinalDb?"Diğer tüm çıkmışlar":"Tüm çıkmışlar")),filters.subject==="all"?"Tüm dersler":filters.subject,filters.exam==="all"?"Tüm gruplar":filters.exam,filters.year==="all"?"Tüm yıllar":filters.year,filters.teacher==="all"?"Tüm hocalar":filters.teacher,filters.sourceGroup==="all"?"Tüm kaynak türleri":filters.sourceGroup,filters.search.trim()?`Arama: “${filters.search.trim()}”`:"Arama yok"].join(" + ")+` → ${st.total} soru`;
     }
 
     function updateJumpGridState(){
@@ -8011,7 +8188,7 @@ ${body}
       els.teacherSelect.addEventListener("change",()=>{filters.teacher=els.teacherSelect.value; ensureCurrent(); render();});
       els.sourceGroupSelect.addEventListener("change",()=>{filters.sourceGroup=els.sourceGroupSelect.value; ensureCurrent(); render();});
       els.searchInput.addEventListener("input", debounce(()=>{filters.search=els.searchInput.value; ensureCurrent(); render();}, 180));
-      els.clearFiltersBtn.addEventListener("click",()=>{filters={subject:filters.subject,exam:"all",year:"all",teacher:"all",sourceGroup:"all",search:"",finalOnly:!!filters.finalOnly,excludeFinalDb:!!filters.excludeFinalDb}; ensureCurrent(); render();});
+      els.clearFiltersBtn.addEventListener("click",()=>{filters={subject:filters.subject,exam:"all",year:"all",teacher:"all",sourceGroup:"all",search:"",finalOnly:!!filters.finalOnly,kurulOnly:!!filters.kurulOnly,excludeFinalDb:!!filters.excludeFinalDb}; ensureCurrent(); render();});
       els.goFirstFilteredBtn.addEventListener("click",()=>{const idxs=filteredIndexes(); if(idxs.length){current=idxs[0]; render();}});
       els.prevBtn.addEventListener("click",()=>{const idxs=filteredIndexes(); const pos=idxs.indexOf(current); if(pos>0){current=idxs[pos-1]; render(); requestAnimationFrame(()=>scrollToQuestion("auto"));}});
       els.nextBtn.addEventListener("click",()=>{const idxs=filteredIndexes(); const pos=idxs.indexOf(current); if(pos<idxs.length-1){current=idxs[pos+1]; render(); requestAnimationFrame(()=>scrollToQuestion("auto"));}else{ if(examMode) stopExamTimer(); renderResults(); }});
