@@ -1,9 +1,6 @@
 <!doctype html>
 <html lang="tr">
 <head>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans:wght@400;500;600;700;800;900&family=Roboto+Mono:wght@500;600;700&display=swap" rel="stylesheet">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Etkileşimli Soru Bankası</title>
@@ -18,7 +15,7 @@
     *{box-sizing:border-box}
     html{scroll-behavior:auto}
     body{
-      margin:0;min-height:100vh;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+      margin:0;min-height:100vh;font-family:"Segoe UI",Roboto,Arial,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
       color:var(--text);
       background:radial-gradient(circle at 8% 0%,rgba(23,58,138,.13),transparent 28rem),
                  radial-gradient(circle at 92% 4%,rgba(47,91,189,.10),transparent 30rem),
@@ -83,7 +80,7 @@
     .meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;padding:0 10px 10px;color:var(--muted);font-size:var(--meta-font);line-height:1.35}
     .meta div{border:1px solid var(--line);border-radius:10px;padding:7px 8px;background:white;overflow-wrap:anywhere}
     .meta b{color:#334155}
-    .question{white-space:pre-wrap;font-weight:620;font-size:var(--q-font);line-height:var(--line-q);letter-spacing:.002em;margin:0 0 14px;color:#1f2937;
+    .question{white-space:pre-wrap;font-family:"Noto Sans","Segoe UI",Arial,sans-serif;font-weight:600;font-size:var(--q-font);line-height:var(--line-q);letter-spacing:0;margin:0 0 14px;color:#172033;
       background:#fbfdff;border:1px solid var(--line);border-left:5px solid var(--primary2);border-radius:14px;padding:14px 15px;box-shadow:0 6px 16px rgba(15,23,42,.045)
     }
     .options{display:grid;gap:8px}
@@ -95,7 +92,7 @@
     .letter{width:28px;height:28px;border-radius:9px;background:var(--soft);border:1px solid rgba(23,58,138,.12);color:var(--primary);display:inline-flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;text-transform:uppercase}
     .option.correct .letter{background:#d7f1e0;color:var(--ok);border-color:rgba(18,99,58,.35)}
     .option.wrong .letter{background:#f8d6dc;color:var(--bad);border-color:rgba(166,29,53,.35)}
-    .option-text{white-space:pre-wrap;line-height:1.52;font-size:var(--opt-font);font-weight:520;color:#344054}
+    .option-text{white-space:pre-wrap;font-family:"Noto Sans","Segoe UI",Arial,sans-serif;line-height:1.56;font-size:var(--opt-font);font-weight:520;color:#344054}
     .feedback{display:none;margin-top:10px;padding:10px 11px;border-radius:13px;border:1px solid var(--line);line-height:1.4;white-space:pre-wrap;font-size:13px}
     .feedback.ok{display:block;background:var(--okbg);color:var(--ok);border-color:rgba(18,99,58,.35)}
     .feedback.bad{display:block;background:var(--badbg);color:var(--bad);border-color:rgba(166,29,53,.35)}
@@ -148,7 +145,7 @@
     .all-list{display:grid;gap:12px;max-height:calc(100vh - 140px);overflow:auto;padding-right:4px}
     .all-q-card{padding:14px;border-radius:16px;border:1px solid var(--line);background:#fff;box-shadow:0 8px 20px rgba(15,23,42,.055)}
     .all-q-meta{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
-    .all-q-question{white-space:pre-wrap;font-weight:620;line-height:var(--line-q);font-size:var(--q-font);background:#fbfdff;border:1px solid var(--line);border-left:4px solid var(--primary2);border-radius:12px;padding:10px 11px;margin-bottom:9px;color:#1f2937}
+    .all-q-question{white-space:pre-wrap;font-family:"Noto Sans","Segoe UI",Arial,sans-serif;font-weight:600;line-height:var(--line-q);font-size:var(--q-font);background:#fbfdff;border:1px solid var(--line);border-left:4px solid var(--primary2);border-radius:12px;padding:10px 11px;margin-bottom:9px;color:#172033}
     .all-q-options{display:grid;gap:5px}
     .all-q-option{padding:7px 8px;border-radius:10px;border:1px solid var(--line);background:#fff;line-height:1.45;white-space:pre-wrap;font-size:var(--opt-font)}
     .all-q-option.correct{background:var(--okbg);border-color:rgba(18,99,58,.35);color:#14532d;font-weight:780}
@@ -3738,6 +3735,173 @@
       content:"";
     }
 
+    .home-actions-panel{
+      padding:12px;
+      margin-bottom:12px;
+      display:grid;
+      grid-template-columns:minmax(220px,1fr) auto;
+      gap:10px;
+      align-items:center;
+      border-radius:14px;
+    }
+    .home-actions-group{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      align-items:center;
+    }
+    .home-actions-panel .search{
+      min-height:42px;
+    }
+    .final-collapsible-panel{
+      border-radius:16px!important;
+      border-color:rgba(23,58,138,.18)!important;
+      background:linear-gradient(180deg,#ffffff,#f8fbff)!important;
+    }
+    .final-fast-summary{
+      color:var(--primary)!important;
+      background:linear-gradient(90deg,rgba(237,244,255,.92),rgba(255,255,255,.96));
+      border-bottom:1px solid rgba(23,58,138,.10);
+    }
+    .final-fast-summary::after{
+      color:var(--primary)!important;
+      background:#fff!important;
+      border-color:rgba(23,58,138,.16)!important;
+    }
+    .final-fast-content{
+      padding:12px!important;
+    }
+    .final-dashboard{
+      display:grid;
+      grid-template-columns:minmax(0,1fr) minmax(240px,.65fr);
+      gap:12px;
+      align-items:stretch;
+    }
+    .final-hero-block{
+      display:grid;
+      gap:12px;
+      padding:16px;
+      border:1px solid rgba(23,58,138,.13);
+      border-radius:14px;
+      background:linear-gradient(135deg,#f8fbff,#ffffff 56%,#fff7df);
+    }
+    .final-hero-block h2{
+      margin:0;
+      font-size:24px;
+      line-height:1.08;
+      color:#102b68;
+      letter-spacing:0;
+    }
+    .final-stat-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+    .final-stat{
+      display:grid;
+      gap:2px;
+      min-width:104px;
+      padding:9px 10px;
+      border-radius:12px;
+      border:1px solid rgba(23,58,138,.12);
+      background:#fff;
+    }
+    .final-stat b{
+      color:var(--primary);
+      font-size:18px;
+      line-height:1;
+    }
+    .final-stat span{
+      color:var(--muted);
+      font-size:11px;
+      font-weight:800;
+    }
+    .final-action-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:8px;
+    }
+    .final-action-grid button{
+      min-height:42px;
+      border-radius:10px;
+    }
+    .final-course-shell{
+      display:grid;
+      gap:10px;
+    }
+    .final-course-shell-title{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      color:var(--primary);
+      font-weight:950;
+    }
+    .final-course-grid{
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      max-height:430px;
+      overflow:auto;
+      padding-right:3px;
+    }
+    .settings-grid.compact-settings-grid{
+      grid-template-columns:1fr;
+    }
+    #dbSettingsDetails{
+      display:none!important;
+    }
+    .top-menu-content{
+      grid-template-columns:repeat(3,minmax(0,1fr))!important;
+      align-items:start;
+    }
+    .top-menu-group{
+      display:grid;
+      gap:7px;
+      padding:8px;
+      border:1px solid rgba(23,58,138,.10);
+      border-radius:12px;
+      background:#fbfdff;
+    }
+    .top-menu-group-title{
+      color:var(--muted);
+      font-size:11px;
+      font-weight:950;
+      text-transform:uppercase;
+      letter-spacing:.06em;
+      padding:0 2px 2px;
+    }
+    .top-menu-group button{
+      width:100%;
+      text-align:left;
+      justify-content:flex-start;
+    }
+    .list-export-actions{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    #textListBtn,#pdfListBtn{
+      white-space:nowrap;
+    }
+    @media(max-width:760px){
+      .home-actions-panel,
+      .final-dashboard{
+        grid-template-columns:1fr;
+      }
+      .home-actions-group,
+      .final-action-grid{
+        grid-template-columns:1fr;
+        display:grid;
+      }
+      .top-menu-content{
+        grid-template-columns:1fr!important;
+      }
+      .final-course-grid{
+        grid-template-columns:1fr;
+        max-height:none;
+      }
+    }
+
   </style>
 </head>
 <body class="font-normal is-loading">
@@ -3754,22 +3918,31 @@
     <details class="top-menu panel" id="topMenu">
       <summary class="top-menu-summary">
         <span>☰ Menü</span>
-        <small>Sayfa ve kaynak seçenekleri</small>
+        <small>Çalışma, görünüm ve araçlar</small>
       </summary>
       <div class="top-menu-content">
-        <button class="secondary" id="menuHomeBtn" type="button">Ana sayfaya dön</button>
-        <button class="secondary" id="menuSourceBtn" type="button">Ders kaynağını değiştir</button>
-        <button class="secondary" id="menuViewBtn" type="button">Görünüm ayarları</button>
-        <button class="secondary" id="menuDuplicateBtn" type="button">Tekrarları kapat</button>
-        <button class="secondary" id="menuShuffleBtn" type="button">Karışık sırayı aç</button>
-        <button class="secondary" id="menuCacheBtn" type="button">Önbelleği yenile</button>
-        <button class="secondary" id="menuInfoBtn" type="button">Açıklama/spot</button>
-        <button class="secondary" id="menuShowAllBtn" type="button">Tüm soruları görüntüle</button>
-        <button class="secondary" id="menuStarredBtn" type="button">Yıldızlı sorular</button>
-        <button class="secondary" id="menuExamBtn" type="button">Sınav modu</button>
-        <button class="secondary" id="menuWideToggleBtn" type="button">Tekli ekranı aç/kapat</button>
-        <button class="secondary" id="menuResetVisibleBtn" type="button">Filtre cevaplarını sıfırla</button>
-        <button class="danger" id="menuClearCacheBtn" type="button">Önbelleği temizle</button>
+        <div class="top-menu-group">
+          <div class="top-menu-group-title">Çalışma</div>
+          <button class="secondary" id="menuHomeBtn" type="button">Ana sayfa</button>
+          <button class="secondary" id="menuShowAllBtn" type="button">Tüm sorular</button>
+          <button class="secondary" id="menuStarredBtn" type="button">Yıldızlılar</button>
+          <button class="secondary" id="menuExamBtn" type="button">Sınav modu</button>
+        </div>
+        <div class="top-menu-group">
+          <div class="top-menu-group-title">Görünüm</div>
+          <button class="secondary" id="menuViewBtn" type="button">Görünüm ayarları</button>
+          <button class="secondary" id="menuInfoBtn" type="button">Açıklama/spot</button>
+          <button class="secondary" id="menuWideToggleBtn" type="button">Tekli ekran</button>
+          <button class="secondary" id="menuShuffleBtn" type="button">Karışık sıra</button>
+        </div>
+        <div class="top-menu-group">
+          <div class="top-menu-group-title">Araçlar</div>
+          <button class="secondary hidden" id="menuSourceBtn" type="button">Kaynak seçimi</button>
+          <button class="secondary" id="menuDuplicateBtn" type="button">Tekrarlar</button>
+          <button class="secondary" id="menuResetVisibleBtn" type="button">Cevapları sıfırla</button>
+          <button class="secondary" id="menuCacheBtn" type="button">Önbelleği yenile</button>
+          <button class="danger" id="menuClearCacheBtn" type="button">Önbelleği temizle</button>
+        </div>
       </div>
     </details>
 
@@ -3782,21 +3955,39 @@
 
     <section class="landing" id="landing">
 
-      <details class="panel final-fast-panel final-collapsible-panel" id="finalFastPanel">
+      <details class="panel final-fast-panel final-collapsible-panel" id="finalFastPanel" open>
         <summary class="final-fast-summary">
-          <span>2025-2026 Final çıkmışları</span>
-          <small>Basarak final sorularını aç</small>
+          <span>2025-2026 Final</span>
+          <small>Güncel final çalışma alanı</small>
         </summary>
         <div class="final-fast-content">
-          <div class="final-fast-head">
-            <div>
-              <h2>2025-2026 Final çıkmışları</h2>
-              <p class="subtitle">soru15(1).db referans setiyle eşleşen 2025-2026 final sorularını hızlıca aç.</p>
+          <div class="final-dashboard">
+            <div class="final-hero-block">
+              <div>
+                <h2>2025-2026 Final çıkmışları</h2>
+                <p class="subtitle" id="finalSummaryText">Güncel final soruları hazırlanıyor.</p>
+              </div>
+              <div class="final-stat-row" id="finalStatRow">
+                <div class="final-stat"><b id="finalQuestionCount">0</b><span>final sorusu</span></div>
+                <div class="final-stat"><b id="finalSubjectCount">0</b><span>ders</span></div>
+                <div class="final-stat"><b id="finalQuizCount">0</b><span>test sorusu</span></div>
+              </div>
+              <div class="final-action-grid">
+                <button class="primary" id="finalAllBtn" type="button">Tüm soruları aç</button>
+                <button class="secondary" id="finalQuizBtn" type="button">Kendini test et</button>
+                <button class="secondary" id="finalCoursesBtn" type="button">Dersleri aç</button>
+                <button class="secondary" id="finalListBtn" type="button">Liste görünümü</button>
+              </div>
             </div>
-            <button class="primary" id="finalAllBtn" type="button">Tüm final çıkmışlarını aç</button>
+            <div class="final-course-shell">
+              <div class="final-course-shell-title">
+                <span>Dersler</span>
+                <small id="finalCourseHint">Final ders dağılımı</small>
+              </div>
+              <section class="course-grid final-course-grid" id="finalCourseGrid"></section>
+              <section class="course-empty final-empty" id="finalEmpty">2025-2026 final olarak eşleşen soru bulunamadı.</section>
+            </div>
           </div>
-          <section class="course-grid final-course-grid" id="finalCourseGrid"></section>
-          <section class="course-empty final-empty" id="finalEmpty">2025-2026 final olarak eşleşen soru bulunamadı.</section>
         </div>
       </details>
 
@@ -3812,15 +4003,17 @@
       </details>
 
 
-<section class="course-toolbar panel">
+<section class="home-actions-panel panel">
         <input class="search" id="courseSearch" placeholder="Ders ara: anatomi, fizyoloji, histoloji, biyokimya, mikrobiyoloji, biyofizik...">
-        <button class="secondary" id="clearCourseSearch" type="button">Aramayı temizle</button>
-        <button class="secondary" id="continueBtn" type="button">Kaldığım yerden devam et</button>
-        <button class="secondary" id="wrongHomeBtn" type="button">Yanlışlarımı aç</button>
-        <button class="secondary" id="hiddenHomeBtn" type="button">Gizlenen soruları yönet</button>
-        <button class="secondary" id="starredHomeBtn" type="button">Yıldızlı sorular</button>
-        <button class="secondary" id="quizAllBtn" type="button">Tüm dersler quiz modu</button>
-        <button class="primary" id="startAllBtn" type="button">Tüm derslerle başla</button>
+        <div class="home-actions-group">
+          <button class="secondary" id="clearCourseSearch" type="button">Aramayı temizle</button>
+          <button class="secondary" id="continueBtn" type="button">Devam et</button>
+          <button class="secondary" id="wrongHomeBtn" type="button">Yanlışlarım</button>
+          <button class="secondary" id="hiddenHomeBtn" type="button">Gizlenenler</button>
+          <button class="secondary" id="starredHomeBtn" type="button">Yıldızlılar</button>
+          <button class="secondary" id="quizAllBtn" type="button">Test et</button>
+          <button class="primary" id="startAllBtn" type="button">Tüm çıkmışlar</button>
+        </div>
       </section>
       
 
@@ -4116,10 +4309,11 @@
             <b id="listTitle" style="color:var(--primary);font-size:16px;">Tüm sorular</b>
             <div class="small" id="listSubtitle"></div>
           </div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <div class="list-export-actions">
             <button class="secondary" id="backToQuizBtn" type="button">Tek soru moduna dön</button>
             <button class="secondary" id="wideListBtn" type="button" title="Tüm sorular ekranını genişlet/daralt">⛶ Listeyi genişlet</button>
             <button class="secondary" id="pdfListBtn" type="button">PDF oluştur</button>
+            <button class="secondary" id="textListBtn" type="button">Metin al</button>
             <button class="secondary" id="restoreHiddenBtn" type="button">Gizlenenleri geri yükle</button>
             <button class="primary" id="refreshListBtn" type="button">Listeyi güncelle</button>
           </div>
@@ -4264,10 +4458,10 @@
       landing:$("landing"), appView:$("appView"), quizView:$("quizView"), listView:$("listView"),
       topMenu:$("topMenu"), menuHomeBtn:$("menuHomeBtn"), menuSourceBtn:$("menuSourceBtn"), menuViewBtn:$("menuViewBtn"), menuDuplicateBtn:$("menuDuplicateBtn"), menuShuffleBtn:$("menuShuffleBtn"), menuCacheBtn:$("menuCacheBtn"),
       menuInfoBtn:$("menuInfoBtn"), menuShowAllBtn:$("menuShowAllBtn"), menuStarredBtn:$("menuStarredBtn"), menuExamBtn:$("menuExamBtn"), menuWideToggleBtn:$("menuWideToggleBtn"), menuResetVisibleBtn:$("menuResetVisibleBtn"), menuClearCacheBtn:$("menuClearCacheBtn"),
-      courseGrid:$("courseGrid"), finalCourseGrid:$("finalCourseGrid"), finalEmpty:$("finalEmpty"), finalAllBtn:$("finalAllBtn"), allCoursesDetails:$("allCoursesDetails"), courseEmpty:$("courseEmpty"), courseSearch:$("courseSearch"),
+      courseGrid:$("courseGrid"), finalCourseGrid:$("finalCourseGrid"), finalEmpty:$("finalEmpty"), finalAllBtn:$("finalAllBtn"), finalQuizBtn:$("finalQuizBtn"), finalCoursesBtn:$("finalCoursesBtn"), finalListBtn:$("finalListBtn"), finalSummaryText:$("finalSummaryText"), finalQuestionCount:$("finalQuestionCount"), finalSubjectCount:$("finalSubjectCount"), finalQuizCount:$("finalQuizCount"), allCoursesDetails:$("allCoursesDetails"), courseEmpty:$("courseEmpty"), courseSearch:$("courseSearch"),
       clearCourseSearch:$("clearCourseSearch"), continueBtn:$("continueBtn"), wrongHomeBtn:$("wrongHomeBtn"), hiddenHomeBtn:$("hiddenHomeBtn"), starredHomeBtn:$("starredHomeBtn"), quizAllBtn:$("quizAllBtn"), startAllBtn:$("startAllBtn"),
       backHomeBtn:$("backHomeBtn"), changeCourseBtn:$("changeCourseBtn"), activeTitle:$("activeTitle"),
-      wideQuestionBtn:$("wideQuestionBtn"), showAllBtn:$("showAllBtn"), compactHomeBtn:$("compactHomeBtn"), compactShowAllBtn:$("compactShowAllBtn"), backToQuizBtn:$("backToQuizBtn"), wideListBtn:$("wideListBtn"), pdfListBtn:$("pdfListBtn"), restoreHiddenBtn:$("restoreHiddenBtn"), refreshListBtn:$("refreshListBtn"),
+      wideQuestionBtn:$("wideQuestionBtn"), showAllBtn:$("showAllBtn"), compactHomeBtn:$("compactHomeBtn"), compactShowAllBtn:$("compactShowAllBtn"), backToQuizBtn:$("backToQuizBtn"), wideListBtn:$("wideListBtn"), pdfListBtn:$("pdfListBtn"), textListBtn:$("textListBtn"), restoreHiddenBtn:$("restoreHiddenBtn"), refreshListBtn:$("refreshListBtn"),
       listTitle:$("listTitle"), listSubtitle:$("listSubtitle"), allList:$("allList"),
       totalQuestionsHero:$("totalQuestionsHero"), totalSubjectsHero:$("totalSubjectsHero"), status:$("statusBox"),
       manualDbBox:$("manualDbBox"), manualDbInput:$("manualDbInput"), dbList:$("dbList"),
@@ -5950,7 +6144,7 @@ async function discoverDbFiles(){
       if (els.duplicateFilterSelect) els.duplicateFilterSelect.value = duplicateMode;
       if (els.questionOrderSelect) els.questionOrderSelect.value = shuffleQuestions ? "shuffle" : "normal";
       if (els.menuDuplicateBtn) els.menuDuplicateBtn.textContent = duplicateMode === "all" ? "Tekrarları kapat" : "Tekrarları aç";
-      if (els.menuShuffleBtn) els.menuShuffleBtn.textContent = shuffleQuestions ? "Karışık sırayı kapat" : "Karışık sırayı aç";
+      if (els.menuShuffleBtn) els.menuShuffleBtn.textContent = shuffleQuestions ? "Sırayı normale al" : "Karışık sıra";
       applyWideModes();
     }
 
@@ -6177,6 +6371,42 @@ async function discoverDbFiles(){
       scrollToQuestion("auto");
     }
 
+    function startFinalQuiz(count=40){
+      const pool = final20252026Questions(activeVisibleQuestions());
+      if(!pool.length){
+        alert("Final testi için uygun soru bulunamadı.");
+        return;
+      }
+      const chosen = shuffleArray(pool).slice(0, Math.min(count, pool.length));
+      quizActive = true;
+      quizIds = chosen.map(q => answerKey(q));
+      quizTitle = `2025-2026 Final test modu · ${chosen.length} soru`;
+      document.body.classList.add("app-screen-active");
+      filters = {subject:"all", exam:"all", year:"all", teacher:"all", sourceGroup:"all", search:"", finalOnly:true, excludeFinalDb:false};
+      const firstIndex = questions.findIndex(q => answerKey(q) === quizIds[0]);
+      if(firstIndex >= 0) current = firstIndex;
+      els.landing.classList.add("hidden");
+      els.appView.classList.add("active");
+      els.quizView.classList.remove("hidden");
+      els.listView.classList.remove("active");
+      els.activeTitle.textContent = quizTitle;
+      els.results.style.display = "none";
+      render();
+      scrollToQuestion("auto");
+    }
+
+    function showFinalList(){
+      stopQuizMode();
+      document.body.classList.add("app-screen-active");
+      filters = {subject:"all", exam:"all", year:"all", teacher:"all", sourceGroup:"all", search:"", finalOnly:true, excludeFinalDb:false};
+      sanitizeFilters();
+      ensureCurrent();
+      els.landing.classList.add("hidden");
+      els.appView.classList.add("active");
+      els.activeTitle.textContent = "2025-2026 Final listesi";
+      showListView("all");
+    }
+
     function createHomeCourseCard(item, baseQuestions, mode="all"){
       const subjectQuestions = baseQuestions.filter(q=>q.subject===item.value);
       const examCount = new Set(subjectQuestions.map(q=>meta(q,"examGroup")).filter(Boolean)).size;
@@ -6280,7 +6510,6 @@ async function discoverDbFiles(){
       const otherQ = otherExamQuestions(aq);
       els.totalQuestionsHero.textContent=aq.length;
       els.totalSubjectsHero.textContent=countValues(q=>q.subject, aq).length;
-      renderDbSelector();
       applyFontSize();
 
       const term=normalize(els.courseSearch.value.trim());
@@ -6293,9 +6522,31 @@ async function discoverDbFiles(){
       }
       if(els.finalAllBtn){
         els.finalAllBtn.disabled = finalQ.length === 0;
-        els.finalAllBtn.textContent = finalQ.length ? `Tüm final çıkmışlarını aç (${finalQ.length})` : "Final çıkmışı yok";
+        els.finalAllBtn.textContent = finalQ.length ? `Tüm soruları aç (${finalQ.length})` : "Final sorusu yok";
         els.finalAllBtn.onclick = () => startFinalCourse("all");
       }
+      if(els.finalQuizBtn){
+        els.finalQuizBtn.disabled = finalQ.length === 0;
+        els.finalQuizBtn.textContent = finalQ.length ? `Kendini test et (${Math.min(40, finalQ.length)})` : "Test yok";
+        els.finalQuizBtn.onclick = () => startFinalQuiz(40);
+      }
+      if(els.finalListBtn){
+        els.finalListBtn.disabled = finalQ.length === 0;
+        els.finalListBtn.onclick = showFinalList;
+      }
+      if(els.finalCoursesBtn){
+        els.finalCoursesBtn.disabled = finalQ.length === 0;
+        els.finalCoursesBtn.onclick = () => {
+          if(els.finalCourseGrid) els.finalCourseGrid.scrollIntoView({behavior:"smooth", block:"start"});
+        };
+      }
+      const finalSubjectCount = countValues(q=>q.subject, finalQ).length;
+      if(els.finalQuestionCount) els.finalQuestionCount.textContent = finalQ.length;
+      if(els.finalSubjectCount) els.finalSubjectCount.textContent = finalSubjectCount;
+      if(els.finalQuizCount) els.finalQuizCount.textContent = Math.min(40, finalQ.length);
+      if(els.finalSummaryText) els.finalSummaryText.textContent = finalQ.length
+        ? `${finalQ.length} soru, ${finalSubjectCount} ders.`
+        : "Final sorusu bulunamadı.";
 
       els.courseGrid.innerHTML="";
       const courseCounts=countValues(q=>q.subject, otherQ);
@@ -7421,6 +7672,52 @@ ${body}
       w.document.close();
     }
 
+    function plainQuestionText(i, pos){
+      const q = questions[i], opts = optionList(q), ans = q.answer || {};
+      const lines = [];
+      lines.push(`${pos+1}. soru`);
+      lines.push(`Ders: ${q.subject || ""}`);
+      const metaLine = [meta(q,"examGroup"), meta(q,"year"), meta(q,"topic")].filter(Boolean).join(" | ");
+      if(metaLine) lines.push(metaLine);
+      lines.push("");
+      lines.push(String(q.question || "").trim());
+      if(opts.length){
+        lines.push("");
+        opts.forEach((opt, idx) => {
+          lines.push(`${opt.letter || String.fromCharCode(65+idx)}) ${opt.text || ""}`);
+        });
+      }
+      lines.push("");
+      lines.push(`Cevap: ${cachedCorrectText(q)}`);
+      if(q.explanation) lines.push(`Açıklama: ${q.explanation}`);
+      if(q.spot) lines.push(`Spot: ${q.spot}`);
+      return lines.join("\n");
+    }
+
+    function downloadCurrentListAsText(){
+      const idxs = currentListIndexes.length ? currentListIndexes : getListIndexesForCurrentMode();
+      if(!idxs.length){
+        alert("Metin almak için uygun soru bulunamadı.");
+        return;
+      }
+      const title = listModeTitle();
+      const text = [
+        title,
+        `${idxs.length} soru`,
+        "",
+        idxs.map((i,pos)=>plainQuestionText(i,pos)).join("\n\n---\n\n")
+      ].join("\n");
+      const blob = new Blob([text], {type:"text/plain;charset=utf-8"});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${normalizeQuestionTextForDedupe(title).replace(/\s+/g,"-") || "sorular"}.txt`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(()=>URL.revokeObjectURL(url), 1000);
+    }
+
     function showListView(mode="all"){
       resumeFromBreak();
       pushAppHistoryState("list");
@@ -7686,6 +7983,7 @@ ${body}
       });
       if(els.restoreHiddenBtn) els.restoreHiddenBtn.addEventListener("click", restoreAllHiddenQuestions);
       if(els.pdfListBtn) els.pdfListBtn.addEventListener("click", createPdfFromCurrentList);
+      if(els.textListBtn) els.textListBtn.addEventListener("click", downloadCurrentListAsText);
       els.refreshListBtn.addEventListener("click",()=>renderAllList(true));
       els.selectAllDbBtn.addEventListener("click",()=>{selectedDbFiles=dbFiles.map(f=>dbBaseName(f.name)); rebuildQuestionsFromActiveFiles(true); saveState(); renderLanding(); if(els.appView.classList.contains("active")) render();});
       els.clearDbBtn.addEventListener("click",()=>{selectedDbFiles=[]; rebuildQuestionsFromActiveFiles(true); saveState(); renderLanding(); if(els.appView.classList.contains("active")) render();});
