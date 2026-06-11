@@ -353,14 +353,20 @@
       font-size:12px;
       line-height:1.4;
     }
-    .related-box{display:none;margin-top:10px;padding:10px;border:1px solid var(--line);border-radius:13px;background:#fbfdff}
+    .related-box{display:none;margin-top:8px}
     .related-box.show{display:block}
-    .related-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+    .related-panel{border:1px solid var(--line);border-radius:11px;background:#fbfdff;overflow:hidden}
+    .related-summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 9px;color:var(--primary);font-size:12px;font-weight:900}
+    .related-summary::-webkit-details-marker{display:none}
+    .related-summary::after{content:"+";width:20px;height:20px;border-radius:999px;background:var(--soft);display:inline-flex;align-items:center;justify-content:center;border:1px solid rgba(23,58,138,.13)}
+    .related-panel[open] .related-summary::after{content:"-"}
+    .related-content{padding:0 8px 8px}
+    .related-head{display:flex;align-items:center;justify-content:flex-end;gap:8px;margin-bottom:7px}
     .related-head b{color:var(--primary);font-size:13px}
-    .related-list{display:grid;gap:7px}
-    .related-item{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;border:1px solid var(--line);border-radius:10px;background:#fff;padding:8px;font-size:12px;line-height:1.35}
+    .related-list{display:grid;gap:5px;max-height:210px;overflow:auto}
+    .related-item{display:grid;grid-template-columns:1fr auto;gap:7px;align-items:center;border:1px solid var(--line);border-radius:9px;background:#fff;padding:6px 7px;font-size:11.5px;line-height:1.3}
     .related-item small{display:block;color:var(--muted);margin-top:2px}
-    .related-item button{min-height:30px!important;padding:5px 8px!important;font-size:11px!important}
+    .related-item button{min-height:28px!important;padding:4px 7px!important;font-size:10.8px!important}
     body.quiz-active-mode .active-filter-summary::before{content:"Quiz modu aktif · ";font-weight:900}
 
   
@@ -4790,8 +4796,8 @@
     const FINAL_REFERENCE_DB_FILES = ["soru15(1).db"];
     const FINAL_REFERENCE_SIMILARITY = 0.90;
     const STORAGE_KEY = "database_loader_question_bank_progress_v4";
-    const DB_FILE_LIST_CACHE_KEY = "question_bank_db_file_list_cache_v9_suspicious_related";
-    const DB_CONTENT_CACHE_NAME = "question_bank_indexeddb_cache_v9_suspicious_related";
+    const DB_FILE_LIST_CACHE_KEY = "question_bank_db_file_list_cache_v10_strict_related";
+    const DB_CONTENT_CACHE_NAME = "question_bank_indexeddb_cache_v10_strict_related";
     const DB_CONTENT_STORE_NAME = "dbFiles";
     const LAST_POSITION_KEY = "question_bank_last_positions_v1";
     const STUDY_TIME_KEY = "question_bank_study_time_v1";
@@ -4983,7 +4989,6 @@
     }
     function relatedQuestions(q, limit=8){
       if(!q) return [];
-      const explicit = new Set(explicitRelatedIds(q));
       const qSig = dedupeSignature(q);
       const qTokens = tokenSet(qSig);
       const qTopic = normalizeQuestionTextForDedupe(meta(q,"topic") || "");
@@ -4991,18 +4996,18 @@
       const rows = [];
       questions.forEach((candidate, idx)=>{
         if(!candidate || candidate === q || answerKey(candidate) === answerKey(q)) return;
-        let score = 0;
-        const id = String(candidate.id || "");
-        if(explicit.has(id) || explicit.has(answerKey(candidate))) score += 1.5;
-        if(candidate.subject && q.subject && candidate.subject === q.subject) score += 0.18;
+        if(!candidate.subject || !q.subject || candidate.subject !== q.subject) return;
         const cTopic = normalizeQuestionTextForDedupe(meta(candidate,"topic") || "");
         const cTarget = normalizeQuestionTextForDedupe(meta(candidate,"target") || "");
-        if(qTopic && cTopic && qTopic === cTopic) score += 0.55;
-        if(qTarget && cTarget && qTarget === cTarget) score += 0.55;
         const cSig = dedupeSignature(candidate);
         const sim = signatureSimilarity(qSig, qTokens, cSig, tokenSet(cSig));
-        if(sim >= 0.45) score += sim;
-        if(score >= 0.55) rows.push({q:candidate, idx, score});
+        const sameTopic = qTopic && cTopic && qTopic === cTopic;
+        const sameTarget = qTarget && cTarget && qTarget === cTarget;
+        let score = 0;
+        if(sim >= 0.80) score = sim;
+        else if(sameTopic && sim >= 0.62) score = 0.72 + (sim * 0.2);
+        else if(sameTopic && sameTarget && sim >= 0.55) score = 0.68 + (sim * 0.18);
+        if(score >= 0.68) rows.push({q:candidate, idx, score});
       });
       return rows.sort((a,b)=>b.score-a.score).slice(0, limit);
     }
@@ -5025,11 +5030,15 @@
         </div>
       `).join("");
       els.relatedBox.innerHTML = `
-        <div class="related-head">
-          <b>Benzer / örnek sorular (${related.length})</b>
-          <button class="secondary" id="relatedPdfBtn" type="button">PDF</button>
-        </div>
-        <div class="related-list">${list}</div>
+        <details class="related-panel">
+          <summary class="related-summary">Benzer / örnek sorular (${related.length})</summary>
+          <div class="related-content">
+            <div class="related-head">
+              <button class="secondary" id="relatedPdfBtn" type="button">PDF oluştur</button>
+            </div>
+            <div class="related-list">${list}</div>
+          </div>
+        </details>
       `;
       els.relatedBox.className = "related-box show";
       els.relatedBox.querySelectorAll(".related-go-btn").forEach(btn=>{

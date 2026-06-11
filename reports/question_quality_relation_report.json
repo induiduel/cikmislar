@@ -1,0 +1,1150 @@
+{
+  "generatedAt": "2026-06-11T14:20:50.187Z",
+  "summary": {
+    "questions": 1913,
+    "formatIssueCount": 45,
+    "suspiciousCount": 47,
+    "noExplanation": 0,
+    "relatedQuestionCount": 232,
+    "relatedEdges": 260
+  },
+  "formatIssues": [
+    {
+      "id": "105544f835edd75cf1763999",
+      "subject": "Anatomi",
+      "exam": "Kurul 1",
+      "year": "2017-2018, Final 2019/derleme, 2025-2026",
+      "issues": [
+        "Secenekler eksik; cevap anahtari metin olarak mevcut."
+      ],
+      "question": "Aşağıdakilerden hangileri a. subclavia’nın dallarıdır?\n\nI. Truncus thyrocervicalis\nII. A. vertebralis\nIII. Truncus costocervicalis\nIV. A. thoracica interna\nSeçenek: I, II, III ve I"
+    },
+    {
+      "id": "0ccf39d57a3e9da177b787bc",
+      "subject": "Anatomi",
+      "exam": "Kurul 1",
+      "year": "2021-2022/derleme",
+      "issues": [
+        "Secenekler eksik; cevap anahtari metin olarak mevcut."
+      ],
+      "question": "Rete articulare cubiti yapısını oluşturan damarlar hangileridir?\n\nI. A. recurrens ulnaris\nII. A. recurrens radialis\nIII. A. collateralis media ve a. collateralis radialis\nIV. A. co"
+    },
+    {
+      "id": "208804864c5442fe188a9f54",
+      "subject": "Anatomi",
+      "exam": "Kurul 1",
+      "year": "2019-2020, 2021-2022/derleme",
+      "issues": [
+        "Secenekler eksik; cevap anahtari metin olarak mevcut."
+      ],
+      "question": "Trigonum fibrosum sinistrum hangi yapılar arasında bulunur?\n\nI. Aorta\nII. Ostium atrioventriculare dextrum\nIII. Ostium atrioventriculare sinistrum\nIV. Truncus pulmonalis"
+    },
+    {
+      "id": "f6f73fc7c083f4b239f4221b",
+      "subject": "Anatomi",
+      "exam": "Kurul 1",
+      "year": "2019-2020",
+      "issues": [
+        "Secenekler eksik; cevap anahtari metin olarak mevcut."
+      ],
+      "question": "Aşağıdakilerden hangileri aorta thoracica’nın visseral dallarındandır?\n\nI. Rr. bronchiales\nII. Rr. oesophageales\nIII. Rr. mediastinales\nIV. A. subcostalis"
+    },
+    {
+      "id": "f1cffbc26cd1c2520800e7e6",
+      "subject": "Anatomi",
+      "exam": "Kurul 1",
+      "year": "2019-2020, 2021-2022/derleme, 2022-2023, 2025-2026",
+      "issues": [
+        "Secenekler eksik; cevap anahtari metin olarak mevcut."
+      ],
+      "question": "Aşağıdaki venlerden hangileri v. cava inferior’a açılır?\n\nI. Vv. hepaticae\nII.\nV. renalis sinistra\nIII.\nV. testicularis dextra\nIV.\nV. suprarenalis dextra\nSeçenek: I, II, III ve IV"
+    },
+    {
+      "id": "37c7b15b759342799c5f35c5",
+      "subject": "Anatomi",
+      "exam": "Kurul 1",
+      "year": "2021-2022/derleme",
+      "issues": [
+        "Secenekler eksik; cevap anahtari metin olarak mevcut."
+      ],
+      "question": "V. portae hepatis’e doğrudan açılan venler hangileridir?\n\nI.\nV. splenica\nII.\nV. mesenterica superior\nIII.\nV. gastrica sinistra ve dextra\nIV. Vv. hepaticae"
+    },
+    {
+      "id": "5997e7de551791c7442918b1",
+      "subject": "Anatomi",
+      "exam": "Kurul 1",
+      "year": "2016 Final",
+      "issues": [
+        "Secenekler eksik; cevap anahtari metin olarak mevcut."
+      ],
+      "question": "Gövdenin ön tarafındaki yüzeyel damarlardan hangileri v. cava superior ve v. cava inferior arasında cava-caval anastomoz oluşturur?\n\nI.\nV. thoracoepigastrica\nII. Vv. paraumbilicale"
+    },
+    {
+      "id": "d3c6828c2c9c30e066b4eeb5",
+      "subject": "Anatomi",
+      "exam": "Kurul 1",
+      "year": "2018-2019, 2021-2022/derleme",
+      "issues": [
+        "Secenekler eksik; cevap anahtari metin olarak mevcut."
+      ],
+      "question": "Truncus brachiocephalicus’un dalları hangileridir?\n\nI. A. carotis communis dextra\nII. A. carotis communis sinistra\nIII. A. subclavia dextra\nIV. A. subclavia sinistra"
+    },
+    {
+      "id": "ffd3091c9a08d169a8159a62",
+      "subject": "Anatomi",
+      "exam": "Kurul 1",
+      "year": "2021-2022/derleme",
+      "issues": [
+        "Secenekler eksik; cevap anahtari metin olarak mevcut."
+      ],
+      "question": "Sinus sphenoidalis ile ilgili verilenlerden hangileri doğrudur?\n\nI. Duvarları ince olduğundan enfeksiyonu ciddi risk oluşturabilir\nII. Klinik öneme sahip komşulukları vardır\nIII. O"
+    },
+    {
+      "id": "58c1403000daa233e64fd723",
+      "subject": "Anatomi",
+      "exam": "Kurul 1",
+      "year": "2017-2018",
+      "issues": [
+        "Secenekler eksik; cevap anahtari metin olarak mevcut."
+      ],
+      "question": "Aşağıdaki yapılardan hangileri foramen thyrohyoideum’dan geçer?\n\nI. A. laryngea superior\nII.\nV. laryngea superior\nIII. N. laryngeus superior’un r. internus’u\nIV. N. laryngeus infer"
+    },
+    {
+      "id": "15d269c44807abcc84093fdd",
+      "subject": "Anatomi",
+      "exam": "Kurul 1",
+      "year": "2017-2018",
+      "issues": [
+        "Secenekler eksik; cevap anahtari metin olarak mevcut."
+      ],
+      "question": "Yabancı cisim aspirasyonlarının daha çok sağ ana bronşa kaçmasının nedeni hangi özelliklerdir?\n\nI. Daha kısa\nII. Daha dik\nIII. Daha geniş\nIV. Daha kıvrımlı"
+    },
+    {
+      "id": "ca5c6dad65fea00721d9caed",
+      "subject": "Anatomi",
+      "exam": "Kurul 1",
+      "year": "2021-2022/derleme",
+      "issues": [
+        "Secenekler eksik; cevap anahtari metin olarak mevcut."
+      ],
+      "question": "Diaphragma ile ilgili verilen ifadelerden hangileri doğrudur?\n\nI. A. thoracica interna, aorta thoracica ve aorta abdominalis dalları tarafından beslenir\nII. Diaphragmada dört büyük"
+    },
+    {
+      "id": "be9d2ea3a473053eddcb4a81",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2020-2021",
+      "issues": [
+        "Cevap indeksi seceneklerle uyumsuz."
+      ],
+      "question": "Bazal Ganglionlar Aşağıdakilerden hangisi/hangileri corpus striatum’un yapısına katılır?\n\nI. Nuc. caudatus\nII. Putamen\nIII. Globus pallidus\nIV. Nuc. subthalamicus"
+    },
+    {
+      "id": "ee86c59803f63377ec048c34",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2020-2021",
+      "issues": [
+        "Cevap indeksi seceneklerle uyumsuz."
+      ],
+      "question": "Beyin Hemisferlerinin Ak Maddesi Capsula interna’nın medialinde kalan yapı/yapılar aşağıdakilerden hangisi/hangileridir?\n\nI. Caput nuclei caudati\nII. Nucleus lentiformis\nIII. Thala"
+    },
+    {
+      "id": "c68f79567903dc0f42f99464",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2020-2021",
+      "issues": [
+        "Cevap indeksi seceneklerle uyumsuz."
+      ],
+      "question": "Hemisfer Morfolojisi, Motor ve Duyu Bölgeleri Primer işitme merkezi Brodmann’ın kaç numaralı sahasıdır?"
+    },
+    {
+      "id": "38fb5ca268436d9a0f424486",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2020-2021",
+      "issues": [
+        "Cevap indeksi seceneklerle uyumsuz."
+      ],
+      "question": "Aşağıdakilerden hangisi a. basilaris’in dalı değildir?"
+    },
+    {
+      "id": "4def82b8bb83324c6133df5e",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2020-2021",
+      "issues": [
+        "Cevap indeksi seceneklerle uyumsuz."
+      ],
+      "question": "Ağrı ve ısı duyuları hangi yolla merkeze taşınır?"
+    },
+    {
+      "id": "d8c54c06f091a14a95620067",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2020-2021",
+      "issues": [
+        "Cevap indeksi seceneklerle uyumsuz."
+      ],
+      "question": "Humor aquosus’un drene olduğu yapı aşağıdakilerden hangisidir?"
+    },
+    {
+      "id": "eee90233582f1e4ec2e0116a",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2020-2021",
+      "issues": [
+        "Cevap indeksi seceneklerle uyumsuz."
+      ],
+      "question": "Orbita’nın paries superior’unun yapısına katılan kemikler aşağıdakilerden hangisi/hangileridir?\n\nI. Os lacrimale\nII. Os frontale\nIII. Os zygomaticum\nIV. Os sphenoidale"
+    },
+    {
+      "id": "00781bfc7ac3ecf7b17d7fdf",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2020-2021",
+      "issues": [
+        "Cevap indeksi seceneklerle uyumsuz."
+      ],
+      "question": "Aşağıdakilerden hangisi n. glossopharyngeus’un parasempatik nucleusudur?"
+    },
+    {
+      "id": "911153a94918c6c735fd8bb2",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2020-2021",
+      "issues": [
+        "Cevap indeksi seceneklerle uyumsuz."
+      ],
+      "question": "Aşağıdaki kranial sinir çekirdeklerinden hangisi pons’ta bulunmaz?"
+    },
+    {
+      "id": "c00468fafa67a15066271240",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2020-2021",
+      "issues": [
+        "Cevap indeksi seceneklerle uyumsuz."
+      ],
+      "question": "Hemisfer Morfolojisi, Motor ve Duyu Bölgeleri Primer motor bölge Brodmann’ın kaç numaralı sahasıdır?"
+    },
+    {
+      "id": "cb9d47285b1df1fcc2230903",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2020-2021",
+      "issues": [
+        "Cevap indeksi seceneklerle uyumsuz."
+      ],
+      "question": "Hemisfer Morfolojisi, Motor ve Duyu Bölgeleri Objelerin şekillerini ve renklerini ayırt edemeyen bir kişide Brodmann’ın hangi sahasında hasar olduğu düşünülür?"
+    },
+    {
+      "id": "d82266b213fbe0733849e08c",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2022-2023",
+      "issues": [
+        "Cevap indeksi seceneklerle uyumsuz."
+      ],
+      "question": "Bipolar nöronlar hangi kranial sinirlerle ilgili yollarda bulunur?"
+    },
+    {
+      "id": "2ed2541eeebbf49506387eb5",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2022-2023",
+      "issues": [
+        "Cevap indeksi seceneklerle uyumsuz."
+      ],
+      "question": "Aşağıdaki inen yollardan hangisi funiculus anterior’ da lokalizedir?"
+    },
+    {
+      "id": "6011df7ddacadaae8a0f9faf",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2022-2023",
+      "issues": [
+        "Cevap indeksi seceneklerle uyumsuz."
+      ],
+      "question": "üst göz kapakları, burun derisi, conjuctiva, saccus ve caruncula lacrimalis’in duysal innervasyonunu aşağıdaki kranial sinir dallarından hangisi yapar?"
+    },
+    {
+      "id": "3d6c65aa0aa68938b2288f0c",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2022-2023",
+      "issues": [
+        "Cevap indeksi seceneklerle uyumsuz."
+      ],
+      "question": "aşağıdaki yollardan hanisi spinovisual refleksi oluşturur?"
+    },
+    {
+      "id": "e352f6af69aaf324b6aed3c7",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2022-2023",
+      "issues": [
+        "Cevap indeksi seceneklerle uyumsuz."
+      ],
+      "question": "VII. Laminanın medial yarısında ve T1-L2(3) medulla spinalis segmentlerinde bulunan nucleus aşağıdakilerden hangisidir?"
+    },
+    {
+      "id": "27775e6cc3bc76edc65b71ea",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2022-2023",
+      "issues": [
+        "Cevap indeksi seceneklerle uyumsuz."
+      ],
+      "question": "Lateral ventrikül, foramen interventriculare, 3. Ventrikül, XXXXX, 4.ventrikül, YYYYY, spatium subarachnoideum Verilen BOS’un beyin ventriküllerindeki plexus choroideus’lardan salg"
+    },
+    {
+      "id": "ff3995d63b074c04870242f8",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2022-2023",
+      "issues": [
+        "Cevap indeksi seceneklerle uyumsuz."
+      ],
+      "question": "aşağıdakilerden hangisi sempatik sinir sistemi ilgili yanlış ?"
+    },
+    {
+      "id": "39c71e31aac9eb700128a0dc",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2022-2023",
+      "issues": [
+        "Cevap indeksi seceneklerle uyumsuz."
+      ],
+      "question": "Hypothalamicus’un nuc. Arcuatus’u aşağıdaki fonksiyonlardan hangisi ile ilgili?"
+    },
+    {
+      "id": "da14c98d74ebff8a35d93f78",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2022-2023",
+      "issues": [
+        "Cevap indeksi seceneklerle uyumsuz."
+      ],
+      "question": "hangisi Willis poligonu yapısına katılmaz?"
+    },
+    {
+      "id": "04968424d1382b4126daa45a",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2022-2023",
+      "issues": [
+        "Cevap indeksi seceneklerle uyumsuz."
+      ],
+      "question": "C8 segmenti ve üst tarafından, boyun ve üst ekstremitelerin kas ve eklemlerinden şuursuz proprioceptif duyu taşıyan cerebellum yolu hangisi?"
+    },
+    {
+      "id": "53eb182ae375729e4a8da1f6",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2022-2023",
+      "issues": [
+        "Cevap indeksi seceneklerle uyumsuz."
+      ],
+      "question": "tonsilla cerebelli ve vermis cerebelli yapılarının foramen magnumdan aşağı doğru fıtıklaşmasıyla karakterize klinik tablo hangisi?"
+    },
+    {
+      "id": "0285e89ef7198f38a7a946ef",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2022-2023",
+      "issues": [
+        "Cevap indeksi seceneklerle uyumsuz."
+      ],
+      "question": "aşağıdaki kranial sinirlere ait olan çekirdeklerden hangisi parasempatik sistemle ilgili?\n\nI. Nucleus olivarius superior\nII. Nucleus ambiguus\nIII. Nuclues olivarius inferior\nIV. Nu"
+    },
+    {
+      "id": "1fb075acdd2225044069dd07",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2022-2023",
+      "issues": [
+        "Cevap indeksi seceneklerle uyumsuz."
+      ],
+      "question": "Nuclei basales’in direkt bağlantısı için hangisi yanlış?"
+    },
+    {
+      "id": "d6cd59a458d07370f0dd13d7",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2022-2023",
+      "issues": [
+        "Cevap indeksi seceneklerle uyumsuz."
+      ],
+      "question": "lateral meduller sendromda gözlenen disfaji ve disartri tablolarının sebebi aşağıdakilerden hangisinin etkilenmesinden kaynaklanır?"
+    },
+    {
+      "id": "90a6d52761d3c245dc516261",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2022-2023",
+      "issues": [
+        "Cevap indeksi seceneklerle uyumsuz."
+      ],
+      "question": "hangisi gözün ekstrinsik dış kaslarındandır?\n\nI. M.tarsalis superior\nII. M.ciliaris\nIII. M.orbitalis\nIV. M.dilatator pupilla"
+    },
+    {
+      "id": "46be5ab04a3ce788beb96b92",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2022-2023",
+      "issues": [
+        "Cevap indeksi seceneklerle uyumsuz."
+      ],
+      "question": "sağ tractus opticus tümör basısı sebebiyle hasarlandıysa aşağıdaki tablolardan hangisi eşleşir?"
+    },
+    {
+      "id": "46fb0866d8164506b21f3faf",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2022-2023",
+      "issues": [
+        "Cevap indeksi seceneklerle uyumsuz."
+      ],
+      "question": "N.lingualis aşağıdaki nucleuslardan hangisinin çıkan parasempatik lifleri gl.submandibulare ve gl.sublingualis’ e götürür?"
+    },
+    {
+      "id": "7b00afe2a95a84da2ce0287c",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2022-2023",
+      "issues": [
+        "Cevap indeksi seceneklerle uyumsuz."
+      ],
+      "question": "n. vagus ile ilgili hangisi doğru?"
+    },
+    {
+      "id": "1831c9308ecb68ccbac970ff",
+      "subject": "Biyofizik",
+      "exam": "Kurul 1",
+      "year": "2017-2018",
+      "issues": [
+        "Cevap indeksi seceneklerle uyumsuz."
+      ],
+      "question": "Yarıçapı 0,5 cm olan bir arterden 10⁻⁴ m³/s debi ile kan akarken 30 cm uzunluktaki basınç düşmesi ne kadar olur?"
+    },
+    {
+      "id": "1831c9308ecb68ccbac970ff__content_2",
+      "subject": "Biyofizik",
+      "exam": "Kurul 1",
+      "year": "2017-2018",
+      "issues": [
+        "Cevap indeksi seceneklerle uyumsuz."
+      ],
+      "question": "Yarıçapı 0,5 cm olan bir arterden 10⁻⁴ m³/s debi ile kan akarken 30 cm uzunluktaki basınç düşmesi ne kadar olur?"
+    },
+    {
+      "id": "cfabf1e6ee25ffa1e61bdee6",
+      "subject": "Biyokimya",
+      "exam": "Kurul 3",
+      "year": "2017-2018",
+      "issues": [
+        "Cevap indeksi seceneklerle uyumsuz."
+      ],
+      "question": "Hamileliğin oluşumu ile korpus luteumun devamını sağlayan ve plasentada salgılanan hormon hangisidir?"
+    },
+    {
+      "id": "83b2e8c498403e0b17113a1c",
+      "subject": "Farmakoloji",
+      "exam": "DHF Final",
+      "year": "Kaynakta belirtilmemiş",
+      "issues": [
+        "Cevap indeksi seceneklerle uyumsuz."
+      ],
+      "question": "Sempatik preganglionik akson uçlarından salgılanan nörotransmitter madde, postganglionik nöronlar üzerindeki reseptörlerden hangisini uyarır?"
+    }
+  ],
+  "suspicious": [
+    {
+      "id": "105544f835edd75cf1763999",
+      "subject": "Anatomi",
+      "exam": "Kurul 1",
+      "year": "2017-2018, Final 2019/derleme, 2025-2026",
+      "reasons": [
+        "Format gozden gecirilmeli."
+      ]
+    },
+    {
+      "id": "0ccf39d57a3e9da177b787bc",
+      "subject": "Anatomi",
+      "exam": "Kurul 1",
+      "year": "2021-2022/derleme",
+      "reasons": [
+        "Format gozden gecirilmeli."
+      ]
+    },
+    {
+      "id": "208804864c5442fe188a9f54",
+      "subject": "Anatomi",
+      "exam": "Kurul 1",
+      "year": "2019-2020, 2021-2022/derleme",
+      "reasons": [
+        "Format gozden gecirilmeli."
+      ]
+    },
+    {
+      "id": "f6f73fc7c083f4b239f4221b",
+      "subject": "Anatomi",
+      "exam": "Kurul 1",
+      "year": "2019-2020",
+      "reasons": [
+        "Format gozden gecirilmeli."
+      ]
+    },
+    {
+      "id": "f1cffbc26cd1c2520800e7e6",
+      "subject": "Anatomi",
+      "exam": "Kurul 1",
+      "year": "2019-2020, 2021-2022/derleme, 2022-2023, 2025-2026",
+      "reasons": [
+        "Format gozden gecirilmeli."
+      ]
+    },
+    {
+      "id": "37c7b15b759342799c5f35c5",
+      "subject": "Anatomi",
+      "exam": "Kurul 1",
+      "year": "2021-2022/derleme",
+      "reasons": [
+        "Format gozden gecirilmeli."
+      ]
+    },
+    {
+      "id": "5997e7de551791c7442918b1",
+      "subject": "Anatomi",
+      "exam": "Kurul 1",
+      "year": "2016 Final",
+      "reasons": [
+        "Format gozden gecirilmeli."
+      ]
+    },
+    {
+      "id": "d3c6828c2c9c30e066b4eeb5",
+      "subject": "Anatomi",
+      "exam": "Kurul 1",
+      "year": "2018-2019, 2021-2022/derleme",
+      "reasons": [
+        "Format gozden gecirilmeli."
+      ]
+    },
+    {
+      "id": "ffd3091c9a08d169a8159a62",
+      "subject": "Anatomi",
+      "exam": "Kurul 1",
+      "year": "2021-2022/derleme",
+      "reasons": [
+        "Format gozden gecirilmeli."
+      ]
+    },
+    {
+      "id": "58c1403000daa233e64fd723",
+      "subject": "Anatomi",
+      "exam": "Kurul 1",
+      "year": "2017-2018",
+      "reasons": [
+        "Format gozden gecirilmeli."
+      ]
+    },
+    {
+      "id": "15d269c44807abcc84093fdd",
+      "subject": "Anatomi",
+      "exam": "Kurul 1",
+      "year": "2017-2018",
+      "reasons": [
+        "Format gozden gecirilmeli."
+      ]
+    },
+    {
+      "id": "ca5c6dad65fea00721d9caed",
+      "subject": "Anatomi",
+      "exam": "Kurul 1",
+      "year": "2021-2022/derleme",
+      "reasons": [
+        "Format gozden gecirilmeli."
+      ]
+    },
+    {
+      "id": "be9d2ea3a473053eddcb4a81",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2020-2021",
+      "reasons": [
+        "Format gozden gecirilmeli."
+      ]
+    },
+    {
+      "id": "ee86c59803f63377ec048c34",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2020-2021",
+      "reasons": [
+        "Format gozden gecirilmeli."
+      ]
+    },
+    {
+      "id": "c68f79567903dc0f42f99464",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2020-2021",
+      "reasons": [
+        "Format gozden gecirilmeli."
+      ]
+    },
+    {
+      "id": "38fb5ca268436d9a0f424486",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2020-2021",
+      "reasons": [
+        "Format gozden gecirilmeli."
+      ]
+    },
+    {
+      "id": "4def82b8bb83324c6133df5e",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2020-2021",
+      "reasons": [
+        "Format gozden gecirilmeli."
+      ]
+    },
+    {
+      "id": "d8c54c06f091a14a95620067",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2020-2021",
+      "reasons": [
+        "Format gozden gecirilmeli."
+      ]
+    },
+    {
+      "id": "eee90233582f1e4ec2e0116a",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2020-2021",
+      "reasons": [
+        "Format gozden gecirilmeli."
+      ]
+    },
+    {
+      "id": "00781bfc7ac3ecf7b17d7fdf",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2020-2021",
+      "reasons": [
+        "Format gozden gecirilmeli."
+      ]
+    },
+    {
+      "id": "911153a94918c6c735fd8bb2",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2020-2021",
+      "reasons": [
+        "Format gozden gecirilmeli."
+      ]
+    },
+    {
+      "id": "c00468fafa67a15066271240",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2020-2021",
+      "reasons": [
+        "Format gozden gecirilmeli."
+      ]
+    },
+    {
+      "id": "cb9d47285b1df1fcc2230903",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2020-2021",
+      "reasons": [
+        "Format gozden gecirilmeli."
+      ]
+    },
+    {
+      "id": "d82266b213fbe0733849e08c",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2022-2023",
+      "reasons": [
+        "Format gozden gecirilmeli."
+      ]
+    },
+    {
+      "id": "2ed2541eeebbf49506387eb5",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2022-2023",
+      "reasons": [
+        "Format gozden gecirilmeli."
+      ]
+    },
+    {
+      "id": "6011df7ddacadaae8a0f9faf",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2022-2023",
+      "reasons": [
+        "Format gozden gecirilmeli."
+      ]
+    },
+    {
+      "id": "3d6c65aa0aa68938b2288f0c",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2022-2023",
+      "reasons": [
+        "Format gozden gecirilmeli."
+      ]
+    },
+    {
+      "id": "e352f6af69aaf324b6aed3c7",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2022-2023",
+      "reasons": [
+        "Format gozden gecirilmeli."
+      ]
+    },
+    {
+      "id": "27775e6cc3bc76edc65b71ea",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2022-2023",
+      "reasons": [
+        "Format gozden gecirilmeli."
+      ]
+    },
+    {
+      "id": "ff3995d63b074c04870242f8",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2022-2023",
+      "reasons": [
+        "Format gozden gecirilmeli."
+      ]
+    },
+    {
+      "id": "39c71e31aac9eb700128a0dc",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2022-2023",
+      "reasons": [
+        "Format gozden gecirilmeli."
+      ]
+    },
+    {
+      "id": "da14c98d74ebff8a35d93f78",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2022-2023",
+      "reasons": [
+        "Format gozden gecirilmeli."
+      ]
+    },
+    {
+      "id": "04968424d1382b4126daa45a",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2022-2023",
+      "reasons": [
+        "Format gozden gecirilmeli."
+      ]
+    },
+    {
+      "id": "53eb182ae375729e4a8da1f6",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2022-2023",
+      "reasons": [
+        "Format gozden gecirilmeli."
+      ]
+    },
+    {
+      "id": "0285e89ef7198f38a7a946ef",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2022-2023",
+      "reasons": [
+        "Format gozden gecirilmeli."
+      ]
+    },
+    {
+      "id": "1fb075acdd2225044069dd07",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2022-2023",
+      "reasons": [
+        "Format gozden gecirilmeli."
+      ]
+    },
+    {
+      "id": "d6cd59a458d07370f0dd13d7",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2022-2023",
+      "reasons": [
+        "Format gozden gecirilmeli."
+      ]
+    },
+    {
+      "id": "90a6d52761d3c245dc516261",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2022-2023",
+      "reasons": [
+        "Format gozden gecirilmeli."
+      ]
+    },
+    {
+      "id": "46be5ab04a3ce788beb96b92",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2022-2023",
+      "reasons": [
+        "Format gozden gecirilmeli."
+      ]
+    },
+    {
+      "id": "46fb0866d8164506b21f3faf",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2022-2023",
+      "reasons": [
+        "Format gozden gecirilmeli."
+      ]
+    },
+    {
+      "id": "7b00afe2a95a84da2ce0287c",
+      "subject": "Anatomi",
+      "exam": "Kurul 4",
+      "year": "2022-2023",
+      "reasons": [
+        "Format gozden gecirilmeli."
+      ]
+    },
+    {
+      "id": "1831c9308ecb68ccbac970ff",
+      "subject": "Biyofizik",
+      "exam": "Kurul 1",
+      "year": "2017-2018",
+      "reasons": [
+        "Format gozden gecirilmeli."
+      ]
+    },
+    {
+      "id": "1831c9308ecb68ccbac970ff__content_2",
+      "subject": "Biyofizik",
+      "exam": "Kurul 1",
+      "year": "2017-2018",
+      "reasons": [
+        "Format gozden gecirilmeli."
+      ]
+    },
+    {
+      "id": "cfabf1e6ee25ffa1e61bdee6",
+      "subject": "Biyokimya",
+      "exam": "Kurul 3",
+      "year": "2017-2018",
+      "reasons": [
+        "Format gozden gecirilmeli."
+      ]
+    },
+    {
+      "id": "83b2e8c498403e0b17113a1c",
+      "subject": "Farmakoloji",
+      "exam": "DHF Final",
+      "year": "Kaynakta belirtilmemiş",
+      "reasons": [
+        "Format gozden gecirilmeli."
+      ]
+    },
+    {
+      "id": "1bb7bd445f0cf090249102e2",
+      "subject": "Fizyoloji",
+      "exam": "Final",
+      "year": "2025-2026",
+      "reasons": [
+        "Koruma veritabaninda yok."
+      ]
+    },
+    {
+      "id": "18496d0082616cfbcfc72b7f",
+      "subject": "Mikrobiyoloji",
+      "exam": "Final",
+      "year": "2025-2026",
+      "reasons": [
+        "Cevap anahtari duzeltme gecmisi var."
+      ]
+    }
+  ],
+  "relationSamples": [
+    {
+      "id": "105544f835edd75cf1763999",
+      "subject": "Anatomi",
+      "topic": "A. subclavia - dalları",
+      "related": [
+        {
+          "id": "105544f835edd75cf1763999__content_2",
+          "subject": "Anatomi",
+          "topic": "A. subclavia - dalları",
+          "exam": "Kurul 1"
+        }
+      ]
+    },
+    {
+      "id": "0ccf39d57a3e9da177b787bc",
+      "subject": "Anatomi",
+      "topic": "Rete articulare cubiti - arter ağı",
+      "related": [
+        {
+          "id": "0ccf39d57a3e9da177b787bc__content_2",
+          "subject": "Anatomi",
+          "topic": "Rete articulare cubiti - arter ağı",
+          "exam": "Kurul 1"
+        }
+      ]
+    },
+    {
+      "id": "208804864c5442fe188a9f54",
+      "subject": "Anatomi",
+      "topic": "Kalp iskeleti - trigonum fibrosum sinistrum",
+      "related": [
+        {
+          "id": "208804864c5442fe188a9f54__content_2",
+          "subject": "Anatomi",
+          "topic": "Kalp iskeleti - trigonum fibrosum sinistrum",
+          "exam": "Kurul 1"
+        }
+      ]
+    },
+    {
+      "id": "f6f73fc7c083f4b239f4221b",
+      "subject": "Anatomi",
+      "topic": "Aorta thoracica - visseral dallar",
+      "related": [
+        {
+          "id": "f6f73fc7c083f4b239f4221b__content_2",
+          "subject": "Anatomi",
+          "topic": "Aorta thoracica - visseral dallar",
+          "exam": "Kurul 1"
+        }
+      ]
+    },
+    {
+      "id": "f1cffbc26cd1c2520800e7e6",
+      "subject": "Anatomi",
+      "topic": "V. cava inferior - direkt açılan venler",
+      "related": [
+        {
+          "id": "f1cffbc26cd1c2520800e7e6__content_2",
+          "subject": "Anatomi",
+          "topic": "V. cava inferior - direkt açılan venler",
+          "exam": "Kurul 1"
+        }
+      ]
+    },
+    {
+      "id": "37c7b15b759342799c5f35c5",
+      "subject": "Anatomi",
+      "topic": "V. portae hepatis - direkt tributaries",
+      "related": [
+        {
+          "id": "37c7b15b759342799c5f35c5__content_2",
+          "subject": "Anatomi",
+          "topic": "V. portae hepatis - direkt tributaries",
+          "exam": "Kurul 1"
+        }
+      ]
+    },
+    {
+      "id": "5997e7de551791c7442918b1",
+      "subject": "Anatomi",
+      "topic": "Cava-caval anastomoz - yüzeyel damarlar",
+      "related": [
+        {
+          "id": "5997e7de551791c7442918b1__content_2",
+          "subject": "Anatomi",
+          "topic": "Cava-caval anastomoz - yüzeyel damarlar",
+          "exam": "Kurul 1"
+        }
+      ]
+    },
+    {
+      "id": "d3c6828c2c9c30e066b4eeb5",
+      "subject": "Anatomi",
+      "topic": "Truncus brachiocephalicus - dallar",
+      "related": [
+        {
+          "id": "d3c6828c2c9c30e066b4eeb5__content_2",
+          "subject": "Anatomi",
+          "topic": "Truncus brachiocephalicus - dallar",
+          "exam": "Kurul 1"
+        }
+      ]
+    },
+    {
+      "id": "ffd3091c9a08d169a8159a62",
+      "subject": "Anatomi",
+      "topic": "Sinus sphenoidalis - doğru öncüller",
+      "related": [
+        {
+          "id": "ffd3091c9a08d169a8159a62__content_2",
+          "subject": "Anatomi",
+          "topic": "Sinus sphenoidalis - doğru öncüller",
+          "exam": "Kurul 1"
+        }
+      ]
+    },
+    {
+      "id": "58c1403000daa233e64fd723",
+      "subject": "Anatomi",
+      "topic": "Larynx - foramen thyrohyoideum",
+      "related": [
+        {
+          "id": "58c1403000daa233e64fd723__content_2",
+          "subject": "Anatomi",
+          "topic": "Larynx - foramen thyrohyoideum",
+          "exam": "Kurul 1"
+        }
+      ]
+    },
+    {
+      "id": "15d269c44807abcc84093fdd",
+      "subject": "Anatomi",
+      "topic": "Bronchus principalis dexter - aspirasyon",
+      "related": [
+        {
+          "id": "15d269c44807abcc84093fdd__content_2",
+          "subject": "Anatomi",
+          "topic": "Bronchus principalis dexter - aspirasyon",
+          "exam": "Kurul 1"
+        }
+      ]
+    },
+    {
+      "id": "ca5c6dad65fea00721d9caed",
+      "subject": "Anatomi",
+      "topic": "Diaphragma - doğru öncüller",
+      "related": [
+        {
+          "id": "ca5c6dad65fea00721d9caed__content_2",
+          "subject": "Anatomi",
+          "topic": "Diaphragma - doğru öncüller",
+          "exam": "Kurul 1"
+        }
+      ]
+    },
+    {
+      "id": "105544f835edd75cf1763999__content_2",
+      "subject": "Anatomi",
+      "topic": "A. subclavia - dalları",
+      "related": [
+        {
+          "id": "105544f835edd75cf1763999",
+          "subject": "Anatomi",
+          "topic": "A. subclavia - dalları",
+          "exam": "Kurul 1"
+        }
+      ]
+    },
+    {
+      "id": "29621a9ef68371b8613f3609",
+      "subject": "Anatomi",
+      "topic": "Üst ekstremite venleri - kan alma",
+      "related": [
+        {
+          "id": "b1c98b10d27516e6f982dd7a",
+          "subject": "Anatomi",
+          "topic": "Anatomi - ilgili kurul başlığı",
+          "exam": "Bütünleme"
+        }
+      ]
+    },
+    {
+      "id": "0ccf39d57a3e9da177b787bc__content_2",
+      "subject": "Anatomi",
+      "topic": "Rete articulare cubiti - arter ağı",
+      "related": [
+        {
+          "id": "0ccf39d57a3e9da177b787bc",
+          "subject": "Anatomi",
+          "topic": "Rete articulare cubiti - arter ağı",
+          "exam": "Kurul 1"
+        }
+      ]
+    },
+    {
+      "id": "208804864c5442fe188a9f54__content_2",
+      "subject": "Anatomi",
+      "topic": "Kalp iskeleti - trigonum fibrosum sinistrum",
+      "related": [
+        {
+          "id": "208804864c5442fe188a9f54",
+          "subject": "Anatomi",
+          "topic": "Kalp iskeleti - trigonum fibrosum sinistrum",
+          "exam": "Kurul 1"
+        }
+      ]
+    },
+    {
+      "id": "f6f73fc7c083f4b239f4221b__content_2",
+      "subject": "Anatomi",
+      "topic": "Aorta thoracica - visseral dallar",
+      "related": [
+        {
+          "id": "f6f73fc7c083f4b239f4221b",
+          "subject": "Anatomi",
+          "topic": "Aorta thoracica - visseral dallar",
+          "exam": "Kurul 1"
+        }
+      ]
+    },
+    {
+      "id": "f1cffbc26cd1c2520800e7e6__content_2",
+      "subject": "Anatomi",
+      "topic": "V. cava inferior - direkt açılan venler",
+      "related": [
+        {
+          "id": "f1cffbc26cd1c2520800e7e6",
+          "subject": "Anatomi",
+          "topic": "V. cava inferior - direkt açılan venler",
+          "exam": "Kurul 1"
+        }
+      ]
+    },
+    {
+      "id": "37c7b15b759342799c5f35c5__content_2",
+      "subject": "Anatomi",
+      "topic": "V. portae hepatis - direkt tributaries",
+      "related": [
+        {
+          "id": "37c7b15b759342799c5f35c5",
+          "subject": "Anatomi",
+          "topic": "V. portae hepatis - direkt tributaries",
+          "exam": "Kurul 1"
+        }
+      ]
+    },
+    {
+      "id": "5997e7de551791c7442918b1__content_2",
+      "subject": "Anatomi",
+      "topic": "Cava-caval anastomoz - yüzeyel damarlar",
+      "related": [
+        {
+          "id": "5997e7de551791c7442918b1",
+          "subject": "Anatomi",
+          "topic": "Cava-caval anastomoz - yüzeyel damarlar",
+          "exam": "Kurul 1"
+        }
+      ]
+    }
+  ]
+}
