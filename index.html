@@ -4796,8 +4796,8 @@
     const FINAL_REFERENCE_DB_FILES = ["soru15(1).db"];
     const FINAL_REFERENCE_SIMILARITY = 0.90;
     const STORAGE_KEY = "database_loader_question_bank_progress_v4";
-    const DB_FILE_LIST_CACHE_KEY = "question_bank_db_file_list_cache_v10_strict_related";
-    const DB_CONTENT_CACHE_NAME = "question_bank_indexeddb_cache_v10_strict_related";
+    const DB_FILE_LIST_CACHE_KEY = "question_bank_db_file_list_cache_v11_relaxed_related";
+    const DB_CONTENT_CACHE_NAME = "question_bank_indexeddb_cache_v11_relaxed_related";
     const DB_CONTENT_STORE_NAME = "dbFiles";
     const LAST_POSITION_KEY = "question_bank_last_positions_v1";
     const STUDY_TIME_KEY = "question_bank_study_time_v1";
@@ -5003,11 +5003,14 @@
         const sim = signatureSimilarity(qSig, qTokens, cSig, tokenSet(cSig));
         const sameTopic = qTopic && cTopic && qTopic === cTopic;
         const sameTarget = qTarget && cTarget && qTarget === cTarget;
+        const contextSim = jaccardSimilarity(tokenSet([qTopic, qTarget].join(" ")), tokenSet([cTopic, cTarget].join(" ")));
         let score = 0;
         if(sim >= 0.80) score = sim;
-        else if(sameTopic && sim >= 0.62) score = 0.72 + (sim * 0.2);
-        else if(sameTopic && sameTarget && sim >= 0.55) score = 0.68 + (sim * 0.18);
-        if(score >= 0.68) rows.push({q:candidate, idx, score});
+        else if(sameTopic && sim >= 0.50) score = 0.62 + (sim * 0.28);
+        else if(sameTopic && sameTarget && sim >= 0.45) score = 0.56 + (sim * 0.24);
+        else if(sameTarget && sim >= 0.50) score = 0.52 + (sim * 0.22);
+        else if(contextSim >= 0.50 && sim >= 0.35) score = 0.50 + (contextSim * 0.22) + (sim * 0.16);
+        if(score >= 0.50) rows.push({q:candidate, idx, score});
       });
       return rows.sort((a,b)=>b.score-a.score).slice(0, limit);
     }

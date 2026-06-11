@@ -1,134 +1,16 @@
 {
-  "generatedAt": "2026-06-11T14:20:50.187Z",
+  "generatedAt": "2026-06-11T14:53:34.857Z",
   "summary": {
     "questions": 1913,
-    "formatIssueCount": 45,
-    "suspiciousCount": 47,
+    "formatIssueCount": 33,
+    "suspiciousCount": 35,
+    "noOptions": 0,
     "noExplanation": 0,
-    "relatedQuestionCount": 232,
-    "relatedEdges": 260
+    "relatedQuestionCount": 438,
+    "relatedEdges": 620,
+    "maxRelated": 8
   },
   "formatIssues": [
-    {
-      "id": "105544f835edd75cf1763999",
-      "subject": "Anatomi",
-      "exam": "Kurul 1",
-      "year": "2017-2018, Final 2019/derleme, 2025-2026",
-      "issues": [
-        "Secenekler eksik; cevap anahtari metin olarak mevcut."
-      ],
-      "question": "Aşağıdakilerden hangileri a. subclavia’nın dallarıdır?\n\nI. Truncus thyrocervicalis\nII. A. vertebralis\nIII. Truncus costocervicalis\nIV. A. thoracica interna\nSeçenek: I, II, III ve I"
-    },
-    {
-      "id": "0ccf39d57a3e9da177b787bc",
-      "subject": "Anatomi",
-      "exam": "Kurul 1",
-      "year": "2021-2022/derleme",
-      "issues": [
-        "Secenekler eksik; cevap anahtari metin olarak mevcut."
-      ],
-      "question": "Rete articulare cubiti yapısını oluşturan damarlar hangileridir?\n\nI. A. recurrens ulnaris\nII. A. recurrens radialis\nIII. A. collateralis media ve a. collateralis radialis\nIV. A. co"
-    },
-    {
-      "id": "208804864c5442fe188a9f54",
-      "subject": "Anatomi",
-      "exam": "Kurul 1",
-      "year": "2019-2020, 2021-2022/derleme",
-      "issues": [
-        "Secenekler eksik; cevap anahtari metin olarak mevcut."
-      ],
-      "question": "Trigonum fibrosum sinistrum hangi yapılar arasında bulunur?\n\nI. Aorta\nII. Ostium atrioventriculare dextrum\nIII. Ostium atrioventriculare sinistrum\nIV. Truncus pulmonalis"
-    },
-    {
-      "id": "f6f73fc7c083f4b239f4221b",
-      "subject": "Anatomi",
-      "exam": "Kurul 1",
-      "year": "2019-2020",
-      "issues": [
-        "Secenekler eksik; cevap anahtari metin olarak mevcut."
-      ],
-      "question": "Aşağıdakilerden hangileri aorta thoracica’nın visseral dallarındandır?\n\nI. Rr. bronchiales\nII. Rr. oesophageales\nIII. Rr. mediastinales\nIV. A. subcostalis"
-    },
-    {
-      "id": "f1cffbc26cd1c2520800e7e6",
-      "subject": "Anatomi",
-      "exam": "Kurul 1",
-      "year": "2019-2020, 2021-2022/derleme, 2022-2023, 2025-2026",
-      "issues": [
-        "Secenekler eksik; cevap anahtari metin olarak mevcut."
-      ],
-      "question": "Aşağıdaki venlerden hangileri v. cava inferior’a açılır?\n\nI. Vv. hepaticae\nII.\nV. renalis sinistra\nIII.\nV. testicularis dextra\nIV.\nV. suprarenalis dextra\nSeçenek: I, II, III ve IV"
-    },
-    {
-      "id": "37c7b15b759342799c5f35c5",
-      "subject": "Anatomi",
-      "exam": "Kurul 1",
-      "year": "2021-2022/derleme",
-      "issues": [
-        "Secenekler eksik; cevap anahtari metin olarak mevcut."
-      ],
-      "question": "V. portae hepatis’e doğrudan açılan venler hangileridir?\n\nI.\nV. splenica\nII.\nV. mesenterica superior\nIII.\nV. gastrica sinistra ve dextra\nIV. Vv. hepaticae"
-    },
-    {
-      "id": "5997e7de551791c7442918b1",
-      "subject": "Anatomi",
-      "exam": "Kurul 1",
-      "year": "2016 Final",
-      "issues": [
-        "Secenekler eksik; cevap anahtari metin olarak mevcut."
-      ],
-      "question": "Gövdenin ön tarafındaki yüzeyel damarlardan hangileri v. cava superior ve v. cava inferior arasında cava-caval anastomoz oluşturur?\n\nI.\nV. thoracoepigastrica\nII. Vv. paraumbilicale"
-    },
-    {
-      "id": "d3c6828c2c9c30e066b4eeb5",
-      "subject": "Anatomi",
-      "exam": "Kurul 1",
-      "year": "2018-2019, 2021-2022/derleme",
-      "issues": [
-        "Secenekler eksik; cevap anahtari metin olarak mevcut."
-      ],
-      "question": "Truncus brachiocephalicus’un dalları hangileridir?\n\nI. A. carotis communis dextra\nII. A. carotis communis sinistra\nIII. A. subclavia dextra\nIV. A. subclavia sinistra"
-    },
-    {
-      "id": "ffd3091c9a08d169a8159a62",
-      "subject": "Anatomi",
-      "exam": "Kurul 1",
-      "year": "2021-2022/derleme",
-      "issues": [
-        "Secenekler eksik; cevap anahtari metin olarak mevcut."
-      ],
-      "question": "Sinus sphenoidalis ile ilgili verilenlerden hangileri doğrudur?\n\nI. Duvarları ince olduğundan enfeksiyonu ciddi risk oluşturabilir\nII. Klinik öneme sahip komşulukları vardır\nIII. O"
-    },
-    {
-      "id": "58c1403000daa233e64fd723",
-      "subject": "Anatomi",
-      "exam": "Kurul 1",
-      "year": "2017-2018",
-      "issues": [
-        "Secenekler eksik; cevap anahtari metin olarak mevcut."
-      ],
-      "question": "Aşağıdaki yapılardan hangileri foramen thyrohyoideum’dan geçer?\n\nI. A. laryngea superior\nII.\nV. laryngea superior\nIII. N. laryngeus superior’un r. internus’u\nIV. N. laryngeus infer"
-    },
-    {
-      "id": "15d269c44807abcc84093fdd",
-      "subject": "Anatomi",
-      "exam": "Kurul 1",
-      "year": "2017-2018",
-      "issues": [
-        "Secenekler eksik; cevap anahtari metin olarak mevcut."
-      ],
-      "question": "Yabancı cisim aspirasyonlarının daha çok sağ ana bronşa kaçmasının nedeni hangi özelliklerdir?\n\nI. Daha kısa\nII. Daha dik\nIII. Daha geniş\nIV. Daha kıvrımlı"
-    },
-    {
-      "id": "ca5c6dad65fea00721d9caed",
-      "subject": "Anatomi",
-      "exam": "Kurul 1",
-      "year": "2021-2022/derleme",
-      "issues": [
-        "Secenekler eksik; cevap anahtari metin olarak mevcut."
-      ],
-      "question": "Diaphragma ile ilgili verilen ifadelerden hangileri doğrudur?\n\nI. A. thoracica interna, aorta thoracica ve aorta abdominalis dalları tarafından beslenir\nII. Diaphragmada dört büyük"
-    },
     {
       "id": "be9d2ea3a473053eddcb4a81",
       "subject": "Anatomi",
@@ -137,6 +19,7 @@
       "issues": [
         "Cevap indeksi seceneklerle uyumsuz."
       ],
+      "fixes": [],
       "question": "Bazal Ganglionlar Aşağıdakilerden hangisi/hangileri corpus striatum’un yapısına katılır?\n\nI. Nuc. caudatus\nII. Putamen\nIII. Globus pallidus\nIV. Nuc. subthalamicus"
     },
     {
@@ -147,6 +30,7 @@
       "issues": [
         "Cevap indeksi seceneklerle uyumsuz."
       ],
+      "fixes": [],
       "question": "Beyin Hemisferlerinin Ak Maddesi Capsula interna’nın medialinde kalan yapı/yapılar aşağıdakilerden hangisi/hangileridir?\n\nI. Caput nuclei caudati\nII. Nucleus lentiformis\nIII. Thala"
     },
     {
@@ -157,6 +41,7 @@
       "issues": [
         "Cevap indeksi seceneklerle uyumsuz."
       ],
+      "fixes": [],
       "question": "Hemisfer Morfolojisi, Motor ve Duyu Bölgeleri Primer işitme merkezi Brodmann’ın kaç numaralı sahasıdır?"
     },
     {
@@ -167,6 +52,7 @@
       "issues": [
         "Cevap indeksi seceneklerle uyumsuz."
       ],
+      "fixes": [],
       "question": "Aşağıdakilerden hangisi a. basilaris’in dalı değildir?"
     },
     {
@@ -177,6 +63,7 @@
       "issues": [
         "Cevap indeksi seceneklerle uyumsuz."
       ],
+      "fixes": [],
       "question": "Ağrı ve ısı duyuları hangi yolla merkeze taşınır?"
     },
     {
@@ -187,6 +74,7 @@
       "issues": [
         "Cevap indeksi seceneklerle uyumsuz."
       ],
+      "fixes": [],
       "question": "Humor aquosus’un drene olduğu yapı aşağıdakilerden hangisidir?"
     },
     {
@@ -197,6 +85,7 @@
       "issues": [
         "Cevap indeksi seceneklerle uyumsuz."
       ],
+      "fixes": [],
       "question": "Orbita’nın paries superior’unun yapısına katılan kemikler aşağıdakilerden hangisi/hangileridir?\n\nI. Os lacrimale\nII. Os frontale\nIII. Os zygomaticum\nIV. Os sphenoidale"
     },
     {
@@ -207,6 +96,7 @@
       "issues": [
         "Cevap indeksi seceneklerle uyumsuz."
       ],
+      "fixes": [],
       "question": "Aşağıdakilerden hangisi n. glossopharyngeus’un parasempatik nucleusudur?"
     },
     {
@@ -217,6 +107,7 @@
       "issues": [
         "Cevap indeksi seceneklerle uyumsuz."
       ],
+      "fixes": [],
       "question": "Aşağıdaki kranial sinir çekirdeklerinden hangisi pons’ta bulunmaz?"
     },
     {
@@ -227,6 +118,7 @@
       "issues": [
         "Cevap indeksi seceneklerle uyumsuz."
       ],
+      "fixes": [],
       "question": "Hemisfer Morfolojisi, Motor ve Duyu Bölgeleri Primer motor bölge Brodmann’ın kaç numaralı sahasıdır?"
     },
     {
@@ -237,6 +129,7 @@
       "issues": [
         "Cevap indeksi seceneklerle uyumsuz."
       ],
+      "fixes": [],
       "question": "Hemisfer Morfolojisi, Motor ve Duyu Bölgeleri Objelerin şekillerini ve renklerini ayırt edemeyen bir kişide Brodmann’ın hangi sahasında hasar olduğu düşünülür?"
     },
     {
@@ -247,6 +140,7 @@
       "issues": [
         "Cevap indeksi seceneklerle uyumsuz."
       ],
+      "fixes": [],
       "question": "Bipolar nöronlar hangi kranial sinirlerle ilgili yollarda bulunur?"
     },
     {
@@ -257,6 +151,7 @@
       "issues": [
         "Cevap indeksi seceneklerle uyumsuz."
       ],
+      "fixes": [],
       "question": "Aşağıdaki inen yollardan hangisi funiculus anterior’ da lokalizedir?"
     },
     {
@@ -267,6 +162,7 @@
       "issues": [
         "Cevap indeksi seceneklerle uyumsuz."
       ],
+      "fixes": [],
       "question": "üst göz kapakları, burun derisi, conjuctiva, saccus ve caruncula lacrimalis’in duysal innervasyonunu aşağıdaki kranial sinir dallarından hangisi yapar?"
     },
     {
@@ -277,6 +173,7 @@
       "issues": [
         "Cevap indeksi seceneklerle uyumsuz."
       ],
+      "fixes": [],
       "question": "aşağıdaki yollardan hanisi spinovisual refleksi oluşturur?"
     },
     {
@@ -287,6 +184,7 @@
       "issues": [
         "Cevap indeksi seceneklerle uyumsuz."
       ],
+      "fixes": [],
       "question": "VII. Laminanın medial yarısında ve T1-L2(3) medulla spinalis segmentlerinde bulunan nucleus aşağıdakilerden hangisidir?"
     },
     {
@@ -297,6 +195,7 @@
       "issues": [
         "Cevap indeksi seceneklerle uyumsuz."
       ],
+      "fixes": [],
       "question": "Lateral ventrikül, foramen interventriculare, 3. Ventrikül, XXXXX, 4.ventrikül, YYYYY, spatium subarachnoideum Verilen BOS’un beyin ventriküllerindeki plexus choroideus’lardan salg"
     },
     {
@@ -307,6 +206,7 @@
       "issues": [
         "Cevap indeksi seceneklerle uyumsuz."
       ],
+      "fixes": [],
       "question": "aşağıdakilerden hangisi sempatik sinir sistemi ilgili yanlış ?"
     },
     {
@@ -317,6 +217,7 @@
       "issues": [
         "Cevap indeksi seceneklerle uyumsuz."
       ],
+      "fixes": [],
       "question": "Hypothalamicus’un nuc. Arcuatus’u aşağıdaki fonksiyonlardan hangisi ile ilgili?"
     },
     {
@@ -327,6 +228,7 @@
       "issues": [
         "Cevap indeksi seceneklerle uyumsuz."
       ],
+      "fixes": [],
       "question": "hangisi Willis poligonu yapısına katılmaz?"
     },
     {
@@ -337,6 +239,7 @@
       "issues": [
         "Cevap indeksi seceneklerle uyumsuz."
       ],
+      "fixes": [],
       "question": "C8 segmenti ve üst tarafından, boyun ve üst ekstremitelerin kas ve eklemlerinden şuursuz proprioceptif duyu taşıyan cerebellum yolu hangisi?"
     },
     {
@@ -347,6 +250,7 @@
       "issues": [
         "Cevap indeksi seceneklerle uyumsuz."
       ],
+      "fixes": [],
       "question": "tonsilla cerebelli ve vermis cerebelli yapılarının foramen magnumdan aşağı doğru fıtıklaşmasıyla karakterize klinik tablo hangisi?"
     },
     {
@@ -357,6 +261,7 @@
       "issues": [
         "Cevap indeksi seceneklerle uyumsuz."
       ],
+      "fixes": [],
       "question": "aşağıdaki kranial sinirlere ait olan çekirdeklerden hangisi parasempatik sistemle ilgili?\n\nI. Nucleus olivarius superior\nII. Nucleus ambiguus\nIII. Nuclues olivarius inferior\nIV. Nu"
     },
     {
@@ -367,6 +272,7 @@
       "issues": [
         "Cevap indeksi seceneklerle uyumsuz."
       ],
+      "fixes": [],
       "question": "Nuclei basales’in direkt bağlantısı için hangisi yanlış?"
     },
     {
@@ -377,6 +283,7 @@
       "issues": [
         "Cevap indeksi seceneklerle uyumsuz."
       ],
+      "fixes": [],
       "question": "lateral meduller sendromda gözlenen disfaji ve disartri tablolarının sebebi aşağıdakilerden hangisinin etkilenmesinden kaynaklanır?"
     },
     {
@@ -387,6 +294,7 @@
       "issues": [
         "Cevap indeksi seceneklerle uyumsuz."
       ],
+      "fixes": [],
       "question": "hangisi gözün ekstrinsik dış kaslarındandır?\n\nI. M.tarsalis superior\nII. M.ciliaris\nIII. M.orbitalis\nIV. M.dilatator pupilla"
     },
     {
@@ -397,6 +305,7 @@
       "issues": [
         "Cevap indeksi seceneklerle uyumsuz."
       ],
+      "fixes": [],
       "question": "sağ tractus opticus tümör basısı sebebiyle hasarlandıysa aşağıdaki tablolardan hangisi eşleşir?"
     },
     {
@@ -407,6 +316,7 @@
       "issues": [
         "Cevap indeksi seceneklerle uyumsuz."
       ],
+      "fixes": [],
       "question": "N.lingualis aşağıdaki nucleuslardan hangisinin çıkan parasempatik lifleri gl.submandibulare ve gl.sublingualis’ e götürür?"
     },
     {
@@ -417,6 +327,7 @@
       "issues": [
         "Cevap indeksi seceneklerle uyumsuz."
       ],
+      "fixes": [],
       "question": "n. vagus ile ilgili hangisi doğru?"
     },
     {
@@ -427,6 +338,7 @@
       "issues": [
         "Cevap indeksi seceneklerle uyumsuz."
       ],
+      "fixes": [],
       "question": "Yarıçapı 0,5 cm olan bir arterden 10⁻⁴ m³/s debi ile kan akarken 30 cm uzunluktaki basınç düşmesi ne kadar olur?"
     },
     {
@@ -437,6 +349,7 @@
       "issues": [
         "Cevap indeksi seceneklerle uyumsuz."
       ],
+      "fixes": [],
       "question": "Yarıçapı 0,5 cm olan bir arterden 10⁻⁴ m³/s debi ile kan akarken 30 cm uzunluktaki basınç düşmesi ne kadar olur?"
     },
     {
@@ -447,6 +360,7 @@
       "issues": [
         "Cevap indeksi seceneklerle uyumsuz."
       ],
+      "fixes": [],
       "question": "Hamileliğin oluşumu ile korpus luteumun devamını sağlayan ve plasentada salgılanan hormon hangisidir?"
     },
     {
@@ -457,118 +371,11 @@
       "issues": [
         "Cevap indeksi seceneklerle uyumsuz."
       ],
+      "fixes": [],
       "question": "Sempatik preganglionik akson uçlarından salgılanan nörotransmitter madde, postganglionik nöronlar üzerindeki reseptörlerden hangisini uyarır?"
     }
   ],
   "suspicious": [
-    {
-      "id": "105544f835edd75cf1763999",
-      "subject": "Anatomi",
-      "exam": "Kurul 1",
-      "year": "2017-2018, Final 2019/derleme, 2025-2026",
-      "reasons": [
-        "Format gozden gecirilmeli."
-      ]
-    },
-    {
-      "id": "0ccf39d57a3e9da177b787bc",
-      "subject": "Anatomi",
-      "exam": "Kurul 1",
-      "year": "2021-2022/derleme",
-      "reasons": [
-        "Format gozden gecirilmeli."
-      ]
-    },
-    {
-      "id": "208804864c5442fe188a9f54",
-      "subject": "Anatomi",
-      "exam": "Kurul 1",
-      "year": "2019-2020, 2021-2022/derleme",
-      "reasons": [
-        "Format gozden gecirilmeli."
-      ]
-    },
-    {
-      "id": "f6f73fc7c083f4b239f4221b",
-      "subject": "Anatomi",
-      "exam": "Kurul 1",
-      "year": "2019-2020",
-      "reasons": [
-        "Format gozden gecirilmeli."
-      ]
-    },
-    {
-      "id": "f1cffbc26cd1c2520800e7e6",
-      "subject": "Anatomi",
-      "exam": "Kurul 1",
-      "year": "2019-2020, 2021-2022/derleme, 2022-2023, 2025-2026",
-      "reasons": [
-        "Format gozden gecirilmeli."
-      ]
-    },
-    {
-      "id": "37c7b15b759342799c5f35c5",
-      "subject": "Anatomi",
-      "exam": "Kurul 1",
-      "year": "2021-2022/derleme",
-      "reasons": [
-        "Format gozden gecirilmeli."
-      ]
-    },
-    {
-      "id": "5997e7de551791c7442918b1",
-      "subject": "Anatomi",
-      "exam": "Kurul 1",
-      "year": "2016 Final",
-      "reasons": [
-        "Format gozden gecirilmeli."
-      ]
-    },
-    {
-      "id": "d3c6828c2c9c30e066b4eeb5",
-      "subject": "Anatomi",
-      "exam": "Kurul 1",
-      "year": "2018-2019, 2021-2022/derleme",
-      "reasons": [
-        "Format gozden gecirilmeli."
-      ]
-    },
-    {
-      "id": "ffd3091c9a08d169a8159a62",
-      "subject": "Anatomi",
-      "exam": "Kurul 1",
-      "year": "2021-2022/derleme",
-      "reasons": [
-        "Format gozden gecirilmeli."
-      ]
-    },
-    {
-      "id": "58c1403000daa233e64fd723",
-      "subject": "Anatomi",
-      "exam": "Kurul 1",
-      "year": "2017-2018",
-      "reasons": [
-        "Format gozden gecirilmeli."
-      ]
-    },
-    {
-      "id": "15d269c44807abcc84093fdd",
-      "subject": "Anatomi",
-      "exam": "Kurul 1",
-      "year": "2017-2018",
-      "reasons": [
-        "Format gozden gecirilmeli."
-      ]
-    },
-    {
-      "id": "ca5c6dad65fea00721d9caed",
-      "subject": "Anatomi",
-      "exam": "Kurul 1",
-      "year": "2021-2022/derleme",
-      "reasons": [
-        "Format gozden gecirilmeli."
-      ]
-    },
     {
       "id": "be9d2ea3a473053eddcb4a81",
       "subject": "Anatomi",
@@ -974,6 +781,12 @@
           "subject": "Anatomi",
           "topic": "Cava-caval anastomoz - yüzeyel damarlar",
           "exam": "Kurul 1"
+        },
+        {
+          "id": "bfe70e35c9076336a684863f",
+          "subject": "Anatomi",
+          "topic": "Anatomi - ilgili kurul başlığı",
+          "exam": "Final"
         }
       ]
     },
@@ -1142,6 +955,142 @@
           "id": "5997e7de551791c7442918b1",
           "subject": "Anatomi",
           "topic": "Cava-caval anastomoz - yüzeyel damarlar",
+          "exam": "Kurul 1"
+        },
+        {
+          "id": "bfe70e35c9076336a684863f",
+          "subject": "Anatomi",
+          "topic": "Anatomi - ilgili kurul başlığı",
+          "exam": "Final"
+        }
+      ]
+    },
+    {
+      "id": "ff8f86eb35afdd71ff23cb82",
+      "subject": "Anatomi",
+      "topic": "Baş-boyun venleri - v. retromandibularis oluşumu",
+      "related": [
+        {
+          "id": "c194362bc4279622f1702e3e",
+          "subject": "Anatomi",
+          "topic": "A. carotis externa - terminal dallar",
+          "exam": "Kurul 1"
+        }
+      ]
+    },
+    {
+      "id": "b9f2eaf49a4867b4dcd8f1b2",
+      "subject": "Anatomi",
+      "topic": "Endokrin organlar anatomisi ve klinik anatomisi",
+      "related": [
+        {
+          "id": "6f3922321f596f357db37cdf",
+          "subject": "Anatomi",
+          "topic": "Endokrin organlar anatomisi ve klinik anatomisi",
+          "exam": "Kurul 3"
+        }
+      ]
+    },
+    {
+      "id": "c4d26f9b3d2aab17c1e388d7",
+      "subject": "Anatomi",
+      "topic": "Lenfatik sistem - sağ baş-boyun drenajı",
+      "related": [
+        {
+          "id": "36fec591dbc98bbe84888291",
+          "subject": "Anatomi",
+          "topic": "Kurul 1 dolaşım-solunum-lenf başlıkları",
+          "exam": "Final"
+        }
+      ]
+    },
+    {
+      "id": "617019e53ccee16561f4d1a4",
+      "subject": "Anatomi",
+      "topic": "Lenfatik sistem - sağ üst ekstremite",
+      "related": [
+        {
+          "id": "dc3560617c766f0903f2a0be",
+          "subject": "Anatomi",
+          "topic": "Lenfatik sistem - sol üst ekstremite",
+          "exam": "Kurul 1"
+        }
+      ]
+    },
+    {
+      "id": "dc3560617c766f0903f2a0be",
+      "subject": "Anatomi",
+      "topic": "Lenfatik sistem - sol üst ekstremite",
+      "related": [
+        {
+          "id": "617019e53ccee16561f4d1a4",
+          "subject": "Anatomi",
+          "topic": "Lenfatik sistem - sağ üst ekstremite",
+          "exam": "Kurul 1"
+        }
+      ]
+    },
+    {
+      "id": "fb48970a05f0bf32466f5e46",
+      "subject": "Anatomi",
+      "topic": "Meme lenf drenajı - axiller nodlar",
+      "related": [
+        {
+          "id": "d28bfb010845c7b4ad08b424",
+          "subject": "Anatomi",
+          "topic": "Kurul 1 dolaşım-solunum-lenf başlıkları",
+          "exam": "Bütünleme"
+        }
+      ]
+    },
+    {
+      "id": "23b5bb81673ecc30f6739577",
+      "subject": "Anatomi",
+      "topic": "Alt ekstremite - dorsalis pedis nabzı",
+      "related": [
+        {
+          "id": "6029c5974dd1da465baf966a",
+          "subject": "Anatomi",
+          "topic": "Alt ekstremite - posterior tibial nabız",
+          "exam": "Kurul 1"
+        }
+      ]
+    },
+    {
+      "id": "6029c5974dd1da465baf966a",
+      "subject": "Anatomi",
+      "topic": "Alt ekstremite - posterior tibial nabız",
+      "related": [
+        {
+          "id": "23b5bb81673ecc30f6739577",
+          "subject": "Anatomi",
+          "topic": "Alt ekstremite - dorsalis pedis nabzı",
+          "exam": "Kurul 1"
+        }
+      ]
+    },
+    {
+      "id": "c194362bc4279622f1702e3e",
+      "subject": "Anatomi",
+      "topic": "A. carotis externa - terminal dallar",
+      "related": [
+        {
+          "id": "ff8f86eb35afdd71ff23cb82",
+          "subject": "Anatomi",
+          "topic": "Baş-boyun venleri - v. retromandibularis oluşumu",
+          "exam": "Kurul 1"
+        }
+      ]
+    },
+    {
+      "id": "d3c6828c2c9c30e066b4eeb5__content_2",
+      "subject": "Anatomi",
+      "topic": "Truncus brachiocephalicus - dallar",
+      "related": [
+        {
+          "id": "d3c6828c2c9c30e066b4eeb5",
+          "subject": "Anatomi",
+          "topic": "Truncus brachiocephalicus - dallar",
           "exam": "Kurul 1"
         }
       ]
