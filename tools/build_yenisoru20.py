@@ -29,6 +29,12 @@ KEEP_QUESTION_FIELDS = [
     "explanation",
     "spot",
     "sourceNote",
+    "hasImage",
+    "images",
+    "suspicious",
+    "relatedQuestionIds",
+    "image",
+    "imageUrl",
     "metadata",
 ]
 
@@ -52,6 +58,18 @@ KEEP_META_FIELDS = [
     "aiEdited",
     "aiInterventionNote",
     "answerValidation",
+    "hasImage",
+    "images",
+    "suspicious",
+    "suspicionReason",
+    "suspicionReasons",
+    "relatedQuestionIds",
+    "exampleQuestionIds",
+    "kurulSimilarQuestionIds",
+    "relatedQuestionCount",
+    "mergedFromFiles",
+    "image",
+    "imageUrl",
 ]
 
 
@@ -170,6 +188,17 @@ def find_protected_match(q, by_id, by_sig):
 
 def clean_question(q):
     out = {k: q[k] for k in KEEP_QUESTION_FIELDS if k in q}
+    images = out.get("images")
+    if not isinstance(images, list):
+        images = []
+    if out.get("image") and out.get("image") not in images:
+        images.append(out.get("image"))
+    if out.get("imageUrl") and out.get("imageUrl") not in images:
+        images.append(out.get("imageUrl"))
+    out["images"] = images
+    out["hasImage"] = bool(images or out.get("hasImage"))
+    out.pop("image", None)
+    out.pop("imageUrl", None)
     md = dict(out.get("metadata") or {})
     cleaned_md = {k: md[k] for k in KEEP_META_FIELDS if k in md and md[k] not in ("", None, [], {})}
     out["metadata"] = cleaned_md

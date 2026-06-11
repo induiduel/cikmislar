@@ -83,6 +83,11 @@
     .question{white-space:pre-wrap;font-family:"Noto Sans","Segoe UI",Arial,sans-serif;font-weight:600;font-size:var(--q-font);line-height:var(--line-q);letter-spacing:0;margin:0 0 14px;color:#172033;
       background:#fbfdff;border:1px solid var(--line);border-left:5px solid var(--primary2);border-radius:14px;padding:14px 15px;box-shadow:0 6px 16px rgba(15,23,42,.045)
     }
+    .question-media{display:none;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin:0 0 12px}
+    .question-media.show{display:grid}
+    .question-image-card{border:1px solid var(--line);border-radius:13px;background:#fff;padding:8px;box-shadow:0 6px 16px rgba(15,23,42,.045)}
+    .question-image-card img{display:block;width:100%;max-height:360px;object-fit:contain;border-radius:9px;background:#f8fafc}
+    .question-image-caption{margin-top:6px;color:var(--muted);font-size:11.5px;line-height:1.35;text-align:center}
     .options{display:grid;gap:8px}
     .option{border:1px solid var(--line);border-radius:13px;background:#fff;padding:12px 13px;display:grid;grid-template-columns:30px 1fr;gap:10px;align-items:start;cursor:pointer;transition:transform .1s ease,box-shadow .1s ease,border-color .1s ease,background .1s ease}
     .option:hover{transform:translateY(-1px);box-shadow:0 6px 14px rgba(15,23,42,.07);border-color:rgba(23,58,138,.28)}
@@ -146,6 +151,8 @@
     .all-q-card{padding:14px;border-radius:16px;border:1px solid var(--line);background:#fff;box-shadow:0 8px 20px rgba(15,23,42,.055)}
     .all-q-meta{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
     .all-q-question{white-space:pre-wrap;font-family:"Noto Sans","Segoe UI",Arial,sans-serif;font-weight:600;line-height:var(--line-q);font-size:var(--q-font);background:#fbfdff;border:1px solid var(--line);border-left:4px solid var(--primary2);border-radius:12px;padding:10px 11px;margin-bottom:9px;color:#172033}
+    .all-q-media{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:0 0 9px}
+    .all-q-media img{width:100%;max-height:260px;object-fit:contain;border:1px solid var(--line);border-radius:10px;background:#f8fafc;padding:5px}
     .all-q-options{display:grid;gap:5px}
     .all-q-option{padding:7px 8px;border-radius:10px;border:1px solid var(--line);background:#fff;line-height:1.45;white-space:pre-wrap;font-size:var(--opt-font)}
     .all-q-option.correct{background:var(--okbg);border-color:rgba(18,99,58,.35);color:#14532d;font-weight:780}
@@ -330,6 +337,30 @@
     .all-q-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}
     .all-q-actions button{padding:8px 9px;border-radius:10px;font-size:12px}
     .hidden-badge{background:var(--warnbg)!important;color:#7a4f08!important;border-color:rgba(122,79,8,.22)!important}
+    .suspicious-chip{background:#fff7df!important;color:#7a4f08!important;border-color:rgba(122,79,8,.28)!important}
+    .question-card.suspicious-question,
+    .all-q-card.suspicious-question{
+      border-color:rgba(122,79,8,.36)!important;
+      box-shadow:0 12px 30px rgba(122,79,8,.10)!important;
+    }
+    .suspicious-note{
+      margin:8px 0;
+      padding:8px 10px;
+      border:1px solid rgba(122,79,8,.24);
+      border-radius:11px;
+      background:#fff7df;
+      color:#573a09;
+      font-size:12px;
+      line-height:1.4;
+    }
+    .related-box{display:none;margin-top:10px;padding:10px;border:1px solid var(--line);border-radius:13px;background:#fbfdff}
+    .related-box.show{display:block}
+    .related-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+    .related-head b{color:var(--primary);font-size:13px}
+    .related-list{display:grid;gap:7px}
+    .related-item{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;border:1px solid var(--line);border-radius:10px;background:#fff;padding:8px;font-size:12px;line-height:1.35}
+    .related-item small{display:block;color:var(--muted);margin-top:2px}
+    .related-item button{min-height:30px!important;padding:5px 8px!important;font-size:11px!important}
     body.quiz-active-mode .active-filter-summary::before{content:"Quiz modu aktif · ";font-weight:900}
 
   
@@ -4156,6 +4187,53 @@
       }
     }
 
+    /* BUTTON-BALANCE: yan yana butonlar aynı ritimde kalsın */
+    .home-actions-group,
+    .course-meta,
+    .top-menu-content,
+    .db-actions,
+    .font-row,
+    .filter-actions,
+    .all-q-actions,
+    .fullscreen-results-actions{
+      display:grid!important;
+      grid-template-columns:repeat(auto-fit,minmax(138px,1fr))!important;
+      gap:8px!important;
+    }
+    .nav.floating-question-nav{
+      align-items:stretch!important;
+    }
+    .home-actions-group button,
+    .course-meta button,
+    .top-menu-content button,
+    .db-actions button,
+    .font-row button,
+    .filter-actions button,
+    .all-q-actions button,
+    .fullscreen-results-actions button,
+    .nav.floating-question-nav button{
+      width:100%!important;
+      min-width:0!important;
+      min-height:38px!important;
+      padding:8px 10px!important;
+      display:inline-flex!important;
+      align-items:center!important;
+      justify-content:center!important;
+      text-align:center!important;
+      line-height:1.2!important;
+    }
+    @media(max-width:560px){
+      .home-actions-group,
+      .course-meta,
+      .top-menu-content,
+      .db-actions,
+      .font-row,
+      .filter-actions,
+      .all-q-actions{
+        grid-template-columns:1fr!important;
+      }
+    }
+
   </style>
 </head>
 <body class="font-normal is-loading">
@@ -4337,6 +4415,7 @@
           <button class="secondary" id="wrongHomeBtn" type="button">Yanlışlarım</button>
           <button class="secondary" id="hiddenHomeBtn" type="button">Gizlenenler</button>
           <button class="secondary" id="starredHomeBtn" type="button">Yıldızlılar</button>
+          <button class="secondary" id="suspiciousHomeBtn" type="button">Şüpheli sorular</button>
           <button class="secondary" id="quizAllBtn" type="button">Test et</button>
           <button class="primary" id="startAllBtn" type="button">Tüm çıkmışlar</button>
         </div>
@@ -4491,10 +4570,12 @@
             </div>
 
             <h2 class="question" id="question"></h2>
+            <div class="question-media" id="questionMedia"></div>
             <div class="options" id="options"></div>
             <div class="feedback" id="feedback"></div>
             <div class="ai-warning-box" id="aiWarningBox"></div>
             <div class="info-box" id="infoBox"></div>
+            <div class="related-box" id="relatedBox"></div>
 
             <div class="question-top-actions">
               <button class="secondary" id="showInfoBtn">Açıklama/spot göster</button>
@@ -4709,8 +4790,8 @@
     const FINAL_REFERENCE_DB_FILES = ["soru15(1).db"];
     const FINAL_REFERENCE_SIMILARITY = 0.90;
     const STORAGE_KEY = "database_loader_question_bank_progress_v4";
-    const DB_FILE_LIST_CACHE_KEY = "question_bank_db_file_list_cache_v7_yenisoru20";
-    const DB_CONTENT_CACHE_NAME = "question_bank_indexeddb_cache_v7_yenisoru20";
+    const DB_FILE_LIST_CACHE_KEY = "question_bank_db_file_list_cache_v9_suspicious_related";
+    const DB_CONTENT_CACHE_NAME = "question_bank_indexeddb_cache_v9_suspicious_related";
     const DB_CONTENT_STORE_NAME = "dbFiles";
     const LAST_POSITION_KEY = "question_bank_last_positions_v1";
     const STUDY_TIME_KEY = "question_bank_study_time_v1";
@@ -4775,6 +4856,7 @@
     let pendingUnwantedConfirmResolve = null;
     let fastCacheMode = false;
     let finalReferenceIndex = null;
+    let relatedPdfIndexes = [];
     let initialLoadingStartedAt = Date.now();
     const INITIAL_LOADING_MIN_MS = 1800;
     const LIST_BATCH_SIZE = 60;
@@ -4788,7 +4870,7 @@
       kurulCourseGrid:$("kurulCourseGrid"), kurulEmpty:$("kurulEmpty"), kurulAllBtn:$("kurulAllBtn"), kurulQuizBtn:$("kurulQuizBtn"), kurulCoursesBtn:$("kurulCoursesBtn"), kurulListBtn:$("kurulListBtn"), kurulSummaryText:$("kurulSummaryText"), kurulQuestionCount:$("kurulQuestionCount"), kurulSubjectCount:$("kurulSubjectCount"), kurulQuizCount:$("kurulQuizCount"),
       histologyGroupGrid:$("histologyGroupGrid"), histologyEmpty:$("histologyEmpty"), histologyAllBtn:$("histologyAllBtn"), histologyQuizBtn:$("histologyQuizBtn"), histologyFinalBtn:$("histologyFinalBtn"), histologyListBtn:$("histologyListBtn"), histologySummaryText:$("histologySummaryText"), histologyQuestionCount:$("histologyQuestionCount"), histologyGroupCount:$("histologyGroupCount"), histologyQuizCount:$("histologyQuizCount"),
       allCoursesDetails:$("allCoursesDetails"), courseEmpty:$("courseEmpty"), courseSearch:$("courseSearch"),
-      clearCourseSearch:$("clearCourseSearch"), continueBtn:$("continueBtn"), wrongHomeBtn:$("wrongHomeBtn"), hiddenHomeBtn:$("hiddenHomeBtn"), starredHomeBtn:$("starredHomeBtn"), quizAllBtn:$("quizAllBtn"), startAllBtn:$("startAllBtn"),
+      clearCourseSearch:$("clearCourseSearch"), continueBtn:$("continueBtn"), wrongHomeBtn:$("wrongHomeBtn"), hiddenHomeBtn:$("hiddenHomeBtn"), starredHomeBtn:$("starredHomeBtn"), suspiciousHomeBtn:$("suspiciousHomeBtn"), quizAllBtn:$("quizAllBtn"), startAllBtn:$("startAllBtn"),
       backHomeBtn:$("backHomeBtn"), changeCourseBtn:$("changeCourseBtn"), activeTitle:$("activeTitle"),
       wideQuestionBtn:$("wideQuestionBtn"), showAllBtn:$("showAllBtn"), compactHomeBtn:$("compactHomeBtn"), compactShowAllBtn:$("compactShowAllBtn"), backToQuizBtn:$("backToQuizBtn"), wideListBtn:$("wideListBtn"), pdfListBtn:$("pdfListBtn"), textListBtn:$("textListBtn"), restoreHiddenBtn:$("restoreHiddenBtn"), refreshListBtn:$("refreshListBtn"),
       listTitle:$("listTitle"), listSubtitle:$("listSubtitle"), allList:$("allList"),
@@ -4798,8 +4880,8 @@
       examTopbar:$("examTopbar"), examModeTitle:$("examModeTitle"), examTimerText:$("examTimerText"), cancelExamBtn:$("cancelExamBtn"),
       questionFullscreenBtn:$("questionFullscreenBtn"), questionBreakBtn:$("questionBreakBtn"), questionInfoToggleBtn:$("questionInfoToggleBtn"), questionChatGPTBtn:$("questionChatGPTBtn"), questionStarBtn:$("questionStarBtn"), questionEditedBadge:$("questionEditedBadge"), questionStudyTimeBadge:$("questionStudyTimeBadge"), questionHistoryDetails:$("questionHistoryDetails"), questionHistoryPanel:$("questionHistoryPanel"), questionJumpMenuDetails:$("questionJumpMenuDetails"), questionJumpMenuGrid:$("questionJumpMenuGrid"),
       chatgptWebviewModal:$("chatgptWebviewModal"), chatgptWebviewFrame:$("chatgptWebviewFrame"), chatgptWebviewCloseBtn:$("chatgptWebviewCloseBtn"), chatgptOpenNewTabBtn:$("chatgptOpenNewTabBtn"), chatgptCopyPromptBtn:$("chatgptCopyPromptBtn"), chatgptWebviewNote:$("chatgptWebviewNote"),
-      progress:$("progress"), counter:$("counter"), section:$("section"), meta:$("meta"), question:$("question"), options:$("options"),
-      feedback:$("feedback"), aiWarningBox:$("aiWarningBox"), infoBox:$("infoBox"), showInfoBtn:$("showInfoBtn"), cardShowAllBtn:$("cardShowAllBtn"), hideQuestionBtn:$("hideQuestionBtn"), unknownQuestionBtn:$("unknownQuestionBtn"), unwantedConfirmModal:$("unwantedConfirmModal"), unwantedConfirmOkBtn:$("unwantedConfirmOkBtn"), unwantedConfirmCancelBtn:$("unwantedConfirmCancelBtn"), wideExitBtn:$("wideExitBtn"), prevBtn:$("prevBtn"), nextBtn:$("nextBtn"),
+      progress:$("progress"), counter:$("counter"), section:$("section"), meta:$("meta"), question:$("question"), questionMedia:$("questionMedia"), options:$("options"),
+      feedback:$("feedback"), aiWarningBox:$("aiWarningBox"), infoBox:$("infoBox"), relatedBox:$("relatedBox"), showInfoBtn:$("showInfoBtn"), cardShowAllBtn:$("cardShowAllBtn"), hideQuestionBtn:$("hideQuestionBtn"), unknownQuestionBtn:$("unknownQuestionBtn"), unwantedConfirmModal:$("unwantedConfirmModal"), unwantedConfirmOkBtn:$("unwantedConfirmOkBtn"), unwantedConfirmCancelBtn:$("unwantedConfirmCancelBtn"), wideExitBtn:$("wideExitBtn"), prevBtn:$("prevBtn"), nextBtn:$("nextBtn"),
       clearCacheBtn:$("clearCacheBtn"), resetVisibleBtn:$("resetVisibleBtn"), answeredCount:$("answeredCount"),
       correctCount:$("correctCount"), wrongCount:$("wrongCount"), emptyCount:$("emptyCount"), jumpGrid:$("jumpGrid"),
       subjectSelect:$("subjectSelect"), examSelect:$("examSelect"), yearSelect:$("yearSelect"), teacherSelect:$("teacherSelect"),
@@ -4824,9 +4906,141 @@
     function initials(name){return String(name||"?").split(/\s+/).map(x=>x[0]).join("").slice(0,2).toUpperCase();}
     function optionList(q){return Array.isArray(q.options) ? q.options : [];}
     function meta(q,key){return (q.metadata && q.metadata[key]) || "";}
+    function normalizeImageEntry(entry, idx=0){
+      if(!entry) return null;
+      if(typeof entry === "string") return {src:entry, alt:`Soru görseli ${idx+1}`, caption:""};
+      if(typeof entry === "object"){
+        const src = entry.src || entry.url || entry.href || entry.path || entry.file || entry.image || "";
+        if(!src) return null;
+        return {
+          src:String(src),
+          alt:String(entry.alt || entry.title || entry.caption || `Soru görseli ${idx+1}`),
+          caption:String(entry.caption || entry.title || "")
+        };
+      }
+      return null;
+    }
+    function questionImages(q){
+      const md = (q && q.metadata) || {};
+      const raw = [];
+      if(Array.isArray(q && q.images)) raw.push(...q.images);
+      if(q && q.image) raw.push(q.image);
+      if(q && q.imageUrl) raw.push(q.imageUrl);
+      if(Array.isArray(md.images)) raw.push(...md.images);
+      if(md.image) raw.push(md.image);
+      if(md.imageUrl) raw.push(md.imageUrl);
+      return raw.map(normalizeImageEntry).filter(Boolean);
+    }
+    function hasQuestionImage(q){return Boolean(q && (q.hasImage || meta(q,"hasImage") || questionImages(q).length));}
+    function resolveQuestionImageSrc(src){
+      const value = String(src || "").trim();
+      if(!value) return "";
+      if(/^(https?:|data:|blob:|file:)/i.test(value) || value.startsWith("/")) return value;
+      if(/^db\//i.test(value)) return value;
+      if(/^images\//i.test(value)) return "db/" + value;
+      return "db/images/" + value;
+    }
+    function absoluteImageSrc(src){
+      const resolved = resolveQuestionImageSrc(src);
+      try{return new URL(resolved, location.href).href;}catch(e){return resolved;}
+    }
+    function renderImageGalleryHTML(q, className="question-media", absolute=false){
+      const imgs = questionImages(q);
+      if(!imgs.length) return "";
+      return imgs.map((img, idx)=>{
+        const src = absolute ? absoluteImageSrc(img.src) : resolveQuestionImageSrc(img.src);
+        const caption = img.caption ? `<div class="question-image-caption">${escapeHTML(img.caption)}</div>` : "";
+        return `<figure class="question-image-card"><img src="${escapeHTML(src)}" alt="${escapeHTML(img.alt || `Soru görseli ${idx+1}`)}" loading="lazy" decoding="async">${caption}</figure>`;
+      }).join("");
+    }
     function hasAiIntervention(q){
       const flag = meta(q, "aiEdited");
       return Boolean(meta(q, "aiInterventionNote")) || flag === true || flag === "true";
+    }
+    function suspicionReasons(q){
+      const md = (q && q.metadata) || {};
+      const validation = md.validation || {};
+      const reasons = [];
+      if(q && q.suspicious) reasons.push("Soru kaydı şüpheli işaretli.");
+      if(md.suspicious === true || md.suspicious === "true") reasons.push(md.suspicionReason || "Kaynak/kategori güveni düşük.");
+      if(Array.isArray(md.suspicionReasons)) reasons.push(...md.suspicionReasons);
+      if(validation.protectedDbMatch === "none") reasons.push("Koruma veritabanında birebir eşleşme bulunamadı.");
+      if(validation.kazanimMatch && /needs_review|weak_match|not_checked/i.test(String(validation.kazanimMatch.status || validation.kazanimMatch))) reasons.push("Kazanım/hedef eşleşmesi gözden geçirilmeli.");
+      if(validation.sourceMatch && /needs_review|weak|conflict|not_found/i.test(String(validation.sourceMatch.status || validation.sourceMatch))) reasons.push("Kaynak eşleşmesi kesin değil.");
+      if(md.histology2025DuplicateGroup) reasons.push("2025-2026 Histoloji tekrar kontrol grubunda.");
+      if(/düşük|dusuk|şüpheli|supheli|ihtilaf/i.test(String(md.status || ""))) reasons.push("Durum alanı düşük güven/şüphe içeriyor.");
+      return [...new Set(reasons.map(x=>String(x || "").trim()).filter(Boolean))];
+    }
+    function isSuspiciousQuestion(q){return suspicionReasons(q).length > 0;}
+    function explicitRelatedIds(q){
+      const md = (q && q.metadata) || {};
+      const raw = []
+        .concat(Array.isArray(q && q.relatedQuestionIds) ? q.relatedQuestionIds : [])
+        .concat(Array.isArray(md.relatedQuestionIds) ? md.relatedQuestionIds : [])
+        .concat(Array.isArray(md.exampleQuestionIds) ? md.exampleQuestionIds : [])
+        .concat(Array.isArray(md.kurulSimilarQuestionIds) ? md.kurulSimilarQuestionIds : []);
+      return [...new Set(raw.map(String).filter(Boolean))];
+    }
+    function relatedQuestions(q, limit=8){
+      if(!q) return [];
+      const explicit = new Set(explicitRelatedIds(q));
+      const qSig = dedupeSignature(q);
+      const qTokens = tokenSet(qSig);
+      const qTopic = normalizeQuestionTextForDedupe(meta(q,"topic") || "");
+      const qTarget = normalizeQuestionTextForDedupe(meta(q,"target") || "");
+      const rows = [];
+      questions.forEach((candidate, idx)=>{
+        if(!candidate || candidate === q || answerKey(candidate) === answerKey(q)) return;
+        let score = 0;
+        const id = String(candidate.id || "");
+        if(explicit.has(id) || explicit.has(answerKey(candidate))) score += 1.5;
+        if(candidate.subject && q.subject && candidate.subject === q.subject) score += 0.18;
+        const cTopic = normalizeQuestionTextForDedupe(meta(candidate,"topic") || "");
+        const cTarget = normalizeQuestionTextForDedupe(meta(candidate,"target") || "");
+        if(qTopic && cTopic && qTopic === cTopic) score += 0.55;
+        if(qTarget && cTarget && qTarget === cTarget) score += 0.55;
+        const cSig = dedupeSignature(candidate);
+        const sim = signatureSimilarity(qSig, qTokens, cSig, tokenSet(cSig));
+        if(sim >= 0.45) score += sim;
+        if(score >= 0.55) rows.push({q:candidate, idx, score});
+      });
+      return rows.sort((a,b)=>b.score-a.score).slice(0, limit);
+    }
+    function renderRelatedQuestionBox(q){
+      if(!els.relatedBox) return;
+      const related = relatedQuestions(q, 8);
+      relatedPdfIndexes = related.map(item=>item.idx);
+      if(!related.length){
+        els.relatedBox.className = "related-box";
+        els.relatedBox.innerHTML = "";
+        return;
+      }
+      const list = related.map(item=>`
+        <div class="related-item">
+          <div>
+            <b>${escapeHTML(item.q.subject || "Ders yok")}</b>
+            <small>${escapeHTML(meta(item.q,"examGroup") || "Grup yok")} · ${escapeHTML(meta(item.q,"year") || "Yıl yok")} · ${escapeHTML(meta(item.q,"topic") || "Konu yok")}</small>
+          </div>
+          <button class="secondary related-go-btn" type="button" data-index="${item.idx}">Aç</button>
+        </div>
+      `).join("");
+      els.relatedBox.innerHTML = `
+        <div class="related-head">
+          <b>Benzer / örnek sorular (${related.length})</b>
+          <button class="secondary" id="relatedPdfBtn" type="button">PDF</button>
+        </div>
+        <div class="related-list">${list}</div>
+      `;
+      els.relatedBox.className = "related-box show";
+      els.relatedBox.querySelectorAll(".related-go-btn").forEach(btn=>{
+        btn.addEventListener("click",()=>{
+          current = Number(btn.dataset.index);
+          render();
+          requestAnimationFrame(()=>scrollToQuestion("auto"));
+        });
+      });
+      const pdfBtn = els.relatedBox.querySelector("#relatedPdfBtn");
+      if(pdfBtn) pdfBtn.addEventListener("click",()=>createPdfForIndexes(relatedPdfIndexes, `${q.subject || "Soru"} ilişkili sorular`));
     }
     function answerKey(q){return duplicateMode === "all" ? (q._instanceId || q.id) : q.id;}
 
@@ -5352,10 +5566,13 @@
 
     function prepareQuestionRecord(q){
       if(!q) return q;
+      const imgs = questionImages(q);
+      q.hasImage = imgs.length > 0 || Boolean(q.hasImage || meta(q,"hasImage"));
       q._searchText = normalize([
         q.subject, q.question, q.explanation, q.spot, q.sourceNote,
         meta(q,"examGroup"), meta(q,"year"), meta(q,"teacher"), meta(q,"topic"),
         meta(q,"target"), meta(q,"sourceGroup"), meta(q,"source"),
+        imgs.map(img => [img.alt, img.caption, img.src].filter(Boolean).join(" ")).join(" "),
         ...optionList(q).map(o=>o.text)
       ].join(" "));
       return q;
@@ -7106,6 +7323,11 @@ async function discoverDbFiles(){
         els.starredHomeBtn.disabled = starredCount === 0;
         els.starredHomeBtn.textContent = starredCount ? `Yıldızlı sorular (${starredCount})` : "Yıldızlı sorular";
       }
+      const suspiciousCount = activeQuestions().filter(q => !isHiddenQuestion(q) && isSuspiciousQuestion(q)).length;
+      if(els.suspiciousHomeBtn){
+        els.suspiciousHomeBtn.disabled = suspiciousCount === 0;
+        els.suspiciousHomeBtn.textContent = suspiciousCount ? `Şüpheli sorular (${suspiciousCount})` : "Şüpheli sorular";
+      }
       els.quizAllBtn.disabled = otherQ.length === 0;
       els.quizAllBtn.textContent = otherQ.length ? `Tüm dersler quiz modu (${Math.min(150, otherQ.length)})` : "Tüm dersler quiz modu";
     }
@@ -7614,9 +7836,10 @@ async function openCurrentQuestionInChatGPT(){
       return extractRomanPremiseTokens(joined);
     }
 
-    function shouldHighlightPremises(q, selected){
+    function shouldHighlightPremises(q, selected, force=false){
       // Normal soru çözümünde herhangi bir cevap işaretlenince öncüllerin doğru/yanlış durumu gösterilir.
       // Sınav modunda ipucu vermemek için kapalı kalır.
+      if(force) return correctAnswerIndex(q) !== null;
       if(examMode) return false;
       if(selected === undefined || selected === null) return false;
       const correctIdx = correctAnswerIndex(q);
@@ -7624,7 +7847,7 @@ async function openCurrentQuestionInChatGPT(){
     }
 
 
-    function formatQuestionHTML(raw, q=null, selected=null){
+    function formatQuestionHTML(raw, q=null, selected=null, options={}){
       const text = String(raw || "");
       const markerRe = /(^|[\n\r]|\s)(I{1,3}|IV|V|VI{0,3}|IX|X)\.\s+/g;
       const matches = [];
@@ -7654,7 +7877,7 @@ async function openCurrentQuestionInChatGPT(){
       }
 
       const premiseRomans = items.map(item => item.roman);
-      const highlight = shouldHighlightPremises(q, selected);
+      const highlight = shouldHighlightPremises(q, selected, !!options.forcePremiseHighlight);
       const correctSet = highlight ? correctPremiseSetForQuestion(q, premiseRomans) : new Set();
       const canColor = highlight && correctSet.size > 0;
 
@@ -7742,7 +7965,7 @@ async function openCurrentQuestionInChatGPT(){
         pauseStudyTimer();
         document.body.classList.add("no-question-active");
         els.section.textContent="Soru bulunamadı"; els.meta.innerHTML=""; els.question.textContent=questions.length?"Seçili filtrelerle veya aktif database seçimiyle eşleşen soru yok.":"Soru dosyası yüklenemedi veya soru bulunamadı.";
-        els.options.innerHTML=""; els.feedback.className="feedback"; els.feedback.innerHTML=""; if(els.aiWarningBox){els.aiWarningBox.className="ai-warning-box"; els.aiWarningBox.innerHTML="";} els.infoBox.className="info-box"; els.infoBox.innerHTML=""; if(els.questionJumpMenuGrid) els.questionJumpMenuGrid.innerHTML=""; if(els.questionChatGPTBtn) els.questionChatGPTBtn.disabled=true; if(els.questionInfoToggleBtn) els.questionInfoToggleBtn.disabled=true; if(els.unknownQuestionBtn) els.unknownQuestionBtn.disabled=true; if(els.questionStarBtn){els.questionStarBtn.disabled=true; els.questionStarBtn.classList.remove("starred"); els.questionStarBtn.textContent="☆";} els.prevBtn.disabled=true; els.nextBtn.disabled=true; updateStats(); return;
+        els.options.innerHTML=""; if(els.questionMedia){els.questionMedia.className="question-media"; els.questionMedia.innerHTML="";} if(els.relatedBox){els.relatedBox.className="related-box"; els.relatedBox.innerHTML="";} els.feedback.className="feedback"; els.feedback.innerHTML=""; if(els.aiWarningBox){els.aiWarningBox.className="ai-warning-box"; els.aiWarningBox.innerHTML="";} els.infoBox.className="info-box"; els.infoBox.innerHTML=""; if(els.questionJumpMenuGrid) els.questionJumpMenuGrid.innerHTML=""; if(els.questionChatGPTBtn) els.questionChatGPTBtn.disabled=true; if(els.questionInfoToggleBtn) els.questionInfoToggleBtn.disabled=true; if(els.unknownQuestionBtn) els.unknownQuestionBtn.disabled=true; if(els.questionStarBtn){els.questionStarBtn.disabled=true; els.questionStarBtn.classList.remove("starred"); els.questionStarBtn.textContent="☆";} els.prevBtn.disabled=true; els.nextBtn.disabled=true; updateStats(); return;
       }
       document.body.classList.remove("no-question-active");
       ensureCurrent();
@@ -7778,16 +8001,28 @@ async function openCurrentQuestionInChatGPT(){
       renderHeaderJumpMenu(idxs);
       const aiIntervention = hasAiIntervention(q);
       const aiInterventionNote = String(meta(q,"aiInterventionNote") || "").trim();
+      const suspiciousReasons = suspicionReasons(q);
+      const isSuspicious = suspiciousReasons.length > 0;
+      const card = els.question ? els.question.closest(".question-card") : null;
+      if(card) card.classList.toggle("suspicious-question", isSuspicious);
       if(els.questionEditedBadge){
-        els.questionEditedBadge.classList.toggle("hidden", !q._editedByUser && !aiIntervention);
-        els.questionEditedBadge.textContent = aiIntervention ? "AI düzeltmesi" : (q._editedByUser ? "Kullanıcı düzenledi" : "");
-        els.questionEditedBadge.title = aiIntervention
+        els.questionEditedBadge.classList.toggle("hidden", !q._editedByUser && !aiIntervention && !isSuspicious);
+        els.questionEditedBadge.textContent = isSuspicious ? "Şüpheli" : (aiIntervention ? "AI düzeltmesi" : (q._editedByUser ? "Kullanıcı düzenledi" : ""));
+        els.questionEditedBadge.title = isSuspicious
+          ? suspiciousReasons.join(" | ")
+          : (aiIntervention
           ? (aiInterventionNote || "Bu soruda cevap anahtarı düzeltmesi işaretlendi.")
-          : (q._editedByUser ? "Bu soru metni/şıkları/gerçek doğru cevabı kullanıcı tarafından düzenlendi." : "");
+          : (q._editedByUser ? "Bu soru metni/şıkları/gerçek doğru cevabı kullanıcı tarafından düzenlendi." : ""));
       }
-      const rows=[["Ders",q.subject],["Dosya",q._dbFile||""],["Kurul / sınav grubu",meta(q,"examGroup")],["Yıl / sene",meta(q,"year")],["Hoca",meta(q,"teacher")],["Konu",meta(q,"topic")],["Hedef / kazanım",meta(q,"target")],["Kaynak türü",meta(q,"sourceGroup")],["Kaynak",meta(q,"source")],["Kaynak soru no",meta(q,"sourceNo")],["Durum / güven",meta(q,"status")],["AI müdahalesi",aiInterventionNote || (aiIntervention ? "Yapay zeka düzeltmesi işaretli." : "")],["Kullanıcı düzenlemesi",q._editedByUser ? "Bu soru kullanıcı tarafından düzenlendi." : ""]];
+      const rows=[["Ders",q.subject],["Dosya",q._dbFile||""],["Kurul / sınav grubu",meta(q,"examGroup")],["Yıl / sene",meta(q,"year")],["Hoca",meta(q,"teacher")],["Konu",meta(q,"topic")],["Hedef / kazanım",meta(q,"target")],["Kaynak türü",meta(q,"sourceGroup")],["Kaynak",meta(q,"source")],["Kaynak soru no",meta(q,"sourceNo")],["Durum / güven",meta(q,"status")],["Şüpheli durum",suspiciousReasons.join(" | ")],["AI müdahalesi",aiInterventionNote || (aiIntervention ? "Yapay zeka düzeltmesi işaretli." : "")],["Kullanıcı düzenlemesi",q._editedByUser ? "Bu soru kullanıcı tarafından düzenlendi." : ""]];
       els.meta.innerHTML=rows.filter(([,v])=>String(v??"").trim()).map(([k,v])=>`<div><b>${escapeHTML(k)}:</b> ${escapeHTML(v)}</div>`).join("");
       els.question.innerHTML=formatQuestionHTML(q.question||"", q, selected);
+      if(els.questionMedia){
+        const mediaHTML = renderImageGalleryHTML(q);
+        els.questionMedia.innerHTML = mediaHTML;
+        els.questionMedia.className = mediaHTML ? "question-media show" : "question-media";
+      }
+      renderRelatedQuestionBox(q);
       els.options.innerHTML="";
       if(!opts.length){
         els.options.innerHTML=`<div class="feedback neutral" style="display:block"><b>Şık yok:</b> Bu kayıtta seçenekler bulunmuyor. Cevap anahtarı bilgi alanında gösterilir.</div>`;
@@ -7824,6 +8059,7 @@ async function openCurrentQuestionInChatGPT(){
         els.aiWarningBox.className = aiWarning ? "ai-warning-box show" : "ai-warning-box";
       }
       const infoParts=[];
+      if(isSuspicious) infoParts.push("<b>Şüpheli kayıt:</b> "+escapeHTML(suspiciousReasons.join(" | ")));
       if(q._editedByUser) infoParts.push("<b>Kullanıcı düzenlemesi:</b> Bu soru metni, şıkları veya gerçek doğru cevabı kullanıcı tarafından düzenlendi.");
       if(aiIntervention) infoParts.push("<b>Yapay zeka müdahalesi:</b> "+escapeHTML(aiInterventionNote || "Bu soruda cevap anahtarı düzeltmesi işaretlendi."));
       if(q.explanation) infoParts.push("<b>Açıklama:</b> "+escapeHTML(q.explanation));
@@ -7984,34 +8220,35 @@ function renderReview(){
     }
 
     function getListIndexesForCurrentMode(){
-      let idxs = listMode === "hidden"
-        ? questions.map((q,i)=>[q,i]).filter(([q]) => isDbActive(q) && isHiddenQuestion(q)).map(([,i])=>i)
-        : (listMode === "starred"
-          ? orderIndexes(questions.map((q,i)=>[q,i]).filter(([q]) => isDbActive(q) && !isHiddenQuestion(q) && isStarredQuestion(q)).map(([,i])=>i))
-          : filteredIndexes());
-
+      let idxs;
+      if(listMode === "hidden"){
+        idxs = questions.map((q,i)=>[q,i]).filter(([q]) => isDbActive(q) && isHiddenQuestion(q)).map(([,i])=>i);
+      }else if(listMode === "starred"){
+        idxs = orderIndexes(questions.map((q,i)=>[q,i]).filter(([q]) => isDbActive(q) && !isHiddenQuestion(q) && isStarredQuestion(q)).map(([,i])=>i));
+      }else if(listMode === "suspicious"){
+        idxs = orderIndexes(questions.map((q,i)=>[q,i]).filter(([q]) => isDbActive(q) && !isHiddenQuestion(q) && isSuspiciousQuestion(q)).map(([,i])=>i));
+      }else{
+        idxs = filteredIndexes();
+      }
       if (listMode === "wrong") idxs = idxs.filter(i => isWrongFromCache(questions[i]) || isUnknownQuestion(questions[i]));
       return idxs;
     }
 
     function listModeTitle(){
-      return listMode === "hidden"
-        ? "Gizlenen sorular"
-        : (listMode === "starred"
-          ? "Yıldızlı sorular"
-          : (listMode === "wrong"
-            ? "Yanlış yapılan sorular"
-            : (filters.subject !== "all" ? filters.subject + " · tüm sorular" : "Tüm dersler · tüm sorular")));
+      if(listMode === "hidden") return "Gizlenen sorular";
+      if(listMode === "starred") return "Yıldızlı sorular";
+      if(listMode === "suspicious") return "Şüpheli sorular";
+      if(listMode === "wrong") return "Yanlış yapılan sorular";
+      return filters.subject !== "all" ? filters.subject + " · tüm sorular" : "Tüm dersler · tüm sorular";
     }
 
     function listModeSubtitle(total){
-      const base = listMode === "hidden"
-        ? `${total} gizlenen soru · buradan yeniden görünür yapabilirsin`
-        : (listMode === "starred"
-          ? `${total} yıldızlı soru · buradan yıldızları kaldırabilir veya soruları inceleyebilirsin`
-          : (listMode === "wrong"
-            ? `${total} yanlış / bilmiyorum soru · kaydedilmiş cevaplarına göre`
-            : (quizActive ? `${total} quiz sorusu` : (els.activeFilterSummary.textContent || `${total} soru`))));
+      let base;
+      if(listMode === "hidden") base = `${total} gizlenen soru · buradan yeniden görünür yapabilirsin`;
+      else if(listMode === "starred") base = `${total} yıldızlı soru · buradan yıldızları kaldırabilir veya soruları inceleyebilirsin`;
+      else if(listMode === "suspicious") base = `${total} şüpheli soru · kaynak/kategori güveni gözden geçirilmeli`;
+      else if(listMode === "wrong") base = `${total} yanlış / bilmiyorum soru · kaydedilmiş cevaplarına göre`;
+      else base = quizActive ? `${total} quiz sorusu` : (els.activeFilterSummary.textContent || `${total} soru`);
       return shuffleQuestions && listMode !== "hidden" ? base + " · karışık sıra" : base;
     }
 
@@ -8030,6 +8267,8 @@ function renderReview(){
         ? `<div class="wrong-answer-note"><b>Senin cevabın:</b> ${escapeHTML(cachedSelectedText(q))}</div><div class="correct-answer-note"><b>Doğru cevap:</b> ${escapeHTML(cachedCorrectText(q))}</div>`
         : "";
       const aiWarning = aiDiscrepancyHTML(q);
+      const mediaHTML = renderImageGalleryHTML(q);
+      const suspicious = suspicionReasons(q);
 
       const cardActions = listMode === "hidden"
         ? `<div class="all-q-actions"><button class="secondary edit-hidden-question-btn" type="button" data-qid="${escapeHTML(answerKey(q))}">Soru/şık/gerçek cevabı düzenle</button><button class="secondary unhide-question-btn" type="button" data-qid="${escapeHTML(answerKey(q))}">Bu soruyu tekrar göster</button></div>`
@@ -8038,16 +8277,19 @@ function renderReview(){
           : `<div class="all-q-actions"><button class="secondary star-list-question-btn" type="button" data-qid="${escapeHTML(answerKey(q))}">${isStarredQuestion(q) ? "Yıldızı kaldır" : "Yıldızla"}</button><button class="secondary hide-list-question-btn" type="button" data-qid="${escapeHTML(answerKey(q))}">Bu soruyu bir daha gösterme</button></div>`);
 
       return `
-        <article class="all-q-card">
+        <article class="all-q-card ${suspicious.length ? "suspicious-question" : ""}">
           <div class="all-q-meta">
             <span class="chip">${pos+1}. soru</span>
             <span class="chip">${escapeHTML(q.subject || "")}</span>
             <span class="chip">${escapeHTML(meta(q,"examGroup") || "")}</span>
             <span class="chip">${escapeHTML(meta(q,"topic") || "")}</span>
             <span class="chip">${escapeHTML(q._dbFile || "")}</span>
+            ${suspicious.length ? `<span class="chip suspicious-chip">Şüpheli</span>` : ""}
             ${q._editedByUser ? `<span class="chip edited-chip">Kullanıcı düzenledi</span>` : ""}
           </div>
-          <div class="all-q-question">${escapeHTML(q.question || "")}</div>
+          ${suspicious.length ? `<div class="suspicious-note"><b>Şüpheli kayıt:</b> ${escapeHTML(suspicious.join(" | "))}</div>` : ""}
+          <div class="all-q-question">${formatQuestionHTML(q.question || "", q, ans.index, {forcePremiseHighlight:true})}</div>
+          ${mediaHTML ? `<div class="all-q-media">${mediaHTML}</div>` : ""}
           <div class="all-q-options">${optHtml}</div>
           ${wrongNotes}
           ${aiWarning ? `<div class="all-q-ai-warning">${aiWarning}</div>` : ""}
@@ -8157,50 +8399,111 @@ function renderReview(){
       const correctText = cachedCorrectText(q);
       const aiWarningText = aiPlainWarningText(q);
       const info = [q.explanation ? "Açıklama: " + q.explanation : "", q.spot ? "Spot: " + q.spot : "", ans.raw ? "Cevap anahtarı: " + ans.raw : ""].filter(Boolean).join("<br>");
+      const imageHTML = renderImageGalleryHTML(q, "p-media", true);
+      const suspicious = suspicionReasons(q);
+      const relatedCount = relatedQuestions(q, 6).length;
       return `
         <section class="p-card">
           <div class="p-meta">${pos+1}. soru · ${escapeHTML(q.subject || "")} · ${escapeHTML(meta(q,"examGroup") || "")} · ${escapeHTML(meta(q,"topic") || "")}</div>
-          <div class="p-question">${escapeHTML(q.question || "")}</div>
+          ${suspicious.length ? `<div class="p-ai-warning"><b>Şüpheli kayıt:</b> ${escapeHTML(suspicious.join(" | "))}</div>` : ""}
+          <div class="p-question">${formatQuestionHTML(q.question || "", q, ans.index, {forcePremiseHighlight:true})}</div>
+          ${imageHTML ? `<div class="p-media">${imageHTML}</div>` : ""}
           <div class="p-options">${options || `<div class="p-option p-correct"><b>Cevap:</b> ${escapeHTML(ans.raw || ans.text || "")}</div>`}</div>
           <div class="p-answer"><b>Doğru cevap:</b> ${escapeHTML(correctText)}</div>
+          ${relatedCount ? `<div class="p-info"><b>İlişkili/benzer soru:</b> ${relatedCount}</div>` : ""}
           ${aiWarningText ? `<div class="p-ai-warning">${escapeHTML(aiWarningText).replace(/\n/g,"<br>")}</div>` : ""}
           ${info ? `<div class="p-info">${info}</div>` : ""}
         </section>
       `;
     }
 
+    function groupQuestionIndexesBySubject(idxs){
+      const groups = new Map();
+      idxs.forEach(i => {
+        const q = questions[i] || {};
+        const subject = q.subject || "Ders belirtilmemiş";
+        if(!groups.has(subject)) groups.set(subject, []);
+        groups.get(subject).push(i);
+      });
+      return [...groups.entries()].sort((a,b)=>a[0].localeCompare(b[0],"tr"));
+    }
+
     function createPdfFromCurrentList(){
       const idxs = currentListIndexes.length ? currentListIndexes : getListIndexesForCurrentMode();
+      createPdfForIndexes(idxs, listModeTitle());
+    }
+
+    function createPdfForIndexes(idxs, title="Sorular"){
       if(!idxs.length){
         alert("PDF oluşturmak için uygun soru bulunamadı.");
         return;
       }
 
-      const title = listModeTitle();
-      const body = idxs.map((i,pos)=>buildPrintableQuestionHTML(i,pos)).join("");
+      let globalPos = 0;
+      const grouped = groupQuestionIndexesBySubject(idxs);
+      const body = grouped.map(([subject, subjectIdxs], subjectPos)=>{
+        const examGroups = countValues(i=>meta(questions[i],"examGroup") || "Grup yok", subjectIdxs).slice(0, 6);
+        const topics = countValues(i=>meta(questions[i],"topic") || "", subjectIdxs).filter(x=>x.value).slice(0, 8);
+        const imageCount = subjectIdxs.filter(i=>hasQuestionImage(questions[i])).length;
+        const cover = `
+          <section class="p-subject-cover ${subjectPos === 0 ? "first" : ""}">
+            <div class="p-subject-kicker">Ders bölümü</div>
+            <h2>${escapeHTML(subject)}</h2>
+            <div class="p-subject-stats">
+              <span>${subjectIdxs.length} soru</span>
+              <span>${examGroups.length} sınav grubu</span>
+              <span>${imageCount} görselli soru</span>
+            </div>
+            <div class="p-subject-mini"><b>Sınav grupları:</b> ${escapeHTML(examGroups.map(x=>`${x.value} (${x.count})`).join(", ") || "Belirtilmemiş")}</div>
+            ${topics.length ? `<div class="p-subject-mini"><b>Konu başlıkları:</b> ${escapeHTML(topics.map(x=>x.value).join(", "))}</div>` : ""}
+          </section>
+        `;
+        const cards = subjectIdxs.map(i=>buildPrintableQuestionHTML(i, globalPos++)).join("");
+        return cover + cards;
+      }).join("");
       const printDoc = `<!doctype html>
 <html lang="tr">
 <head>
 <meta charset="utf-8">
 <title>${escapeHTML(title)}</title>
 <style>
-  body{font-family:Arial, sans-serif;color:#111827;margin:24px;line-height:1.45}
-  h1{font-size:20px;margin:0 0 6px}
+  *{box-sizing:border-box}
+  body{font-family:Arial, "Noto Sans", sans-serif;color:#111827;margin:24px;line-height:1.45;background:#fff}
+  h1{font-size:22px;margin:0 0 6px;color:#173a8a}
   .sub{font-size:12px;color:#475467;margin-bottom:18px}
-  .p-card{page-break-inside:avoid;border:1px solid #d0d5dd;border-radius:10px;padding:12px;margin:0 0 12px}
+  .p-subject-cover{break-before:page;page-break-before:always;min-height:72vh;display:flex;flex-direction:column;justify-content:center;border:1px solid #d0d5dd;border-radius:18px;padding:28px;margin:0 0 18px;background:linear-gradient(180deg,#f8fbff,#fff)}
+  .p-subject-cover.first{break-before:auto;page-break-before:auto}
+  .p-subject-kicker{font-size:12px;font-weight:800;color:#475467;text-transform:uppercase;letter-spacing:.08em}
+  .p-subject-cover h2{font-size:30px;line-height:1.1;margin:8px 0 14px;color:#173a8a}
+  .p-subject-stats{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+  .p-subject-stats span{border:1px solid #c8d7f3;background:#edf4ff;color:#173a8a;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:800}
+  .p-subject-mini{font-size:12px;color:#344054;margin-top:6px}
+  .p-card{page-break-inside:avoid;break-inside:avoid;border:1px solid #d0d5dd;border-radius:10px;padding:12px;margin:0 0 12px}
   .p-meta{font-size:11px;color:#475467;margin-bottom:8px}
   .p-question{font-weight:700;font-size:14px;white-space:pre-wrap;margin-bottom:8px}
+  .question-lead{margin-bottom:8px}
+  .premise-list{display:grid;gap:6px;margin:8px 0;padding:8px;border-radius:10px;background:#f8fafc;border:1px solid #d0d5dd}
+  .premise-row{display:grid;grid-template-columns:86px 1fr;gap:8px;align-items:start;padding:6px;border-radius:8px;border:1px solid #eaecf0;background:#fff}
+  .premise-row.premise-correct{background:#e8f7ee;border-color:#9bd6b3}
+  .premise-row.premise-wrong{background:#fdecef;border-color:#f0a8b5}
+  .premise-roman{font-weight:800;color:#173a8a}
+  .premise-status-inline{display:block;font-size:10px;color:#475467}
+  .premise-text{font-weight:600;color:#263445}
+  .p-media{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin:8px 0 10px}
+  .question-image-card{margin:0;border:1px solid #d0d5dd;border-radius:10px;padding:7px;background:#fff}
+  .question-image-card img{display:block;width:100%;max-height:300px;object-fit:contain;border-radius:7px;background:#f8fafc}
+  .question-image-caption{margin-top:5px;text-align:center;color:#475467;font-size:10.5px}
   .p-option{border:1px solid #eaecf0;border-radius:8px;padding:6px 8px;margin:5px 0;white-space:pre-wrap;font-size:12.5px}
   .p-correct{background:#e8f7ee;border-color:#9bd6b3}
   .p-answer{margin-top:7px;font-size:12.5px;color:#12633a}
   .p-ai-warning{margin-top:7px;padding:7px 8px;border-radius:8px;background:#fff7df;border:1px solid #d4a72c;color:#573a09;font-size:11.5px}
   .p-info{margin-top:6px;font-size:11.5px;color:#344054}
-  @media print{body{margin:12mm}.p-card{break-inside:avoid}}
+  @media print{body{margin:12mm}.p-card{break-inside:avoid}.p-subject-cover{break-before:page}.p-subject-cover.first{break-before:auto}}
 </style>
 </head>
 <body>
 <h1>${escapeHTML(title)}</h1>
-<div class="sub">${idxs.length} soru · PDF olarak kaydetmek için yazdırma penceresinde “PDF olarak kaydet” seçeneğini kullan.</div>
+<div class="sub">${idxs.length} soru · ${grouped.length} ders · PDF olarak kaydetmek için yazdırma penceresinde “PDF olarak kaydet” seçeneğini kullan.</div>
 ${body}
 <script>
   window.onload = function(){ setTimeout(function(){ window.print(); }, 250); };
@@ -8227,6 +8530,12 @@ ${body}
       if(metaLine) lines.push(metaLine);
       lines.push("");
       lines.push(String(q.question || "").trim());
+      const imgs = questionImages(q);
+      if(imgs.length){
+        lines.push("");
+        lines.push("Görseller:");
+        imgs.forEach((img, idx)=>lines.push(`${idx+1}. ${resolveQuestionImageSrc(img.src)}${img.caption ? " - " + img.caption : ""}`));
+      }
       if(opts.length){
         lines.push("");
         opts.forEach((opt, idx) => {
@@ -8310,6 +8619,17 @@ ${body}
       els.appView.classList.add("active");
       els.activeTitle.textContent="Yıldızlı sorular";
       showListView("starred");
+    }
+
+    function showSuspiciousFromHome(){
+      stopQuizMode();
+      document.body.classList.add("app-screen-active");
+      filters={subject:"all", exam:"all", year:"all", teacher:"all", sourceGroup:"all", search:""};
+      sanitizeFilters();
+      els.landing.classList.add("hidden");
+      els.appView.classList.add("active");
+      els.activeTitle.textContent="Şüpheli sorular";
+      showListView("suspicious");
     }
 
     function showQuizView(){
@@ -8507,6 +8827,7 @@ ${body}
       els.wrongHomeBtn.addEventListener("click", showWrongFromHome);
       els.hiddenHomeBtn.addEventListener("click", showHiddenFromHome);
       if(els.starredHomeBtn) els.starredHomeBtn.addEventListener("click", showStarredFromHome);
+      if(els.suspiciousHomeBtn) els.suspiciousHomeBtn.addEventListener("click", showSuspiciousFromHome);
       els.quizAllBtn.addEventListener("click",()=>startQuiz("all",150));
       els.startAllBtn.addEventListener("click",()=>startCourse("all"));
       els.backHomeBtn.addEventListener("click", showLanding);
